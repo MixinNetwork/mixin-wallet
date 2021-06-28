@@ -9,14 +9,14 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: Text('home')
+      title: const Text('home')
     ),
         body: Center(
           child: TextButton(
             onPressed: (){
               mixinRouterDelegate.setNewRoutePath(Uri(path: '/SomeDetail'));
             },
-            child: Text('go some detail'),
+            child: const Text('go some detail'),
           ),
         ),
       );

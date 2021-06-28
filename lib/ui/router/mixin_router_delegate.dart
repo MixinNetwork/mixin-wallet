@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mixin_wallet/ui/page/home.dart';
-import 'package:mixin_wallet/ui/page/not_found.dart';
-import 'package:mixin_wallet/ui/page/some_detail.dart';
+
+import '../page/home.dart';
+import '../page/not_found.dart';
+import '../page/some_detail.dart';
 
 class MixinRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
@@ -45,9 +46,6 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
 
   @override
   Future<void> setNewRoutePath(Uri configuration) {
-    print(
-        'setNewRoutePath fuck uri: $configuration, path: ${configuration.path}');
-
     final page = _handleUri(configuration);
     if (page != null) {
       _history.add(MapEntry(configuration, page));
@@ -66,10 +64,7 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   }
 
   Page? _handleUri(Uri configuration) {
-    var path = configuration.path.trim();
-    print(
-        '_handleUri fuck uri: $configuration, path: $path, path == /: ${path == '/'}');
-
+    final path = configuration.path.trim();
     if (path == '/') {
       return const MaterialPage(
         child: Home(),
