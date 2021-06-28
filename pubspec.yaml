@@ -34,6 +34,13 @@ dependencies:
   very_good_analysis: ^2.1.2
   intl: ^0.17.0
   json_annotation: ^4.0.1
+  flutter_hooks: ^0.17.0
+  equatable: ^2.0.3
+  flutter_svg: ^0.22.0
+  provider: ^5.0.0
+  isolate: ^2.1.1
+  path: ^1.8.0
+  dio: ^4.0.0
 
 dev_dependencies:
   flutter_test:
