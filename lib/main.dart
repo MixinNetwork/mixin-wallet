@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'ui/router/mixin_route_information_parser.dart';
 import 'ui/router/mixin_router_delegate.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox('settings');
   runApp(const MyApp());
 }
 
@@ -14,7 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp.router(
-        title: 'Flutter Demo',
+        title: 'Mixin Wallet',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
