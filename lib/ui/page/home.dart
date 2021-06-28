@@ -14,7 +14,7 @@ class Home extends StatelessWidget {
         body: Center(
           child: TextButton(
             onPressed: (){
-              mixinRouterDelegate.setNewRoutePath(Uri(path: '/SomeDetail'));
+              mixinRouterDelegate.pushNewUri(Uri(path: '/SomeDetail'));
             },
             child: const Text('go some detail'),
           ),

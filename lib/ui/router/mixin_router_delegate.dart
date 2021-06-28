@@ -6,9 +6,18 @@ import '../page/home.dart';
 import '../page/not_found.dart';
 import '../page/some_detail.dart';
 
+final notFoundUri = Uri(path: '404');
+const notFoundPage = MaterialPage(
+  child: NotFound(),
+);
+
 class MixinRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
   final _history = <MapEntry<Uri, Page>>[];
+
+  static const _homePage = MaterialPage(
+    child: Home(),
+  );
 
   @override
   Uri get currentConfiguration {
@@ -20,8 +29,8 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   Widget build(BuildContext context) => Navigator(
         key: navigatorKey,
         pages: [
-          if (_history.isEmpty) _handleUri(Uri(path: '/'))!,
-          if (_history.isNotEmpty) ..._history.map((e) => e.value)
+          if (_history.isEmpty) _homePage,
+          ..._history.map((e) => e.value)
         ],
         onPopPage: (route, result) {
           if (!route.didPop(result)) {
@@ -39,42 +48,32 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey();
 
-  void pushNewUri(Uri uri) {
-    setNewRoutePath(uri);
+  Future<void> pushNewUri(Uri uri) async {
+    await setNewRoutePath(uri);
     notifyListeners();
   }
 
   @override
-  Future<void> setNewRoutePath(Uri configuration) {
-    final page = _handleUri(configuration);
-    if (page != null) {
-      _history.add(MapEntry(configuration, page));
-    } else {
-      _history.add(
-        MapEntry(
-          Uri(path: '404'),
-          const MaterialPage(
-            child: NotFoundPage(),
-          ),
-        ),
-      );
-    }
-
-    return SynchronousFuture<void>(null);
+  Future<void> setNewRoutePath(Uri configuration) async {
+    if (kIsWeb) _history.clear();
+    _history.add(await _handleUri(configuration));
   }
 
-  Page? _handleUri(Uri configuration) {
+  // handle uri, we can check auth here
+  Future<MapEntry<Uri, Page>> _handleUri(Uri configuration) async {
     final path = configuration.path.trim();
+
+    late Page page;
     if (path == '/') {
-      return const MaterialPage(
-        child: Home(),
-      );
+      page = _homePage;
     } else if (path == '/SomeDetail') {
-      return const MaterialPage(
+      page = const MaterialPage(
         child: SomeDetail(),
       );
+    } else {
+      return MapEntry(notFoundUri, notFoundPage);
     }
 
-    return null;
+    return MapEntry(configuration, page);
   }
 }
