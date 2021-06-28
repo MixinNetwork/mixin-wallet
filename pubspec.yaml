@@ -37,6 +37,7 @@ dev_dependencies:
     sdk: flutter
 
   very_good_analysis: ^2.1.2
+  intl: ^0.17.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -79,3 +80,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_intl:
+  enabled: true
+  class_name: Localization
+  use_deferred_loading: true
