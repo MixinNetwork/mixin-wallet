@@ -8,12 +8,10 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('home')
-    ),
+        appBar: AppBar(title: const Text('home')),
         body: Center(
           child: TextButton(
-            onPressed: (){
+            onPressed: () {
               mixinRouterDelegate.pushNewUri(Uri(path: '/SomeDetail'));
             },
             child: const Text('go some detail'),
