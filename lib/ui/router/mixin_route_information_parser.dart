@@ -6,7 +6,7 @@ class MixinRouteInformationParser extends RouteInformationParser<Uri> {
   @override
   Future<Uri> parseRouteInformation(RouteInformation routeInformation) async {
     final uri = Uri.tryParse(routeInformation.location!);
-    return uri ?? notFoundUri;
+    return uri ?? MixinRouterDelegate.notFoundUri;
   }
 
   @override

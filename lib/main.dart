@@ -13,8 +13,6 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-final mixinRouterDelegate = MixinRouterDelegate();
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        routerDelegate: mixinRouterDelegate,
+        routerDelegate: MixinRouterDelegate(),
         routeInformationParser: MixinRouteInformationParser(),
       );
 }

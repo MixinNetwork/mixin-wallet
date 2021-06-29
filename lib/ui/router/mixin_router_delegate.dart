@@ -1,56 +1,52 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
+import 'package:provider/provider.dart';
 
+import '../../util/extension/extension.dart';
 import '../../util/web/web_util.dart';
+import '../page/auth.dart';
 import '../page/home.dart';
 import '../page/not_found.dart';
-import '../page/some_detail.dart';
-
-final notFoundUri = Uri(path: '404');
-const notFoundPage = MaterialPage(
-  child: NotFound(),
-);
-
-// TODO should config for production or staging env
-const clientId = 'd0a44d9d-bb19-403c-afc5-ea26ea88123b';
-const clientSecret =
-    '29c9774449f38accd015638d463bc4f70242ecc39e154b939d47017ca9316420';
 
 class MixinRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
-  final _history = <MapEntry<Uri, Page>>[];
+  final _history = <MapEntry<Uri, MixinPage>>[];
 
-  static const _homePage = MaterialPage(
-    child: Home(),
-  );
+  static final homeUri = Uri(path: '/');
+  static final authUri = Uri(path: '/auth');
+  static final notFoundUri = Uri(path: '/404');
 
   @override
   Uri get currentConfiguration {
     if (_history.isNotEmpty) return _history.last.key;
-    return Uri(path: '/');
+    return homeUri;
   }
 
   @override
-  Widget build(BuildContext context) => Navigator(
-        key: navigatorKey,
-        pages: [
-          if (_history.isEmpty) _homePage,
-          ..._history.map((e) => e.value)
-        ],
-        onPopPage: (route, result) {
-          if (!route.didPop(result)) {
-            return false;
-          }
+  Widget build(BuildContext context) =>
+      ChangeNotifierProvider<MixinRouterDelegate>(
+        create: (context) => this,
+        child: Navigator(
+          key: navigatorKey,
+          pages: [
+            if (_history.isEmpty) routerMap()['$homeUri']!.rebuild(),
+            ..._history.map((e) => e.value)
+          ],
+          onPopPage: (route, result) {
+            if (!route.didPop(result)) {
+              return false;
+            }
 
-          if (_history.isNotEmpty) _history.removeLast();
+            if (_history.isNotEmpty) _history.removeLast();
 
-          notifyListeners();
+            notifyListeners();
 
-          return true;
-        },
+            return true;
+          },
+        ),
       );
 
   @override
@@ -62,48 +58,104 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   }
 
   @override
-  Future<void> setNewRoutePath(Uri configuration) async {
+  Future<void> setNewRoutePath(Uri configuration) {
     if (kIsWeb) _history.clear();
-    _history.add(await _handleUri(configuration));
+    _history.add(_handleUri(configuration));
+    return SynchronousFuture(null);
   }
 
-  // handle uri, we can check auth here
-  Future<MapEntry<Uri, Page>> _handleUri(Uri configuration) async {
+  MapEntry<Uri, MixinPage> _handleUri(Uri configuration) {
     final path = configuration.path.trim();
     final box = Hive.box('settings');
 
-    late Page page;
-    if (path == '/auth') {
-      final oauthCode = configuration.queryParameters['code'];
-      if (oauthCode == null || oauthCode.isEmpty) {
-        // TODO reauth page
-      }
-      final request = OauthRequest(clientId, clientSecret, oauthCode!);
-      final response = await Client().oauthApi.post(request);
-      if (!response.data.scope.contains('ASSETS:READ SNAPSHOTS:READ')) {
-        // TODO reauth page
-      }
-      final accessToken = response.data.accessToken;
-      await box.put('access_token', accessToken);
-    } else if (path == '/') {
-      final accessToken = box.get('access_token');
-      if (accessToken == null) {
-        const oauthUrl =
-            'https://mixin.one/oauth/authorize?client_id=$clientId&scope=PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ&response_type=code';
-        replaceUrl(oauthUrl);
-        // todo oauth page
-        page = notFoundPage;
-      } else {
-        page = _homePage;
-      }
-    } else if (path == '/asset') {
-      page = const MaterialPage(
-        child: SomeDetail(),
-      );
+    var uri = configuration;
+    MixinPage? page;
+    Map<String, String>? pathParameters;
+    final accessToken = box.get('access_token');
+
+    final map = routerMap();
+    if (accessToken == null) {
+      page = map['$authUri'];
+      uri = authUri.pathMatch(uri) ? uri : authUri;
     } else {
-      return MapEntry(notFoundUri, notFoundPage);
+      for (final item in map.entries) {
+        if (!item.key.pathMatch(path)) continue;
+
+        pathParameters = item.key.extractPathParameters(path);
+        page = item.value;
+      }
     }
 
-    return MapEntry(configuration, page);
+    page ??= map['$notFoundUri']!;
+
+    return MapEntry(
+      uri,
+      page.rebuild(
+        pathParameters: pathParameters,
+        queryParameters: uri.queryParameters,
+      ),
+    );
   }
+
+  Map<String, MixinPage> routerMap() => {
+        '$homeUri': const MixinPage(
+          child: Home(),
+        ),
+        '$authUri': const MixinPage(
+          child: Auth(),
+        ),
+        '$notFoundUri': const MixinPage(
+          child: NotFound(),
+        ),
+      };
+
+  void replaceLast(Uri uri) {
+    if (kIsWeb) return replaceUrl('$uri');
+    if (_history.isNotEmpty) _history.removeLast();
+    pushNewUri(uri);
+  }
+}
+
+class MixinPage extends MaterialPage {
+  const MixinPage({
+    required Widget child,
+    LocalKey? key,
+    String? name,
+  }) : super(
+          child: child,
+          key: key,
+          name: name,
+        );
+
+  MixinPage rebuild({
+    Map<String, String>? pathParameters,
+    Map<String, String> queryParameters = const {},
+  }) =>
+      MixinPage(
+        key: key,
+        name: name,
+        child: Provider(
+          create: (BuildContext context) => MixinParameter(
+            pathParameters: pathParameters ?? {},
+            queryParameters: queryParameters,
+          ),
+          child: child,
+        ),
+      );
+}
+
+class MixinParameter extends Equatable {
+  const MixinParameter({
+    required this.pathParameters,
+    required this.queryParameters,
+  });
+
+  final Map<String, String> pathParameters;
+  final Map<String, String> queryParameters;
+
+  @override
+  List<Object?> get props => [
+        pathParameters,
+        queryParameters,
+      ];
 }
