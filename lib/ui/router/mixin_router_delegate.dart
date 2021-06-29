@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
 import '../../util/extension/extension.dart';
+import '../../util/logger.dart';
 import '../../util/web/web_util.dart';
 import '../page/auth.dart';
 import '../page/home.dart';
@@ -21,6 +22,8 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
 
   @override
   Uri get currentConfiguration {
+    i('currentConfiguration: $_history');
+
     if (_history.isNotEmpty) return _history.last.key;
     return homeUri;
   }
@@ -52,13 +55,25 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey();
 
+  void replaceLast(Uri uri) {
+    i('replaceLast: $uri');
+
+    if (kIsWeb) return replaceUrl('$uri');
+    if (_history.isNotEmpty) _history.removeLast();
+    pushNewUri(uri);
+  }
+
   Future<void> pushNewUri(Uri uri) async {
+    i('pushNewUri: $uri');
+
     await setNewRoutePath(uri);
     notifyListeners();
   }
 
   @override
   Future<void> setNewRoutePath(Uri configuration) {
+    i('setNewRoutePath: $configuration');
+
     if (kIsWeb) _history.clear();
     _history.add(_handleUri(configuration));
     return SynchronousFuture(null);
@@ -108,12 +123,6 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
           child: NotFound(),
         ),
       };
-
-  void replaceLast(Uri uri) {
-    if (kIsWeb) return replaceUrl('$uri');
-    if (_history.isNotEmpty) _history.removeLast();
-    pushNewUri(uri);
-  }
 }
 
 class MixinPage extends MaterialPage {

@@ -50,6 +50,7 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   path_to_regexp: ^0.4.0
+  ansicolor: ^2.0.1
 
 dev_dependencies:
   flutter_test:
