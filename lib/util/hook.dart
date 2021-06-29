@@ -1,17 +1,17 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-void useAsyncEffect(
-  FutureOr<dynamic> Function() effect, {
-  FutureOr<dynamic> Function()? cleanup,
-  List<Object?>? keys,
-}) {
-  useEffect(() {
-    effect();
-    return () {
-      if (cleanup == null) return;
-      Future.microtask(cleanup);
-    };
-  }, keys);
-}
+AsyncSnapshot<T?> useMemoizedFuture<T>(
+  Future<T> Function() futureBuilder, {
+  T? initialData,
+  List<Object?> keys = const <Object>[],
+}) =>
+    useFuture(
+      useMemoized(
+        futureBuilder,
+        keys,
+      ),
+      initialData: initialData,
+    );

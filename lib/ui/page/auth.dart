@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,43 +20,41 @@ class Auth extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMounted = useIsMounted();
     final loading = useState(false);
 
-    useAsyncEffect(() async {
-      final oauthCode = context.queryParameters['code'];
-      if (oauthCode?.isEmpty ?? true) return;
+    final oauthCode = context.queryParameters['code'];
 
+    final accessToken = useMemoizedFuture(() async {
+      if (oauthCode?.isEmpty ?? true) return null;
       loading.value = true;
-      // CORS
-      await Future.delayed(const Duration(seconds: 3));
-      context
-          .read<MixinRouterDelegate>()
-          .replaceLast(MixinRouterDelegate.homeUri);
-      return;
       try {
-        final response = await Client(
-          httpLogLevel: HttpLogLevel.none,
-          dioOptions: BaseOptions(headers: {
-            'Access-Control-Allow-Origin': '*',
-          }),
-        ).oauthApi.post(OauthRequest(clientId, clientSecret, oauthCode!));
-        if (!isMounted()) return;
+        final response = await Client()
+            .oauthApi
+            .post(OauthRequest(clientId, clientSecret, oauthCode!));
+
         if (!response.data.scope.contains('ASSETS:READ SNAPSHOTS:READ')) {
-          return;
+          return null;
         }
 
-        final accessToken = response.data.accessToken;
-        final box = Hive.box('settings');
-        await box.put('access_token', accessToken);
-
-        context
-            .read<MixinRouterDelegate>()
-            .replaceLast(MixinRouterDelegate.homeUri);
+        return response.data.accessToken;
+      } catch (e) {
+        return null;
       } finally {
         loading.value = false;
       }
-    }, cleanup: () {});
+    }, keys: [oauthCode]).data;
+
+    useValueChanged<dynamic, void>(accessToken, (_, __) async {
+      if (accessToken == null) return;
+
+      final box = Hive.box('settings');
+      await box.put('access_token', accessToken);
+
+      context
+          .read<MixinRouterDelegate>()
+          .replaceLast(MixinRouterDelegate.homeUri);
+    });
+
     return Scaffold(
       body: Center(
         child: AnimatedSwitcher(
