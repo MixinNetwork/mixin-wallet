@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
-import 'dart:html';
 
+import '../../util/web/web_util.dart';
 import '../page/home.dart';
 import '../page/not_found.dart';
 import '../page/some_detail.dart';
@@ -83,15 +83,14 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
       if (!response.data.scope.contains('ASSETS:READ SNAPSHOTS:READ')) {
         // TODO reauth page
       }
-      await box.put('access_token', response.data.accessToken);
-      final acc = box.get('access_token');
-      print(acc);
+      final accessToken = response.data.accessToken;
+      await box.put('access_token', accessToken);
     } else if (path == '/') {
       final accessToken = box.get('access_token');
       if (accessToken == null) {
         const oauthUrl =
             'https://mixin.one/oauth/authorize?client_id=$clientId&scope=PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ&response_type=code';
-        window.location.replace(oauthUrl);
+        replaceUrl(oauthUrl);
         // todo oauth page
         page = notFoundPage;
       } else {

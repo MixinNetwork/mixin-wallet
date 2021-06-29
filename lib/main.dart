@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
 import 'ui/router/mixin_route_information_parser.dart';
 import 'ui/router/mixin_router_delegate.dart';
+import 'util/web/web_util.dart';
 
-void main() async {
+Future<void> main() async {
   await Hive.initFlutter();
   await Hive.openBox('settings');
   configureApp();
