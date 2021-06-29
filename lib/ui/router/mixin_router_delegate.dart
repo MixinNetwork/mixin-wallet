@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 import 'dart:html';
 
 import '../page/home.dart';
@@ -12,6 +13,11 @@ final notFoundUri = Uri(path: '404');
 const notFoundPage = MaterialPage(
   child: NotFound(),
 );
+
+// TODO should config for production or staging env
+const clientId = 'd0a44d9d-bb19-403c-afc5-ea26ea88123b';
+const clientSecret =
+    '29c9774449f38accd015638d463bc4f70242ecc39e154b939d47017ca9316420';
 
 class MixinRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
@@ -64,17 +70,27 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   // handle uri, we can check auth here
   Future<MapEntry<Uri, Page>> _handleUri(Uri configuration) async {
     final path = configuration.path.trim();
+    final box = Hive.box('settings');
 
     late Page page;
     if (path == '/auth') {
       final oauthCode = configuration.queryParameters['code'];
-      print(oauthCode);
+      if (oauthCode == null || oauthCode.isEmpty) {
+        // TODO reauth page
+      }
+      final request = OauthRequest(clientId, clientSecret, oauthCode!);
+      final response = await Client().oauthApi.post(request);
+      if (!response.data.scope.contains('ASSETS:READ SNAPSHOTS:READ')) {
+        // TODO reauth page
+      }
+      await box.put('access_token', response.data.accessToken);
+      final acc = box.get('access_token');
+      print(acc);
     } else if (path == '/') {
-      final box = Hive.box('settings');
       final accessToken = box.get('access_token');
       if (accessToken == null) {
         const oauthUrl =
-            'https://mixin.one/oauth/authorize?client_id=d0a44d9d-bb19-403c-afc5-ea26ea88123b&scope=PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ&response_type=code';
+            'https://mixin.one/oauth/authorize?client_id=$clientId&scope=PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ&response_type=code';
         window.location.replace(oauthUrl);
         // todo oauth page
         page = notFoundPage;
