@@ -1,3 +1,7 @@
 {
-  "test": "test"
+  "totalBalance": "Total Balance",
+  "balanceOfBtc": "≈ {balanceOfBtc} BTC",
+  "send": "Send",
+  "receive": "Receive",
+  "assets": "Assets"
 }

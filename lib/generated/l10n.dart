@@ -50,11 +50,51 @@ class L10n {
     return Localizations.of<L10n>(context, L10n);
   }
 
-  /// `test`
-  String get test {
+  /// `Total Balance`
+  String get totalBalance {
     return Intl.message(
-      'test',
-      name: 'test',
+      'Total Balance',
+      name: 'totalBalance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `≈ {balanceOfBtc} BTC`
+  String balanceOfBtc(Object balanceOfBtc) {
+    return Intl.message(
+      '≈ $balanceOfBtc BTC',
+      name: 'balanceOfBtc',
+      desc: '',
+      args: [balanceOfBtc],
+    );
+  }
+
+  /// `Send`
+  String get send {
+    return Intl.message(
+      'Send',
+      name: 'send',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Receive`
+  String get receive {
+    return Intl.message(
+      'Receive',
+      name: 'receive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assets`
+  String get assets {
+    return Intl.message(
+      'Assets',
+      name: 'assets',
       desc: '',
       args: [],
     );

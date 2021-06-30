@@ -1,0 +1,1 @@
+export '../generated/r.dart';

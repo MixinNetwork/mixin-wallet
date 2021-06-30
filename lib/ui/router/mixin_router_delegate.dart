@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
-import 'package:mixin_wallet/util/l10n.dart';
 import 'package:provider/provider.dart';
 
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../../util/web/web_util.dart';
+import '../brightness_theme_data.dart';
 import '../page/asset_deposit.dart';
 import '../page/asset_detail.dart';
 import '../page/auth.dart';
@@ -16,6 +16,7 @@ import '../page/home.dart';
 import '../page/not_found.dart';
 import '../page/snapshot_detail.dart';
 import '../page/withdrawal.dart';
+import '../widget/brightness_observer.dart';
 
 class MixinRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
@@ -38,26 +39,31 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   }
 
   @override
-  Widget build(BuildContext context) =>
-      ChangeNotifierProvider<MixinRouterDelegate>(
-        create: (context) => this,
-        child: Navigator(
-          key: navigatorKey,
-          pages: [
-            if (_history.isEmpty) routerMap()['$homeUri']!.rebuild(),
-            ..._history.map((e) => e.value)
-          ],
-          onPopPage: (route, result) {
-            if (!route.didPop(result)) {
-              return false;
-            }
+  Widget build(BuildContext context) => DefaultTextStyle(
+        style: const TextStyle(height: 1),
+        child: BrightnessObserver(
+          lightThemeData: lightBrightnessThemeData,
+          child: ChangeNotifierProvider<MixinRouterDelegate>(
+            create: (context) => this,
+            child: Navigator(
+              key: navigatorKey,
+              pages: [
+                if (_history.isEmpty) routerMap()['$homeUri']!.rebuild(),
+                ..._history.map((e) => e.value)
+              ],
+              onPopPage: (route, result) {
+                if (!route.didPop(result)) {
+                  return false;
+                }
 
-            if (_history.isNotEmpty) _history.removeLast();
+                if (_history.isNotEmpty) _history.removeLast();
 
-            notifyListeners();
+                notifyListeners();
 
-            return true;
-          },
+                return true;
+              },
+            ),
+          ),
         ),
       );
 
@@ -122,9 +128,8 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   }
 
   Map<String, MixinPage> routerMap() => {
-        '$homeUri': MixinPage(
-          name: L10n.current.test,
-          child: const Home(),
+        '$homeUri': const MixinPage(
+          child: Home(),
         ),
         '$authUri': const MixinPage(
           child: Auth(),
