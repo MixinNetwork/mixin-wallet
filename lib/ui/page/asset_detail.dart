@@ -8,9 +8,8 @@ class AssetDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: Center(
-      child: Text('AssetDetail, id: ${context.pathParameters['id']}'),
-    ),
-  );
-
+        body: Center(
+          child: Text('AssetDetail, id: ${context.pathParameters['id']}'),
+        ),
+      );
 }

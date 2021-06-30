@@ -97,7 +97,7 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
     final accessToken = box.get('access_token');
 
     final map = routerMap();
-    if (accessToken != null) {
+    if (accessToken == null) {
       page = map['$authUri'];
       uri = authUri.pathMatch(uri) ? uri : authUri;
     } else {
