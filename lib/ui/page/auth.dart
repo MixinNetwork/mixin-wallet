@@ -21,7 +21,6 @@ class Auth extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final loading = useState(false);
-
     final oauthCode = context.queryParameters['code'];
 
     final accessToken = useMemoizedFuture(() async {

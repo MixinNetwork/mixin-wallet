@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 
 import '../../util/extension/extension.dart';
 
-class MixinAppbar extends StatelessWidget with PreferredSizeWidget {
-  const MixinAppbar({Key? key}) : super(key: key);
+class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
+  const MixinAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => AppBar(

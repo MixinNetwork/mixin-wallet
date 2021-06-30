@@ -15,7 +15,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.white,
-        appBar: const MixinAppbar(),
+        appBar: const MixinAppBar(),
         body: CustomScrollView(
           slivers: [
             const SliverToBoxAdapter(
