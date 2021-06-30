@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
+import 'package:mixin_wallet/util/l10n.dart';
 import 'package:provider/provider.dart';
 
 import '../../util/extension/extension.dart';
@@ -121,8 +122,9 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   }
 
   Map<String, MixinPage> routerMap() => {
-        '$homeUri': const MixinPage(
-          child: Home(),
+        '$homeUri': MixinPage(
+          name: L10n.current.test,
+          child: const Home(),
         ),
         '$authUri': const MixinPage(
           child: Auth(),
