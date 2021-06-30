@@ -1,4 +1,3 @@
-
 part of '../extension.dart';
 
 extension PathExtension on String {
@@ -7,7 +6,8 @@ extension PathExtension on String {
     return regExp.hasMatch(path);
   }
 
-  Map<String, String> extractPathParameters(String path, {
+  Map<String, String> extractPathParameters(
+    String path, {
     bool caseSensitive = false,
   }) {
     final parameters = <String>[];
@@ -17,10 +17,12 @@ extension PathExtension on String {
       caseSensitive: caseSensitive,
     );
     final match = regExp.matchAsPrefix(path);
-    if(match != null) return extract(parameters, match);
+    if (match != null) return extract(parameters, match);
 
     return {};
   }
+
+  Uri toUri(Map<String, String> args) => Uri.parse(pathToFunction(this)(args));
 }
 
 extension UriExtension on Uri {

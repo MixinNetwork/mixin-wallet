@@ -8,9 +8,13 @@ import 'package:provider/provider.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../../util/web/web_util.dart';
+import '../page/asset_deposit.dart';
+import '../page/asset_detail.dart';
 import '../page/auth.dart';
 import '../page/home.dart';
 import '../page/not_found.dart';
+import '../page/snapshot_detail.dart';
+import '../page/withdrawal.dart';
 
 class MixinRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
@@ -19,6 +23,10 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   static final homeUri = Uri(path: '/');
   static final authUri = Uri(path: '/auth');
   static final notFoundUri = Uri(path: '/404');
+  static final withdrawalUri = Uri(path: '/withdrawal');
+  static const assetDetailPath = '/asset/:id';
+  static const snapshotDetailPath = '/snapshot/:id';
+  static const assetDepositPath = '/assets/:id/deposit';
 
   @override
   Uri get currentConfiguration {
@@ -89,7 +97,7 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
     final accessToken = box.get('access_token');
 
     final map = routerMap();
-    if (accessToken == null) {
+    if (accessToken != null) {
       page = map['$authUri'];
       uri = authUri.pathMatch(uri) ? uri : authUri;
     } else {
@@ -121,6 +129,18 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
         ),
         '$notFoundUri': const MixinPage(
           child: NotFound(),
+        ),
+        '$withdrawalUri': const MixinPage(
+          child: Withdrawal(),
+        ),
+        assetDetailPath: const MixinPage(
+          child: AssetDetail(),
+        ),
+        snapshotDetailPath: const MixinPage(
+          child: SnapshotDetail(),
+        ),
+        assetDepositPath: const MixinPage(
+          child: AssetDeposit(),
         ),
       };
 }

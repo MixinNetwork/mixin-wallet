@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+
+import '../../util/extension/extension.dart';
+import '../router/mixin_router_delegate.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -7,8 +11,39 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(title: const Text('home')),
-        body: const Center(
-          child: Text('Home'),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextButton(
+                onPressed: () {
+                  context
+                      .read<MixinRouterDelegate>()
+                      .pushNewUri(MixinRouterDelegate.withdrawalUri);
+                },
+                child: const Text('go withdrawal'),
+              ),
+              TextButton(
+                onPressed: () => context.read<MixinRouterDelegate>().pushNewUri(
+                      MixinRouterDelegate.assetDetailPath.toUri({'id': 'foo'}),
+                    ),
+                child: const Text('go assetDetail'),
+              ),
+              TextButton(
+                onPressed: () => context.read<MixinRouterDelegate>().pushNewUri(
+                      MixinRouterDelegate.snapshotDetailPath
+                          .toUri({'id': 'foo'}),
+                    ),
+                child: const Text('go snapshotDetail'),
+              ),
+              TextButton(
+                onPressed: () => context.read<MixinRouterDelegate>().pushNewUri(
+                      MixinRouterDelegate.assetDepositPath.toUri({'id': 'foo'}),
+                    ),
+                child: const Text('go assetDeposit'),
+              ),
+            ],
+          ),
         ),
       );
 }
