@@ -4,6 +4,8 @@
 // **************************************************************************
 class R {
   const R._();
+  static const String assetsAuthLogoSvg = 'assets/auth_logo.svg';
+
   static const String assetsHamburgerMenuSvg = 'assets/hamburger_menu.svg';
 
   static const String assetsReceiveSvg = 'assets/receive.svg';
