@@ -31,7 +31,9 @@ class Auth extends HookWidget {
             .oauthApi
             .post(OauthRequest(clientId, clientSecret, oauthCode!));
 
-        if (!response.data.scope.contains('ASSETS:READ SNAPSHOTS:READ')) {
+        final scope = response.data.scope;
+        if (!scope.contains('ASSETS:READ') &&
+            !scope.contains('SNAPSHOTS:READ')) {
           return null;
         }
 
