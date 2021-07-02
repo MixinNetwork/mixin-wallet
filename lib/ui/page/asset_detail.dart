@@ -145,7 +145,7 @@ class _AssetTransactionsHeader extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: SvgPicture.asset(
-                      R.assetsFilterSvg,
+                      R.resourcesFilterSvg,
                       color: BrightnessData.themeOf(context).text,
                       height: 24,
                       width: 24,
