@@ -1,81 +1,86 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../service/auth/auth_manager.dart';
 import '../../util/extension/extension.dart';
+import '../../util/hook.dart';
 import '../../util/r.dart';
-import '../router/mixin_router_delegate.dart';
 import '../widget/avatar.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/symbol.dart';
 
-class Home extends StatelessWidget {
+class Home extends HookWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Colors.white,
-        appBar: MixinAppBar(
-          leading: Center(
-            child: Avatar(
-              avatarUrl: auth!.account.avatarUrl,
-              userId: auth!.account.userId,
-              name: auth!.account.fullName!,
-            ),
+  Widget build(BuildContext context) {
+    final snapshotAssets = useMemoizedFuture(
+      () async {
+        final list = (await Future.wait([
+          context.appServices.client.assetApi.getAssets(),
+          context.appServices.client.accountApi.getFiats(),
+        ]))
+            .map((e) => e.data);
+        final assets = list.first as List<Asset>;
+        final fiats = list.last as List<Fiat>;
+
+        final symbolUrlMap = {for (var e in assets) e.assetId: e.iconUrl};
+
+        final fiat = fiats.firstWhere(
+            (element) => element.code == auth!.account.fiatCurrency);
+
+        return assets
+            .map((e) => Tuple3(e, symbolUrlMap[e.chainId]!, fiat))
+            .toList()
+              ..sort((a, b) {
+                Decimal converter(Asset asset) =>
+                    asset.balance.asDecimal * asset.priceUsd.asDecimal;
+                return converter(b.item1).compareTo(converter(a.item1));
+              });
+      },
+    );
+
+    final assets = snapshotAssets.data ?? [];
+
+    return Scaffold(
+      backgroundColor: context.theme.background,
+      appBar: MixinAppBar(
+        leading: Center(
+          child: Avatar(
+            avatarUrl: auth!.account.avatarUrl,
+            userId: auth!.account.userId,
+            name: auth!.account.fullName!,
           ),
         ),
-        body: CustomScrollView(
-          slivers: [
-            const SliverToBoxAdapter(
-              child: _Header(),
-            ),
-            const SliverToBoxAdapter(
-              child: _AssetHeader(),
-            ),
-            SliverToBoxAdapter(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      context
-                          .read<MixinRouterDelegate>()
-                          .pushNewUri(MixinRouterDelegate.withdrawalUri);
-                    },
-                    child: const Text('go withdrawal'),
-                  ),
-                  TextButton(
-                    onPressed: () =>
-                        context.read<MixinRouterDelegate>().pushNewUri(
-                              MixinRouterDelegate.assetDetailPath
-                                  .toUri({'id': 'foo'}),
-                            ),
-                    child: const Text('go assetDetail'),
-                  ),
-                  TextButton(
-                    onPressed: () =>
-                        context.read<MixinRouterDelegate>().pushNewUri(
-                              MixinRouterDelegate.snapshotDetailPath
-                                  .toUri({'id': 'foo'}),
-                            ),
-                    child: const Text('go snapshotDetail'),
-                  ),
-                  TextButton(
-                    onPressed: () =>
-                        context.read<MixinRouterDelegate>().pushNewUri(
-                              MixinRouterDelegate.assetDepositPath
-                                  .toUri({'id': 'foo'}),
-                            ),
-                    child: const Text('go assetDeposit'),
-                  ),
-                ],
+      ),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: _Header(data: assets),
+          ),
+          const SliverToBoxAdapter(
+            child: _AssetHeader(),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) => _Item(
+                data: assets[index].item1,
+                chinaUrl: assets[index].item2,
+                currentFiat: assets[index].item3,
               ),
+              childCount: assets.length,
             ),
-            const SliverFillRemaining(),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _AssetHeader extends StatelessWidget {
@@ -88,9 +93,9 @@ class _AssetHeader extends StatelessWidget {
         height: 50,
         color: context.theme.accent,
         child: Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-            color: Colors.white,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+            color: context.theme.background,
           ),
           child: Row(
             children: [
@@ -98,8 +103,8 @@ class _AssetHeader extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 20, left: 20),
                 child: Text(
                   context.l10n.assets,
-                  style: const TextStyle(
-                    color: Color(0xff222222),
+                  style: TextStyle(
+                    color: context.theme.text,
                     fontSize: 16,
                     fontFamily: 'Nunito',
                     fontWeight: FontWeight.w600,
@@ -123,16 +128,38 @@ class _AssetHeader extends StatelessWidget {
       );
 }
 
-class _Header extends StatelessWidget {
+class _Header extends HookWidget {
   const _Header({
     Key? key,
+    required this.data,
   }) : super(key: key);
+
+  final List<Tuple3<Asset, String, Fiat>> data;
 
   @override
   Widget build(BuildContext context) {
-    const symbol = r'$';
-    const balance = 38834.67;
-    const balanceOfBtc = 4.6173;
+    final balance = useMemoized(
+        () => data
+            .fold<Decimal>(
+                0.0.asDecimal,
+                (previousValue, element) =>
+                    previousValue +
+                    (element.item1.balance.asDecimal *
+                        element.item1.priceUsd.asDecimal *
+                        element.item3.rate.asDecimal))
+            .toString(),
+        [data]);
+
+    final balanceOfBtc = useMemoized(
+        () => data
+            .fold<Decimal>(
+                0.0.asDecimal,
+                (previousValue, element) =>
+                    previousValue +
+                    (element.item1.balance.asDecimal *
+                        element.item1.priceBtc.asDecimal))
+            .toString(),
+        [data]);
 
     return Container(
       height: 203,
@@ -142,8 +169,8 @@ class _Header extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             context.l10n.totalBalance,
-            style: const TextStyle(
-              color: Color(0xccffffff),
+            style: TextStyle(
+              color: context.theme.background,
               fontSize: 16,
             ),
           ),
@@ -153,10 +180,10 @@ class _Header extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                symbol,
+              Text(
+                currentCurrencyNumberFormat.currencySymbol,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: context.theme.background,
                   fontSize: 14,
                   fontFamily: 'Nunito',
                   fontWeight: FontWeight.w600,
@@ -164,9 +191,9 @@ class _Header extends StatelessWidget {
               ),
               const SizedBox(width: 2),
               Text(
-                balance.currencyFormat,
-                style: const TextStyle(
-                  color: Colors.white,
+                balance.currencyFormatWithoutSymbol,
+                style: TextStyle(
+                  color: context.theme.background,
                   fontSize: 48,
                 ),
               ),
@@ -174,7 +201,7 @@ class _Header extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           Text(
-            context.l10n.balanceOfBtc(balanceOfBtc.currencyFormat00),
+            context.l10n.approxBalanceOfBtc(balanceOfBtc),
             style: const TextStyle(
               color: Color(0x7fffffff),
               fontSize: 14,
@@ -231,8 +258,8 @@ class _Button extends StatelessWidget {
             horizontal: 32,
           ),
           child: DefaultTextStyle(
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: context.theme.background,
               fontSize: 16,
             ),
             child: Row(
@@ -244,6 +271,80 @@ class _Button extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      );
+}
+
+class _Item extends StatelessWidget {
+  const _Item({
+    Key? key,
+    required this.data,
+    required this.chinaUrl,
+    required this.currentFiat,
+  }) : super(key: key);
+
+  final Asset data;
+  final String chinaUrl;
+  final Fiat currentFiat;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        height: 70,
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        child: Row(
+          children: [
+            SymbolIcon(symbolUrl: data.iconUrl, chainUrl: data.iconUrl),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    '${data.balance} ${data.symbol}'.overflow,
+                    style: TextStyle(
+                      color: context.theme.text,
+                      fontSize: 16,
+                      fontFamily: 'Nunito',
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    context.l10n.approxOf((data.balance.asDecimal *
+                            data.priceUsd.asDecimal *
+                            currentFiat.rate.asDecimal)
+                        .toDouble()
+                        .currencyFormat),
+                    style: TextStyle(
+                      color: context.theme.secondaryText,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                PercentageChange(
+                  valid: data.priceUsd.isZero,
+                  changeUsd: data.changeUsd,
+                ),
+                Text(
+                  (data.priceUsd.asDecimal * currentFiat.rate.asDecimal)
+                      .toDouble()
+                      .currencyFormat,
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: context.theme.secondaryText,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       );
 }

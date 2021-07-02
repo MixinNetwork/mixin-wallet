@@ -19,12 +19,19 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(balanceOfBtc) => "≈ ${balanceOfBtc} BTC";
+  static String m0(value) => "≈ ${value} BTC";
+
+  static String m1(value) => "≈ ${value}";
+
+  static String m2(value) => "${value} BTC";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "approxBalanceOfBtc": m0,
+        "approxOf": m1,
         "assets": MessageLookupByLibrary.simpleMessage("Assets"),
-        "balanceOfBtc": m0,
+        "balanceOfBtc": m2,
+        "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),

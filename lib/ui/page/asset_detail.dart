@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../util/extension/extension.dart';
+import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../widget/interactable_box.dart';
@@ -25,12 +26,12 @@ class _AssetDetailLoader extends HookWidget {
     // TODO query assets from database
     // The asset id of CNB is: 965e5c6e-434c-3fa9-b780-c50f43cd955c
     final assetId = context.pathParameters['id'];
-    final data = useFuture(useMemoized(() async {
+    final data = useMemoizedFuture(() async {
       i('asset id = $assetId');
       final response =
           await context.appServices.client.assetApi.getAssetById(assetId!);
       return response.data;
-    }, [assetId]));
+    }, keys: [assetId]);
     if (data.data == null) return const SizedBox();
     return _AssetDetailPage(asset: data.data!);
   }

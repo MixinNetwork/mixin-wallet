@@ -1,11 +1,13 @@
 import 'dart:typed_data';
 
+import 'package:decimal/decimal.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:path_to_regexp/path_to_regexp.dart';
 import 'package:provider/provider.dart';
 
 import '../../service/app_services.dart';
+import '../../service/auth/auth_manager.dart';
 import '../../ui/router/mixin_router_delegate.dart';
 
 export 'package:provider/provider.dart';
