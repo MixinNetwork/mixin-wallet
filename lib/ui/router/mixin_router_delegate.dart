@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
+import '../../service/auth_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../../util/web/web_util.dart';
@@ -26,8 +26,8 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   static final authUri = Uri(path: '/auth');
   static final notFoundUri = Uri(path: '/404');
   static final withdrawalUri = Uri(path: '/withdrawal');
-  static const assetDetailPath = '/assets/:id';
-  static const assetDepositPath = '/assets/:id/deposit';
+  static const assetDetailPath = '/asset${kDebugMode ? '' : 's'}/:id';
+  static const assetDepositPath = '/asset${kDebugMode ? '' : 's'}/:id/deposit';
   static const snapshotDetailPath = '/snapshots/:id';
 
   @override
@@ -96,12 +96,10 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
 
   MapEntry<Uri, MixinPage> _handleUri(Uri configuration) {
     final path = configuration.path.trim();
-    final box = Hive.box('settings');
 
     var uri = configuration;
     MixinPage? page;
     Map<String, String>? pathParameters;
-    final accessToken = box.get('access_token');
 
     final map = routerMap();
     if (accessToken == null) {
@@ -132,7 +130,7 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
           child: Home(),
         ),
         '$authUri': const MixinPage(
-          child: Auth(),
+          child: AuthPage(),
         ),
         '$notFoundUri': const MixinPage(
           child: NotFound(),

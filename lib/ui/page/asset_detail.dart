@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hive/hive.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
+import 'package:mixin_wallet/service/auth_manager.dart';
 
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
@@ -28,8 +28,6 @@ class _AssetDetailLoader extends HookWidget {
     final assetId = context.pathParameters['id'];
     final data = useFuture(useMemoized(() async {
       i('asset id = $assetId');
-      final box = Hive.box('settings');
-      final accessToken = await box.get('access_token');
       final response = await Client(accessToken: accessToken)
           .assetApi
           .getAssetById(assetId!);

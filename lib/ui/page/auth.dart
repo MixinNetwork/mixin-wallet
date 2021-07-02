@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hive/hive.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 import 'package:provider/provider.dart';
 
+import '../../service/auth.dart';
+import '../../service/auth_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -17,8 +18,8 @@ const clientId = 'd0a44d9d-bb19-403c-afc5-ea26ea88123b';
 const clientSecret =
     '29c9774449f38accd015638d463bc4f70242ecc39e154b939d47017ca9316420';
 
-class Auth extends HookWidget {
-  const Auth({Key? key}) : super(key: key);
+class AuthPage extends HookWidget {
+  const AuthPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +51,7 @@ class Auth extends HookWidget {
     useValueChanged<dynamic, void>(accessToken, (_, __) async {
       if (accessToken == null) return;
 
-      final box = Hive.box('settings');
-      await box.put('access_token', accessToken);
+      await setAuth(Auth(accessToken: accessToken));
 
       context
           .read<MixinRouterDelegate>()
