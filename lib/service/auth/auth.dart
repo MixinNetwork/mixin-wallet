@@ -4,7 +4,7 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 part 'auth.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(anyMap: true)
 class Auth extends Equatable {
   const Auth({
     required this.accessToken,

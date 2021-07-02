@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-import '../../service/auth_manager.dart';
+import '../../service/app_services.dart';
+import '../../service/auth/auth_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../../util/web/web_util.dart';
@@ -43,8 +44,13 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
         style: const TextStyle(height: 1),
         child: BrightnessObserver(
           lightThemeData: lightBrightnessThemeData,
-          child: ChangeNotifierProvider<MixinRouterDelegate>(
-            create: (context) => this,
+          child: MultiProvider(
+            providers: [
+              ChangeNotifierProvider<MixinRouterDelegate>(
+                create: (context) => this,
+              ),
+              ChangeNotifierProvider(create: (context) => AppServices())
+            ],
             child: Navigator(
               key: navigatorKey,
               pages: [

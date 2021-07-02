@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
+import 'package:mixin_wallet/util/logger.dart';
 import 'package:provider/provider.dart';
 
-import '../../service/auth.dart';
-import '../../service/auth_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -26,37 +24,19 @@ class AuthPage extends HookWidget {
     final loading = useState(false);
     final oauthCode = context.queryParameters['code'];
 
-    final accessToken = useMemoizedFuture(() async {
+    useMemoizedFuture(() async {
       if (oauthCode?.isEmpty ?? true) return null;
       loading.value = true;
       try {
-        final response = await Client()
-            .oauthApi
-            .post(OauthRequest(clientId, clientSecret, oauthCode!));
-
-        final scope = response.data.scope;
-        if (!scope.contains('ASSETS:READ') ||
-            !scope.contains('SNAPSHOTS:READ')) {
-          return null;
-        }
-
-        return response.data.accessToken;
-      } catch (e) {
-        return null;
-      } finally {
+        await context.appServices.login(oauthCode!);
+        context
+            .read<MixinRouterDelegate>()
+            .replaceLast(MixinRouterDelegate.homeUri);
+      } catch (error, s) {
+        e('$error, $s');
         loading.value = false;
       }
-    }, keys: [oauthCode]).data;
-
-    useValueChanged<dynamic, void>(accessToken, (_, __) async {
-      if (accessToken == null) return;
-
-      await setAuth(Auth(accessToken: accessToken));
-
-      context
-          .read<MixinRouterDelegate>()
-          .replaceLast(MixinRouterDelegate.homeUri);
-    });
+    }, keys: [oauthCode]);
 
     return Scaffold(
       body: Center(

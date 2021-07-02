@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
-import 'package:mixin_wallet/service/auth_manager.dart';
 
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
@@ -28,9 +27,8 @@ class _AssetDetailLoader extends HookWidget {
     final assetId = context.pathParameters['id'];
     final data = useFuture(useMemoized(() async {
       i('asset id = $assetId');
-      final response = await Client(accessToken: accessToken)
-          .assetApi
-          .getAssetById(assetId!);
+      final response =
+          await context.appServices.client.assetApi.getAssetById(assetId!);
       return response.data;
     }, [assetId]));
     if (data.data == null) return const SizedBox();

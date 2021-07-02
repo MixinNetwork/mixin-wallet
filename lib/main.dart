@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'service/auth_manager.dart';
+import 'service/auth/auth_manager.dart';
 import 'ui/router/mixin_route_information_parser.dart';
 import 'ui/router/mixin_router_delegate.dart';
 import 'util/l10n.dart';

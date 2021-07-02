@@ -6,12 +6,12 @@ part of 'auth.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Auth _$AuthFromJson(Map<String, dynamic> json) {
+Auth _$AuthFromJson(Map json) {
   return Auth(
     accessToken: json['accessToken'] as String,
     account: json['account'] == null
         ? null
-        : Account.fromJson(json['account'] as Map<String, dynamic>),
+        : Account.fromJson(Map<String, dynamic>.from(json['account'] as Map)),
   );
 }
 
