@@ -27,6 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "balanceOfBtc": m0,
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
-        "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance")
+        "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
+        "transactions": MessageLookupByLibrary.simpleMessage("Transactions")
       };
 }

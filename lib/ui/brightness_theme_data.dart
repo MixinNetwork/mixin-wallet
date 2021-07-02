@@ -9,5 +9,5 @@ const lightBrightnessThemeData = BrightnessThemeData(
   red: Color.fromRGBO(229, 120, 116, 1),
   green: Color.fromRGBO(80, 189, 92, 1),
   warning: Color.fromRGBO(244, 171, 45, 1),
+  background: Color.fromRGBO(255, 255, 255, 1),
 );
-

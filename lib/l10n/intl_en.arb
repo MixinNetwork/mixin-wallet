@@ -3,5 +3,6 @@
   "balanceOfBtc": "≈ {balanceOfBtc} BTC",
   "send": "Send",
   "receive": "Receive",
-  "assets": "Assets"
+  "assets": "Assets",
+  "transactions": "Transactions"
 }

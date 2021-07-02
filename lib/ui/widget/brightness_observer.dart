@@ -99,6 +99,7 @@ class BrightnessThemeData extends Equatable {
     required this.red,
     required this.green,
     required this.warning,
+    required this.background,
   });
 
   final Color accent;
@@ -107,6 +108,7 @@ class BrightnessThemeData extends Equatable {
   final Color red;
   final Color green;
   final Color warning;
+  final Color background;
 
   static BrightnessThemeData lerp(
           BrightnessThemeData begin, BrightnessThemeData end, double t) =>
@@ -117,6 +119,7 @@ class BrightnessThemeData extends Equatable {
         red: Color.lerp(begin.red, end.red, t)!,
         green: Color.lerp(begin.green, end.green, t)!,
         warning: Color.lerp(begin.warning, end.warning, t)!,
+        background: Color.lerp(begin.background, end.background, t)!,
       );
 
   @override
@@ -127,6 +130,7 @@ class BrightnessThemeData extends Equatable {
         red,
         green,
         warning,
+        background,
       ];
 }
 
