@@ -26,8 +26,8 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
   static final authUri = Uri(path: '/auth');
   static final notFoundUri = Uri(path: '/404');
   static final withdrawalUri = Uri(path: '/withdrawal');
-  static const assetDetailPath = '/asset/:id';
-  static const assetDepositPath = '/asset/:id/deposit';
+  static const assetDetailPath = '/assets/:id';
+  static const assetDepositPath = '/assets/:id/deposit';
   static const snapshotDetailPath = '/snapshots/:id';
 
   @override

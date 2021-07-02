@@ -4,13 +4,14 @@
 // **************************************************************************
 class R {
   const R._();
-  static const String assetsAuthLogoSvg = 'assets/auth_logo.svg';
+  static const String resourcesAuthLogoSvg = 'resources/auth_logo.svg';
 
-  static const String assetsFilterSvg = 'assets/filter.svg';
+  static const String resourcesFilterSvg = 'resources/filter.svg';
 
-  static const String assetsHamburgerMenuSvg = 'assets/hamburger_menu.svg';
+  static const String resourcesHamburgerMenuSvg =
+      'resources/hamburger_menu.svg';
 
-  static const String assetsReceiveSvg = 'assets/receive.svg';
+  static const String resourcesReceiveSvg = 'resources/receive.svg';
 
-  static const String assetsSendSvg = 'assets/send.svg';
+  static const String resourcesSendSvg = 'resources/send.svg';
 }

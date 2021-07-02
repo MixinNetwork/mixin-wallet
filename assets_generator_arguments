@@ -1,1 +1,1 @@
--t d -s -r lcc -o lib/generated -c R
+-t d -s -r lcc -o lib/generated -c R -f resources

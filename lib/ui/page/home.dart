@@ -104,7 +104,7 @@ class _AssetHeader extends StatelessWidget {
                   onTap: () {},
                   child: Padding(
                     padding: const EdgeInsets.all(12),
-                    child: SvgPicture.asset(R.assetsHamburgerMenuSvg),
+                    child: SvgPicture.asset(R.resourcesHamburgerMenuSvg),
                   ),
                 ),
               ),
@@ -178,13 +178,13 @@ class _Header extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _Button(
-                icon: SvgPicture.asset(R.assetsSendSvg),
+                icon: SvgPicture.asset(R.resourcesSendSvg),
                 text: Text(context.l10n.send),
                 onTap: () {},
               ),
               const SizedBox(width: 20),
               _Button(
-                icon: SvgPicture.asset(R.assetsReceiveSvg),
+                icon: SvgPicture.asset(R.resourcesReceiveSvg),
                 text: Text(context.l10n.receive),
                 onTap: () {},
               ),

@@ -69,7 +69,7 @@ class Auth extends HookWidget {
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 8.0, top: 80, right: 8, bottom: 20),
-                      child: SvgPicture.asset(R.assetsAuthLogoSvg),
+                      child: SvgPicture.asset(R.resourcesAuthLogoSvg),
                     ),
                     const SizedBox(
                       height: 40,
