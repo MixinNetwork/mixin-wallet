@@ -4,10 +4,16 @@ import 'package:flutter/widgets.dart';
 import '../../util/extension/extension.dart';
 
 class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
-  const MixinAppBar({Key? key}) : super(key: key);
+  const MixinAppBar({
+    Key? key,
+    this.leading,
+  }) : super(key: key);
+
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) => AppBar(
+        leading: leading,
         toolbarHeight: preferredSize.height,
         elevation: 0,
         backgroundColor: context.theme.accent,

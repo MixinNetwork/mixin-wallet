@@ -8,7 +8,7 @@ part 'auth.g.dart';
 class Auth extends Equatable {
   const Auth({
     required this.accessToken,
-    this.account,
+    required this.account,
   });
 
   factory Auth.fromJson(Map<String, dynamic> json) => _$AuthFromJson(json);
@@ -18,7 +18,7 @@ class Auth extends Equatable {
   @JsonKey()
   final String accessToken;
   @JsonKey()
-  final Account? account;
+  final Account account;
 
   @override
   List<Object?> get props => [accessToken, account];

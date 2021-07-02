@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 
+import '../../service/auth/auth_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
 import '../router/mixin_router_delegate.dart';
+import '../widget/avatar.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 
@@ -15,7 +16,15 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.white,
-        appBar: const MixinAppBar(),
+        appBar: MixinAppBar(
+          leading: Center(
+            child: Avatar(
+              avatarUrl: auth!.account.avatarUrl,
+              userId: auth!.account.userId,
+              name: auth!.account.fullName!,
+            ),
+          ),
+        ),
         body: CustomScrollView(
           slivers: [
             const SliverToBoxAdapter(
