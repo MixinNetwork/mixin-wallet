@@ -10,6 +10,7 @@ import '../../service/auth/auth_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
+import '../router/mixin_router_delegate.dart';
 import '../widget/avatar.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
@@ -291,31 +292,59 @@ class _Item extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         height: 70,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Row(
-          children: [
-            SymbolIcon(symbolUrl: data.iconUrl, chainUrl: data.iconUrl),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: GestureDetector(
+          onTap: () {
+            context.read<MixinRouterDelegate>().pushNewUri(
+                  MixinRouterDelegate.assetDetailPath
+                      .toUri({'id': data.assetId}),
+                );
+          },
+          child: Row(
+            children: [
+              SymbolIcon(symbolUrl: data.iconUrl, chainUrl: data.iconUrl),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      '${data.balance} ${data.symbol}'.overflow,
+                      style: TextStyle(
+                        color: context.theme.text,
+                        fontSize: 16,
+                        fontFamily: 'Nunito',
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      context.l10n.approxOf((data.balance.asDecimal *
+                              data.priceUsd.asDecimal *
+                              currentFiat.rate.asDecimal)
+                          .toDouble()
+                          .currencyFormat),
+                      style: TextStyle(
+                        color: context.theme.secondaryText,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    '${data.balance} ${data.symbol}'.overflow,
-                    style: TextStyle(
-                      color: context.theme.text,
-                      fontSize: 16,
-                      fontFamily: 'Nunito',
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  PercentageChange(
+                    valid: data.priceUsd.isZero,
+                    changeUsd: data.changeUsd,
                   ),
                   Text(
-                    context.l10n.approxOf((data.balance.asDecimal *
-                            data.priceUsd.asDecimal *
-                            currentFiat.rate.asDecimal)
+                    (data.priceUsd.asDecimal * currentFiat.rate.asDecimal)
                         .toDouble()
-                        .currencyFormat),
+                        .currencyFormat,
+                    textAlign: TextAlign.right,
                     style: TextStyle(
                       color: context.theme.secondaryText,
                       fontSize: 14,
@@ -323,28 +352,8 @@ class _Item extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                PercentageChange(
-                  valid: data.priceUsd.isZero,
-                  changeUsd: data.changeUsd,
-                ),
-                Text(
-                  (data.priceUsd.asDecimal * currentFiat.rate.asDecimal)
-                      .toDouble()
-                      .currencyFormat,
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color: context.theme.secondaryText,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       );
 }
