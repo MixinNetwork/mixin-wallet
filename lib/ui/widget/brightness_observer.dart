@@ -95,6 +95,7 @@ class BrightnessThemeData extends Equatable {
   const BrightnessThemeData({
     required this.accent,
     required this.text,
+    required this.icon,
     required this.secondaryText,
     required this.red,
     required this.green,
@@ -104,6 +105,7 @@ class BrightnessThemeData extends Equatable {
 
   final Color accent;
   final Color text;
+  final Color icon;
   final Color secondaryText;
   final Color red;
   final Color green;
@@ -115,6 +117,7 @@ class BrightnessThemeData extends Equatable {
       BrightnessThemeData(
         accent: Color.lerp(begin.accent, end.accent, t)!,
         text: Color.lerp(begin.text, end.text, t)!,
+        icon: Color.lerp(begin.icon, end.icon, t)!,
         secondaryText: Color.lerp(begin.secondaryText, end.secondaryText, t)!,
         red: Color.lerp(begin.red, end.red, t)!,
         green: Color.lerp(begin.green, end.green, t)!,

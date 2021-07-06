@@ -30,4 +30,6 @@ extension AssetResultExtension on AssetResult {
       balance.asDecimal * priceUsd.asDecimal * fiatRate.asDecimal;
 
   Decimal get usdUnitPrice => priceUsd.asDecimal * fiatRate.asDecimal;
+
+  bool get needShowMemo => tag?.isNotEmpty == true;
 }

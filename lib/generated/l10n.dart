@@ -139,6 +139,76 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Deposit`
+  String get deposit {
+    return Intl.message(
+      'Deposit',
+      name: 'deposit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address`
+  String get address {
+    return Intl.message(
+      'Address',
+      name: 'address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `MEMO`
+  String get memo {
+    return Intl.message(
+      'MEMO',
+      name: 'memo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notice: Both an Account Memo and an Account Name are required to successfully deposit your {value} to Mixin.`
+  String depositNotice(Object value) {
+    return Intl.message(
+      'Notice: Both an Account Memo and an Account Name are required to successfully deposit your $value to Mixin.',
+      name: 'depositNotice',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Send only {value} to this deposit address.`
+  String depositOnly(Object value) {
+    return Intl.message(
+      'Send only $value to this deposit address.',
+      name: 'depositOnly',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Sending coin or token other than {value} to this address my result in the loss of your deposit.`
+  String depositOnlyDesc(Object value) {
+    return Intl.message(
+      'Sending coin or token other than $value to this address my result in the loss of your deposit.',
+      name: 'depositOnlyDesc',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Average arrival time:{value}`
+  String averageArrival(Object value) {
+    return Intl.message(
+      'Average arrival time:$value',
+      name: 'averageArrival',
+      desc: '',
+      args: [value],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

@@ -21,6 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "deposit": MessageLookupByLibrary.simpleMessage("充值"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额")
       };
 }

@@ -5,6 +5,7 @@ import 'widget/brightness_observer.dart';
 const lightBrightnessThemeData = BrightnessThemeData(
   accent: Color.fromRGBO(44, 46, 94, 1),
   text: Color(0xff222222),
+  icon: Color.fromRGBO(47, 48, 50, 1),
   secondaryText: Color(0x66222222),
   red: Color.fromRGBO(229, 120, 116, 1),
   green: Color.fromRGBO(80, 189, 92, 1),

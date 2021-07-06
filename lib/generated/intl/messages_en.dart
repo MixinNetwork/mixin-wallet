@@ -23,14 +23,31 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(value) => "≈ ${value}";
 
-  static String m2(value) => "${value} BTC";
+  static String m2(value) => "Average arrival time:${value}";
+
+  static String m3(value) => "${value} BTC";
+
+  static String m4(value) =>
+      "Notice: Both an Account Memo and an Account Name are required to successfully deposit your ${value} to Mixin.";
+
+  static String m5(value) => "Send only ${value} to this deposit address.";
+
+  static String m6(value) =>
+      "Sending coin or token other than ${value} to this address my result in the loss of your deposit.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "address": MessageLookupByLibrary.simpleMessage("Address"),
         "approxBalanceOfBtc": m0,
         "approxOf": m1,
         "assets": MessageLookupByLibrary.simpleMessage("Assets"),
-        "balanceOfBtc": m2,
+        "averageArrival": m2,
+        "balanceOfBtc": m3,
+        "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
+        "depositNotice": m4,
+        "depositOnly": m5,
+        "depositOnlyDesc": m6,
+        "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
