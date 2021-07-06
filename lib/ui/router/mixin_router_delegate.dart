@@ -164,9 +164,9 @@ class AppServicesProvider extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final appServices = useListenable(useMemoized(() => AppServices()));
-    // useEffect(() => appServices.dispose);
+    useEffect(() => appServices.dispose, []);
 
-    if(isLogin && !appServices.databaseInitialized) {
+    if (isLogin && !appServices.databaseInitialized) {
       return const SizedBox();
     }
 
