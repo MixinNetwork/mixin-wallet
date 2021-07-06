@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
+import '../../db/mixin_database.dart';
 import '../../service/auth/auth_manager.dart';
 import '../../util/extension/extension.dart';
-import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../router/mixin_router_delegate.dart';
 import '../widget/avatar.dart';
@@ -21,33 +21,35 @@ class Home extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final snapshotAssets = useMemoizedFuture(
-      () async {
-        final list = (await Future.wait([
-          context.appServices.client.assetApi.getAssets(),
-          context.appServices.client.accountApi.getFiats(),
-        ]))
-            .map((e) => e.data);
-        final assets = list.first as List<Asset>;
-        final fiats = list.last as List<Fiat>;
+    assert(context.appServices.databaseInitialized);
 
-        final symbolUrlMap = {for (var e in assets) e.assetId: e.iconUrl};
+    useEffect(() {
+      context.appServices.updateAssets();
+    });
 
-        final fiat = fiats.firstWhere(
-            (element) => element.code == auth!.account.fiatCurrency);
+    final assets = useStream<List<Tuple2<AssetResult, Fiat>>>(useMemoized(
+      () {
+        CombineLatestStream.combine2<List<AssetResult>, List<Fiat>,
+            List<Tuple2<AssetResult, Fiat>>>(
+          context.appServices.watchAssets(),
+          context.appServices.watchFiats(),
+          (assets, fiats) {
+            final fiat = fiats.cast<Fiat?>().firstWhere(
+                (element) => element?.code == auth!.account.fiatCurrency,
+                orElse: () => null);
 
-        return assets
-            .map((e) => Tuple3(e, symbolUrlMap[e.chainId]!, fiat))
-            .toList()
+            if (fiat == null) return [];
+
+            return assets.map((e) => Tuple2(e, fiat)).toList()
               ..sort((a, b) {
-                Decimal converter(Asset asset) =>
+                Decimal converter(AssetResult asset) =>
                     asset.balance.asDecimal * asset.priceUsd.asDecimal;
                 return converter(b.item1).compareTo(converter(a.item1));
               });
+          },
+        );
       },
-    );
-
-    final assets = snapshotAssets.data ?? [];
+    ), initialData: []).requireData;
 
     return Scaffold(
       backgroundColor: context.theme.background,
@@ -72,8 +74,7 @@ class Home extends HookWidget {
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) => _Item(
                 data: assets[index].item1,
-                chinaUrl: assets[index].item2,
-                currentFiat: assets[index].item3,
+                currentFiat: assets[index].item2,
               ),
               childCount: assets.length,
             ),
@@ -135,7 +136,7 @@ class _Header extends HookWidget {
     required this.data,
   }) : super(key: key);
 
-  final List<Tuple3<Asset, String, Fiat>> data;
+  final List<Tuple2<AssetResult, Fiat>> data;
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +148,7 @@ class _Header extends HookWidget {
                     previousValue +
                     (element.item1.balance.asDecimal *
                         element.item1.priceUsd.asDecimal *
-                        element.item3.rate.asDecimal))
+                        element.item2.rate.asDecimal))
             .toString(),
         [data]);
 
@@ -280,12 +281,10 @@ class _Item extends StatelessWidget {
   const _Item({
     Key? key,
     required this.data,
-    required this.chinaUrl,
     required this.currentFiat,
   }) : super(key: key);
 
-  final Asset data;
-  final String chinaUrl;
+  final AssetResult data;
   final Fiat currentFiat;
 
   @override
@@ -301,48 +300,46 @@ class _Item extends StatelessWidget {
           },
           child: Row(
             children: [
-              SymbolIcon(symbolUrl: data.iconUrl, chainUrl: data.iconUrl),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      '${data.balance} ${data.symbol}'.overflow,
-                      style: TextStyle(
-                        color: context.theme.text,
-                        fontSize: 16,
-                        fontFamily: 'Nunito',
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      context.l10n.approxOf((data.balance.asDecimal *
-                              data.priceUsd.asDecimal *
-                              currentFiat.rate.asDecimal)
-                          .toDouble()
-                          .currencyFormat),
-                      style: TextStyle(
-                        color: context.theme.secondaryText,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              SymbolIcon(symbolUrl: data.iconUrl, chainUrl: data.chainIconUrl),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  PercentageChange(
-                    valid: data.priceUsd.isZero,
-                    changeUsd: data.changeUsd,
+                  Text(
+                    '${data.balance} ${data.symbol}'.overflow,
+                    style: TextStyle(
+                      color: context.theme.text,
+                      fontSize: 16,
+                      fontFamily: 'Nunito',
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    (data.priceUsd.asDecimal * currentFiat.rate.asDecimal)
-                        .toDouble()
+                    context.l10n.approxOf((data.balance.asDecimal *
+                            data.priceUsd.asDecimal *
+                            currentFiat.rate.asDecimal)
+                        .currencyFormat),
+                    style: TextStyle(
+                      color: context.theme.secondaryText,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                PercentageChange(
+                  valid: data.priceUsd.isZero,
+                  changeUsd: data.changeUsd,
+                ),
+                Text(
+                  (data.priceUsd.asDecimal * currentFiat.rate.asDecimal)
                         .currencyFormat,
                     textAlign: TextAlign.right,
                     style: TextStyle(

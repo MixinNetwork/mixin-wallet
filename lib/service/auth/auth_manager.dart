@@ -15,6 +15,8 @@ Future<void> setAuth(Auth value) => Hive.box('settings').put('auth', value);
 
 String? get accessToken => auth?.accessToken;
 
+bool get isLogin => accessToken != null;
+
 class _AuthAdapter extends TypeAdapter<Auth> {
   @override
   Auth read(BinaryReader reader) => Auth.fromJson(reader

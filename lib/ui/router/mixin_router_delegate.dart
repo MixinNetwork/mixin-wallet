@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../service/app_services.dart';
 import '../../service/auth/auth_manager.dart';
@@ -43,30 +44,27 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
         style: const TextStyle(height: 1),
         child: BrightnessObserver(
           lightThemeData: lightBrightnessThemeData,
-          child: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<MixinRouterDelegate>(
-                create: (context) => this,
+          child: ChangeNotifierProvider<MixinRouterDelegate>.value(
+            value: this,
+            child: AppServicesProvider(
+              child: Navigator(
+                key: navigatorKey,
+                pages: [
+                  if (_history.isEmpty) routerMap()['$homeUri']!.rebuild(),
+                  ..._history.map((e) => e.value)
+                ],
+                onPopPage: (route, result) {
+                  if (!route.didPop(result)) {
+                    return false;
+                  }
+
+                  if (_history.isNotEmpty) _history.removeLast();
+
+                  notifyListeners();
+
+                  return true;
+                },
               ),
-              ChangeNotifierProvider(create: (context) => AppServices())
-            ],
-            child: Navigator(
-              key: navigatorKey,
-              pages: [
-                if (_history.isEmpty) routerMap()['$homeUri']!.rebuild(),
-                ..._history.map((e) => e.value)
-              ],
-              onPopPage: (route, result) {
-                if (!route.didPop(result)) {
-                  return false;
-                }
-
-                if (_history.isNotEmpty) _history.removeLast();
-
-                notifyListeners();
-
-                return true;
-              },
             ),
           ),
         ),
@@ -153,6 +151,30 @@ class MixinRouterDelegate extends RouterDelegate<Uri>
           child: AssetDeposit(),
         ),
       };
+}
+
+class AppServicesProvider extends HookWidget {
+  const AppServicesProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final appServices = useListenable(useMemoized(() => AppServices()));
+    // useEffect(() => appServices.dispose);
+
+    if(isLogin && !appServices.databaseInitialized) {
+      return const SizedBox();
+    }
+
+    return ChangeNotifierProvider.value(
+      value: appServices,
+      child: child,
+    );
+  }
 }
 
 class MixinPage extends MaterialPage {

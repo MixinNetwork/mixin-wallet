@@ -54,6 +54,7 @@ dependencies:
   path_to_regexp: ^0.4.0
   ansicolor: ^2.0.1
   decimal: ^1.2.0
+  rxdart: ^0.27.1
 
 dev_dependencies:
   flutter_test:

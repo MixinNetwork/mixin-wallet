@@ -576,7 +576,7 @@ class Asset extends DataClass implements Insertable<Asset> {
   final String name;
   final String iconUrl;
   final String balance;
-  final String destination;
+  final String? destination;
   final String? tag;
   final String priceBtc;
   final String priceUsd;
@@ -591,7 +591,7 @@ class Asset extends DataClass implements Insertable<Asset> {
       required this.name,
       required this.iconUrl,
       required this.balance,
-      required this.destination,
+      this.destination,
       this.tag,
       required this.priceBtc,
       required this.priceUsd,
@@ -615,7 +615,7 @@ class Asset extends DataClass implements Insertable<Asset> {
       balance: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}balance'])!,
       destination: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}destination'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}destination']),
       tag: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}tag']),
       priceBtc: const StringType()
@@ -642,7 +642,9 @@ class Asset extends DataClass implements Insertable<Asset> {
     map['name'] = Variable<String>(name);
     map['icon_url'] = Variable<String>(iconUrl);
     map['balance'] = Variable<String>(balance);
-    map['destination'] = Variable<String>(destination);
+    if (!nullToAbsent || destination != null) {
+      map['destination'] = Variable<String?>(destination);
+    }
     if (!nullToAbsent || tag != null) {
       map['tag'] = Variable<String?>(tag);
     }
@@ -665,7 +667,9 @@ class Asset extends DataClass implements Insertable<Asset> {
       name: Value(name),
       iconUrl: Value(iconUrl),
       balance: Value(balance),
-      destination: Value(destination),
+      destination: destination == null && nullToAbsent
+          ? const Value.absent()
+          : Value(destination),
       tag: tag == null && nullToAbsent ? const Value.absent() : Value(tag),
       priceBtc: Value(priceBtc),
       priceUsd: Value(priceUsd),
@@ -688,7 +692,7 @@ class Asset extends DataClass implements Insertable<Asset> {
       name: serializer.fromJson<String>(json['name']),
       iconUrl: serializer.fromJson<String>(json['icon_url']),
       balance: serializer.fromJson<String>(json['balance']),
-      destination: serializer.fromJson<String>(json['destination']),
+      destination: serializer.fromJson<String?>(json['destination']),
       tag: serializer.fromJson<String?>(json['tag']),
       priceBtc: serializer.fromJson<String>(json['price_btc']),
       priceUsd: serializer.fromJson<String>(json['price_usd']),
@@ -708,7 +712,7 @@ class Asset extends DataClass implements Insertable<Asset> {
       'name': serializer.toJson<String>(name),
       'icon_url': serializer.toJson<String>(iconUrl),
       'balance': serializer.toJson<String>(balance),
-      'destination': serializer.toJson<String>(destination),
+      'destination': serializer.toJson<String?>(destination),
       'tag': serializer.toJson<String?>(tag),
       'price_btc': serializer.toJson<String>(priceBtc),
       'price_usd': serializer.toJson<String>(priceUsd),
@@ -827,7 +831,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
   final Value<String> name;
   final Value<String> iconUrl;
   final Value<String> balance;
-  final Value<String> destination;
+  final Value<String?> destination;
   final Value<String?> tag;
   final Value<String> priceBtc;
   final Value<String> priceUsd;
@@ -858,7 +862,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
     required String name,
     required String iconUrl,
     required String balance,
-    required String destination,
+    this.destination = const Value.absent(),
     this.tag = const Value.absent(),
     required String priceBtc,
     required String priceUsd,
@@ -872,7 +876,6 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
         name = Value(name),
         iconUrl = Value(iconUrl),
         balance = Value(balance),
-        destination = Value(destination),
         priceBtc = Value(priceBtc),
         priceUsd = Value(priceUsd),
         chainId = Value(chainId),
@@ -885,7 +888,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
     Expression<String>? name,
     Expression<String>? iconUrl,
     Expression<String>? balance,
-    Expression<String>? destination,
+    Expression<String?>? destination,
     Expression<String?>? tag,
     Expression<String>? priceBtc,
     Expression<String>? priceUsd,
@@ -919,7 +922,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
       Value<String>? name,
       Value<String>? iconUrl,
       Value<String>? balance,
-      Value<String>? destination,
+      Value<String?>? destination,
       Value<String?>? tag,
       Value<String>? priceBtc,
       Value<String>? priceUsd,
@@ -965,7 +968,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
       map['balance'] = Variable<String>(balance.value);
     }
     if (destination.present) {
-      map['destination'] = Variable<String>(destination.value);
+      map['destination'] = Variable<String?>(destination.value);
     }
     if (tag.present) {
       map['tag'] = Variable<String?>(tag.value);
@@ -1059,8 +1062,8 @@ class Assets extends Table with TableInfo<Assets, Asset> {
       const VerificationMeta('destination');
   late final GeneratedTextColumn destination = _constructDestination();
   GeneratedTextColumn _constructDestination() {
-    return GeneratedTextColumn('destination', $tableName, false,
-        $customConstraints: 'NOT NULL');
+    return GeneratedTextColumn('destination', $tableName, true,
+        $customConstraints: 'NULL');
   }
 
   final VerificationMeta _tagMeta = const VerificationMeta('tag');
@@ -1182,8 +1185,6 @@ class Assets extends Table with TableInfo<Assets, Asset> {
           _destinationMeta,
           destination.isAcceptableOrUnknown(
               data['destination']!, _destinationMeta));
-    } else if (isInserting) {
-      context.missing(_destinationMeta);
     }
     if (data.containsKey('tag')) {
       context.handle(
@@ -2474,6 +2475,189 @@ class Users extends Table with TableInfo<Users, User> {
   bool get dontWriteConstraints => true;
 }
 
+class Fiat extends DataClass implements Insertable<Fiat> {
+  final String code;
+  final double rate;
+  Fiat({required this.code, required this.rate});
+  factory Fiat.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return Fiat(
+      code: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}code'])!,
+      rate: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}rate'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<String>(code);
+    map['rate'] = Variable<double>(rate);
+    return map;
+  }
+
+  FiatsCompanion toCompanion(bool nullToAbsent) {
+    return FiatsCompanion(
+      code: Value(code),
+      rate: Value(rate),
+    );
+  }
+
+  factory Fiat.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Fiat(
+      code: serializer.fromJson<String>(json['code']),
+      rate: serializer.fromJson<double>(json['rate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'rate': serializer.toJson<double>(rate),
+    };
+  }
+
+  Fiat copyWith({String? code, double? rate}) => Fiat(
+        code: code ?? this.code,
+        rate: rate ?? this.rate,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Fiat(')
+          ..write('code: $code, ')
+          ..write('rate: $rate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(code.hashCode, rate.hashCode));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Fiat && other.code == this.code && other.rate == this.rate);
+}
+
+class FiatsCompanion extends UpdateCompanion<Fiat> {
+  final Value<String> code;
+  final Value<double> rate;
+  const FiatsCompanion({
+    this.code = const Value.absent(),
+    this.rate = const Value.absent(),
+  });
+  FiatsCompanion.insert({
+    required String code,
+    required double rate,
+  })  : code = Value(code),
+        rate = Value(rate);
+  static Insertable<Fiat> custom({
+    Expression<String>? code,
+    Expression<double>? rate,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (rate != null) 'rate': rate,
+    });
+  }
+
+  FiatsCompanion copyWith({Value<String>? code, Value<double>? rate}) {
+    return FiatsCompanion(
+      code: code ?? this.code,
+      rate: rate ?? this.rate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (rate.present) {
+      map['rate'] = Variable<double>(rate.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FiatsCompanion(')
+          ..write('code: $code, ')
+          ..write('rate: $rate')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Fiats extends Table with TableInfo<Fiats, Fiat> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  Fiats(this._db, [this._alias]);
+  final VerificationMeta _codeMeta = const VerificationMeta('code');
+  late final GeneratedTextColumn code = _constructCode();
+  GeneratedTextColumn _constructCode() {
+    return GeneratedTextColumn('code', $tableName, false,
+        $customConstraints: 'NOT NULL');
+  }
+
+  final VerificationMeta _rateMeta = const VerificationMeta('rate');
+  late final GeneratedRealColumn rate = _constructRate();
+  GeneratedRealColumn _constructRate() {
+    return GeneratedRealColumn('rate', $tableName, false,
+        $customConstraints: 'NOT NULL');
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [code, rate];
+  @override
+  Fiats get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'fiats';
+  @override
+  final String actualTableName = 'fiats';
+  @override
+  VerificationContext validateIntegrity(Insertable<Fiat> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('rate')) {
+      context.handle(
+          _rateMeta, rate.isAcceptableOrUnknown(data['rate']!, _rateMeta));
+    } else if (isInserting) {
+      context.missing(_rateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {code};
+  @override
+  Fiat map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return Fiat.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  Fiats createAlias(String alias) {
+    return Fiats(_db, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const ['PRIMARY KEY(code)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 abstract class _$MixinDatabase extends GeneratedDatabase {
   _$MixinDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   _$MixinDatabase.connect(DatabaseConnection c) : super.connect(c);
@@ -2481,13 +2665,146 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final Assets assets = Assets(this);
   late final Snapshots snapshots = Snapshots(this);
   late final Users users = Users(this);
+  late final Fiats fiats = Fiats(this);
   late final AddressDao addressDao = AddressDao(this as MixinDatabase);
   late final AssetDao assetDao = AssetDao(this as MixinDatabase);
   late final SnapshotDao snapshotDao = SnapshotDao(this as MixinDatabase);
   late final UserDao userDao = UserDao(this as MixinDatabase);
+  late final FiatDao fiatDao = FiatDao(this as MixinDatabase);
+  Selectable<AssetResult> assetResults() {
+    return customSelect(
+        'SELECT a.*,\n       tmp.icon_url AS chainIconUrl\nFROM assets a\nLEFT JOIN assets tmp ON a.chain_id = tmp.asset_id',
+        variables: [],
+        readsFrom: {assets}).map((QueryRow row) {
+      return AssetResult(
+        assetId: row.read<String>('asset_id'),
+        symbol: row.read<String>('symbol'),
+        name: row.read<String>('name'),
+        iconUrl: row.read<String>('icon_url'),
+        balance: row.read<String>('balance'),
+        destination: row.read<String?>('destination'),
+        tag: row.read<String?>('tag'),
+        priceBtc: row.read<String>('price_btc'),
+        priceUsd: row.read<String>('price_usd'),
+        chainId: row.read<String>('chain_id'),
+        changeUsd: row.read<String>('change_usd'),
+        changeBtc: row.read<String>('change_btc'),
+        confirmations: row.read<int>('confirmations'),
+        assetKey: row.read<String?>('asset_key'),
+        chainIconUrl: row.read<String>('chainIconUrl'),
+      );
+    });
+  }
+
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [addresses, assets, snapshots, users];
+      [addresses, assets, snapshots, users, fiats];
+}
+
+class AssetResult {
+  final String assetId;
+  final String symbol;
+  final String name;
+  final String iconUrl;
+  final String balance;
+  final String? destination;
+  final String? tag;
+  final String priceBtc;
+  final String priceUsd;
+  final String chainId;
+  final String changeUsd;
+  final String changeBtc;
+  final int confirmations;
+  final String? assetKey;
+  final String chainIconUrl;
+  AssetResult({
+    required this.assetId,
+    required this.symbol,
+    required this.name,
+    required this.iconUrl,
+    required this.balance,
+    this.destination,
+    this.tag,
+    required this.priceBtc,
+    required this.priceUsd,
+    required this.chainId,
+    required this.changeUsd,
+    required this.changeBtc,
+    required this.confirmations,
+    this.assetKey,
+    required this.chainIconUrl,
+  });
+  @override
+  int get hashCode => $mrjf($mrjc(
+      assetId.hashCode,
+      $mrjc(
+          symbol.hashCode,
+          $mrjc(
+              name.hashCode,
+              $mrjc(
+                  iconUrl.hashCode,
+                  $mrjc(
+                      balance.hashCode,
+                      $mrjc(
+                          destination.hashCode,
+                          $mrjc(
+                              tag.hashCode,
+                              $mrjc(
+                                  priceBtc.hashCode,
+                                  $mrjc(
+                                      priceUsd.hashCode,
+                                      $mrjc(
+                                          chainId.hashCode,
+                                          $mrjc(
+                                              changeUsd.hashCode,
+                                              $mrjc(
+                                                  changeBtc.hashCode,
+                                                  $mrjc(
+                                                      confirmations.hashCode,
+                                                      $mrjc(
+                                                          assetKey.hashCode,
+                                                          chainIconUrl
+                                                              .hashCode)))))))))))))));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AssetResult &&
+          other.assetId == this.assetId &&
+          other.symbol == this.symbol &&
+          other.name == this.name &&
+          other.iconUrl == this.iconUrl &&
+          other.balance == this.balance &&
+          other.destination == this.destination &&
+          other.tag == this.tag &&
+          other.priceBtc == this.priceBtc &&
+          other.priceUsd == this.priceUsd &&
+          other.chainId == this.chainId &&
+          other.changeUsd == this.changeUsd &&
+          other.changeBtc == this.changeBtc &&
+          other.confirmations == this.confirmations &&
+          other.assetKey == this.assetKey &&
+          other.chainIconUrl == this.chainIconUrl);
+  @override
+  String toString() {
+    return (StringBuffer('AssetResult(')
+          ..write('assetId: $assetId, ')
+          ..write('symbol: $symbol, ')
+          ..write('name: $name, ')
+          ..write('iconUrl: $iconUrl, ')
+          ..write('balance: $balance, ')
+          ..write('destination: $destination, ')
+          ..write('tag: $tag, ')
+          ..write('priceBtc: $priceBtc, ')
+          ..write('priceUsd: $priceUsd, ')
+          ..write('chainId: $chainId, ')
+          ..write('changeUsd: $changeUsd, ')
+          ..write('changeBtc: $changeBtc, ')
+          ..write('confirmations: $confirmations, ')
+          ..write('assetKey: $assetKey, ')
+          ..write('chainIconUrl: $chainIconUrl')
+          ..write(')'))
+        .toString();
+  }
 }
