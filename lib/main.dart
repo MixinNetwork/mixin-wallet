@@ -11,8 +11,6 @@ import 'util/logger.dart';
 import 'util/web/web_util.dart';
 
 Future<void> main() async {
-  print('fuck???? main');
-
   await initAuthManager();
   configureApp();
   runZonedGuarded(

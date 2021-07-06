@@ -5,7 +5,6 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
-import '../util/logger.dart';
 import 'auth/auth.dart';
 import 'auth/auth_manager.dart';
 
@@ -62,24 +61,15 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final assets = (list.first as sdk.MixinResponse<List<sdk.Asset>>).data;
     final fiats = (list.last as sdk.MixinResponse<List<sdk.Fiat>>).data;
 
-    try {
-      await mixinDatabase!.transaction(() async {
-        await mixinDatabase!.assetDao.insertAllOnConflictUpdate(assets);
-        await mixinDatabase!.fiatDao.insertAllOnConflictUpdate(fiats);
-      });
-    } catch (e, s) {
-      wtf('$e, $s');
-    }
+    await mixinDatabase!.transaction(() async {
+      await mixinDatabase!.assetDao.insertAllOnConflictUpdate(assets);
+      await mixinDatabase!.fiatDao.insertAllOnConflictUpdate(fiats);
+    });
   }
 
   Stream<List<AssetResult>> watchAssets() {
     assert(mixinDatabase != null);
-    try {
-      return mixinDatabase!.assetDao.assets().watch();
-    } catch (e, s) {
-      wtf('$e, $s');
-      rethrow;
-    }
+    return mixinDatabase!.assetDao.assets().watch();
   }
 
   Stream<List<Fiat>> watchFiats() {
