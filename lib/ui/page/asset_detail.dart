@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
+import '../router/mixin_router_delegate.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 
@@ -29,13 +30,24 @@ class _AssetDetailLoader extends HookWidget {
       context.appServices.updateAsset(assetId!);
     }, [assetId]);
 
-    final data =
-        useStream(useMemoized(() => context.appServices.watchAsset(assetId!)))
-            .data;
+    final assetResults = context.watchCommonVariables.assetResults;
+    final data = assetResults
+        ?.firstWhereOrNull((element) => element?.assetId == assetId);
+
+    final notFound = assetResults != null && data == null;
+
+    useEffect(() {
+      if (notFound) {
+        context
+            .read<MixinRouterDelegate>()
+            .pushNewUri(MixinRouterDelegate.notFoundUri);
+      }
+    }, [notFound]);
 
     if (data == null) {
       return const SizedBox();
     }
+
     return _AssetDetailPage(asset: data);
   }
 }

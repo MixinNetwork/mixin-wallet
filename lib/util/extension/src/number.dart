@@ -22,3 +22,12 @@ extension StringCurrencyExtension on String {
 extension DoubleCurrencyExtension on num {
   Decimal get asDecimal => Decimal.parse('$this');
 }
+
+extension AssetResultExtension on AssetResult {
+  Decimal get amountOfUsd => balance.asDecimal * priceUsd.asDecimal;
+  Decimal get amountOfBtc => balance.asDecimal * priceBtc.asDecimal;
+  Decimal get amountOfCurrentCurrency =>
+      balance.asDecimal * priceUsd.asDecimal * fiatRate.asDecimal;
+
+  Decimal get usdUnitPrice => priceUsd.asDecimal * fiatRate.asDecimal;
+}

@@ -74,9 +74,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     await mixinDatabase!.assetDao.insert(asset);
   }
 
-  Stream<List<AssetResult>> watchAssets() {
+  Stream<List<AssetResult>> watchAssets(double rate) {
     assert(mixinDatabase != null);
-    return mixinDatabase!.assetDao.assets().watch();
+    return mixinDatabase!.assetDao.assets(rate).watch();
   }
 
   Stream<List<Fiat>> watchFiats() {
@@ -97,7 +97,4 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         client,
         mixinDatabase,
       ];
-
-   Stream<AssetResult?> watchAsset(String assetId) =>
-      mixinDatabase!.assetDao.assetById(assetId).watchSingleOrNull();
 }

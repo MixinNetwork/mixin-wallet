@@ -2671,10 +2671,10 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final SnapshotDao snapshotDao = SnapshotDao(this as MixinDatabase);
   late final UserDao userDao = UserDao(this as MixinDatabase);
   late final FiatDao fiatDao = FiatDao(this as MixinDatabase);
-  Selectable<AssetResult> assetResults() {
+  Selectable<AssetResult> assetResults(double fiatRate) {
     return customSelect(
-        'SELECT a.*,\n       tmp.icon_url AS chainIconUrl\nFROM assets a\nLEFT JOIN assets tmp ON a.chain_id = tmp.asset_id',
-        variables: [],
+        'SELECT a.*,\n       tmp.icon_url AS chainIconUrl, (:fiatRate) as fiatRate\nFROM assets a\nLEFT JOIN assets tmp ON a.chain_id = tmp.asset_id',
+        variables: [Variable<double>(fiatRate)],
         readsFrom: {assets}).map((QueryRow row) {
       return AssetResult(
         assetId: row.read<String>('asset_id'),
@@ -2692,31 +2692,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         confirmations: row.read<int>('confirmations'),
         assetKey: row.read<String?>('asset_key'),
         chainIconUrl: row.read<String>('chainIconUrl'),
-      );
-    });
-  }
-
-  Selectable<AssetResult> assetResult(String assetId) {
-    return customSelect(
-        'SELECT a.*,\n       tmp.icon_url AS chainIconUrl\nFROM assets a\nLEFT JOIN assets tmp ON a.chain_id = tmp.asset_id\nWHERE a.asset_id = :assetId',
-        variables: [Variable<String>(assetId)],
-        readsFrom: {assets}).map((QueryRow row) {
-      return AssetResult(
-        assetId: row.read<String>('asset_id'),
-        symbol: row.read<String>('symbol'),
-        name: row.read<String>('name'),
-        iconUrl: row.read<String>('icon_url'),
-        balance: row.read<String>('balance'),
-        destination: row.read<String?>('destination'),
-        tag: row.read<String?>('tag'),
-        priceBtc: row.read<String>('price_btc'),
-        priceUsd: row.read<String>('price_usd'),
-        chainId: row.read<String>('chain_id'),
-        changeUsd: row.read<String>('change_usd'),
-        changeBtc: row.read<String>('change_btc'),
-        confirmations: row.read<int>('confirmations'),
-        assetKey: row.read<String?>('asset_key'),
-        chainIconUrl: row.read<String>('chainIconUrl'),
+        fiatRate: row.read<double>('fiatRate'),
       );
     });
   }
@@ -2744,6 +2720,7 @@ class AssetResult {
   final int confirmations;
   final String? assetKey;
   final String chainIconUrl;
+  final double fiatRate;
   AssetResult({
     required this.assetId,
     required this.symbol,
@@ -2760,6 +2737,7 @@ class AssetResult {
     required this.confirmations,
     this.assetKey,
     required this.chainIconUrl,
+    required this.fiatRate,
   });
   @override
   int get hashCode => $mrjf($mrjc(
@@ -2790,8 +2768,11 @@ class AssetResult {
                                                       confirmations.hashCode,
                                                       $mrjc(
                                                           assetKey.hashCode,
-                                                          chainIconUrl
-                                                              .hashCode)))))))))))))));
+                                                          $mrjc(
+                                                              chainIconUrl
+                                                                  .hashCode,
+                                                              fiatRate
+                                                                  .hashCode))))))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2810,7 +2791,8 @@ class AssetResult {
           other.changeBtc == this.changeBtc &&
           other.confirmations == this.confirmations &&
           other.assetKey == this.assetKey &&
-          other.chainIconUrl == this.chainIconUrl);
+          other.chainIconUrl == this.chainIconUrl &&
+          other.fiatRate == this.fiatRate);
   @override
   String toString() {
     return (StringBuffer('AssetResult(')
@@ -2828,7 +2810,8 @@ class AssetResult {
           ..write('changeBtc: $changeBtc, ')
           ..write('confirmations: $confirmations, ')
           ..write('assetKey: $assetKey, ')
-          ..write('chainIconUrl: $chainIconUrl')
+          ..write('chainIconUrl: $chainIconUrl, ')
+          ..write('fiatRate: $fiatRate')
           ..write(')'))
         .toString();
   }

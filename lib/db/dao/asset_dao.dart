@@ -33,9 +33,6 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
 
   Future deleteAsset(Asset asset) => delete(db.assets).delete(asset);
 
-   Selectable<AssetResult> assetById(String assetId) =>
-      db.assetResult(assetId);
-
   Future<void> insertAllOnConflictUpdate(List<sdk.Asset> assets) async {
     await db.update(db.assets).write(const AssetsCompanion(
           balance: Value('0.0'),
@@ -48,5 +45,5 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
     });
   }
 
-  Selectable<AssetResult> assets() => db.assetResults();
+  Selectable<AssetResult> assets(double rate) => db.assetResults(rate);
 }

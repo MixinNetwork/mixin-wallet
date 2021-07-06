@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/auth/auth_manager.dart';
@@ -27,29 +25,7 @@ class Home extends HookWidget {
       context.appServices.updateAssets();
     }, []);
 
-    final assets = useStream<List<Tuple2<AssetResult, Fiat>>>(
-        useMemoized(
-          () => CombineLatestStream.combine2<List<AssetResult>, List<Fiat>,
-              List<Tuple2<AssetResult, Fiat>>>(
-            context.appServices.watchAssets(),
-            context.appServices.watchFiats(),
-            (assets, fiats) {
-              final fiat = fiats.cast<Fiat?>().firstWhere(
-                  (element) => element?.code == auth!.account.fiatCurrency,
-                  orElse: () => null);
-
-              if (fiat == null) return [];
-
-              return assets.map((e) => Tuple2(e, fiat)).toList()
-                ..sort((a, b) {
-                  Decimal converter(AssetResult asset) =>
-                      asset.balance.asDecimal * asset.priceUsd.asDecimal;
-                  return converter(b.item1).compareTo(converter(a.item1));
-                });
-            },
-          ),
-        ),
-        initialData: []).requireData;
+    final assetResults = context.watchCommonVariables.assetResults ?? [];
 
     return Scaffold(
       backgroundColor: context.theme.background,
@@ -65,7 +41,7 @@ class Home extends HookWidget {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: _Header(data: assets),
+            child: _Header(data: assetResults),
           ),
           const SliverToBoxAdapter(
             child: _AssetHeader(),
@@ -73,10 +49,9 @@ class Home extends HookWidget {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) => _Item(
-                data: assets[index].item1,
-                currentFiat: assets[index].item2,
+                data: assetResults[index],
               ),
-              childCount: assets.length,
+              childCount: assetResults.length,
             ),
           ),
         ],
@@ -136,7 +111,7 @@ class _Header extends HookWidget {
     required this.data,
   }) : super(key: key);
 
-  final List<Tuple2<AssetResult, Fiat>> data;
+  final List<AssetResult> data;
 
   @override
   Widget build(BuildContext context) {
@@ -144,22 +119,15 @@ class _Header extends HookWidget {
         () => data
             .fold<Decimal>(
                 0.0.asDecimal,
-                (previousValue, element) =>
-                    previousValue +
-                    (element.item1.balance.asDecimal *
-                        element.item1.priceUsd.asDecimal *
-                        element.item2.rate.asDecimal))
+                (previousValue, AssetResult element) =>
+                    previousValue + element.amountOfCurrentCurrency)
             .toString(),
         [data]);
 
     final balanceOfBtc = useMemoized(
         () => data
-            .fold<Decimal>(
-                0.0.asDecimal,
-                (previousValue, element) =>
-                    previousValue +
-                    (element.item1.balance.asDecimal *
-                        element.item1.priceBtc.asDecimal))
+            .fold<Decimal>(0.0.asDecimal,
+                (previousValue, element) => previousValue + element.amountOfBtc)
             .toString(),
         [data]);
 
@@ -281,11 +249,9 @@ class _Item extends StatelessWidget {
   const _Item({
     Key? key,
     required this.data,
-    required this.currentFiat,
   }) : super(key: key);
 
   final AssetResult data;
-  final Fiat currentFiat;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -318,10 +284,8 @@ class _Item extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      context.l10n.approxOf((data.balance.asDecimal *
-                              data.priceUsd.asDecimal *
-                              currentFiat.rate.asDecimal)
-                          .currencyFormat),
+                      context.l10n.approxOf(
+                          data.amountOfCurrentCurrency.currencyFormat),
                       style: TextStyle(
                         color: context.theme.secondaryText,
                         fontSize: 14,
@@ -335,12 +299,11 @@ class _Item extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   PercentageChange(
-                    valid: data.priceUsd.isZero,
+                    valid: !data.priceUsd.isZero,
                     changeUsd: data.changeUsd,
                   ),
                   Text(
-                    (data.priceUsd.asDecimal * currentFiat.rate.asDecimal)
-                        .currencyFormat,
+                    data.usdUnitPrice.currencyFormat,
                     textAlign: TextAlign.right,
                     style: TextStyle(
                       color: context.theme.secondaryText,

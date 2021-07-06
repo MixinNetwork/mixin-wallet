@@ -91,11 +91,11 @@ class PercentageChange extends StatelessWidget {
     late String text;
     var color = context.theme.secondaryText;
     if (valid) {
-      text = context.l10n.none;
-    } else {
       final decimal = Decimal.parse(changeUsd);
       color = decimal.isNegative ? context.theme.red : context.theme.green;
       text = '${(decimal * Decimal.fromInt(100)).toDouble().currencyFormat} %';
+    } else {
+      text = context.l10n.none;
     }
     return Text(
       text,

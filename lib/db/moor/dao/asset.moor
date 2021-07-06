@@ -1,15 +1,7 @@
 import '../mixin.moor';
 
-assetResults as AssetResult:
+assetResults(:fiatRate AS DOUBLE) as AssetResult:
 SELECT a.*,
-       tmp.icon_url AS chainIconUrl
+       tmp.icon_url AS chainIconUrl, (:fiatRate) as fiatRate
 FROM assets a
 LEFT JOIN assets tmp ON a.chain_id = tmp.asset_id;
-
-assetResult as AssetResult:
-SELECT a.*,
-       tmp.icon_url AS chainIconUrl
-FROM assets a
-LEFT JOIN assets tmp ON a.chain_id = tmp.asset_id
-WHERE a.asset_id = :assetId;
-
