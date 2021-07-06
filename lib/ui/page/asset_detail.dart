@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
+import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
-import '../../util/hook.dart';
-import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
@@ -26,21 +24,26 @@ class _AssetDetailLoader extends HookWidget {
     // TODO query assets from database
     // The asset id of CNB is: 965e5c6e-434c-3fa9-b780-c50f43cd955c
     final assetId = context.pathParameters['id'];
-    final data = useMemoizedFuture(() async {
-      i('asset id = $assetId');
-      final response =
-          await context.appServices.client.assetApi.getAssetById(assetId!);
-      return response.data;
-    }, keys: [assetId]);
-    if (data.data == null) return const SizedBox();
-    return _AssetDetailPage(asset: data.data!);
+
+    useEffect(() {
+      context.appServices.updateAsset(assetId!);
+    }, [assetId]);
+
+    final data =
+        useStream(useMemoized(() => context.appServices.watchAsset(assetId!)))
+            .data;
+
+    if (data == null) {
+      return const SizedBox();
+    }
+    return _AssetDetailPage(asset: data);
   }
 }
 
 class _AssetDetailPage extends StatelessWidget {
   const _AssetDetailPage({Key? key, required this.asset}) : super(key: key);
 
-  final Asset asset;
+  final AssetResult asset;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -62,7 +65,7 @@ class _AssetDetailPage extends StatelessWidget {
 class _AssetHeader extends StatelessWidget {
   const _AssetHeader({Key? key, required this.asset}) : super(key: key);
 
-  final Asset asset;
+  final AssetResult asset;
 
   @override
   Widget build(BuildContext context) => Container(

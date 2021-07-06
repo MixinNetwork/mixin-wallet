@@ -5,47 +5,48 @@ import '../mixin_database.dart';
 
 part 'asset_dao.g.dart';
 
+extension AssetConverter on sdk.Asset {
+  AssetsCompanion get asAssetsCompanion => AssetsCompanion.insert(
+        assetId: assetId,
+        symbol: symbol,
+        name: name,
+        iconUrl: iconUrl,
+        balance: balance,
+        destination: Value(destination),
+        tag: Value(tag),
+        assetKey: Value(assetKey),
+        priceBtc: priceBtc,
+        priceUsd: priceUsd,
+        chainId: chainId,
+        changeUsd: changeUsd,
+        changeBtc: changeBtc,
+        confirmations: confirmations,
+      );
+}
+
 @UseDao(tables: [Assets])
 class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
   AssetDao(MixinDatabase db) : super(db);
 
-  Future<int> insert(Asset asset) =>
-      into(db.assets).insertOnConflictUpdate(asset);
+  Future<int> insert(sdk.Asset asset) =>
+      into(db.assets).insertOnConflictUpdate(asset.asAssetsCompanion);
 
   Future deleteAsset(Asset asset) => delete(db.assets).delete(asset);
 
-  Future<Asset?> findAssetById(String assetId) =>
-      (select(db.assets)..where((t) => t.assetId.equals(assetId)))
-          .getSingleOrNull();
+   Selectable<AssetResult> assetById(String assetId) =>
+      db.assetResult(assetId);
 
   Future<void> insertAllOnConflictUpdate(List<sdk.Asset> assets) async {
     await db.update(db.assets).write(const AssetsCompanion(
-      balance: Value('0.0'),
-    ));
+          balance: Value('0.0'),
+        ));
     await db.batch((batch) {
       batch.insertAllOnConflictUpdate(
         db.assets,
-        assets
-            .map((asset) => AssetsCompanion.insert(
-          assetId: asset.assetId,
-          symbol: asset.symbol,
-          name: asset.name,
-          iconUrl: asset.iconUrl,
-          balance: asset.balance,
-          destination: Value(asset.destination),
-          tag: Value(asset.tag),
-          assetKey: Value(asset.assetKey),
-          priceBtc: asset.priceBtc,
-          priceUsd: asset.priceUsd,
-          chainId: asset.chainId,
-          changeUsd: asset.changeUsd,
-          changeBtc: asset.changeBtc,
-          confirmations: asset.confirmations,
-        ))
-            .toList(),
+        assets.map((asset) => asset.asAssetsCompanion).toList(),
       );
     });
   }
 
-   Selectable<AssetResult> assets() => db.assetResults();
+  Selectable<AssetResult> assets() => db.assetResults();
 }
