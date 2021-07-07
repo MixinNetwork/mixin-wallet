@@ -1,6 +1,7 @@
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:moor/moor.dart';
 
+import '../converter/deposit_entry_converter.dart';
 import '../mixin_database.dart';
 import '../util/util.dart';
 
@@ -22,6 +23,8 @@ extension AssetConverter on sdk.Asset {
         changeUsd: changeUsd,
         changeBtc: changeBtc,
         confirmations: confirmations,
+        depositEntries:
+            Value(const DepositEntryConverter().mapToSql(depositEntries)),
       );
 }
 
@@ -47,15 +50,12 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
   }
 
   Selectable<AssetResult> assetResults(String currentFiat) => db.assetResults(
-      currentFiat,
-      (_, __, ___) => ignoreWhere,
-      (_, __, ___) => maxLimit);
+      currentFiat, (_, __, ___) => ignoreWhere, (_, __, ___) => maxLimit);
 
   Selectable<AssetResult> assetResult(String currentFiat, String assetId) =>
       db.assetResults(
           currentFiat,
-          (Assets asset, _, __) =>
-              asset.assetId.equals(assetId),
+          (Assets asset, _, __) => asset.assetId.equals(assetId),
           (_, __, ___) => Limit(1, null));
 
   Selectable<Asset> simpleAssetById(String assetId) => select(db.assets)

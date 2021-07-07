@@ -7,6 +7,7 @@ import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
+import '../router/mixin_router_delegate.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/symbol.dart';
@@ -231,7 +232,12 @@ class _BottomBar extends StatelessWidget {
                 color: context.theme.accent,
                 width: 1,
               )),
-              onTap: () {},
+              onTap: () {
+                context.read<MixinRouterDelegate>().pushNewUri(
+                      MixinRouterDelegate.assetDepositPath
+                          .toUri({'id': asset.assetId}),
+                    );
+              },
             ),
             const Spacer(),
           ],

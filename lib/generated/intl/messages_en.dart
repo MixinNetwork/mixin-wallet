@@ -28,12 +28,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m3(value) => "${value} BTC";
 
   static String m4(value) =>
-      "Notice: Both an Account Memo and an Account Name are required to successfully deposit your ${value} to Mixin.";
+      "Deposit will arrive after at least ${value} block confirmations";
 
-  static String m5(value) => "Send only ${value} to this deposit address.";
+  static String m5(value) =>
+      "Notice: Both an Account Memo and an Account Name are required to successfully deposit your ${value} to Mixin.";
 
   static String m6(value) =>
       "Sending coin or token other than ${value} to this address my result in the loss of your deposit.";
+
+  static String m7(value) => "This address only supports ${value}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -44,9 +47,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "averageArrival": m2,
         "balanceOfBtc": m3,
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
-        "depositNotice": m4,
-        "depositOnly": m5,
+        "depositConfirmation": m4,
+        "depositNotice": m5,
         "depositOnlyDesc": m6,
+        "depositTip": m7,
+        "depositTipBtc": MessageLookupByLibrary.simpleMessage(
+            "This address only supports BTC and Omni USDT."),
+        "depositTipEos": MessageLookupByLibrary.simpleMessage(
+            "This address supports all base on EOS tokens, such as EOS, IQ, BLACK, OCT, KARMA, etc."),
+        "depositTipEth": MessageLookupByLibrary.simpleMessage(
+            "This address supports all ERC-20 tokens, such as ETH, XIN, TUSD, HT, LOOM, LEO, etc."),
+        "depositTipTron": MessageLookupByLibrary.simpleMessage(
+            "This address supports all TRC-10 and TRC-20 tokens, such as TRX, BTT, USDT-TRON, etc."),
         "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),

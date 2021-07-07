@@ -180,13 +180,53 @@ class L10n {
     );
   }
 
-  /// `Send only {value} to this deposit address.`
-  String depositOnly(Object value) {
+  /// `This address only supports {value}.`
+  String depositTip(Object value) {
     return Intl.message(
-      'Send only $value to this deposit address.',
-      name: 'depositOnly',
+      'This address only supports $value.',
+      name: 'depositTip',
       desc: '',
       args: [value],
+    );
+  }
+
+  /// `This address only supports BTC and Omni USDT.`
+  String get depositTipBtc {
+    return Intl.message(
+      'This address only supports BTC and Omni USDT.',
+      name: 'depositTipBtc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This address supports all ERC-20 tokens, such as ETH, XIN, TUSD, HT, LOOM, LEO, etc.`
+  String get depositTipEth {
+    return Intl.message(
+      'This address supports all ERC-20 tokens, such as ETH, XIN, TUSD, HT, LOOM, LEO, etc.',
+      name: 'depositTipEth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This address supports all base on EOS tokens, such as EOS, IQ, BLACK, OCT, KARMA, etc.`
+  String get depositTipEos {
+    return Intl.message(
+      'This address supports all base on EOS tokens, such as EOS, IQ, BLACK, OCT, KARMA, etc.',
+      name: 'depositTipEos',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This address supports all TRC-10 and TRC-20 tokens, such as TRX, BTT, USDT-TRON, etc.`
+  String get depositTipTron {
+    return Intl.message(
+      'This address supports all TRC-10 and TRC-20 tokens, such as TRX, BTT, USDT-TRON, etc.',
+      name: 'depositTipTron',
+      desc: '',
+      args: [],
     );
   }
 
@@ -195,6 +235,16 @@ class L10n {
     return Intl.message(
       'Sending coin or token other than $value to this address my result in the loss of your deposit.',
       name: 'depositOnlyDesc',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Deposit will arrive after at least {value} block confirmations`
+  String depositConfirmation(Object value) {
+    return Intl.message(
+      'Deposit will arrive after at least $value block confirmations',
+      name: 'depositConfirmation',
       desc: '',
       args: [value],
     );

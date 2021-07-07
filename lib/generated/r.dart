@@ -32,4 +32,6 @@ class R {
   static const String resourcesReceiveSvg = 'resources/receive.svg';
 
   static const String resourcesSendSvg = 'resources/send.svg';
+
+  static const String resourcesIcCheckSvg = 'resources/ic_check.svg';
 }
