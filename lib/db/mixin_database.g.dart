@@ -2580,6 +2580,38 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final SnapshotDao snapshotDao = SnapshotDao(this as MixinDatabase);
   late final UserDao userDao = UserDao(this as MixinDatabase);
   late final FiatDao fiatDao = FiatDao(this as MixinDatabase);
+  Selectable<SnapshotItem> snapshotItems(String assetId) {
+    return customSelect(
+        'SELECT s.*, u.avatar_url, u.full_name AS opponent_ful_name, a.symbol AS asset_symbol, a.confirmations AS asset_confirmations FROM snapshots AS s LEFT JOIN users AS u ON u.user_id = s.opponent_id LEFT JOIN assets AS a ON a.asset_id = s.asset_id WHERE s.asset_id = :assetId ORDER BY s.created_at DESC, s.snapshot_id DESC',
+        variables: [
+          Variable<String>(assetId)
+        ],
+        readsFrom: {
+          users,
+          assets,
+          snapshots,
+        }).map((QueryRow row) {
+      return SnapshotItem(
+        snapshotId: row.read<String>('snapshot_id'),
+        type: row.read<String>('type'),
+        assetId: row.read<String>('asset_id'),
+        amount: row.read<String>('amount'),
+        createdAt:
+            Snapshots.$converter0.mapToDart(row.read<int>('created_at'))!,
+        opponentId: row.read<String?>('opponent_id'),
+        transactionHash: row.read<String?>('transaction_hash'),
+        sender: row.read<String?>('sender'),
+        receiver: row.read<String?>('receiver'),
+        memo: row.read<String?>('memo'),
+        confirmations: row.read<int?>('confirmations'),
+        avatarUrl: row.read<String?>('avatar_url'),
+        opponentFulName: row.read<String?>('opponent_ful_name'),
+        assetSymbol: row.read<String>('asset_symbol'),
+        assetConfirmations: row.read<int>('asset_confirmations'),
+      );
+    });
+  }
+
   Selectable<AssetResult> assetResults(
       String currentFiat,
       Expression<bool?> Function(Assets asset, Assets tempAsset, Fiats fiat)
@@ -2632,6 +2664,112 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
       [addresses, assets, snapshots, users, fiats];
+}
+
+class SnapshotItem {
+  final String snapshotId;
+  final String type;
+  final String assetId;
+  final String amount;
+  final DateTime createdAt;
+  final String? opponentId;
+  final String? transactionHash;
+  final String? sender;
+  final String? receiver;
+  final String? memo;
+  final int? confirmations;
+  final String? avatarUrl;
+  final String? opponentFulName;
+  final String assetSymbol;
+  final int assetConfirmations;
+  SnapshotItem({
+    required this.snapshotId,
+    required this.type,
+    required this.assetId,
+    required this.amount,
+    required this.createdAt,
+    this.opponentId,
+    this.transactionHash,
+    this.sender,
+    this.receiver,
+    this.memo,
+    this.confirmations,
+    this.avatarUrl,
+    this.opponentFulName,
+    required this.assetSymbol,
+    required this.assetConfirmations,
+  });
+  @override
+  int get hashCode => $mrjf($mrjc(
+      snapshotId.hashCode,
+      $mrjc(
+          type.hashCode,
+          $mrjc(
+              assetId.hashCode,
+              $mrjc(
+                  amount.hashCode,
+                  $mrjc(
+                      createdAt.hashCode,
+                      $mrjc(
+                          opponentId.hashCode,
+                          $mrjc(
+                              transactionHash.hashCode,
+                              $mrjc(
+                                  sender.hashCode,
+                                  $mrjc(
+                                      receiver.hashCode,
+                                      $mrjc(
+                                          memo.hashCode,
+                                          $mrjc(
+                                              confirmations.hashCode,
+                                              $mrjc(
+                                                  avatarUrl.hashCode,
+                                                  $mrjc(
+                                                      opponentFulName.hashCode,
+                                                      $mrjc(
+                                                          assetSymbol.hashCode,
+                                                          assetConfirmations
+                                                              .hashCode)))))))))))))));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SnapshotItem &&
+          other.snapshotId == this.snapshotId &&
+          other.type == this.type &&
+          other.assetId == this.assetId &&
+          other.amount == this.amount &&
+          other.createdAt == this.createdAt &&
+          other.opponentId == this.opponentId &&
+          other.transactionHash == this.transactionHash &&
+          other.sender == this.sender &&
+          other.receiver == this.receiver &&
+          other.memo == this.memo &&
+          other.confirmations == this.confirmations &&
+          other.avatarUrl == this.avatarUrl &&
+          other.opponentFulName == this.opponentFulName &&
+          other.assetSymbol == this.assetSymbol &&
+          other.assetConfirmations == this.assetConfirmations);
+  @override
+  String toString() {
+    return (StringBuffer('SnapshotItem(')
+          ..write('snapshotId: $snapshotId, ')
+          ..write('type: $type, ')
+          ..write('assetId: $assetId, ')
+          ..write('amount: $amount, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('opponentId: $opponentId, ')
+          ..write('transactionHash: $transactionHash, ')
+          ..write('sender: $sender, ')
+          ..write('receiver: $receiver, ')
+          ..write('memo: $memo, ')
+          ..write('confirmations: $confirmations, ')
+          ..write('avatarUrl: $avatarUrl, ')
+          ..write('opponentFulName: $opponentFulName, ')
+          ..write('assetSymbol: $assetSymbol, ')
+          ..write('assetConfirmations: $assetConfirmations')
+          ..write(')'))
+        .toString();
+  }
 }
 
 class AssetResult {

@@ -57,4 +57,8 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
           (Assets asset, _, __) =>
               asset.assetId.equals(assetId),
           (_, __, ___) => Limit(1, null));
+
+  Selectable<Asset> simpleAssetById(String assetId) => select(db.assets)
+    ..where((tbl) => tbl.assetId.equals(assetId))
+    ..limit(1);
 }

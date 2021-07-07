@@ -34,7 +34,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  mixin_bot_sdk_dart: ^0.0.7
+  mixin_bot_sdk_dart:
+#    path: ../mixin_bot_sdk_dart
+    git:
+      url: https://github.com/MixinNetwork/mixin_bot_sdk_dart.git
+      ref: 48075f35bfcf37116e0e8940c0696c88d90a8ca1
   web3dart: ^2.1.4
   very_good_analysis: ^2.1.2
   intl: ^0.17.0

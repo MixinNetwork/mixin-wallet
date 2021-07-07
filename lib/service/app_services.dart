@@ -88,6 +88,23 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     return mixinDatabase.assetDao.assetResult(auth!.account.fiatCurrency, assetId);
   }
 
+  Future<void> updateSnapshots(String assetId, {String? offset}) async {
+    final response =
+        await client.snapshotApi.getSnapshotsByAssetId(assetId, offset: offset);
+    await mixinDatabase!.snapshotDao.insertAll(response.data);
+    if (await mixinDatabase!.assetDao
+            .simpleAssetById(assetId)
+            .getSingleOrNull() ==
+        null) {
+      await updateAsset(assetId);
+    }
+  }
+
+  Stream<List<SnapshotItem>> watchSnapshots(String assetId) {
+    assert(mixinDatabase != null);
+    return mixinDatabase!.snapshotItems(assetId).watch();
+  }
+
   @override
   Future<void> dispose() async {
     super.dispose();

@@ -9,6 +9,7 @@ import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/symbol.dart';
 
 class AssetDetail extends StatelessWidget {
   const AssetDetail({Key? key}) : super(key: key);
@@ -22,8 +23,6 @@ class _AssetDetailLoader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO query assets from database
-    // The asset id of CNB is: 965e5c6e-434c-3fa9-b780-c50f43cd955c
     final assetId = context.pathParameters['id']!;
 
     useMemoizedFuture(() => context.appServices.updateAsset(assetId),
@@ -67,6 +66,9 @@ class _AssetDetailPage extends StatelessWidget {
             const SliverToBoxAdapter(
               child: _AssetTransactionsHeader(),
             ),
+            SliverToBoxAdapter(
+              child: _TransactionsList(assetId: asset.assetId),
+            ),
           ],
         ),
       );
@@ -85,11 +87,11 @@ class _AssetHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 18),
-            Container(
-              width: 60,
-              height: 60,
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.red),
+            SymbolIcon(
+              symbolUrl: asset.iconUrl,
+              chainUrl: asset.chainIconUrl,
+              size: 60,
+              chinaSize: 18,
             ),
             const SizedBox(height: 18),
             Text.rich(TextSpan(children: [
@@ -110,7 +112,9 @@ class _AssetHeader extends StatelessWidget {
             ])),
             const SizedBox(height: 2),
             Text(
-              '≈ \$${asset.priceUsd}',
+              context.l10n.approxOf(
+                asset.amountOfCurrentCurrency.currencyFormat,
+              ),
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.white.withOpacity(0.5),
@@ -168,4 +172,21 @@ class _AssetTransactionsHeader extends StatelessWidget {
           ),
         ),
       );
+}
+
+class _TransactionsList extends HookWidget {
+  const _TransactionsList({Key? key, required this.assetId}) : super(key: key);
+
+  final String assetId;
+
+  @override
+  Widget build(BuildContext context) {
+    useEffect(() {
+      context.appServices.updateSnapshots(assetId);
+    }, [assetId]);
+    context.appServices.watchSnapshots(assetId).listen((event) {
+      debugPrint('$assetId $event');
+    });
+    return Container();
+  }
 }

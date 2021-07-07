@@ -17,6 +17,7 @@ part 'mixin_database.g.dart';
   include: {
     'moor/mixin.moor',
     'moor/dao/asset.moor',
+    'moor/dao/snapshot.moor',
   },
   daos: [
     AddressDao,
