@@ -24,4 +24,9 @@ class R {
   static const String resourcesIcScanSvg = 'resources/ic_scan.svg';
 
   static const String resourcesIcArrowDownSvg = 'resources/ic_arrow_down.svg';
+
+  static const String resourcesIcCircleCloseSvg =
+      'resources/ic_circle_close.svg';
+
+  static const String resourcesIcSaveAlbumSvg = 'resources/ic_save_album.svg';
 }

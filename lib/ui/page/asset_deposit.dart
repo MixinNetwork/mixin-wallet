@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
@@ -60,6 +62,7 @@ class _AssetDepositPage extends StatelessWidget {
         backgroundColor: context.theme.background,
         appBar: AppBar(
           backgroundColor: context.theme.background,
+          elevation: 0,
           title: Text(
             context.l10n.deposit,
             style: TextStyle(
@@ -128,6 +131,7 @@ class _AssetDepositPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             _Item(
+              asset: asset,
               title: context.l10n.address,
               desc: asset.destination ?? '',
               onCopy: () {},
@@ -136,6 +140,7 @@ class _AssetDepositPage extends StatelessWidget {
             const SizedBox(height: 10),
             asset.needShowMemo
                 ? _Item(
+                    asset: asset,
                     title: context.l10n.memo,
                     desc: asset.tag ?? '',
                     onCopy: () {},
@@ -238,12 +243,14 @@ class _Round extends StatelessWidget {
 class _Item extends StatelessWidget {
   const _Item({
     Key? key,
+    required this.asset,
     required this.title,
     required this.desc,
     required this.onCopy,
     required this.showQrCode,
   }) : super(key: key);
 
+  final AssetResult asset;
   final String title;
   final String desc;
   final VoidCallback onCopy;
@@ -293,11 +300,92 @@ class _Item extends StatelessWidget {
                     ActionButton(
                         name: R.resourcesIcScanSvg,
                         color: BrightnessData.themeOf(context).icon,
-                        onTap: () {}),
+                        onTap: () {
+                          showCupertinoModalBottomSheet(
+                            context: context,
+                            builder: (context) => _QRBottomSheetContent(
+                              data: desc,
+                              asset: asset,
+                            ),
+                          );
+                        }),
                   ],
                 )),
             const SizedBox(height: 70),
           ],
         ),
       ));
+}
+
+class _QRBottomSheetContent extends StatelessWidget {
+  const _QRBottomSheetContent({
+    Key? key,
+    required this.data,
+    required this.asset,
+  }) : super(key: key);
+
+  final String data;
+  final AssetResult asset;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        height: 625,
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 70,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: ActionButton(
+                    name: R.resourcesIcCircleCloseSvg,
+                    onTap: () {
+                      Navigator.pop(context);
+                    }),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(context.l10n.address,
+                style: TextStyle(
+                  color: context.theme.text,
+                  fontFamily: 'SF Pro Display',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                )),
+            const SizedBox(height: 25),
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                QrImage(
+                  data: data,
+                  size: 230,
+                ),
+                SymbolIcon(
+                    symbolUrl: asset.iconUrl,
+                    chainUrl: asset.iconUrl,
+                    size: 42),
+              ],
+            ),
+            const SizedBox(height: 5),
+            Text(data,
+                softWrap: true,
+                style: TextStyle(
+                  color: context.theme.secondaryText,
+                  fontFamily: 'SF Pro Text',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                )),
+            const Spacer(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ActionButton(
+                  name: R.resourcesIcSaveAlbumSvg,
+                  color: BrightnessData.themeOf(context).icon,
+                  size: 30,
+                  onTap: () {}),
+            ),
+            const SizedBox(height: 64),
+          ],
+        ),
+      );
 }
