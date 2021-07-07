@@ -1,11 +1,11 @@
-import 'package:moor/moor.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
+import 'package:moor/moor.dart';
 
 import '../mixin_database.dart';
 
 part 'snapshot_dao.g.dart';
 
-extension _SnapshotConverter on sdk.Snapshot {
+extension SnapshotConverter on sdk.Snapshot {
   SnapshotsCompanion get asDbSnapshotObject => SnapshotsCompanion.insert(
         snapshotId: snapshotId,
         type: type,
@@ -32,4 +32,27 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
 
   Future deleteSnapshot(Snapshot snapshot) =>
       delete(db.snapshots).delete(snapshot);
+
+  Selectable<SnapshotItem> snapshots(
+    String assetId, {
+    String? offset,
+    int count = 30,
+  }) =>
+      db.snapshotItems(
+        (s, u, a) {
+          final assetPredicate = a.assetId.equals(assetId);
+          if (offset == null) {
+            return assetPredicate;
+          }
+          return assetPredicate &
+              s.createdAt.isSmallerThan(
+                Variable(DateTime.parse(offset).millisecondsSinceEpoch),
+              );
+        },
+        (s, u, a) => OrderBy([
+          OrderingTerm.desc(s.createdAt),
+          OrderingTerm.desc(s.snapshotId),
+        ]),
+        (s, u, a) => Limit(count, null),
+      );
 }

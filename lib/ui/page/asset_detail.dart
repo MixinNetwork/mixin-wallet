@@ -10,6 +10,7 @@ import '../../util/r.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/symbol.dart';
+import '../widget/transactions/transaction_list.dart';
 
 class AssetDetail extends StatelessWidget {
   const AssetDetail({Key? key}) : super(key: key);
@@ -66,9 +67,7 @@ class _AssetDetailPage extends StatelessWidget {
             const SliverToBoxAdapter(
               child: _AssetTransactionsHeader(),
             ),
-            SliverToBoxAdapter(
-              child: _TransactionsList(assetId: asset.assetId),
-            ),
+            _TransactionsList(assetId: asset.assetId),
           ],
         ),
       );
@@ -184,9 +183,10 @@ class _TransactionsList extends HookWidget {
     useEffect(() {
       context.appServices.updateSnapshots(assetId);
     }, [assetId]);
-    context.appServices.watchSnapshots(assetId).listen((event) {
-      debugPrint('$assetId $event');
-    });
-    return Container();
+    return TransactionList(
+        loadMoreItemNetwork: (offset) =>
+            context.appServices.snapshots(assetId).get(),
+        loadMoreItemDb: (offset) =>
+            context.appServices.snapshots(assetId).get());
   }
 }

@@ -2580,16 +2580,36 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final SnapshotDao snapshotDao = SnapshotDao(this as MixinDatabase);
   late final UserDao userDao = UserDao(this as MixinDatabase);
   late final FiatDao fiatDao = FiatDao(this as MixinDatabase);
-  Selectable<SnapshotItem> snapshotItems(String assetId) {
+  Selectable<SnapshotItem> snapshotItems(
+      Expression<bool?> Function(Snapshots s, Users u, Assets a) where,
+      OrderBy Function(Snapshots s, Users u, Assets a) order,
+      Limit Function(Snapshots s, Users u, Assets a) limit) {
+    final generatedwhere = $write(
+        where(alias(this.snapshots, 's'), alias(this.users, 'u'),
+            alias(this.assets, 'a')),
+        hasMultipleTables: true);
+    final generatedorder = $write(
+        order(alias(this.snapshots, 's'), alias(this.users, 'u'),
+            alias(this.assets, 'a')),
+        hasMultipleTables: true);
+    final generatedlimit = $write(
+        limit(alias(this.snapshots, 's'), alias(this.users, 'u'),
+            alias(this.assets, 'a')),
+        hasMultipleTables: true);
     return customSelect(
-        'SELECT s.*, u.avatar_url, u.full_name AS opponent_ful_name, a.symbol AS asset_symbol, a.confirmations AS asset_confirmations FROM snapshots AS s LEFT JOIN users AS u ON u.user_id = s.opponent_id LEFT JOIN assets AS a ON a.asset_id = s.asset_id WHERE s.asset_id = :assetId ORDER BY s.created_at DESC, s.snapshot_id DESC',
+        'SELECT s.*, u.avatar_url, u.full_name AS opponent_ful_name, a.symbol AS asset_symbol, a.confirmations AS asset_confirmations FROM snapshots AS s LEFT JOIN users AS u ON u.user_id = s.opponent_id LEFT JOIN assets AS a ON a.asset_id = s.asset_id WHERE ${generatedwhere.sql} ${generatedorder.sql} ${generatedlimit.sql}',
         variables: [
-          Variable<String>(assetId)
+          ...generatedwhere.introducedVariables,
+          ...generatedorder.introducedVariables,
+          ...generatedlimit.introducedVariables
         ],
         readsFrom: {
           users,
           assets,
           snapshots,
+          ...generatedwhere.watchedTables,
+          ...generatedorder.watchedTables,
+          ...generatedlimit.watchedTables,
         }).map((QueryRow row) {
       return SnapshotItem(
         snapshotId: row.read<String>('snapshot_id'),
