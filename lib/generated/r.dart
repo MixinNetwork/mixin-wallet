@@ -29,4 +29,6 @@ class R {
       'resources/ic_circle_close.svg';
 
   static const String resourcesIcSaveAlbumSvg = 'resources/ic_save_album.svg';
+
+  static const String resourcesIcCheckSvg = 'resources/ic_check.svg';
 }

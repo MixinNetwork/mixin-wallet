@@ -1,6 +1,5 @@
 import 'package:moor/moor.dart';
 
-
 final maxLimit = _MaxLimit();
 
 class _MaxLimit extends Limit {

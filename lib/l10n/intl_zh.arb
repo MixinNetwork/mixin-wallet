@@ -1,4 +1,10 @@
 {
   "totalBalance": "总余额",
-  "deposit": "充值"
+  "deposit": "充值",
+  "depositTip": "该充值地址仅支持 {value}.",
+  "depositTipBtc": "该充值地址仅支持 BTC 和 Omni USDT。",
+  "depositTipEth": "该充值地址支持所有符合 ERC-20 标准的代币，例如 ETH、XIN、HT、LOOM、LEO、PRS 等。",
+  "depositTipEos": "该充值地址支持所有基于 EOS 发行的代币，例如 EOS、IQ、BLACK、OCT、KARMA 等。",
+  "depositTipTron": "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币，例如 TRX、BTT、USDT-TRON 等。",
+  "depositConfirmation": "充值到账至少需要 {value} 个区块确认。"
 }

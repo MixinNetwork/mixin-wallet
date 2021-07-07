@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -29,9 +30,6 @@ class _AssetDepositLoader extends HookWidget {
     // The asset id of CNB is: 965e5c6e-434c-3fa9-b780-c50f43cd955c
     final assetId = context.pathParameters['id']!;
 
-    useMemoizedFuture(() => context.appServices.updateAsset(assetId),
-        keys: [assetId]);
-
     final data = useMemoizedStream(
       () => context.appServices.assetResult(assetId).watchSingleOrNull(),
       keys: [assetId],
@@ -48,14 +46,28 @@ class _AssetDepositLoader extends HookWidget {
     if (data == null) {
       return const SizedBox();
     }
-    return _AssetDepositPage(asset: data);
+    return _AssetDepositPage(asset: data, checkedAddress: data.destination);
   }
 }
 
 class _AssetDepositPage extends StatelessWidget {
-  const _AssetDepositPage({Key? key, required this.asset}) : super(key: key);
+  const _AssetDepositPage({
+    Key? key,
+    required this.asset,
+    required this.checkedAddress,
+  }) : super(key: key);
 
   final AssetResult asset;
+
+  final String? checkedAddress;
+
+  String getAddressType() {
+    if (checkedAddress == asset.destination) {
+      return 'Bitcoin';
+    } else {
+      return 'Bitcoin (Segwit)';
+    }
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -86,7 +98,7 @@ class _AssetDepositPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
           child: Column(children: [
             const SizedBox(height: 20),
-            _Round(
+            _RoundContainer(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Row(
                 children: [
@@ -130,6 +142,31 @@ class _AssetDepositPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
+            asset.hasDepositEntries
+                ? _RoundContainer(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            getAddressType(),
+                            style: TextStyle(
+                              color: context.theme.text,
+                              fontSize: 16,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: SvgPicture.asset(R.resourcesIcArrowDownSvg),
+                        )
+                      ],
+                    ),
+                  )
+                : const SizedBox(),
             _Item(
               asset: asset,
               title: context.l10n.address,
@@ -149,7 +186,7 @@ class _AssetDepositPage extends StatelessWidget {
                 : const SizedBox(height: 4),
             const SizedBox(height: 10),
             asset.needShowMemo
-                ? _Round(
+                ? _RoundContainer(
                     height: null,
                     radius: 8,
                     padding: const EdgeInsets.symmetric(
@@ -171,7 +208,7 @@ class _AssetDepositPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(context.l10n.depositOnly(asset.symbol),
+                child: Text(asset.getTip(context),
                     style: TextStyle(
                       color: context.theme.text,
                       fontSize: 14,
@@ -197,7 +234,7 @@ class _AssetDepositPage extends StatelessWidget {
             const Spacer(),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Text(context.l10n.averageArrival('10 minutes'),
+              child: Text(context.l10n.depositConfirmation(asset.confirmations),
                   style: TextStyle(
                     color: context.theme.secondaryText,
                     fontSize: 14,
@@ -211,8 +248,8 @@ class _AssetDepositPage extends StatelessWidget {
       );
 }
 
-class _Round extends StatelessWidget {
-  const _Round({
+class _RoundContainer extends StatelessWidget {
+  const _RoundContainer({
     Key? key,
     required this.child,
     this.height = 56,
@@ -261,7 +298,7 @@ class _Item extends StatelessWidget {
       constraints: const BoxConstraints(
         minHeight: 56,
       ),
-      child: _Round(
+      child: _RoundContainer(
         height: null,
         child: Row(
           children: [
@@ -334,25 +371,28 @@ class _QRBottomSheetContent extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 70,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: ActionButton(
-                    name: R.resourcesIcCircleCloseSvg,
-                    onTap: () {
-                      Navigator.pop(context);
-                    }),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(context.l10n.address,
-                style: TextStyle(
-                  color: context.theme.text,
-                  fontFamily: 'SF Pro Display',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                height: 70,
+                child: Row(
+                  children: [
+                    Text(context.l10n.address,
+                        style: TextStyle(
+                          color: context.theme.text,
+                          fontFamily: 'SF Pro Display',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        )),
+                    const Spacer(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ActionButton(
+                          name: R.resourcesIcCircleCloseSvg,
+                          onTap: () {
+                            Navigator.pop(context);
+                          }),
+                    ),
+                  ],
                 )),
-            const SizedBox(height: 25),
+            const SizedBox(height: 55),
             Stack(
               alignment: AlignmentDirectional.center,
               children: [
@@ -388,4 +428,98 @@ class _QRBottomSheetContent extends StatelessWidget {
           ],
         ),
       );
+}
+
+class _AddressTypeBottomSheet extends StatelessWidget {
+  const _AddressTypeBottomSheet({
+    Key? key,
+    required this.depositEntries,
+    required this.destination,
+  }) : super(key: key);
+
+  final List<DepositEntry> depositEntries;
+  final String destination;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        height: 310,
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+        child: Column(
+          children: [
+            SizedBox(
+                height: 70,
+                child: Row(
+                  children: [
+                    Text(context.l10n.address,
+                        style: TextStyle(
+                          color: context.theme.text,
+                          fontFamily: 'SF Pro Display',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        )),
+                    const Spacer(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ActionButton(
+                          name: R.resourcesIcCircleCloseSvg,
+                          onTap: () {
+                            Navigator.pop(context);
+                          }),
+                    ),
+                  ],
+                )),
+            const SizedBox(height: 20),
+            _RoundContainer(
+              child: ListView(
+                children: [
+                  _AddressTypeItem(
+                      depositEntry: depositEntries[0],
+                      destination: destination),
+                  _AddressTypeItem(
+                      depositEntry: depositEntries[1],
+                      destination: destination,
+                      checked: true),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+}
+
+class _AddressTypeItem extends StatelessWidget {
+  const _AddressTypeItem({
+    Key? key,
+    required this.depositEntry,
+    required this.destination,
+    this.checked = false,
+  }) : super(key: key);
+
+  final DepositEntry depositEntry;
+  final String destination;
+  final bool checked;
+
+  @override
+  Widget build(BuildContext context) => Container(
+      height: 64,
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+      child: Row(
+        children: [
+          Text(
+              depositEntry.destination == destination
+                  ? 'Bitcoin'
+                  : 'Bitcoin (Segwit)',
+              style: TextStyle(
+                color: context.theme.text,
+                fontFamily: 'PingFang SC',
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              )),
+          const Spacer(),
+          Align(
+            alignment: Alignment.centerRight,
+            child: SvgPicture.asset(R.resourcesIcCheckSvg),
+          ),
+        ],
+      ));
 }

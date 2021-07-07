@@ -32,4 +32,22 @@ extension AssetResultExtension on AssetResult {
   Decimal get usdUnitPrice => priceUsd.asDecimal * fiatRate.asDecimal;
 
   bool get needShowMemo => tag?.isNotEmpty == true;
+
+  bool get hasDepositEntries =>
+      depositEntries != null && depositEntries!.length > 1;
+
+  String getTip(BuildContext context) {
+    switch (chainId) {
+      case bitcoin:
+        return context.l10n.depositTipBtc;
+      case ethereum:
+        return context.l10n.depositTipEth;
+      case eos:
+        return context.l10n.depositTipEos;
+      case tron:
+        return context.l10n.depositTipTron;
+      default:
+        return context.l10n.depositTip(symbol);
+    }
+  }
 }

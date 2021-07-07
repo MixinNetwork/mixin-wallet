@@ -563,6 +563,7 @@ class Asset extends DataClass implements Insertable<Asset> {
   final String changeBtc;
   final int confirmations;
   final String? assetKey;
+  final List<DepositEntry>? depositEntries;
   Asset(
       {required this.assetId,
       required this.symbol,
@@ -577,7 +578,8 @@ class Asset extends DataClass implements Insertable<Asset> {
       required this.changeUsd,
       required this.changeBtc,
       required this.confirmations,
-      this.assetKey});
+      this.assetKey,
+      this.depositEntries});
   factory Asset.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -610,6 +612,8 @@ class Asset extends DataClass implements Insertable<Asset> {
           .mapFromDatabaseResponse(data['${effectivePrefix}confirmations'])!,
       assetKey: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}asset_key']),
+      depositEntries: Assets.$converter0.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}deposit_entries'])),
     );
   }
   @override
@@ -635,6 +639,11 @@ class Asset extends DataClass implements Insertable<Asset> {
     if (!nullToAbsent || assetKey != null) {
       map['asset_key'] = Variable<String?>(assetKey);
     }
+    if (!nullToAbsent || depositEntries != null) {
+      final converter = Assets.$converter0;
+      map['deposit_entries'] =
+          Variable<String?>(converter.mapToSql(depositEntries));
+    }
     return map;
   }
 
@@ -658,6 +667,9 @@ class Asset extends DataClass implements Insertable<Asset> {
       assetKey: assetKey == null && nullToAbsent
           ? const Value.absent()
           : Value(assetKey),
+      depositEntries: depositEntries == null && nullToAbsent
+          ? const Value.absent()
+          : Value(depositEntries),
     );
   }
 
@@ -679,6 +691,8 @@ class Asset extends DataClass implements Insertable<Asset> {
       changeBtc: serializer.fromJson<String>(json['change_btc']),
       confirmations: serializer.fromJson<int>(json['confirmations']),
       assetKey: serializer.fromJson<String?>(json['asset_key']),
+      depositEntries:
+          serializer.fromJson<List<DepositEntry>?>(json['deposit_entries']),
     );
   }
   @override
@@ -699,6 +713,7 @@ class Asset extends DataClass implements Insertable<Asset> {
       'change_btc': serializer.toJson<String>(changeBtc),
       'confirmations': serializer.toJson<int>(confirmations),
       'asset_key': serializer.toJson<String?>(assetKey),
+      'deposit_entries': serializer.toJson<List<DepositEntry>?>(depositEntries),
     };
   }
 
@@ -716,7 +731,8 @@ class Asset extends DataClass implements Insertable<Asset> {
           String? changeUsd,
           String? changeBtc,
           int? confirmations,
-          Value<String?> assetKey = const Value.absent()}) =>
+          Value<String?> assetKey = const Value.absent(),
+          Value<List<DepositEntry>?> depositEntries = const Value.absent()}) =>
       Asset(
         assetId: assetId ?? this.assetId,
         symbol: symbol ?? this.symbol,
@@ -732,6 +748,8 @@ class Asset extends DataClass implements Insertable<Asset> {
         changeBtc: changeBtc ?? this.changeBtc,
         confirmations: confirmations ?? this.confirmations,
         assetKey: assetKey.present ? assetKey.value : this.assetKey,
+        depositEntries:
+            depositEntries.present ? depositEntries.value : this.depositEntries,
       );
   @override
   String toString() {
@@ -749,7 +767,8 @@ class Asset extends DataClass implements Insertable<Asset> {
           ..write('changeUsd: $changeUsd, ')
           ..write('changeBtc: $changeBtc, ')
           ..write('confirmations: $confirmations, ')
-          ..write('assetKey: $assetKey')
+          ..write('assetKey: $assetKey, ')
+          ..write('depositEntries: $depositEntries')
           ..write(')'))
         .toString();
   }
@@ -781,8 +800,10 @@ class Asset extends DataClass implements Insertable<Asset> {
                                                   changeBtc.hashCode,
                                                   $mrjc(
                                                       confirmations.hashCode,
-                                                      assetKey
-                                                          .hashCode))))))))))))));
+                                                      $mrjc(
+                                                          assetKey.hashCode,
+                                                          depositEntries
+                                                              .hashCode)))))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -800,7 +821,8 @@ class Asset extends DataClass implements Insertable<Asset> {
           other.changeUsd == this.changeUsd &&
           other.changeBtc == this.changeBtc &&
           other.confirmations == this.confirmations &&
-          other.assetKey == this.assetKey);
+          other.assetKey == this.assetKey &&
+          other.depositEntries == this.depositEntries);
 }
 
 class AssetsCompanion extends UpdateCompanion<Asset> {
@@ -818,6 +840,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
   final Value<String> changeBtc;
   final Value<int> confirmations;
   final Value<String?> assetKey;
+  final Value<List<DepositEntry>?> depositEntries;
   const AssetsCompanion({
     this.assetId = const Value.absent(),
     this.symbol = const Value.absent(),
@@ -833,6 +856,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
     this.changeBtc = const Value.absent(),
     this.confirmations = const Value.absent(),
     this.assetKey = const Value.absent(),
+    this.depositEntries = const Value.absent(),
   });
   AssetsCompanion.insert({
     required String assetId,
@@ -849,6 +873,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
     required String changeBtc,
     required int confirmations,
     this.assetKey = const Value.absent(),
+    this.depositEntries = const Value.absent(),
   })  : assetId = Value(assetId),
         symbol = Value(symbol),
         name = Value(name),
@@ -875,6 +900,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
     Expression<String>? changeBtc,
     Expression<int>? confirmations,
     Expression<String?>? assetKey,
+    Expression<List<DepositEntry>?>? depositEntries,
   }) {
     return RawValuesInsertable({
       if (assetId != null) 'asset_id': assetId,
@@ -891,6 +917,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
       if (changeBtc != null) 'change_btc': changeBtc,
       if (confirmations != null) 'confirmations': confirmations,
       if (assetKey != null) 'asset_key': assetKey,
+      if (depositEntries != null) 'deposit_entries': depositEntries,
     });
   }
 
@@ -908,7 +935,8 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
       Value<String>? changeUsd,
       Value<String>? changeBtc,
       Value<int>? confirmations,
-      Value<String?>? assetKey}) {
+      Value<String?>? assetKey,
+      Value<List<DepositEntry>?>? depositEntries}) {
     return AssetsCompanion(
       assetId: assetId ?? this.assetId,
       symbol: symbol ?? this.symbol,
@@ -924,6 +952,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
       changeBtc: changeBtc ?? this.changeBtc,
       confirmations: confirmations ?? this.confirmations,
       assetKey: assetKey ?? this.assetKey,
+      depositEntries: depositEntries ?? this.depositEntries,
     );
   }
 
@@ -972,6 +1001,11 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
     if (assetKey.present) {
       map['asset_key'] = Variable<String?>(assetKey.value);
     }
+    if (depositEntries.present) {
+      final converter = Assets.$converter0;
+      map['deposit_entries'] =
+          Variable<String?>(converter.mapToSql(depositEntries.value));
+    }
     return map;
   }
 
@@ -991,7 +1025,8 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
           ..write('changeUsd: $changeUsd, ')
           ..write('changeBtc: $changeBtc, ')
           ..write('confirmations: $confirmations, ')
-          ..write('assetKey: $assetKey')
+          ..write('assetKey: $assetKey, ')
+          ..write('depositEntries: $depositEntries')
           ..write(')'))
         .toString();
   }
@@ -1083,6 +1118,15 @@ class Assets extends Table with TableInfo<Assets, Asset> {
   late final GeneratedColumn<String?> assetKey = GeneratedColumn<String?>(
       'asset_key', aliasedName, true,
       typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  final VerificationMeta _depositEntriesMeta =
+      const VerificationMeta('depositEntries');
+  late final GeneratedColumnWithTypeConverter<List<DepositEntry>, String?>
+      depositEntries = GeneratedColumn<String?>(
+              'deposit_entries', aliasedName, true,
+              typeName: 'TEXT',
+              requiredDuringInsert: false,
+              $customConstraints: '')
+          .withConverter<List<DepositEntry>>(Assets.$converter0);
   @override
   List<GeneratedColumn> get $columns => [
         assetId,
@@ -1098,7 +1142,8 @@ class Assets extends Table with TableInfo<Assets, Asset> {
         changeUsd,
         changeBtc,
         confirmations,
-        assetKey
+        assetKey,
+        depositEntries
       ];
   @override
   String get aliasedName => _alias ?? 'assets';
@@ -1191,6 +1236,7 @@ class Assets extends Table with TableInfo<Assets, Asset> {
       context.handle(_assetKeyMeta,
           assetKey.isAcceptableOrUnknown(data['asset_key']!, _assetKeyMeta));
     }
+    context.handle(_depositEntriesMeta, const VerificationResult.success());
     return context;
   }
 
@@ -1207,6 +1253,8 @@ class Assets extends Table with TableInfo<Assets, Asset> {
     return Assets(_db, alias);
   }
 
+  static TypeConverter<List<DepositEntry>, String> $converter0 =
+      const DepositEntryConverter();
   @override
   List<String> get customConstraints => const ['PRIMARY KEY(asset_id)'];
   @override
@@ -2673,6 +2721,8 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         changeBtc: row.read<String>('change_btc'),
         confirmations: row.read<int>('confirmations'),
         assetKey: row.read<String?>('asset_key'),
+        depositEntries:
+            Assets.$converter0.mapToDart(row.read<String?>('deposit_entries')),
         chainIconUrl: row.read<String>('chainIconUrl'),
         fiatRate: row.read<double>('fiatRate'),
       );
@@ -2807,6 +2857,7 @@ class AssetResult {
   final String changeBtc;
   final int confirmations;
   final String? assetKey;
+  final List<DepositEntry>? depositEntries;
   final String chainIconUrl;
   final double fiatRate;
   AssetResult({
@@ -2824,6 +2875,7 @@ class AssetResult {
     required this.changeBtc,
     required this.confirmations,
     this.assetKey,
+    this.depositEntries,
     required this.chainIconUrl,
     required this.fiatRate,
   });
@@ -2857,10 +2909,13 @@ class AssetResult {
                                                       $mrjc(
                                                           assetKey.hashCode,
                                                           $mrjc(
-                                                              chainIconUrl
+                                                              depositEntries
                                                                   .hashCode,
-                                                              fiatRate
-                                                                  .hashCode))))))))))))))));
+                                                              $mrjc(
+                                                                  chainIconUrl
+                                                                      .hashCode,
+                                                                  fiatRate
+                                                                      .hashCode)))))))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2879,6 +2934,7 @@ class AssetResult {
           other.changeBtc == this.changeBtc &&
           other.confirmations == this.confirmations &&
           other.assetKey == this.assetKey &&
+          other.depositEntries == this.depositEntries &&
           other.chainIconUrl == this.chainIconUrl &&
           other.fiatRate == this.fiatRate);
   @override
@@ -2898,6 +2954,7 @@ class AssetResult {
           ..write('changeBtc: $changeBtc, ')
           ..write('confirmations: $confirmations, ')
           ..write('assetKey: $assetKey, ')
+          ..write('depositEntries: $depositEntries, ')
           ..write('chainIconUrl: $chainIconUrl, ')
           ..write('fiatRate: $fiatRate')
           ..write(')'))

@@ -19,9 +19,23 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'zh';
 
+  static String m4(value) => "充值到账至少需要 ${value} 个区块确认。";
+
+  static String m7(value) => "该充值地址仅支持 ${value}.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
+        "depositConfirmation": m4,
+        "depositTip": m7,
+        "depositTipBtc":
+            MessageLookupByLibrary.simpleMessage("该充值地址仅支持 BTC 和 Omni USDT。"),
+        "depositTipEos": MessageLookupByLibrary.simpleMessage(
+            "该充值地址支持所有基于 EOS 发行的代币，例如 EOS、IQ、BLACK、OCT、KARMA 等。"),
+        "depositTipEth": MessageLookupByLibrary.simpleMessage(
+            "该充值地址支持所有符合 ERC-20 标准的代币，例如 ETH、XIN、HT、LOOM、LEO、PRS 等。"),
+        "depositTipTron": MessageLookupByLibrary.simpleMessage(
+            "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币，例如 TRX、BTT、USDT-TRON 等。"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额")
       };
 }
