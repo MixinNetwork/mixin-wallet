@@ -3,10 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mixin_wallet/ui/widget/avatar.dart';
-import 'package:mixin_wallet/util/extension/extension.dart';
 
 import '../../../db/mixin_database.dart';
+import '../../../util/extension/extension.dart';
 import 'transaction_list_controller.dart';
 
 typedef LoadMoreTransactionCallback = Future<List<SnapshotItem>> Function(
@@ -37,7 +36,7 @@ class TransactionList extends HookWidget {
 
     final snapshots = useValueListenable(controller.snapshots);
 
-    debugPrint("snapshots: $snapshots");
+    debugPrint('snapshots: $snapshots');
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(

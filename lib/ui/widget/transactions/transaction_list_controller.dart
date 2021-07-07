@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:very_good_analysis/very_good_analysis.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../util/logger.dart';
@@ -34,6 +35,7 @@ class TransactionListController {
 
     final dbResult = _loadMoreItemDb(offset);
     final networkResult = _loadMoreItemNetwork(offset);
+    unawaited(networkResult);
 
     try {
       _snapshotFromDb
