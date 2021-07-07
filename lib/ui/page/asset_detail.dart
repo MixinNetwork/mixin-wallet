@@ -5,8 +5,8 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
+import '../../util/hook.dart';
 import '../../util/r.dart';
-import '../router/mixin_router_delegate.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 
@@ -24,25 +24,23 @@ class _AssetDetailLoader extends HookWidget {
   Widget build(BuildContext context) {
     // TODO query assets from database
     // The asset id of CNB is: 965e5c6e-434c-3fa9-b780-c50f43cd955c
-    final assetId = context.pathParameters['id'];
+    final assetId = context.pathParameters['id']!;
 
-    useEffect(() {
-      context.appServices.updateAsset(assetId!);
-    }, [assetId]);
+    useMemoizedFuture(() => context.appServices.updateAsset(assetId),
+        keys: [assetId]);
 
-    final assetResults = context.watchCommonVariables.assetResults;
-    final data = assetResults
-        ?.firstWhereOrNull((element) => element?.assetId == assetId);
+    final data = useMemoizedStream(
+      () => context.appServices.assetResult(assetId).watchSingleOrNull(),
+      keys: [assetId],
+    ).data;
 
-    final notFound = assetResults != null && data == null;
-
-    useEffect(() {
-      if (notFound) {
-        context
-            .read<MixinRouterDelegate>()
-            .pushNewUri(MixinRouterDelegate.notFoundUri);
-      }
-    }, [notFound]);
+    // useEffect(() {
+    //   if (notFound) {
+    //     context
+    //         .read<MixinRouterDelegate>()
+    //         .pushNewUri(MixinRouterDelegate.notFoundUri);
+    //   }
+    // }, [notFound]);
 
     if (data == null) {
       return const SizedBox();

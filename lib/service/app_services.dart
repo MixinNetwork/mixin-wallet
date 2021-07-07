@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
+import 'package:moor/moor.dart';
 
 import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
@@ -19,9 +20,16 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   }
 
   late sdk.Client client;
-  MixinDatabase? mixinDatabase;
+  MixinDatabase? _mixinDatabase;
 
-  bool get databaseInitialized => mixinDatabase != null;
+  bool get databaseInitialized => _mixinDatabase != null;
+
+  MixinDatabase get mixinDatabase {
+    if (!databaseInitialized) {
+      throw StateError('the database is not initialized');
+    }
+    return _mixinDatabase!;
+  }
 
   Future<void> login(String oauthCode) async {
     final response = await client.oauthApi
@@ -47,13 +55,11 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Future<void> _initDatabase() async {
     if (accessToken == null) return;
-    mixinDatabase = await constructDb(auth!.account.identityNumber);
+    _mixinDatabase = await constructDb(auth!.account.identityNumber);
     notifyListeners();
   }
 
   Future<void> updateAssets() async {
-    if (mixinDatabase == null) return;
-
     final list = await Future.wait([
       client.assetApi.getAssets(),
       client.accountApi.getFiats(),
@@ -61,40 +67,39 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final assets = (list.first as sdk.MixinResponse<List<sdk.Asset>>).data;
     final fiats = (list.last as sdk.MixinResponse<List<sdk.Fiat>>).data;
 
-    await mixinDatabase!.transaction(() async {
-      await mixinDatabase!.assetDao.insertAllOnConflictUpdate(assets);
-      await mixinDatabase!.fiatDao.insertAllOnConflictUpdate(fiats);
+    await mixinDatabase.transaction(() async {
+      await mixinDatabase.assetDao.insertAllOnConflictUpdate(assets);
+      await mixinDatabase.fiatDao.insertAllOnConflictUpdate(fiats);
     });
   }
 
   Future<void> updateAsset(String assetId) async {
-    if (mixinDatabase == null) return;
-
     final asset = (await client.assetApi.getAssetById(assetId)).data;
-    await mixinDatabase!.assetDao.insert(asset);
+    await mixinDatabase.assetDao.insert(asset);
   }
 
-  Stream<List<AssetResult>> watchAssets(double rate) {
-    assert(mixinDatabase != null);
-    return mixinDatabase!.assetDao.assets(rate).watch();
+  Selectable<AssetResult> assetResults() {
+    assert(isLogin);
+    return mixinDatabase.assetDao.assetResults(auth!.account.fiatCurrency);
   }
 
-  Stream<List<Fiat>> watchFiats() {
-    assert(mixinDatabase != null);
-    return mixinDatabase!.fiatDao.fiats().watch();
+  Selectable<AssetResult> assetResult(String assetId) {
+    assert(isLogin);
+    return mixinDatabase.assetDao.assetResult(auth!.account.fiatCurrency, assetId);
   }
 
   @override
   Future<void> dispose() async {
     super.dispose();
-    final _mixinDatabase = mixinDatabase;
-    mixinDatabase = null;
-    await _mixinDatabase?.close();
+    final __mixinDatabase = _mixinDatabase;
+    _mixinDatabase = null;
+    await __mixinDatabase?.close();
   }
 
   @override
   List<Object?> get props => [
         client,
-        mixinDatabase,
+        _mixinDatabase,
       ];
+
 }

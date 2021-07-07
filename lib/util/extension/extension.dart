@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import '../../db/mixin_database.dart';
 import '../../service/app_services.dart';
 import '../../service/auth/auth_manager.dart';
-import '../../ui/mixin_common_variables.dart';
 import '../../ui/router/mixin_router_delegate.dart';
 
 export 'package:provider/provider.dart';

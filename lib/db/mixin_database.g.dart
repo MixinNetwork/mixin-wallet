@@ -151,26 +151,26 @@ class Addresse extends DataClass implements Insertable<Addresse> {
           {String? addressId,
           String? type,
           String? assetId,
-          String? publicKey,
-          String? label,
+          Value<String?> publicKey = const Value.absent(),
+          Value<String?> label = const Value.absent(),
           DateTime? updatedAt,
           String? reserve,
           String? fee,
-          String? accountName,
-          String? accountTag,
-          String? dust}) =>
+          Value<String?> accountName = const Value.absent(),
+          Value<String?> accountTag = const Value.absent(),
+          Value<String?> dust = const Value.absent()}) =>
       Addresse(
         addressId: addressId ?? this.addressId,
         type: type ?? this.type,
         assetId: assetId ?? this.assetId,
-        publicKey: publicKey ?? this.publicKey,
-        label: label ?? this.label,
+        publicKey: publicKey.present ? publicKey.value : this.publicKey,
+        label: label.present ? label.value : this.label,
         updatedAt: updatedAt ?? this.updatedAt,
         reserve: reserve ?? this.reserve,
         fee: fee ?? this.fee,
-        accountName: accountName ?? this.accountName,
-        accountTag: accountTag ?? this.accountTag,
-        dust: dust ?? this.dust,
+        accountName: accountName.present ? accountName.value : this.accountName,
+        accountTag: accountTag.present ? accountTag.value : this.accountTag,
+        dust: dust.present ? dust.value : this.dust,
       );
   @override
   String toString() {
@@ -390,83 +390,63 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
   final String? _alias;
   Addresses(this._db, [this._alias]);
   final VerificationMeta _addressIdMeta = const VerificationMeta('addressId');
-  late final GeneratedTextColumn addressId = _constructAddressId();
-  GeneratedTextColumn _constructAddressId() {
-    return GeneratedTextColumn('address_id', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> addressId = GeneratedColumn<String?>(
+      'address_id', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _typeMeta = const VerificationMeta('type');
-  late final GeneratedTextColumn type = _constructType();
-  GeneratedTextColumn _constructType() {
-    return GeneratedTextColumn('type', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+      'type', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _assetIdMeta = const VerificationMeta('assetId');
-  late final GeneratedTextColumn assetId = _constructAssetId();
-  GeneratedTextColumn _constructAssetId() {
-    return GeneratedTextColumn('asset_id', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> assetId = GeneratedColumn<String?>(
+      'asset_id', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _publicKeyMeta = const VerificationMeta('publicKey');
-  late final GeneratedTextColumn publicKey = _constructPublicKey();
-  GeneratedTextColumn _constructPublicKey() {
-    return GeneratedTextColumn('public_key', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> publicKey = GeneratedColumn<String?>(
+      'public_key', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _labelMeta = const VerificationMeta('label');
-  late final GeneratedTextColumn label = _constructLabel();
-  GeneratedTextColumn _constructLabel() {
-    return GeneratedTextColumn('label', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> label = GeneratedColumn<String?>(
+      'label', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
-  late final GeneratedIntColumn updatedAt = _constructUpdatedAt();
-  GeneratedIntColumn _constructUpdatedAt() {
-    return GeneratedIntColumn('updated_at', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumnWithTypeConverter<DateTime, int?> updatedAt =
+      GeneratedColumn<int?>('updated_at', aliasedName, false,
+              typeName: 'INTEGER',
+              requiredDuringInsert: true,
+              $customConstraints: 'NOT NULL')
+          .withConverter<DateTime>(Addresses.$converter0);
   final VerificationMeta _reserveMeta = const VerificationMeta('reserve');
-  late final GeneratedTextColumn reserve = _constructReserve();
-  GeneratedTextColumn _constructReserve() {
-    return GeneratedTextColumn('reserve', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> reserve = GeneratedColumn<String?>(
+      'reserve', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _feeMeta = const VerificationMeta('fee');
-  late final GeneratedTextColumn fee = _constructFee();
-  GeneratedTextColumn _constructFee() {
-    return GeneratedTextColumn('fee', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> fee = GeneratedColumn<String?>(
+      'fee', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _accountNameMeta =
       const VerificationMeta('accountName');
-  late final GeneratedTextColumn accountName = _constructAccountName();
-  GeneratedTextColumn _constructAccountName() {
-    return GeneratedTextColumn('account_name', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> accountName = GeneratedColumn<String?>(
+      'account_name', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _accountTagMeta = const VerificationMeta('accountTag');
-  late final GeneratedTextColumn accountTag = _constructAccountTag();
-  GeneratedTextColumn _constructAccountTag() {
-    return GeneratedTextColumn('account_tag', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> accountTag = GeneratedColumn<String?>(
+      'account_tag', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _dustMeta = const VerificationMeta('dust');
-  late final GeneratedTextColumn dust = _constructDust();
-  GeneratedTextColumn _constructDust() {
-    return GeneratedTextColumn('dust', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> dust = GeneratedColumn<String?>(
+      'dust', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         addressId,
@@ -482,11 +462,9 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
         dust
       ];
   @override
-  Addresses get asDslTable => this;
+  String get aliasedName => _alias ?? 'addresses';
   @override
-  String get $tableName => _alias ?? 'addresses';
-  @override
-  final String actualTableName = 'addresses';
+  String get actualTableName => 'addresses';
   @override
   VerificationContext validateIntegrity(Insertable<Addresse> instance,
       {bool isInserting = false}) {
@@ -730,30 +708,30 @@ class Asset extends DataClass implements Insertable<Asset> {
           String? name,
           String? iconUrl,
           String? balance,
-          String? destination,
-          String? tag,
+          Value<String?> destination = const Value.absent(),
+          Value<String?> tag = const Value.absent(),
           String? priceBtc,
           String? priceUsd,
           String? chainId,
           String? changeUsd,
           String? changeBtc,
           int? confirmations,
-          String? assetKey}) =>
+          Value<String?> assetKey = const Value.absent()}) =>
       Asset(
         assetId: assetId ?? this.assetId,
         symbol: symbol ?? this.symbol,
         name: name ?? this.name,
         iconUrl: iconUrl ?? this.iconUrl,
         balance: balance ?? this.balance,
-        destination: destination ?? this.destination,
-        tag: tag ?? this.tag,
+        destination: destination.present ? destination.value : this.destination,
+        tag: tag.present ? tag.value : this.tag,
         priceBtc: priceBtc ?? this.priceBtc,
         priceUsd: priceUsd ?? this.priceUsd,
         chainId: chainId ?? this.chainId,
         changeUsd: changeUsd ?? this.changeUsd,
         changeBtc: changeBtc ?? this.changeBtc,
         confirmations: confirmations ?? this.confirmations,
-        assetKey: assetKey ?? this.assetKey,
+        assetKey: assetKey.present ? assetKey.value : this.assetKey,
       );
   @override
   String toString() {
@@ -1024,104 +1002,87 @@ class Assets extends Table with TableInfo<Assets, Asset> {
   final String? _alias;
   Assets(this._db, [this._alias]);
   final VerificationMeta _assetIdMeta = const VerificationMeta('assetId');
-  late final GeneratedTextColumn assetId = _constructAssetId();
-  GeneratedTextColumn _constructAssetId() {
-    return GeneratedTextColumn('asset_id', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> assetId = GeneratedColumn<String?>(
+      'asset_id', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _symbolMeta = const VerificationMeta('symbol');
-  late final GeneratedTextColumn symbol = _constructSymbol();
-  GeneratedTextColumn _constructSymbol() {
-    return GeneratedTextColumn('symbol', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> symbol = GeneratedColumn<String?>(
+      'symbol', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  late final GeneratedTextColumn name = _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn('name', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _iconUrlMeta = const VerificationMeta('iconUrl');
-  late final GeneratedTextColumn iconUrl = _constructIconUrl();
-  GeneratedTextColumn _constructIconUrl() {
-    return GeneratedTextColumn('icon_url', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> iconUrl = GeneratedColumn<String?>(
+      'icon_url', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _balanceMeta = const VerificationMeta('balance');
-  late final GeneratedTextColumn balance = _constructBalance();
-  GeneratedTextColumn _constructBalance() {
-    return GeneratedTextColumn('balance', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> balance = GeneratedColumn<String?>(
+      'balance', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _destinationMeta =
       const VerificationMeta('destination');
-  late final GeneratedTextColumn destination = _constructDestination();
-  GeneratedTextColumn _constructDestination() {
-    return GeneratedTextColumn('destination', $tableName, true,
-        $customConstraints: 'NULL');
-  }
-
+  late final GeneratedColumn<String?> destination = GeneratedColumn<String?>(
+      'destination', aliasedName, true,
+      typeName: 'TEXT',
+      requiredDuringInsert: false,
+      $customConstraints: 'NULL');
   final VerificationMeta _tagMeta = const VerificationMeta('tag');
-  late final GeneratedTextColumn tag = _constructTag();
-  GeneratedTextColumn _constructTag() {
-    return GeneratedTextColumn('tag', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> tag = GeneratedColumn<String?>(
+      'tag', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _priceBtcMeta = const VerificationMeta('priceBtc');
-  late final GeneratedTextColumn priceBtc = _constructPriceBtc();
-  GeneratedTextColumn _constructPriceBtc() {
-    return GeneratedTextColumn('price_btc', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> priceBtc = GeneratedColumn<String?>(
+      'price_btc', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _priceUsdMeta = const VerificationMeta('priceUsd');
-  late final GeneratedTextColumn priceUsd = _constructPriceUsd();
-  GeneratedTextColumn _constructPriceUsd() {
-    return GeneratedTextColumn('price_usd', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> priceUsd = GeneratedColumn<String?>(
+      'price_usd', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _chainIdMeta = const VerificationMeta('chainId');
-  late final GeneratedTextColumn chainId = _constructChainId();
-  GeneratedTextColumn _constructChainId() {
-    return GeneratedTextColumn('chain_id', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> chainId = GeneratedColumn<String?>(
+      'chain_id', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _changeUsdMeta = const VerificationMeta('changeUsd');
-  late final GeneratedTextColumn changeUsd = _constructChangeUsd();
-  GeneratedTextColumn _constructChangeUsd() {
-    return GeneratedTextColumn('change_usd', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> changeUsd = GeneratedColumn<String?>(
+      'change_usd', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _changeBtcMeta = const VerificationMeta('changeBtc');
-  late final GeneratedTextColumn changeBtc = _constructChangeBtc();
-  GeneratedTextColumn _constructChangeBtc() {
-    return GeneratedTextColumn('change_btc', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> changeBtc = GeneratedColumn<String?>(
+      'change_btc', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _confirmationsMeta =
       const VerificationMeta('confirmations');
-  late final GeneratedIntColumn confirmations = _constructConfirmations();
-  GeneratedIntColumn _constructConfirmations() {
-    return GeneratedIntColumn('confirmations', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> confirmations = GeneratedColumn<int?>(
+      'confirmations', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _assetKeyMeta = const VerificationMeta('assetKey');
-  late final GeneratedTextColumn assetKey = _constructAssetKey();
-  GeneratedTextColumn _constructAssetKey() {
-    return GeneratedTextColumn('asset_key', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> assetKey = GeneratedColumn<String?>(
+      'asset_key', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         assetId,
@@ -1140,11 +1101,9 @@ class Assets extends Table with TableInfo<Assets, Asset> {
         assetKey
       ];
   @override
-  Assets get asDslTable => this;
+  String get aliasedName => _alias ?? 'assets';
   @override
-  String get $tableName => _alias ?? 'assets';
-  @override
-  final String actualTableName = 'assets';
+  String get actualTableName => 'assets';
   @override
   VerificationContext validateIntegrity(Insertable<Asset> instance,
       {bool isInserting = false}) {
@@ -1404,24 +1363,27 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
           String? assetId,
           String? amount,
           DateTime? createdAt,
-          String? opponentId,
-          String? transactionHash,
-          String? sender,
-          String? receiver,
-          String? memo,
-          int? confirmations}) =>
+          Value<String?> opponentId = const Value.absent(),
+          Value<String?> transactionHash = const Value.absent(),
+          Value<String?> sender = const Value.absent(),
+          Value<String?> receiver = const Value.absent(),
+          Value<String?> memo = const Value.absent(),
+          Value<int?> confirmations = const Value.absent()}) =>
       Snapshot(
         snapshotId: snapshotId ?? this.snapshotId,
         type: type ?? this.type,
         assetId: assetId ?? this.assetId,
         amount: amount ?? this.amount,
         createdAt: createdAt ?? this.createdAt,
-        opponentId: opponentId ?? this.opponentId,
-        transactionHash: transactionHash ?? this.transactionHash,
-        sender: sender ?? this.sender,
-        receiver: receiver ?? this.receiver,
-        memo: memo ?? this.memo,
-        confirmations: confirmations ?? this.confirmations,
+        opponentId: opponentId.present ? opponentId.value : this.opponentId,
+        transactionHash: transactionHash.present
+            ? transactionHash.value
+            : this.transactionHash,
+        sender: sender.present ? sender.value : this.sender,
+        receiver: receiver.present ? receiver.value : this.receiver,
+        memo: memo.present ? memo.value : this.memo,
+        confirmations:
+            confirmations.present ? confirmations.value : this.confirmations,
       );
   @override
   String toString() {
@@ -1640,84 +1602,64 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
   final String? _alias;
   Snapshots(this._db, [this._alias]);
   final VerificationMeta _snapshotIdMeta = const VerificationMeta('snapshotId');
-  late final GeneratedTextColumn snapshotId = _constructSnapshotId();
-  GeneratedTextColumn _constructSnapshotId() {
-    return GeneratedTextColumn('snapshot_id', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> snapshotId = GeneratedColumn<String?>(
+      'snapshot_id', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _typeMeta = const VerificationMeta('type');
-  late final GeneratedTextColumn type = _constructType();
-  GeneratedTextColumn _constructType() {
-    return GeneratedTextColumn('type', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+      'type', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _assetIdMeta = const VerificationMeta('assetId');
-  late final GeneratedTextColumn assetId = _constructAssetId();
-  GeneratedTextColumn _constructAssetId() {
-    return GeneratedTextColumn('asset_id', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> assetId = GeneratedColumn<String?>(
+      'asset_id', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
-  late final GeneratedTextColumn amount = _constructAmount();
-  GeneratedTextColumn _constructAmount() {
-    return GeneratedTextColumn('amount', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> amount = GeneratedColumn<String?>(
+      'amount', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
-  late final GeneratedIntColumn createdAt = _constructCreatedAt();
-  GeneratedIntColumn _constructCreatedAt() {
-    return GeneratedIntColumn('created_at', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumnWithTypeConverter<DateTime, int?> createdAt =
+      GeneratedColumn<int?>('created_at', aliasedName, false,
+              typeName: 'INTEGER',
+              requiredDuringInsert: true,
+              $customConstraints: 'NOT NULL')
+          .withConverter<DateTime>(Snapshots.$converter0);
   final VerificationMeta _opponentIdMeta = const VerificationMeta('opponentId');
-  late final GeneratedTextColumn opponentId = _constructOpponentId();
-  GeneratedTextColumn _constructOpponentId() {
-    return GeneratedTextColumn('opponent_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> opponentId = GeneratedColumn<String?>(
+      'opponent_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _transactionHashMeta =
       const VerificationMeta('transactionHash');
-  late final GeneratedTextColumn transactionHash = _constructTransactionHash();
-  GeneratedTextColumn _constructTransactionHash() {
-    return GeneratedTextColumn('transaction_hash', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> transactionHash =
+      GeneratedColumn<String?>('transaction_hash', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   final VerificationMeta _senderMeta = const VerificationMeta('sender');
-  late final GeneratedTextColumn sender = _constructSender();
-  GeneratedTextColumn _constructSender() {
-    return GeneratedTextColumn('sender', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> sender = GeneratedColumn<String?>(
+      'sender', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _receiverMeta = const VerificationMeta('receiver');
-  late final GeneratedTextColumn receiver = _constructReceiver();
-  GeneratedTextColumn _constructReceiver() {
-    return GeneratedTextColumn('receiver', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> receiver = GeneratedColumn<String?>(
+      'receiver', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _memoMeta = const VerificationMeta('memo');
-  late final GeneratedTextColumn memo = _constructMemo();
-  GeneratedTextColumn _constructMemo() {
-    return GeneratedTextColumn('memo', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> memo = GeneratedColumn<String?>(
+      'memo', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _confirmationsMeta =
       const VerificationMeta('confirmations');
-  late final GeneratedIntColumn confirmations = _constructConfirmations();
-  GeneratedIntColumn _constructConfirmations() {
-    return GeneratedIntColumn('confirmations', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> confirmations = GeneratedColumn<int?>(
+      'confirmations', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         snapshotId,
@@ -1733,11 +1675,9 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
         confirmations
       ];
   @override
-  Snapshots get asDslTable => this;
+  String get aliasedName => _alias ?? 'snapshots';
   @override
-  String get $tableName => _alias ?? 'snapshots';
-  @override
-  final String actualTableName = 'snapshots';
+  String get actualTableName => 'snapshots';
   @override
   VerificationContext validateIntegrity(Insertable<Snapshot> instance,
       {bool isInserting = false}) {
@@ -2006,31 +1946,32 @@ class User extends DataClass implements Insertable<User> {
   User copyWith(
           {String? userId,
           String? identityNumber,
-          UserRelationship? relationship,
-          String? fullName,
-          String? avatarUrl,
-          String? phone,
-          bool? isVerified,
-          DateTime? createdAt,
-          DateTime? muteUntil,
-          int? hasPin,
-          String? appId,
-          String? biography,
-          int? isScam}) =>
+          Value<UserRelationship?> relationship = const Value.absent(),
+          Value<String?> fullName = const Value.absent(),
+          Value<String?> avatarUrl = const Value.absent(),
+          Value<String?> phone = const Value.absent(),
+          Value<bool?> isVerified = const Value.absent(),
+          Value<DateTime?> createdAt = const Value.absent(),
+          Value<DateTime?> muteUntil = const Value.absent(),
+          Value<int?> hasPin = const Value.absent(),
+          Value<String?> appId = const Value.absent(),
+          Value<String?> biography = const Value.absent(),
+          Value<int?> isScam = const Value.absent()}) =>
       User(
         userId: userId ?? this.userId,
         identityNumber: identityNumber ?? this.identityNumber,
-        relationship: relationship ?? this.relationship,
-        fullName: fullName ?? this.fullName,
-        avatarUrl: avatarUrl ?? this.avatarUrl,
-        phone: phone ?? this.phone,
-        isVerified: isVerified ?? this.isVerified,
-        createdAt: createdAt ?? this.createdAt,
-        muteUntil: muteUntil ?? this.muteUntil,
-        hasPin: hasPin ?? this.hasPin,
-        appId: appId ?? this.appId,
-        biography: biography ?? this.biography,
-        isScam: isScam ?? this.isScam,
+        relationship:
+            relationship.present ? relationship.value : this.relationship,
+        fullName: fullName.present ? fullName.value : this.fullName,
+        avatarUrl: avatarUrl.present ? avatarUrl.value : this.avatarUrl,
+        phone: phone.present ? phone.value : this.phone,
+        isVerified: isVerified.present ? isVerified.value : this.isVerified,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        muteUntil: muteUntil.present ? muteUntil.value : this.muteUntil,
+        hasPin: hasPin.present ? hasPin.value : this.hasPin,
+        appId: appId.present ? appId.value : this.appId,
+        biography: biography.present ? biography.value : this.biography,
+        isScam: isScam.present ? isScam.value : this.isScam,
       );
   @override
   String toString() {
@@ -2279,98 +2220,72 @@ class Users extends Table with TableInfo<Users, User> {
   final String? _alias;
   Users(this._db, [this._alias]);
   final VerificationMeta _userIdMeta = const VerificationMeta('userId');
-  late final GeneratedTextColumn userId = _constructUserId();
-  GeneratedTextColumn _constructUserId() {
-    return GeneratedTextColumn('user_id', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+      'user_id', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _identityNumberMeta =
       const VerificationMeta('identityNumber');
-  late final GeneratedTextColumn identityNumber = _constructIdentityNumber();
-  GeneratedTextColumn _constructIdentityNumber() {
-    return GeneratedTextColumn('identity_number', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> identityNumber = GeneratedColumn<String?>(
+      'identity_number', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _relationshipMeta =
       const VerificationMeta('relationship');
-  late final GeneratedTextColumn relationship = _constructRelationship();
-  GeneratedTextColumn _constructRelationship() {
-    return GeneratedTextColumn('relationship', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumnWithTypeConverter<UserRelationship, String?>
+      relationship = GeneratedColumn<String?>('relationship', aliasedName, true,
+              typeName: 'TEXT',
+              requiredDuringInsert: false,
+              $customConstraints: '')
+          .withConverter<UserRelationship>(Users.$converter0);
   final VerificationMeta _fullNameMeta = const VerificationMeta('fullName');
-  late final GeneratedTextColumn fullName = _constructFullName();
-  GeneratedTextColumn _constructFullName() {
-    return GeneratedTextColumn('full_name', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> fullName = GeneratedColumn<String?>(
+      'full_name', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _avatarUrlMeta = const VerificationMeta('avatarUrl');
-  late final GeneratedTextColumn avatarUrl = _constructAvatarUrl();
-  GeneratedTextColumn _constructAvatarUrl() {
-    return GeneratedTextColumn('avatar_url', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> avatarUrl = GeneratedColumn<String?>(
+      'avatar_url', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _phoneMeta = const VerificationMeta('phone');
-  late final GeneratedTextColumn phone = _constructPhone();
-  GeneratedTextColumn _constructPhone() {
-    return GeneratedTextColumn('phone', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> phone = GeneratedColumn<String?>(
+      'phone', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _isVerifiedMeta = const VerificationMeta('isVerified');
-  late final GeneratedBoolColumn isVerified = _constructIsVerified();
-  GeneratedBoolColumn _constructIsVerified() {
-    return GeneratedBoolColumn('is_verified', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<bool?> isVerified = GeneratedColumn<bool?>(
+      'is_verified', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
-  late final GeneratedIntColumn createdAt = _constructCreatedAt();
-  GeneratedIntColumn _constructCreatedAt() {
-    return GeneratedIntColumn('created_at', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumnWithTypeConverter<DateTime, int?> createdAt =
+      GeneratedColumn<int?>('created_at', aliasedName, true,
+              typeName: 'INTEGER',
+              requiredDuringInsert: false,
+              $customConstraints: '')
+          .withConverter<DateTime>(Users.$converter1);
   final VerificationMeta _muteUntilMeta = const VerificationMeta('muteUntil');
-  late final GeneratedIntColumn muteUntil = _constructMuteUntil();
-  GeneratedIntColumn _constructMuteUntil() {
-    return GeneratedIntColumn('mute_until', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumnWithTypeConverter<DateTime, int?> muteUntil =
+      GeneratedColumn<int?>('mute_until', aliasedName, true,
+              typeName: 'INTEGER',
+              requiredDuringInsert: false,
+              $customConstraints: '')
+          .withConverter<DateTime>(Users.$converter2);
   final VerificationMeta _hasPinMeta = const VerificationMeta('hasPin');
-  late final GeneratedIntColumn hasPin = _constructHasPin();
-  GeneratedIntColumn _constructHasPin() {
-    return GeneratedIntColumn('has_pin', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> hasPin = GeneratedColumn<int?>(
+      'has_pin', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _appIdMeta = const VerificationMeta('appId');
-  late final GeneratedTextColumn appId = _constructAppId();
-  GeneratedTextColumn _constructAppId() {
-    return GeneratedTextColumn('app_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> appId = GeneratedColumn<String?>(
+      'app_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _biographyMeta = const VerificationMeta('biography');
-  late final GeneratedTextColumn biography = _constructBiography();
-  GeneratedTextColumn _constructBiography() {
-    return GeneratedTextColumn('biography', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> biography = GeneratedColumn<String?>(
+      'biography', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _isScamMeta = const VerificationMeta('isScam');
-  late final GeneratedIntColumn isScam = _constructIsScam();
-  GeneratedIntColumn _constructIsScam() {
-    return GeneratedIntColumn('is_scam', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> isScam = GeneratedColumn<int?>(
+      'is_scam', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         userId,
@@ -2388,11 +2303,9 @@ class Users extends Table with TableInfo<Users, User> {
         isScam
       ];
   @override
-  Users get asDslTable => this;
+  String get aliasedName => _alias ?? 'users';
   @override
-  String get $tableName => _alias ?? 'users';
-  @override
-  final String actualTableName = 'users';
+  String get actualTableName => 'users';
   @override
   VerificationContext validateIntegrity(Insertable<User> instance,
       {bool isInserting = false}) {
@@ -2598,27 +2511,23 @@ class Fiats extends Table with TableInfo<Fiats, Fiat> {
   final String? _alias;
   Fiats(this._db, [this._alias]);
   final VerificationMeta _codeMeta = const VerificationMeta('code');
-  late final GeneratedTextColumn code = _constructCode();
-  GeneratedTextColumn _constructCode() {
-    return GeneratedTextColumn('code', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<String?> code = GeneratedColumn<String?>(
+      'code', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _rateMeta = const VerificationMeta('rate');
-  late final GeneratedRealColumn rate = _constructRate();
-  GeneratedRealColumn _constructRate() {
-    return GeneratedRealColumn('rate', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<double?> rate = GeneratedColumn<double?>(
+      'rate', aliasedName, false,
+      typeName: 'REAL',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   @override
   List<GeneratedColumn> get $columns => [code, rate];
   @override
-  Fiats get asDslTable => this;
+  String get aliasedName => _alias ?? 'fiats';
   @override
-  String get $tableName => _alias ?? 'fiats';
-  @override
-  final String actualTableName = 'fiats';
+  String get actualTableName => 'fiats';
   @override
   VerificationContext validateIntegrity(Insertable<Fiat> instance,
       {bool isInserting = false}) {
@@ -2671,11 +2580,32 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final SnapshotDao snapshotDao = SnapshotDao(this as MixinDatabase);
   late final UserDao userDao = UserDao(this as MixinDatabase);
   late final FiatDao fiatDao = FiatDao(this as MixinDatabase);
-  Selectable<AssetResult> assetResults(double fiatRate) {
+  Selectable<AssetResult> assetResults(
+      String currentFiat,
+      Expression<bool?> Function(Assets asset, Assets tempAsset, Fiats fiat)
+          where,
+      Limit Function(Assets asset, Assets tempAsset, Fiats fiat) limit) {
+    final generatedwhere = $write(
+        where(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
+            alias(this.fiats, 'fiat')),
+        hasMultipleTables: true);
+    final generatedlimit = $write(
+        limit(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
+            alias(this.fiats, 'fiat')),
+        hasMultipleTables: true);
     return customSelect(
-        'SELECT a.*,\n       tmp.icon_url AS chainIconUrl, (:fiatRate) as fiatRate\nFROM assets a\nLEFT JOIN assets tmp ON a.chain_id = tmp.asset_id',
-        variables: [Variable<double>(fiatRate)],
-        readsFrom: {assets}).map((QueryRow row) {
+        'SELECT asset.*, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id INNER JOIN fiats AS fiat ON fiat.code = :currentFiat WHERE ${generatedwhere.sql} ${generatedlimit.sql}',
+        variables: [
+          Variable<String>(currentFiat),
+          ...generatedwhere.introducedVariables,
+          ...generatedlimit.introducedVariables
+        ],
+        readsFrom: {
+          assets,
+          fiats,
+          ...generatedwhere.watchedTables,
+          ...generatedlimit.watchedTables,
+        }).map((QueryRow row) {
       return AssetResult(
         assetId: row.read<String>('asset_id'),
         symbol: row.read<String>('symbol'),

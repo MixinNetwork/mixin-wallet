@@ -2,6 +2,7 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:moor/moor.dart';
 
 import '../mixin_database.dart';
+import '../util/util.dart';
 
 part 'asset_dao.g.dart';
 
@@ -45,5 +46,15 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
     });
   }
 
-  Selectable<AssetResult> assets(double rate) => db.assetResults(rate);
+  Selectable<AssetResult> assetResults(String currentFiat) => db.assetResults(
+      currentFiat,
+      (_, __, ___) => ignoreWhere,
+      (_, __, ___) => maxLimit);
+
+  Selectable<AssetResult> assetResult(String currentFiat, String assetId) =>
+      db.assetResults(
+          currentFiat,
+          (Assets asset, _, __) =>
+              asset.assetId.equals(assetId),
+          (_, __, ___) => Limit(1, null));
 }

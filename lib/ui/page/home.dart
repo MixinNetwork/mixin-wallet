@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../db/mixin_database.dart';
 import '../../service/auth/auth_manager.dart';
 import '../../util/extension/extension.dart';
+import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../router/mixin_router_delegate.dart';
 import '../widget/avatar.dart';
@@ -21,11 +22,15 @@ class Home extends HookWidget {
   Widget build(BuildContext context) {
     assert(context.appServices.databaseInitialized);
 
-    useEffect(() {
-      context.appServices.updateAssets();
-    }, []);
+    useMemoizedFuture(() => context.appServices.updateAssets());
 
-    final assetResults = context.watchCommonVariables.assetResults ?? [];
+    final assetResults = useMemoizedStream(
+      () => context.appServices.assetResults().watch().map((event) => event
+        ..sort(
+          (a, b) => b.amountOfUsd.compareTo(a.amountOfUsd),
+        )),
+      initialData: <AssetResult>[],
+    ).requireData;
 
     return Scaffold(
       backgroundColor: context.theme.background,

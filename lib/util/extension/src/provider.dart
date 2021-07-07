@@ -8,6 +8,6 @@ extension ProviderExtension on BuildContext {
       read<MixinParameter>().queryParameters;
 
   AppServices get appServices => read<AppServices>();
-  MixinCommonVariables get watchCommonVariables =>
-      watch<MixinCommonVariables>();
+
+  MixinDatabase get mixinDatabase => appServices.mixinDatabase;
 }
