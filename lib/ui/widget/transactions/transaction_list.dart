@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../util/extension/extension.dart';
+import '../../../util/r.dart';
 import 'transaction_list_controller.dart';
 
 typedef LoadMoreTransactionCallback = Future<List<SnapshotItem>> Function(
@@ -38,7 +40,9 @@ class TransactionList extends HookWidget {
     }, [controller]);
 
     final snapshots = useValueListenable(controller.snapshots);
-
+    if (snapshots.isEmpty) {
+      return const SliverToBoxAdapter(child: _EmptyTransaction());
+    }
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) => _buildItem(snapshots[index]),
@@ -138,6 +142,35 @@ class _TransactionIcon extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Colors.amber,
           shape: BoxShape.circle,
+        ),
+      );
+}
+
+class _EmptyTransaction extends StatelessWidget {
+  const _EmptyTransaction({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 130),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              R.resourcesEmptyTransactionSvg,
+              width: 52,
+              height: 68,
+            ),
+            const SizedBox(height: 26),
+            Text(
+              context.l10n.noTransaction,
+              style: TextStyle(
+                color: context.theme.secondaryText,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
       );
 }

@@ -14,5 +14,6 @@
   "depositNotice": "Notice: Both an Account Memo and an Account Name are required to successfully deposit your {value} to Mixin.",
   "depositOnly": "Send only {value} to this deposit address.",
   "depositOnlyDesc": "Sending coin or token other than {value} to this address my result in the loss of your deposit.",
-  "averageArrival": "Average arrival time:{value}"
+  "averageArrival": "Average arrival time:{value}",
+  "noTransaction": "NO TRANSACTION"
 }

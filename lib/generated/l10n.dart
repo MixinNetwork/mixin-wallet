@@ -209,6 +209,16 @@ class L10n {
       args: [value],
     );
   }
+
+  /// `NO TRANSACTION`
+  String get noTransaction {
+    return Intl.message(
+      'NO TRANSACTION',
+      name: 'noTransaction',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

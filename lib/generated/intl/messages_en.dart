@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositOnly": m5,
         "depositOnlyDesc": m6,
         "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
+        "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),

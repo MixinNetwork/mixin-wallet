@@ -193,10 +193,11 @@ class _TransactionsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TransactionList(
-      refreshSnapshots: (offset) =>
-          context.appServices.updateSnapshots(assetId, offset: offset),
-      loadMoreItemDb: (offset) =>
-          context.appServices.snapshots(assetId, offset: offset).get());
+        refreshSnapshots: (offset) =>
+            context.appServices.updateSnapshots(assetId, offset: offset),
+        loadMoreItemDb: (offset) =>
+            context.appServices.snapshots(assetId, offset: offset).get(),
+      );
 }
 
 class _BottomBar extends StatelessWidget {
