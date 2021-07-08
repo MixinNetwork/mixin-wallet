@@ -16,6 +16,23 @@ extension SnapshotConverter on sdk.Snapshot {
       );
 }
 
+extension SnapshotConverterForPendingDeposit on sdk.PendingDeposit {
+  Snapshot toSnapshot(String assetId) => Snapshot(
+        snapshotId: transactionId,
+        // FIXME: replace with enum?
+        type: 'pending',
+        assetId: assetId,
+        amount: amount,
+        createdAt: createdAt,
+        opponentId: null,
+        transactionHash: transactionHash,
+        sender: sender,
+        receiver: null,
+        memo: null,
+        confirmations: confirmations,
+      );
+}
+
 @UseDao(tables: [Snapshots])
 class SnapshotDao extends DatabaseAccessor<MixinDatabase>
     with _$SnapshotDaoMixin {
@@ -31,6 +48,15 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
   Future<int> insert(Snapshot snapshot) => _updateSnapshots(
       [snapshot.snapshotId],
       into(db.snapshots).insertOnConflictUpdate(snapshot));
+
+  Future<void> insertPendingDeposit(List<Snapshot> snapshots) =>
+      _updateSnapshots(
+          snapshots.map((e) => e.snapshotId).toList(),
+          batch((batch) => batch.insertAll(
+                db.snapshots,
+                snapshots,
+                mode: InsertMode.insertOrReplace,
+              )));
 
   Future<void> insertAll(List<sdk.Snapshot> snapshots) => _updateSnapshots(
       snapshots.map((e) => e.snapshotId).toList(),
@@ -82,4 +108,18 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
         ]),
         (s, u, a) => Limit(count, null),
       );
+
+  Future<int> clearPendingDepositsByAssetId(String assetId) => db
+      .clearPendingDepositsBy((snapshots) => snapshots.assetId.equals(assetId));
+
+  Selectable<String> snapshotIdsByTransactionHashList(
+          String assetId, List<String> hashList) =>
+      (select(db.snapshots)
+            ..where(
+              (tbl) =>
+                  tbl.assetId.equals(assetId) &
+                  tbl.type.equals('deposit') &
+                  tbl.transactionHash.isIn(hashList),
+            ))
+          .map((e) => e.snapshotId);
 }

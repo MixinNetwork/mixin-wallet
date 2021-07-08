@@ -42,6 +42,12 @@ class _AssetDetailLoader extends HookWidget {
     //   }
     // }, [notFound]);
 
+    useEffect(() {
+      if (data != null) {
+        context.appServices.refreshPendingDeposits(data);
+      }
+    }, [data?.assetId]);
+
     if (data == null) {
       return const SizedBox();
     }
@@ -173,7 +179,7 @@ class _AssetTransactionsHeader extends StatelessWidget {
       );
 }
 
-class _TransactionsList extends HookWidget {
+class _TransactionsList extends StatelessWidget {
   const _TransactionsList({Key? key, required this.assetId}) : super(key: key);
 
   final String assetId;

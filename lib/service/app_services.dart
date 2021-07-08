@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:moor/moor.dart';
 
+import '../db/dao/snapshot_dao.dart';
 import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
 import 'auth/auth.dart';
@@ -73,9 +74,10 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     });
   }
 
-  Future<void> updateAsset(String assetId) async {
+  Future<sdk.Asset> updateAsset(String assetId) async {
     final asset = (await client.assetApi.getAssetById(assetId)).data;
     await mixinDatabase.assetDao.insert(asset);
+    return asset;
   }
 
   Selectable<AssetResult> assetResults() {
@@ -109,6 +111,47 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Selectable<SnapshotItem> snapshots(String assetId, {String? offset}) =>
       mixinDatabase.snapshotDao.snapshots(assetId);
+
+  Future<void> refreshPendingDeposits(AssetResult asset) =>
+      _refreshPendingDeposits(asset.assetId, asset.destination, asset.tag);
+
+  Future<void> _refreshPendingDeposits(
+    String assetId,
+    String? assetDestination,
+    String? assetTag,
+  ) async {
+    if (assetDestination?.isNotEmpty == true) {
+      final ret = await client.assetApi.pendingDeposits(
+        assetId,
+        destination: assetDestination,
+        tag: assetTag,
+      );
+      await mixinDatabase.snapshotDao.clearPendingDepositsByAssetId(assetId);
+      if (ret.data.isEmpty) {
+        return;
+      }
+      await _processPendingDeposit(assetId, ret.data);
+    } else {
+      final asset = await updateAsset(assetId);
+      assert(asset.destination != null);
+      await _refreshPendingDeposits(
+          asset.assetId, asset.destination, asset.tag);
+    }
+  }
+
+  Future<void> _processPendingDeposit(
+      String assetId, List<sdk.PendingDeposit> pendingDeposits) async {
+    final hashList = pendingDeposits.map((e) => e.transactionHash).toList();
+    final existHashSets = (await mixinDatabase.snapshotDao
+            .snapshotIdsByTransactionHashList(assetId, hashList)
+            .get())
+        .toSet();
+    final snapshots = pendingDeposits
+        .where(existHashSets.contains)
+        .map((e) => e.toSnapshot(assetId))
+        .toList();
+    await mixinDatabase.snapshotDao.insertPendingDeposit(snapshots);
+  }
 
   @override
   Future<void> dispose() async {

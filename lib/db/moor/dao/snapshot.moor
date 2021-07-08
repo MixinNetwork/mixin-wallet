@@ -7,3 +7,7 @@ SELECT s.*, u.avatar_url, u.full_name AS opponent_ful_name, a.symbol AS asset_sy
 WHERE $where
 ORDER BY $order
 LIMIT $limit;
+
+
+clearPendingDepositsBy:
+DELETE FROM snapshots WHERE type = 'pending' AND $where;

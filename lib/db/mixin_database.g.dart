@@ -2632,6 +2632,17 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
     });
   }
 
+  Future<int> clearPendingDepositsBy(
+      Expression<bool?> Function(Snapshots snapshots) where) {
+    final generatedwhere = $write(where(this.snapshots));
+    return customUpdate(
+      'DELETE FROM snapshots WHERE type = \'pending\' AND ${generatedwhere.sql}',
+      variables: [...generatedwhere.introducedVariables],
+      updates: {snapshots},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
   Selectable<AssetResult> assetResults(
       String currentFiat,
       Expression<bool?> Function(Assets asset, Assets tempAsset, Fiats fiat)
