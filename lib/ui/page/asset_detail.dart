@@ -65,15 +65,22 @@ class _AssetDetailPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: BrightnessData.themeOf(context).background,
         appBar: const MixinAppBar(),
-        body: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: _AssetHeader(asset: asset),
+        body: Column(
+          children: [
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: _AssetHeader(asset: asset),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: _AssetTransactionsHeader(),
+                  ),
+                  _TransactionsList(assetId: asset.assetId),
+                ],
+              ),
             ),
-            const SliverToBoxAdapter(
-              child: _AssetTransactionsHeader(),
-            ),
-            _TransactionsList(assetId: asset.assetId),
+            _BottomBar(asset: asset),
           ],
         ),
       );
@@ -190,4 +197,83 @@ class _TransactionsList extends StatelessWidget {
           context.appServices.updateSnapshots(assetId, offset: offset),
       loadMoreItemDb: (offset) =>
           context.appServices.snapshots(assetId, offset: offset).get());
+}
+
+class _BottomBar extends StatelessWidget {
+  const _BottomBar({
+    Key? key,
+    required this.asset,
+  }) : super(key: key);
+
+  final AssetResult asset;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const Spacer(),
+            _Button(
+              text: Text(context.l10n.send),
+              decoration: BoxDecoration(color: context.theme.accent),
+              onTap: () {},
+            ),
+            const SizedBox(width: 20),
+            _Button(
+              text: Text(
+                context.l10n.receive,
+                style: TextStyle(color: context.theme.accent),
+              ),
+              decoration: BoxDecoration(
+                  border: Border.all(
+                color: context.theme.accent,
+                width: 1,
+              )),
+              onTap: () {},
+            ),
+            const Spacer(),
+          ],
+        ),
+      );
+}
+
+class _Button extends StatelessWidget {
+  const _Button({
+    Key? key,
+    required this.text,
+    required this.onTap,
+    required this.decoration,
+  }) : super(key: key);
+
+  final Widget text;
+  final VoidCallback onTap;
+
+  final BoxDecoration decoration;
+
+  @override
+  Widget build(BuildContext context) => InteractableBox(
+        onTap: onTap,
+        child: Container(
+          height: 44,
+          width: 140,
+          decoration: decoration.copyWith(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(
+            vertical: 12,
+            horizontal: 32,
+          ),
+          child: Center(
+            child: DefaultTextStyle(
+              style: TextStyle(
+                color: context.theme.background,
+                fontSize: 14,
+              ),
+              child: text,
+            ),
+          ),
+        ),
+      );
 }
