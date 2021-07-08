@@ -24,7 +24,7 @@ class InteractableBox extends HookWidget {
     return GestureDetector(
       onTapDown: (_) => heldDown.value = true,
       onTapUp: (_) => heldDown.value = false,
-      onTapCancel: () => heldDown.value = true,
+      onTapCancel: () => heldDown.value = false,
       onTap: onTap,
       child: AnimatedOpacity(
         opacity: heldDown.value ? pressedOpacity : 1,
