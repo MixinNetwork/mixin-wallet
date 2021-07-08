@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:very_good_analysis/very_good_analysis.dart';
 
 import '../../../db/mixin_database.dart';
+import '../../../util/extension/extension.dart';
 import '../../../util/logger.dart';
 import 'transaction_list.dart';
 
 class TransactionListController {
   TransactionListController(
     this._loadMoreItemDb,
-    this._loadMoreItemNetwork,
+    this._refreshSnapshots,
   );
 
   LoadMoreTransactionCallback _loadMoreItemDb;
-  LoadMoreTransactionCallback _loadMoreItemNetwork;
+  RefreshTransactionCallback _refreshSnapshots;
 
   final snapshots = ValueNotifier(const <SnapshotItem>[]);
 
@@ -34,52 +34,78 @@ class TransactionListController {
         : _snapshotItems.last.createdAt.toIso8601String();
 
     final dbResult = _loadMoreItemDb(offset);
-    final networkResult = _loadMoreItemNetwork(offset);
-    unawaited(networkResult);
+    final networkResult = _refreshSnapshots(offset);
 
     try {
       _snapshotFromDb
         ..clear()
         ..addAll(await dbResult);
-      _updateSnapshotsItem();
+      _notifySnapshotsItemUpdated();
     } catch (e, s) {
       w('failed to load from database. $e $s');
     }
-    //
-    // try {
-    //   _snapshotItems.addAll(await networkResult);
-    //   _snapshotFromDb.clear();
-    //   _updateSnapshotsItem();
-    // } catch (error, s) {
-    //   e('failed to load item from network. $error $s');
-    // }
+
+    try {
+      final lists = await networkResult;
+      _snapshotItems.addAll(lists);
+      _snapshotFromDb.clear();
+      _notifySnapshotsItemUpdated();
+    } catch (error, s) {
+      e('failed to load item from network. $error $s');
+    }
     _loading = false;
   }
 
-  void _updateSnapshotsItem() {
+  void _notifySnapshotsItemUpdated() {
     snapshots.value = [..._snapshotItems, ..._snapshotFromDb];
+  }
+
+  void _refreshSnapshotsItem(List<SnapshotItem> items) {
+    final map = {for (var e in items) e.snapshotId: e};
+
+    void updateList(List<SnapshotItem> list) {
+      for (var i = 0; i < list.length; i++) {
+        final item = list[i];
+        final newItem = map[item.snapshotId];
+        if (newItem == null) {
+          continue;
+        }
+        list[i] = newItem;
+      }
+    }
+
+    updateList(_snapshotItems);
+    updateList(_snapshotFromDb);
+
+    _notifySnapshotsItemUpdated();
   }
 }
 
 TransactionListController useTransactionListController({
   required LoadMoreTransactionCallback loadMoreItemDb,
-  required LoadMoreTransactionCallback loadMoreItemNetwork,
+  required RefreshTransactionCallback refreshSnapshots,
 }) {
   final controller = use(_TransactionListControllerHook(
     loadMoreItemDb: loadMoreItemDb,
-    loadMoreItemNetwork: loadMoreItemNetwork,
+    refreshSnapshots: refreshSnapshots,
   ));
+  final snapshotDao = useContext().appServices.mixinDatabase.snapshotDao;
+  useEffect(() {
+    final subscription = snapshotDao.updateTransactionStream
+        .listen(controller._refreshSnapshotsItem);
+    return subscription.cancel;
+  }, [snapshotDao]);
   return controller;
 }
 
 class _TransactionListControllerHook extends Hook<TransactionListController> {
   const _TransactionListControllerHook({
     required this.loadMoreItemDb,
-    required this.loadMoreItemNetwork,
+    required this.refreshSnapshots,
   });
 
   final LoadMoreTransactionCallback loadMoreItemDb;
-  final LoadMoreTransactionCallback loadMoreItemNetwork;
+  final RefreshTransactionCallback refreshSnapshots;
 
   @override
   _TransactionListControllerHookState createState() =>
@@ -90,7 +116,7 @@ class _TransactionListControllerHookState extends HookState<
     TransactionListController, _TransactionListControllerHook> {
   late final TransactionListController _controller = TransactionListController(
     hook.loadMoreItemDb,
-    hook.loadMoreItemNetwork,
+    hook.refreshSnapshots,
   );
 
   @override
@@ -98,7 +124,7 @@ class _TransactionListControllerHookState extends HookState<
     super.didUpdateHook(oldHook);
     _controller
       .._loadMoreItemDb = hook.loadMoreItemDb
-      .._loadMoreItemNetwork = hook.loadMoreItemNetwork;
+      .._refreshSnapshots = hook.refreshSnapshots;
   }
 
   @override

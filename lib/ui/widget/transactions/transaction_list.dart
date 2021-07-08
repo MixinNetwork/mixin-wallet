@@ -11,15 +11,18 @@ import 'transaction_list_controller.dart';
 typedef LoadMoreTransactionCallback = Future<List<SnapshotItem>> Function(
     String? offset);
 
+typedef RefreshTransactionCallback = Future<List<SnapshotItem>> Function(
+    String? offset);
+
 class TransactionList extends HookWidget {
   const TransactionList({
     Key? key,
     required this.loadMoreItemDb,
-    required this.loadMoreItemNetwork,
+    required this.refreshSnapshots,
   }) : super(key: key);
 
   final LoadMoreTransactionCallback loadMoreItemDb;
-  final LoadMoreTransactionCallback loadMoreItemNetwork;
+  final RefreshTransactionCallback refreshSnapshots;
 
   Widget _buildItem(SnapshotItem item) => _TransactionItem(item: item);
 
@@ -27,7 +30,7 @@ class TransactionList extends HookWidget {
   Widget build(BuildContext context) {
     final controller = useTransactionListController(
       loadMoreItemDb: loadMoreItemDb,
-      loadMoreItemNetwork: loadMoreItemNetwork,
+      refreshSnapshots: refreshSnapshots,
     );
 
     useEffect(() {
@@ -35,8 +38,6 @@ class TransactionList extends HookWidget {
     }, [controller]);
 
     final snapshots = useValueListenable(controller.snapshots);
-
-    debugPrint('snapshots: $snapshots');
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(

@@ -179,14 +179,9 @@ class _TransactionsList extends HookWidget {
   final String assetId;
 
   @override
-  Widget build(BuildContext context) {
-    useEffect(() {
-      context.appServices.updateSnapshots(assetId);
-    }, [assetId]);
-    return TransactionList(
-        loadMoreItemNetwork: (offset) =>
-            context.appServices.snapshots(assetId).get(),
-        loadMoreItemDb: (offset) =>
-            context.appServices.snapshots(assetId).get());
-  }
+  Widget build(BuildContext context) => TransactionList(
+      refreshSnapshots: (offset) =>
+          context.appServices.updateSnapshots(assetId, offset: offset),
+      loadMoreItemDb: (offset) =>
+          context.appServices.snapshots(assetId, offset: offset).get());
 }

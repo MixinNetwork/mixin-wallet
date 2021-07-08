@@ -5,6 +5,7 @@ import 'package:tuple/tuple.dart';
 enum DatabaseEvent {
   insert,
   insertOrReplaceMessage,
+  updateTransaction,
 }
 
 class DataBaseEventBus {
