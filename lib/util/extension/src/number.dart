@@ -33,9 +33,6 @@ extension AssetResultExtension on AssetResult {
 
   bool get needShowMemo => tag?.isNotEmpty == true;
 
-  bool get hasDepositEntries =>
-      depositEntries != null && depositEntries!.length > 1;
-
   String getTip(BuildContext context) {
     switch (chainId) {
       case bitcoin:

@@ -1,8 +1,7 @@
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart'
-    show UserRelationship, DepositEntry;
+    show UserRelationship;
 import 'package:moor/moor.dart';
 
-import 'converter/deposit_entry_converter.dart';
 import 'converter/millis_date_converter.dart';
 import 'converter/user_relationship_converter.dart';
 import 'dao/address_dao.dart';

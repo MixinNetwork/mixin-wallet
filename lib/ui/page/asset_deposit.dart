@@ -6,12 +6,14 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../db/converter/deposit_entry_converter.dart';
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';
+import '../widget/interactable_box.dart';
 import '../widget/symbol.dart';
 
 class AssetDeposit extends StatelessWidget {
@@ -30,6 +32,9 @@ class _AssetDepositLoader extends HookWidget {
     // The asset id of CNB is: 965e5c6e-434c-3fa9-b780-c50f43cd955c
     final assetId = context.pathParameters['id']!;
 
+    useMemoizedFuture(() => context.appServices.updateAsset(assetId),
+        keys: [assetId]);
+
     final data = useMemoizedStream(
       () => context.appServices.assetResult(assetId).watchSingleOrNull(),
       keys: [assetId],
@@ -46,195 +51,209 @@ class _AssetDepositLoader extends HookWidget {
     if (data == null) {
       return const SizedBox();
     }
-    return _AssetDepositPage(asset: data, checkedAddress: data.destination);
+    return _AssetDepositPage(asset: data);
   }
 }
 
-class _AssetDepositPage extends StatelessWidget {
+String _getDestinationType(String? checkedDestination, String? destination) {
+  if (checkedDestination == destination) {
+    return 'Bitcoin';
+  } else {
+    return 'Bitcoin (Segwit)';
+  }
+}
+
+class _AssetDepositPage extends HookWidget {
   const _AssetDepositPage({
     Key? key,
     required this.asset,
-    required this.checkedAddress,
   }) : super(key: key);
 
   final AssetResult asset;
 
-  final String? checkedAddress;
-
-  String getAddressType() {
-    if (checkedAddress == asset.destination) {
-      return 'Bitcoin';
-    } else {
-      return 'Bitcoin (Segwit)';
-    }
-  }
-
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final depositEntries =
+        const DepositEntryConverter().mapToDart(asset.depositEntries);
+    final checkedDestination = useState<String>(asset.destination!);
+    final checkedTag = useState<String?>(asset.tag);
+    return Scaffold(
+      backgroundColor: context.theme.background,
+      appBar: AppBar(
         backgroundColor: context.theme.background,
-        appBar: AppBar(
-          backgroundColor: context.theme.background,
-          elevation: 0,
-          title: Text(
-            context.l10n.deposit,
-            style: TextStyle(
-              color: context.theme.text,
-              fontFamily: 'Nunito',
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
+        elevation: 0,
+        title: Text(
+          context.l10n.deposit,
+          style: TextStyle(
+            color: context.theme.text,
+            fontFamily: 'Nunito',
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: false,
+        leading: const MixinBackButton(),
+        actions: <Widget>[
+          ActionButton(
+              name: R.resourcesIcQuestionSvg,
+              color: BrightnessData.themeOf(context).icon,
+              onTap: () {}),
+          const SizedBox(width: 122),
+        ],
+      ),
+      body: Container(
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+        child: Column(children: [
+          const SizedBox(height: 20),
+          _RoundContainer(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Row(
+              children: [
+                SymbolIcon(
+                    symbolUrl: asset.iconUrl,
+                    chainUrl: asset.iconUrl,
+                    size: 32),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        asset.symbol.overflow,
+                        style: TextStyle(
+                          color: context.theme.text,
+                          fontSize: 16,
+                          fontFamily: 'Nunito',
+                          fontWeight: FontWeight.w400,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        '${asset.balance}${asset.symbol}',
+                        style: TextStyle(
+                          color: context.theme.secondaryText,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: SvgPicture.asset(R.resourcesIcArrowDownSvg),
+                )
+              ],
             ),
           ),
-          centerTitle: false,
-          leading: const MixinBackButton(),
-          actions: <Widget>[
-            ActionButton(
-                name: R.resourcesIcQuestionSvg,
-                color: BrightnessData.themeOf(context).icon,
-                onTap: () {}),
-            const SizedBox(width: 122),
-          ],
-        ),
-        body: Container(
-          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-          child: Column(children: [
-            const SizedBox(height: 20),
-            _RoundContainer(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Row(
-                children: [
-                  SymbolIcon(
-                      symbolUrl: asset.iconUrl,
-                      chainUrl: asset.iconUrl,
-                      size: 32),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          asset.symbol.overflow,
-                          style: TextStyle(
-                            color: context.theme.text,
-                            fontSize: 16,
-                            fontFamily: 'Nunito',
-                            fontWeight: FontWeight.w400,
+          const SizedBox(height: 10),
+          (depositEntries != null && depositEntries.length > 1)
+              ? Column(
+                  children: [
+                    InteractableBox(
+                        onTap: () {
+                          showCupertinoModalBottomSheet(
+                              context: context,
+                              builder: (context) => _AddressTypeBottomSheet(
+                                    depositEntries: depositEntries,
+                                    destination: asset.destination ?? '',
+                                    checkedDestination:
+                                        checkedDestination.value,
+                                    onTap: (depositEntry) {
+                                      checkedDestination.value =
+                                          depositEntry.destination;
+                                      checkedTag.value = depositEntry.tag;
+                                      Navigator.pop(context);
+                                    },
+                                  ));
+                        },
+                        child: _RoundContainer(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  _getDestinationType(checkedDestination.value,
+                                      asset.destination),
+                                  style: TextStyle(
+                                    color: context.theme.text,
+                                    fontSize: 16,
+                                    fontFamily: 'Nunito',
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child:
+                                    SvgPicture.asset(R.resourcesIcArrowDownSvg),
+                              )
+                            ],
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          '${asset.balance}${asset.symbol}',
-                          style: TextStyle(
-                            color: context.theme.secondaryText,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
+                        )),
+                    const SizedBox(height: 10),
+                  ],
+                )
+              : const SizedBox(),
+          _Item(
+            asset: asset,
+            title: context.l10n.address,
+            desc: checkedDestination.value,
+            onCopy: () {},
+            showQrCode: () {},
+          ),
+          const SizedBox(height: 10),
+          asset.needShowMemo
+              ? _Item(
+                  asset: asset,
+                  title: context.l10n.memo,
+                  desc: checkedTag.value ?? '',
+                  onCopy: () {},
+                  showQrCode: () {},
+                )
+              : const SizedBox(),
+          const SizedBox(height: 10),
+          asset.needShowMemo
+              ? _RoundContainer(
+                  height: null,
+                  radius: 8,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 13, horizontal: 16),
+                  color: const Color(0xfffcf1f2),
+                  child: Text(
+                    context.l10n.depositNotice(asset.symbol),
+                    style: TextStyle(
+                      color: context.theme.red,
+                      fontSize: 14,
+                      fontFamily: 'SF Pro Text',
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: SvgPicture.asset(R.resourcesIcArrowDownSvg),
-                  )
-                ],
-              ),
+                )
+              : const SizedBox(),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(asset.getTip(context),
+                  style: TextStyle(
+                    color: context.theme.text,
+                    fontSize: 14,
+                    fontFamily: 'Nunito',
+                    fontWeight: FontWeight.w600,
+                  )),
             ),
-            const SizedBox(height: 10),
-            asset.hasDepositEntries
-                ? _RoundContainer(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            getAddressType(),
-                            style: TextStyle(
-                              color: context.theme.text,
-                              fontSize: 16,
-                              fontFamily: 'Nunito',
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: SvgPicture.asset(R.resourcesIcArrowDownSvg),
-                        )
-                      ],
-                    ),
-                  )
-                : const SizedBox(),
-            _Item(
-              asset: asset,
-              title: context.l10n.address,
-              desc: asset.destination ?? '',
-              onCopy: () {},
-              showQrCode: () {},
-            ),
-            const SizedBox(height: 10),
-            asset.needShowMemo
-                ? _Item(
-                    asset: asset,
-                    title: context.l10n.memo,
-                    desc: asset.tag ?? '',
-                    onCopy: () {},
-                    showQrCode: () {},
-                  )
-                : const SizedBox(height: 4),
-            const SizedBox(height: 10),
-            asset.needShowMemo
-                ? _RoundContainer(
-                    height: null,
-                    radius: 8,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 13, horizontal: 16),
-                    color: const Color(0xfffcf1f2),
-                    child: Text(
-                      context.l10n.depositNotice(asset.symbol),
-                      style: TextStyle(
-                        color: context.theme.red,
-                        fontSize: 14,
-                        fontFamily: 'SF Pro Text',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  )
-                : const SizedBox(height: 1),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(asset.getTip(context),
-                    style: TextStyle(
-                      color: context.theme.text,
-                      fontSize: 14,
-                      fontFamily: 'Nunito',
-                      fontWeight: FontWeight.w600,
-                    )),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(context.l10n.depositOnlyDesc(asset.symbol),
-                    style: TextStyle(
-                      color: context.theme.secondaryText,
-                      fontSize: 14,
-                      fontFamily: 'Nunito',
-                      fontWeight: FontWeight.w400,
-                    )),
-              ),
-            ),
-            const Spacer(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Text(context.l10n.depositConfirmation(asset.confirmations),
+          ),
+          const SizedBox(height: 4),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(context.l10n.depositOnlyDesc(asset.symbol),
                   style: TextStyle(
                     color: context.theme.secondaryText,
                     fontSize: 14,
@@ -242,10 +261,23 @@ class _AssetDepositPage extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   )),
             ),
-            const SizedBox(height: 70),
-          ]),
-        ),
-      );
+          ),
+          const Spacer(),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Text(context.l10n.depositConfirmation(asset.confirmations),
+                style: TextStyle(
+                  color: context.theme.secondaryText,
+                  fontSize: 14,
+                  fontFamily: 'Nunito',
+                  fontWeight: FontWeight.w400,
+                )),
+          ),
+          const SizedBox(height: 70),
+        ]),
+      ),
+    );
+  }
 }
 
 class _RoundContainer extends StatelessWidget {
@@ -435,10 +467,14 @@ class _AddressTypeBottomSheet extends StatelessWidget {
     Key? key,
     required this.depositEntries,
     required this.destination,
+    required this.checkedDestination,
+    required this.onTap,
   }) : super(key: key);
 
   final List<DepositEntry> depositEntries;
   final String destination;
+  final String checkedDestination;
+  final _AddressTypeCallback onTap;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -470,15 +506,19 @@ class _AddressTypeBottomSheet extends StatelessWidget {
                 )),
             const SizedBox(height: 20),
             _RoundContainer(
-              child: ListView(
+              height: 148,
+              child: Column(
                 children: [
                   _AddressTypeItem(
                       depositEntry: depositEntries[0],
-                      destination: destination),
+                      destination: destination,
+                      checkedDestination: checkedDestination,
+                      onTap: onTap),
                   _AddressTypeItem(
                       depositEntry: depositEntries[1],
                       destination: destination,
-                      checked: true),
+                      checkedDestination: checkedDestination,
+                      onTap: onTap),
                 ],
               ),
             )
@@ -492,34 +532,44 @@ class _AddressTypeItem extends StatelessWidget {
     Key? key,
     required this.depositEntry,
     required this.destination,
-    this.checked = false,
+    required this.checkedDestination,
+    required this.onTap,
   }) : super(key: key);
 
   final DepositEntry depositEntry;
   final String destination;
-  final bool checked;
+  final String checkedDestination;
+  final _AddressTypeCallback onTap;
 
   @override
-  Widget build(BuildContext context) => Container(
-      height: 64,
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-      child: Row(
-        children: [
-          Text(
-              depositEntry.destination == destination
-                  ? 'Bitcoin'
-                  : 'Bitcoin (Segwit)',
-              style: TextStyle(
-                color: context.theme.text,
-                fontFamily: 'PingFang SC',
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              )),
-          const Spacer(),
-          Align(
-            alignment: Alignment.centerRight,
-            child: SvgPicture.asset(R.resourcesIcCheckSvg),
-          ),
-        ],
-      ));
+  Widget build(BuildContext context) => InteractableBox(
+        onTap: () {
+          if (checkedDestination != depositEntry.destination) {
+            onTap(depositEntry);
+          }
+        },
+        child: Container(
+            height: 64,
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+            child: Row(
+              children: [
+                Text(_getDestinationType(destination, depositEntry.destination),
+                    style: TextStyle(
+                      color: context.theme.text,
+                      fontFamily: 'PingFang SC',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    )),
+                const Spacer(),
+                depositEntry.destination == checkedDestination
+                    ? Align(
+                        alignment: Alignment.centerRight,
+                        child: SvgPicture.asset(R.resourcesIcCheckSvg),
+                      )
+                    : const SizedBox(),
+              ],
+            )),
+      );
 }
+
+typedef _AddressTypeCallback = void Function(DepositEntry);

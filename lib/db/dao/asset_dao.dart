@@ -1,6 +1,7 @@
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:moor/moor.dart';
 
+import '../converter/deposit_entry_converter.dart';
 import '../mixin_database.dart';
 import '../util/util.dart';
 
@@ -22,7 +23,8 @@ extension AssetConverter on sdk.Asset {
         changeUsd: changeUsd,
         changeBtc: changeBtc,
         confirmations: confirmations,
-        depositEntries: Value(depositEntries),
+        depositEntries:
+            Value(const DepositEntryConverter().mapToSql(depositEntries)),
       );
 }
 
