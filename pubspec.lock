@@ -423,9 +423,11 @@ packages:
   mixin_bot_sdk_dart:
     dependency: "direct main"
     description:
-      path: "../mixin_bot_sdk_dart"
-      relative: true
-    source: path
+      path: "."
+      ref: e80676157e6b326762618fa9b69c57b0027e47ab
+      resolved-ref: e80676157e6b326762618fa9b69c57b0027e47ab
+      url: "https://github.com/MixinNetwork/mixin_bot_sdk_dart.git"
+    source: git
     version: "0.0.7"
   modal_bottom_sheet:
     dependency: "direct main"
