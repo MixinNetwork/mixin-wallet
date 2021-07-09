@@ -20,5 +20,11 @@
   "depositOnlyDesc": "Sending coin or token other than {value} to this address my result in the loss of your deposit.",
   "depositConfirmation": "Deposit will arrive after at least {value} block confirmations",
   "averageArrival": "Average arrival time:{value}",
-  "noTransaction": "NO TRANSACTION"
+  "noTransaction": "NO TRANSACTION",
+  "withdrawal": "Withdrawal",
+  "fee": "Fee",
+  "rebate": "Rebate",
+  "transfer": "Transfer",
+  "depositing": "Depositing",
+  "raw": "Raw"
 }

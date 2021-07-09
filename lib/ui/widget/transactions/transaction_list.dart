@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../util/extension/extension.dart';
@@ -60,7 +62,6 @@ class _TransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPositive = double.parse(item.amount) > 0;
-    importExtension();
     return Container(
         margin: const EdgeInsets.only(bottom: 20),
         height: 50,
@@ -74,21 +75,14 @@ class _TransactionItem extends StatelessWidget {
                 child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
+                const SizedBox(height: 3),
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    // TODO transaction type
-                    Text(
-                      item.type,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: BrightnessData.themeOf(context).text,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    _TransactionItemTitle(item: item),
                     const Spacer(),
                     Text(
-                      '${isPositive ? '+' : ''}${item.amount.currencyFormat}',
+                      '${isPositive ? '+' : ''}${item.amount.numberFormat()}',
                       style: TextStyle(
                         fontSize: 16,
                         color: BrightnessData.themeOf(context).secondaryText,
@@ -97,12 +91,12 @@ class _TransactionItem extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const Spacer(),
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
-                      item.createdAt.toIso8601String(),
+                      DateFormat.yMMMMd().format(item.createdAt),
                       style: TextStyle(
                         fontSize: 14,
                         color: BrightnessData.themeOf(context).secondaryText,
@@ -120,12 +114,59 @@ class _TransactionItem extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
+                const SizedBox(height: 1),
               ],
             )),
             const SizedBox(width: 20),
           ],
         ));
+  }
+}
+
+class _TransactionItemTitle extends StatelessWidget {
+  const _TransactionItemTitle({Key? key, required this.item}) : super(key: key);
+
+  final SnapshotItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    String title;
+    switch (item.type) {
+      case SnapshotType.pending:
+        title = context.l10n.depositing;
+        break;
+      case SnapshotType.deposit:
+        title = context.l10n.deposit;
+        break;
+      case SnapshotType.transfer:
+        title = context.l10n.transfer;
+        break;
+      case SnapshotType.withdrawal:
+        title = context.l10n.withdrawal;
+        break;
+      case SnapshotType.fee:
+        title = context.l10n.fee;
+        break;
+      case SnapshotType.rebate:
+        title = context.l10n.rebate;
+        break;
+      case SnapshotType.raw:
+        title = context.l10n.raw;
+        break;
+      default:
+        title = item.type;
+        break;
+    }
+
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 16,
+        color: BrightnessData.themeOf(context).text,
+        fontWeight: FontWeight.w600,
+      ),
+    );
   }
 }
 

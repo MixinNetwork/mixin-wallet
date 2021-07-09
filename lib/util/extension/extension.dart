@@ -1,6 +1,8 @@
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:decimal/decimal.dart';
+import 'package:decimal/intl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:path_to_regexp/path_to_regexp.dart';

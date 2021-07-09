@@ -59,12 +59,18 @@ class MessageLookup extends MessageLookupByLibrary {
             "This address supports all ERC-20 tokens, such as ETH, XIN, TUSD, HT, LOOM, LEO, etc."),
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "This address supports all TRC-10 and TRC-20 tokens, such as TRX, BTT, USDT-TRON, etc."),
+        "depositing": MessageLookupByLibrary.simpleMessage("Depositing"),
+        "fee": MessageLookupByLibrary.simpleMessage("Fee"),
         "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
+        "raw": MessageLookupByLibrary.simpleMessage("Raw"),
+        "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
-        "transactions": MessageLookupByLibrary.simpleMessage("Transactions")
+        "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
+        "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
+        "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal")
       };
 }

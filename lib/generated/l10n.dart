@@ -269,6 +269,66 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Withdrawal`
+  String get withdrawal {
+    return Intl.message(
+      'Withdrawal',
+      name: 'withdrawal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fee`
+  String get fee {
+    return Intl.message(
+      'Fee',
+      name: 'fee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rebate`
+  String get rebate {
+    return Intl.message(
+      'Rebate',
+      name: 'rebate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer`
+  String get transfer {
+    return Intl.message(
+      'Transfer',
+      name: 'transfer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Depositing`
+  String get depositing {
+    return Intl.message(
+      'Depositing',
+      name: 'depositing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Raw`
+  String get raw {
+    return Intl.message(
+      'Raw',
+      name: 'raw',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

@@ -109,7 +109,7 @@ class _AssetHeader extends StatelessWidget {
             const SizedBox(height: 18),
             Text.rich(TextSpan(children: [
               TextSpan(
-                  text: asset.balance,
+                  text: asset.balance.numberFormat(),
                   style: const TextStyle(
                     fontFamily: 'Mixin Condensed',
                     fontSize: 48,
