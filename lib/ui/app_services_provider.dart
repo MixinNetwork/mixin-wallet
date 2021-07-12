@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:provider/provider.dart';
 
 import '../service/app_services.dart';
 import '../service/auth/auth_manager.dart';
-import '../util/extension/extension.dart';
 
 class AppServicesProvider extends HookWidget {
   const AppServicesProvider({
