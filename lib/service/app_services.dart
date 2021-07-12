@@ -91,10 +91,16 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .assetResult(auth!.account.fiatCurrency, assetId);
   }
 
-  Future<List<SnapshotItem>> updateSnapshots(String assetId,
-      {String? offset}) async {
-    final response =
-        await client.snapshotApi.getSnapshotsByAssetId(assetId, offset: offset);
+  Future<List<SnapshotItem>> updateSnapshots(
+    String assetId, {
+    String? offset,
+    int limit = 30,
+  }) async {
+    final response = await client.snapshotApi.getSnapshotsByAssetId(
+      assetId,
+      offset: offset,
+      limit: limit,
+    );
     await mixinDatabase.snapshotDao.insertAll(response.data);
     if (await mixinDatabase.assetDao
             .simpleAssetById(assetId)
@@ -109,8 +115,10 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     return snapshots;
   }
 
-  Selectable<SnapshotItem> snapshots(String assetId, {String? offset}) =>
-      mixinDatabase.snapshotDao.snapshots(assetId);
+  Selectable<SnapshotItem> snapshots(String assetId,
+          {String? offset, int limit = 30}) =>
+      mixinDatabase.snapshotDao
+          .snapshots(assetId, offset: offset, count: limit);
 
   Future<void> refreshPendingDeposits(AssetResult asset) =>
       _refreshPendingDeposits(asset.assetId, asset.destination, asset.tag);

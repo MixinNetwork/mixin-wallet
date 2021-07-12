@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -6,14 +8,18 @@ import '../../../util/extension/extension.dart';
 import '../../../util/logger.dart';
 import 'transaction_list.dart';
 
+const _kLoadLimit = 5;
+
 class TransactionListController {
   TransactionListController(
     this._loadMoreItemDb,
     this._refreshSnapshots,
+    this._pageSize,
   );
 
   LoadMoreTransactionCallback _loadMoreItemDb;
   RefreshTransactionCallback _refreshSnapshots;
+  int _pageSize;
 
   final snapshots = ValueNotifier(const <SnapshotItem>[]);
 
@@ -21,20 +27,26 @@ class TransactionListController {
 
   final _snapshotFromDb = <SnapshotItem>[];
 
+  Timer? _autoFillTask;
+
   bool _loading = false;
 
-  Future<void> loadMoreItem() async {
+  String? get _offset => _snapshotItems.isEmpty
+      ? null
+      : _snapshotItems.last.createdAt.toIso8601String();
+
+  Future<void> loadMoreItem() => _loadMoreItem(_offset, _pageSize);
+
+  Future<void> _loadMoreItem(String? offset, int limit) async {
     if (_loading) {
       return;
     }
     _loading = true;
 
-    final offset = _snapshotItems.isEmpty
-        ? null
-        : _snapshotItems.last.createdAt.toIso8601String();
+    i('TransactionListController start to load. $offset, $limit');
 
-    final dbResult = _loadMoreItemDb(offset);
-    final networkResult = _refreshSnapshots(offset);
+    final dbResult = _loadMoreItemDb(offset, limit);
+    final networkResult = _refreshSnapshots(offset, limit);
 
     try {
       _snapshotFromDb
@@ -79,15 +91,39 @@ class TransactionListController {
 
     _notifySnapshotsItemUpdated();
   }
+
+  // on [_pageSize] update, if current item count less than the new pageSize, we
+  // need load more item to fill the blank.
+  void updatePageSize(int pageSize) {
+    if (_loading) {
+      // TODO check this after loading
+      return;
+    }
+
+    final moreNeedLoad = pageSize - _snapshotItems.length;
+    _pageSize = pageSize;
+
+    if (moreNeedLoad <= 0) {
+      return;
+    }
+    _autoFillTask?.cancel();
+    _autoFillTask = Timer(const Duration(milliseconds: 800), () {
+      _loadMoreItem(_offset, moreNeedLoad).whenComplete(() {
+        _autoFillTask = null;
+      });
+    });
+  }
 }
 
 TransactionListController useTransactionListController({
   required LoadMoreTransactionCallback loadMoreItemDb,
   required RefreshTransactionCallback refreshSnapshots,
+  int pageSize = _kLoadLimit,
 }) {
   final controller = use(_TransactionListControllerHook(
     loadMoreItemDb: loadMoreItemDb,
     refreshSnapshots: refreshSnapshots,
+    pageSize: pageSize,
   ));
   final snapshotDao = useContext().appServices.mixinDatabase.snapshotDao;
   useEffect(() {
@@ -102,10 +138,12 @@ class _TransactionListControllerHook extends Hook<TransactionListController> {
   const _TransactionListControllerHook({
     required this.loadMoreItemDb,
     required this.refreshSnapshots,
+    required this.pageSize,
   });
 
   final LoadMoreTransactionCallback loadMoreItemDb;
   final RefreshTransactionCallback refreshSnapshots;
+  final int pageSize;
 
   @override
   _TransactionListControllerHookState createState() =>
@@ -117,6 +155,7 @@ class _TransactionListControllerHookState extends HookState<
   late final TransactionListController _controller = TransactionListController(
     hook.loadMoreItemDb,
     hook.refreshSnapshots,
+    hook.pageSize,
   );
 
   @override
@@ -124,7 +163,8 @@ class _TransactionListControllerHookState extends HookState<
     super.didUpdateHook(oldHook);
     _controller
       .._loadMoreItemDb = hook.loadMoreItemDb
-      .._refreshSnapshots = hook.refreshSnapshots;
+      .._refreshSnapshots = hook.refreshSnapshots
+      ..updatePageSize(hook.pageSize);
   }
 
   @override

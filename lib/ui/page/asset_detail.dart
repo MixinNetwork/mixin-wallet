@@ -69,16 +69,33 @@ class _AssetDetailPage extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: _AssetHeader(asset: asset),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: _AssetTransactionsHeader(),
-                  ),
-                  _TransactionsList(assetId: asset.assetId),
-                ],
+              child: TransactionListBuilder(
+                refreshSnapshots: (offset, limit) => context.appServices
+                    .updateSnapshots(asset.assetId,
+                        offset: offset, limit: limit),
+                loadMoreItemDb: (offset, limit) => context.appServices
+                    .snapshots(asset.assetId, offset: offset, limit: limit)
+                    .get(),
+                builder: (context, snapshots) => CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: _AssetHeader(asset: asset),
+                    ),
+                    const SliverToBoxAdapter(
+                      child: _AssetTransactionsHeader(),
+                    ),
+                    if (snapshots.isEmpty)
+                      const SliverToBoxAdapter(child: EmptyTransaction()),
+                    if (snapshots.isNotEmpty)
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) =>
+                              TransactionItem(item: snapshots[index]),
+                          childCount: snapshots.length,
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
             _BottomBar(asset: asset),
@@ -184,20 +201,6 @@ class _AssetTransactionsHeader extends StatelessWidget {
             ),
           ),
         ),
-      );
-}
-
-class _TransactionsList extends StatelessWidget {
-  const _TransactionsList({Key? key, required this.assetId}) : super(key: key);
-
-  final String assetId;
-
-  @override
-  Widget build(BuildContext context) => TransactionList(
-        refreshSnapshots: (offset) =>
-            context.appServices.updateSnapshots(assetId, offset: offset),
-        loadMoreItemDb: (offset) =>
-            context.appServices.snapshots(assetId, offset: offset).get(),
       );
 }
 
