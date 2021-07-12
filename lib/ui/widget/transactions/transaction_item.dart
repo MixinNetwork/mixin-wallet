@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../util/extension/extension.dart';
+import '../../../util/r.dart';
+import '../avatar.dart';
 import '../brightness_observer.dart';
 
 const kTransactionItemHeight = 70.0;
@@ -39,7 +42,11 @@ class TransactionItem extends StatelessWidget {
                       '${isPositive ? '+' : ''}${item.amount.numberFormat()}',
                       style: TextStyle(
                         fontSize: 16,
-                        color: BrightnessData.themeOf(context).secondaryText,
+                        color: item.type == SnapshotType.pending
+                            ? context.theme.secondaryText
+                            : isPositive
+                                ? context.theme.green
+                                : context.theme.red,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -129,14 +136,39 @@ class _TransactionIcon extends StatelessWidget {
 
   final SnapshotItem item;
 
-  // TODO icon with type
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) {
+    Widget? child;
+
+    if (item.type == SnapshotType.transfer) {
+      child = Avatar(
+        avatarUrl: item.avatarUrl,
+        userId: item.opponentId ?? '',
+        name: item.opponentFulName ?? '',
+        size: 44,
+        borderWidth: 0,
+      );
+    } else if (item.type == SnapshotType.deposit) {
+      child = SvgPicture.asset(
+        R.resourcesTransactionDepositSvg,
         height: 44,
         width: 44,
-        decoration: const BoxDecoration(
-          color: Colors.amber,
-          shape: BoxShape.circle,
-        ),
       );
+    } else if (item.type == SnapshotType.withdrawal) {
+      child = SvgPicture.asset(
+        R.resourcesTransactionWithDrawalSvg,
+        height: 44,
+        width: 44,
+      );
+    }
+
+    return Container(
+      height: 44,
+      width: 44,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+      ),
+      child: child,
+    );
+  }
 }

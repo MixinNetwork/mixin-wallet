@@ -13,6 +13,12 @@ extension SnapshotConverter on sdk.Snapshot {
         assetId: assetId,
         amount: amount,
         createdAt: createdAt,
+        opponentId: Value(opponentId),
+        transactionHash: Value(transactionHash),
+        sender: Value(sender),
+        receiver: Value(receiver),
+        memo: Value(memo),
+        confirmations: Value(confirmations),
       );
 }
 

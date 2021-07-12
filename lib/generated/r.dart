@@ -18,6 +18,8 @@ class R {
 
   static const String resourcesIcBackSvg = 'resources/ic_back.svg';
 
+  static const String resourcesIcCheckSvg = 'resources/ic_check.svg';
+
   static const String resourcesIcCircleCloseSvg =
       'resources/ic_circle_close.svg';
 
@@ -33,5 +35,9 @@ class R {
 
   static const String resourcesSendSvg = 'resources/send.svg';
 
-  static const String resourcesIcCheckSvg = 'resources/ic_check.svg';
+  static const String resourcesTransactionDepositSvg =
+      'resources/transaction_deposit.svg';
+
+  static const String resourcesTransactionWithDrawalSvg =
+      'resources/transaction_with_drawal.svg';
 }
