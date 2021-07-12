@@ -14,16 +14,6 @@ extension StringExtension on String {
     final leastSigBits = (int.parse(components[3], radix: 16) << 48) |
         (int.parse(components[4], radix: 16));
     final hilo = mostSigBits ^ leastSigBits;
-    final i = Uint8List(8)..buffer.asByteData().setInt64(0, hilo, Endian.big);
-    final a = _toInt32(i.sublist(0, 4));
-    final b = _toInt32(i.sublist(4, 8));
-    return a ^ b;
+    return (hilo >> 32) ^ hilo.toSigned(32);
   }
-}
-
-int _toInt32(Uint8List list) {
-  final buffer = list.buffer;
-  final data = ByteData.view(buffer);
-  final short = data.getInt32(0, Endian.big);
-  return short;
 }
