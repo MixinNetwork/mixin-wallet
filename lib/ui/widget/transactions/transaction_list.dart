@@ -18,7 +18,7 @@ typedef LoadMoreTransactionCallback = Future<List<SnapshotItem>> Function(
   int limit,
 );
 
-typedef RefreshTransactionCallback = Future<List<SnapshotItem>> Function(
+typedef RefreshTransactionCallback = Future<void> Function(
   String? offset,
   int limit,
 );

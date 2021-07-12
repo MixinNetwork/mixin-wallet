@@ -91,7 +91,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .assetResult(auth!.account.fiatCurrency, assetId);
   }
 
-  Future<List<SnapshotItem>> updateSnapshots(
+  Future<void> updateSnapshots(
     String assetId, {
     String? offset,
     int limit = 30,
@@ -108,11 +108,6 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         null) {
       await updateAsset(assetId);
     }
-    final snapshots = await mixinDatabase.snapshotDao
-        .snapshotsByIds(response.data.map((e) => e.snapshotId).toList())
-        .get();
-    assert(snapshots.length == response.data.length);
-    return snapshots;
   }
 
   Selectable<SnapshotItem> snapshots(String assetId,

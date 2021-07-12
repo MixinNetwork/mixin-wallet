@@ -45,21 +45,21 @@ class TransactionListController {
 
     i('TransactionListController start to load. $offset, $limit');
 
-    final dbResult = _loadMoreItemDb(offset, limit);
+    final cacheDbResult = _loadMoreItemDb(offset, limit);
     final networkResult = _refreshSnapshots(offset, limit);
 
     try {
       _snapshotFromDb
         ..clear()
-        ..addAll(await dbResult);
+        ..addAll(await cacheDbResult);
       _notifySnapshotsItemUpdated();
     } catch (e, s) {
       w('failed to load from database. $e $s');
     }
 
     try {
-      final lists = await networkResult;
-      _snapshotItems.addAll(lists);
+      await networkResult;
+      _snapshotItems.addAll(await _loadMoreItemDb(offset, limit));
       _snapshotFromDb.clear();
       _notifySnapshotsItemUpdated();
     } catch (error, s) {
@@ -113,6 +113,11 @@ class TransactionListController {
       });
     });
   }
+
+  void dispose() {
+    _autoFillTask?.cancel();
+    _autoFillTask = null;
+  }
 }
 
 TransactionListController useTransactionListController({
@@ -165,6 +170,12 @@ class _TransactionListControllerHookState extends HookState<
       .._loadMoreItemDb = hook.loadMoreItemDb
       .._refreshSnapshots = hook.refreshSnapshots
       ..updatePageSize(hook.pageSize);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
