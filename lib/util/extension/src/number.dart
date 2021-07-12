@@ -89,3 +89,12 @@ extension AssetResultExtension on AssetResult {
     }
   }
 }
+
+extension SnapshotItemExtension on SnapshotItem {
+  Decimal amountOfCurrentCurrency(AssetResult asset) {
+    assert(asset.assetId == assetId);
+    return amount.asDecimal *
+        asset.priceUsd.asDecimal *
+        asset.fiatRate.asDecimal;
+  }
+}

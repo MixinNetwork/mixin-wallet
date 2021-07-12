@@ -110,6 +110,17 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     }
   }
 
+  Future<void> updateSnapshotById({required String snapshotId}) async {
+    final data = await client.snapshotApi.getSnapshotById(snapshotId);
+    await mixinDatabase.snapshotDao.insertAll([data.data]);
+    if (await mixinDatabase.assetDao
+            .simpleAssetById(data.data.assetId)
+            .getSingleOrNull() ==
+        null) {
+      await updateAsset(data.data.assetId);
+    }
+  }
+
   Selectable<SnapshotItem> snapshots(String assetId,
           {String? offset, int limit = 30}) =>
       mixinDatabase.snapshotDao

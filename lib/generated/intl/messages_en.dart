@@ -43,6 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "address": MessageLookupByLibrary.simpleMessage("Address"),
         "approxBalanceOfBtc": m0,
         "approxOf": m1,
+        "assetType": MessageLookupByLibrary.simpleMessage("Asset Type"),
         "assets": MessageLookupByLibrary.simpleMessage("Assets"),
         "averageArrival": m2,
         "balanceOfBtc": m3,
@@ -61,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "This address supports all TRC-10 and TRC-20 tokens, such as TRX, BTT, USDT-TRON, etc."),
         "depositing": MessageLookupByLibrary.simpleMessage("Depositing"),
         "fee": MessageLookupByLibrary.simpleMessage("Fee"),
+        "from": MessageLookupByLibrary.simpleMessage("From"),
         "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
@@ -68,8 +70,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
+        "time": MessageLookupByLibrary.simpleMessage("Time"),
+        "to": MessageLookupByLibrary.simpleMessage("To"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
+        "trace": MessageLookupByLibrary.simpleMessage("Trace"),
         "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
+        "transactionsId":
+            MessageLookupByLibrary.simpleMessage("Transaction Id"),
+        "transactionsStatus": MessageLookupByLibrary.simpleMessage("Status"),
+        "transactionsType":
+            MessageLookupByLibrary.simpleMessage("Transaction Type"),
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal")
       };

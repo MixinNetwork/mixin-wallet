@@ -7,6 +7,7 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 import '../../../db/mixin_database.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/r.dart';
+import '../../router/mixin_router_delegate.dart';
 import '../avatar.dart';
 import '../brightness_observer.dart';
 
@@ -20,73 +21,89 @@ class TransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPositive = double.parse(item.amount) > 0;
-    return Container(
-        height: kTransactionItemHeight,
-        padding: const EdgeInsets.only(top: 4, bottom: 20),
-        child: Row(
-          children: [
-            const SizedBox(width: 20),
-            _TransactionIcon(item: item),
-            const SizedBox(width: 10),
-            Expanded(
-                child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                const SizedBox(height: 3),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    _TransactionItemTitle(item: item),
-                    const Spacer(),
-                    Text(
-                      '${isPositive ? '+' : ''}${item.amount.numberFormat()}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: item.type == SnapshotType.pending
-                            ? context.theme.secondaryText
-                            : isPositive
-                                ? context.theme.green
-                                : context.theme.red,
-                        fontWeight: FontWeight.w600,
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        context.read<MixinRouterDelegate>().pushNewUri(
+              MixinRouterDelegate.snapshotDetailPath
+                  .toUri({'id': item.snapshotId}),
+            );
+      },
+      child: Container(
+          height: kTransactionItemHeight,
+          padding: const EdgeInsets.only(top: 4, bottom: 20),
+          child: Row(
+            children: [
+              const SizedBox(width: 20),
+              _TransactionIcon(item: item),
+              const SizedBox(width: 10),
+              Expanded(
+                  child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  const SizedBox(height: 3),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: context.theme.text,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        child: TransactionTypeWidget(item: item),
                       ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      DateFormat.yMMMMd().format(item.createdAt),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: BrightnessData.themeOf(context).secondaryText,
-                        fontWeight: FontWeight.w400,
+                      const Spacer(),
+                      Text(
+                        '${isPositive ? '+' : ''}${item.amount.numberFormat()}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: item.type == SnapshotType.pending
+                              ? context.theme.secondaryText
+                              : isPositive
+                                  ? context.theme.green
+                                  : context.theme.red,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      item.assetSymbol,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: BrightnessData.themeOf(context).text,
-                        fontFamily: 'SF Pro Text',
-                        fontWeight: FontWeight.w500,
+                    ],
+                  ),
+                  const Spacer(),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        DateFormat.yMMMMd().format(item.createdAt),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: BrightnessData.themeOf(context).secondaryText,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 1),
-              ],
-            )),
-            const SizedBox(width: 20),
-          ],
-        ));
+                      const Spacer(),
+                      Text(
+                        item.assetSymbol,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: BrightnessData.themeOf(context).text,
+                          fontFamily: 'SF Pro Text',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 1),
+                ],
+              )),
+              const SizedBox(width: 20),
+            ],
+          )),
+    );
   }
 }
 
-class _TransactionItemTitle extends StatelessWidget {
-  const _TransactionItemTitle({Key? key, required this.item}) : super(key: key);
+class TransactionTypeWidget extends StatelessWidget {
+  const TransactionTypeWidget({Key? key, required this.item}) : super(key: key);
 
   final SnapshotItem item;
 
@@ -120,14 +137,7 @@ class _TransactionItemTitle extends StatelessWidget {
         break;
     }
 
-    return Text(
-      title,
-      style: TextStyle(
-        fontSize: 16,
-        color: context.theme.text,
-        fontWeight: FontWeight.w600,
-      ),
-    );
+    return Text(title);
   }
 }
 

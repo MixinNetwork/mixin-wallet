@@ -329,6 +329,86 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Transaction Id`
+  String get transactionsId {
+    return Intl.message(
+      'Transaction Id',
+      name: 'transactionsId',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction Type`
+  String get transactionsType {
+    return Intl.message(
+      'Transaction Type',
+      name: 'transactionsType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status`
+  String get transactionsStatus {
+    return Intl.message(
+      'Status',
+      name: 'transactionsStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `From`
+  String get from {
+    return Intl.message(
+      'From',
+      name: 'from',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To`
+  String get to {
+    return Intl.message(
+      'To',
+      name: 'to',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time`
+  String get time {
+    return Intl.message(
+      'Time',
+      name: 'time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trace`
+  String get trace {
+    return Intl.message(
+      'Trace',
+      name: 'trace',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Asset Type`
+  String get assetType {
+    return Intl.message(
+      'Asset Type',
+      name: 'assetType',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

@@ -26,5 +26,13 @@
   "rebate": "Rebate",
   "transfer": "Transfer",
   "depositing": "Depositing",
-  "raw": "Raw"
+  "raw": "Raw",
+  "transactionsId": "Transaction Id",
+  "transactionsType": "Transaction Type",
+  "transactionsStatus": "Status",
+  "from": "From",
+  "to": "To",
+  "time": "Time",
+  "trace": "Trace",
+  "assetType": "Asset Type"
 }
