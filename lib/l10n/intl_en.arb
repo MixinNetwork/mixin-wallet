@@ -39,5 +39,9 @@
   "cancel": "Cancel",
   "walletTransactionCurrentValue": "value now ${value}",
   "walletTransactionThatTimeValue": ",value then ${value}",
-  "walletTransactionThatTimeNoValue": ",value then N/A"
+  "walletTransactionThatTimeNoValue": ",value then N/A",
+  "symbol": "Symbol",
+  "chain": "Chain",
+  "contract": "Asset Key",
+  "transactionsAssetKeyWarning": "Asset key is NOT a deposit address!"
 }

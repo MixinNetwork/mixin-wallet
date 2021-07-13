@@ -2699,7 +2699,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
             alias(this.fiats, 'fiat')),
         hasMultipleTables: true);
     return customSelect(
-        'SELECT asset.*, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id INNER JOIN fiats AS fiat ON fiat.code = :currentFiat WHERE ${generatedwhere.sql} ${generatedlimit.sql}',
+        'SELECT asset.*, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id INNER JOIN fiats AS fiat ON fiat.code = :currentFiat WHERE ${generatedwhere.sql} ${generatedlimit.sql}',
         variables: [
           Variable<String>(currentFiat),
           ...generatedwhere.introducedVariables,
@@ -2729,6 +2729,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         depositEntries: row.read<String?>('deposit_entries'),
         chainIconUrl: row.read<String>('chainIconUrl'),
         fiatRate: row.read<double>('fiatRate'),
+        chainName: row.read<String>('chainName'),
       );
     });
   }
@@ -2864,6 +2865,7 @@ class AssetResult {
   final String? depositEntries;
   final String chainIconUrl;
   final double fiatRate;
+  final String chainName;
   AssetResult({
     required this.assetId,
     required this.symbol,
@@ -2882,6 +2884,7 @@ class AssetResult {
     this.depositEntries,
     required this.chainIconUrl,
     required this.fiatRate,
+    required this.chainName,
   });
   @override
   int get hashCode => $mrjf($mrjc(
@@ -2918,8 +2921,11 @@ class AssetResult {
                                                               $mrjc(
                                                                   chainIconUrl
                                                                       .hashCode,
-                                                                  fiatRate
-                                                                      .hashCode)))))))))))))))));
+                                                                  $mrjc(
+                                                                      fiatRate
+                                                                          .hashCode,
+                                                                      chainName
+                                                                          .hashCode))))))))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2940,7 +2946,8 @@ class AssetResult {
           other.assetKey == this.assetKey &&
           other.depositEntries == this.depositEntries &&
           other.chainIconUrl == this.chainIconUrl &&
-          other.fiatRate == this.fiatRate);
+          other.fiatRate == this.fiatRate &&
+          other.chainName == this.chainName);
   @override
   String toString() {
     return (StringBuffer('AssetResult(')
@@ -2960,7 +2967,8 @@ class AssetResult {
           ..write('assetKey: $assetKey, ')
           ..write('depositEntries: $depositEntries, ')
           ..write('chainIconUrl: $chainIconUrl, ')
-          ..write('fiatRate: $fiatRate')
+          ..write('fiatRate: $fiatRate, ')
+          ..write('chainName: $chainName')
           ..write(')'))
         .toString();
   }

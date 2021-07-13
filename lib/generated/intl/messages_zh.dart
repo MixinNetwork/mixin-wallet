@@ -31,6 +31,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "assetType": MessageLookupByLibrary.simpleMessage("资产类型"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
+        "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
+        "contract": MessageLookupByLibrary.simpleMessage("资产标识"),
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
         "depositConfirmation": m4,
         "depositTip": m7,
@@ -45,9 +47,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "from": MessageLookupByLibrary.simpleMessage("来自"),
         "memo": MessageLookupByLibrary.simpleMessage("备注"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
+        "symbol": MessageLookupByLibrary.simpleMessage("符号"),
         "time": MessageLookupByLibrary.simpleMessage("时间"),
         "to": MessageLookupByLibrary.simpleMessage("至"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额"),
+        "transactionsAssetKeyWarning":
+            MessageLookupByLibrary.simpleMessage("资产标识不是充值地址！"),
         "transactionsId": MessageLookupByLibrary.simpleMessage("交易编号"),
         "transactionsStatus": MessageLookupByLibrary.simpleMessage("交易状态"),
         "transactionsType": MessageLookupByLibrary.simpleMessage("交易类型"),

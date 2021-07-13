@@ -95,6 +95,10 @@ class TransactionListController {
   // on [_pageSize] update, if current item count less than the new pageSize, we
   // need load more item to fill the blank.
   void updatePageSize(int pageSize) {
+    if (_pageSize == pageSize) {
+      return;
+    }
+
     if (_loading) {
       // TODO check this after loading
       return;
@@ -108,9 +112,8 @@ class TransactionListController {
     }
     _autoFillTask?.cancel();
     _autoFillTask = Timer(const Duration(milliseconds: 800), () {
-      _loadMoreItem(_offset, moreNeedLoad).whenComplete(() {
-        _autoFillTask = null;
-      });
+      _autoFillTask = null;
+      _loadMoreItem(_offset, moreNeedLoad);
     });
   }
 

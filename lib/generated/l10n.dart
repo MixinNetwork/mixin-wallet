@@ -459,6 +459,46 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Symbol`
+  String get symbol {
+    return Intl.message(
+      'Symbol',
+      name: 'symbol',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chain`
+  String get chain {
+    return Intl.message(
+      'Chain',
+      name: 'chain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Asset Key`
+  String get contract {
+    return Intl.message(
+      'Asset Key',
+      name: 'contract',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Asset key is NOT a deposit address!`
+  String get transactionsAssetKeyWarning {
+    return Intl.message(
+      'Asset key is NOT a deposit address!',
+      name: 'transactionsAssetKeyWarning',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

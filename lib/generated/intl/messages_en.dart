@@ -52,6 +52,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "averageArrival": m2,
         "balanceOfBtc": m3,
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "chain": MessageLookupByLibrary.simpleMessage("Chain"),
+        "contract": MessageLookupByLibrary.simpleMessage("Asset Key"),
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
         "depositConfirmation": m4,
         "depositNotice": m5,
@@ -76,11 +78,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
+        "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
         "to": MessageLookupByLibrary.simpleMessage("To"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
         "trace": MessageLookupByLibrary.simpleMessage("Trace"),
         "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
+        "transactionsAssetKeyWarning": MessageLookupByLibrary.simpleMessage(
+            "Asset key is NOT a deposit address!"),
         "transactionsId":
             MessageLookupByLibrary.simpleMessage("Transaction Id"),
         "transactionsStatus": MessageLookupByLibrary.simpleMessage("Status"),

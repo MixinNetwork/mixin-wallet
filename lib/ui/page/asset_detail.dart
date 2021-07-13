@@ -8,6 +8,7 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
+import '../widget/action_button.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/symbol.dart';
@@ -65,7 +66,27 @@ class _AssetDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: BrightnessData.themeOf(context).background,
-        appBar: const MixinAppBar(),
+        appBar: MixinAppBar(
+          title: Text(asset.name),
+          actions: [
+            ActionButton(
+                name: R.resourcesIcQuestionSvg,
+                color: Colors.white,
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      ),
+                    ),
+                    builder: (context) =>
+                        _AssetDescriptionBottomSheet(asset: asset),
+                  );
+                }),
+          ],
+        ),
         body: Column(
           children: [
             Expanded(
@@ -280,6 +301,130 @@ class _Button extends StatelessWidget {
               child: text,
             ),
           ),
+        ),
+      );
+}
+
+class _AssetDescriptionBottomSheet extends StatelessWidget {
+  const _AssetDescriptionBottomSheet({
+    Key? key,
+    required this.asset,
+  }) : super(key: key);
+
+  final AssetResult asset;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 70,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(width: 20),
+                SymbolIcon(
+                  symbolUrl: asset.iconUrl,
+                  chainUrl: asset.chainIconUrl,
+                  size: 20,
+                  chinaSize: 8,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  asset.name,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: context.theme.text,
+                  ),
+                ),
+                const Spacer(),
+                ActionButton(
+                  name: R.resourcesIcCircleCloseSvg,
+                  size: 26,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                const SizedBox(width: 12),
+              ],
+            ),
+          ),
+          _AssetBottomSheetTile(
+            title: Text(context.l10n.symbol),
+            subtitle: Text(asset.symbol),
+          ),
+          _AssetBottomSheetTile(
+            title: Text(context.l10n.chain),
+            subtitle: Text(asset.chainName),
+          ),
+          _AssetBottomSheetTile(
+            title: Text(context.l10n.contract),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(asset.assetKey ?? ''),
+                const SizedBox(height: 10),
+                Text(
+                  context.l10n.transactionsAssetKeyWarning,
+                  style:
+                      const TextStyle(color: Color(0xFFe86b67), fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 80),
+        ],
+      );
+}
+
+class _AssetBottomSheetTile extends StatelessWidget {
+  const _AssetBottomSheetTile({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+  }) : super(key: key);
+
+  final Widget title;
+  final Widget subtitle;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(width: 20),
+            Flexible(
+              flex: 2,
+              fit: FlexFit.tight,
+              child: DefaultTextStyle(
+                style: TextStyle(
+                  fontFamily: 'SF Pro Text',
+                  color: context.theme.secondaryText,
+                  fontSize: 16,
+                  height: 1.2,
+                ),
+                textAlign: TextAlign.end,
+                child: title,
+              ),
+            ),
+            const SizedBox(width: 20),
+            Flexible(
+              flex: 7,
+              fit: FlexFit.tight,
+              child: DefaultTextStyle(
+                style: TextStyle(
+                  fontFamily: 'SF Pro Text',
+                  fontSize: 16,
+                  color: context.theme.text,
+                  height: 1.2,
+                ),
+                child: subtitle,
+              ),
+            ),
+            const Spacer(flex: 1),
+          ],
         ),
       );
 }

@@ -3,7 +3,8 @@ import '../mixin.moor';
 assetResults(:currentFiat AS TEXT) as AssetResult:
 SELECT asset.*,
        tempAsset.icon_url AS chainIconUrl,
-       fiat.rate AS fiatRate
+       fiat.rate AS fiatRate,
+       tempAsset.name as chainName
 FROM assets asset
 LEFT  JOIN assets tempAsset ON asset.chain_id = tempAsset.asset_id
 INNER JOIN fiats fiat ON fiat.code = :currentFiat
