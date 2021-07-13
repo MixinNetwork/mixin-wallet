@@ -8,11 +8,9 @@ import 'ui/router/mixin_route_information_parser.dart';
 import 'ui/router/mixin_router_delegate.dart';
 import 'util/l10n.dart';
 import 'util/logger.dart';
-import 'util/web/web_util.dart';
 
 Future<void> main() async {
   await initAuthManager();
-  configureApp();
   runZonedGuarded(
     () => runApp(const MyApp()),
     (Object error, StackTrace stack) {
