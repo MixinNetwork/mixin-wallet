@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../../service/auth/auth_manager.dart';
@@ -14,8 +13,8 @@ final homeUri = Uri(path: '/');
 final authUri = Uri(path: '/auth');
 final notFoundUri = Uri(path: '/404');
 final withdrawalUri = Uri(path: '/withdrawal');
-const assetDetailPath = '/asset${kDebugMode ? '' : 's'}/:id';
-const assetDepositPath = '/asset${kDebugMode ? '' : 's'}/:id/deposit';
+const assetDetailPath = '/tokens/:id';
+const assetDepositPath = '/tokens/:id/deposit';
 const snapshotDetailPath = '/snapshots/:id';
 
 final mixinRoutes = [
