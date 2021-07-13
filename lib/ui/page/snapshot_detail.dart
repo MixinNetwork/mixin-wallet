@@ -5,8 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../db/mixin_database.dart';
+import '../../service/auth/auth_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/symbol.dart';
 import '../widget/transactions/transaction_item.dart';
@@ -16,7 +18,11 @@ class SnapshotDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: const MixinAppBar(),
+        appBar: const MixinAppBar(
+          leading: MixinBackButton(
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: context.theme.background,
         body: _SnapshotDetailPageBody(context.pathParameters['id']!),
       );
@@ -81,49 +87,46 @@ class _SnapshotDetailHeader extends HookWidget {
   final AssetResult asset;
 
   @override
-  Widget build(BuildContext context) {
-    final isPositive = (double.tryParse(snapshot.amount) ?? 0) > 0;
-    return Container(
-      color: context.theme.accent,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 18),
-          SymbolIcon(
-            symbolUrl: asset.iconUrl,
-            chainUrl: asset.chainIconUrl,
-            size: 60,
-            chinaSize: 18,
-          ),
-          const SizedBox(height: 18),
-          Text.rich(TextSpan(children: [
-            TextSpan(
-                text: snapshot.amount.numberFormat(),
-                style: TextStyle(
-                  fontFamily: 'Mixin Condensed',
-                  fontSize: 48,
-                  color: snapshot.type == SnapshotType.pending
-                      ? Colors.white
-                      : isPositive
-                          ? context.theme.green
-                          : context.theme.red,
-                )),
-            const WidgetSpan(child: SizedBox(width: 2)),
-            TextSpan(
-                text: asset.symbol,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white.withOpacity(0.4),
-                )),
-          ])),
-          const SizedBox(height: 2),
-          _ValuesDescription(snapshot: snapshot, asset: asset),
-          const SizedBox(height: 38),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+        color: context.theme.accent,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 18),
+            SymbolIcon(
+              symbolUrl: asset.iconUrl,
+              chainUrl: asset.chainIconUrl,
+              size: 60,
+              chinaSize: 18,
+            ),
+            const SizedBox(height: 18),
+            Text.rich(TextSpan(children: [
+              TextSpan(
+                  text: snapshot.amount.numberFormat(),
+                  style: TextStyle(
+                    fontFamily: 'Mixin Condensed',
+                    fontSize: 48,
+                    color: snapshot.type == SnapshotType.pending
+                        ? Colors.white
+                        : snapshot.isPositive
+                            ? context.theme.green
+                            : context.theme.red,
+                  )),
+              const WidgetSpan(child: SizedBox(width: 2)),
+              TextSpan(
+                  text: asset.symbol,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white.withOpacity(0.4),
+                  )),
+            ])),
+            const SizedBox(height: 2),
+            _ValuesDescription(snapshot: snapshot, asset: asset),
+            const SizedBox(height: 38),
+          ],
+        ),
+      );
 }
 
 class _ValuesDescription extends HookWidget {
@@ -211,11 +214,11 @@ class _TransactionDetailInfo extends StatelessWidget {
                 ),
                 _TransactionInfoTile(
                   title: Text(context.l10n.from.toUpperCase()),
-                  subtitle: Text(snapshot.sender ?? ''),
+                  subtitle: _From(snapshot: snapshot),
                 ),
                 _TransactionInfoTile(
                   title: Text(context.l10n.to.toUpperCase()),
-                  subtitle: Text(snapshot.opponentFulName ?? ''),
+                  subtitle: _To(snapshot: snapshot),
                 ),
                 _TransactionInfoTile(
                   title: Text(context.l10n.memo.toUpperCase()),
@@ -232,6 +235,68 @@ class _TransactionDetailInfo extends StatelessWidget {
           ),
         ),
       );
+}
+
+class _From extends StatelessWidget {
+  const _From({
+    Key? key,
+    required this.snapshot,
+  }) : super(key: key);
+
+  final SnapshotItem snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    final String sender;
+
+    switch (snapshot.type) {
+      case SnapshotType.deposit:
+      case SnapshotType.pending:
+        sender = snapshot.sender ?? '';
+        break;
+      case SnapshotType.transfer:
+        if (snapshot.isPositive) {
+          sender = snapshot.opponentFulName ?? '';
+        } else {
+          sender = auth?.account.fullName ?? '';
+        }
+        break;
+      default:
+        sender = snapshot.transactionHash ?? '';
+        break;
+    }
+
+    return Text(sender);
+  }
+}
+
+class _To extends StatelessWidget {
+  const _To({Key? key, required this.snapshot}) : super(key: key);
+
+  final SnapshotItem snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    final String receiver;
+
+    switch (snapshot.type) {
+      case SnapshotType.deposit:
+      case SnapshotType.pending:
+        receiver = snapshot.transactionHash ?? '';
+        break;
+      case SnapshotType.transfer:
+        if (!snapshot.isPositive) {
+          receiver = snapshot.opponentFulName ?? '';
+        } else {
+          receiver = auth?.account.fullName ?? '';
+        }
+        break;
+      default:
+        receiver = snapshot.receiver ?? '';
+        break;
+    }
+    return Text(receiver);
+  }
 }
 
 class _TransactionInfoTile extends StatelessWidget {

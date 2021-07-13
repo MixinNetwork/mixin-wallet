@@ -97,4 +97,6 @@ extension SnapshotItemExtension on SnapshotItem {
         asset.priceUsd.asDecimal *
         asset.fiatRate.asDecimal;
   }
+
+  bool get isPositive => (double.tryParse(amount) ?? 0) > 0;
 }

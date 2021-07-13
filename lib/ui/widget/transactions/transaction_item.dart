@@ -26,7 +26,7 @@ class TransactionItem extends HookWidget {
             .snapshotsById(this.item.snapshotId)
             .watchSingle()).data ??
         this.item;
-    final isPositive = double.parse(item.amount) > 0;
+    final isPositive = item.isPositive;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {

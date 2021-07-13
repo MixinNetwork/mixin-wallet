@@ -1,6 +1,7 @@
 {
   "totalBalance": "总余额",
   "deposit": "充值",
+  "memo": "备注",
   "depositTip": "该充值地址仅支持 {value}.",
   "depositTipBtc": "该充值地址仅支持 BTC 和 Omni USDT。",
   "depositTipEth": "该充值地址支持所有符合 ERC-20 标准的代币，例如 ETH、XIN、HT、LOOM、LEO、PRS 等。",

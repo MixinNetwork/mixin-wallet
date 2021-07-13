@@ -43,6 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币，例如 TRX、BTT、USDT-TRON 等。"),
         "from": MessageLookupByLibrary.simpleMessage("来自"),
+        "memo": MessageLookupByLibrary.simpleMessage("备注"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
         "time": MessageLookupByLibrary.simpleMessage("时间"),
         "to": MessageLookupByLibrary.simpleMessage("至"),
