@@ -8,7 +8,7 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
-import '../router/mixin_router_delegate.dart';
+import '../router/mixin_routes.dart';
 
 // TODO should config for production or staging env
 const clientId = 'd0a44d9d-bb19-403c-afc5-ea26ea88123b';
@@ -24,13 +24,11 @@ class AuthPage extends HookWidget {
     final oauthCode = context.queryParameters['code'];
 
     useMemoizedFuture(() async {
-      if (oauthCode?.isEmpty ?? true) return null;
+      if (oauthCode?.isEmpty ?? true) return;
       loading.value = true;
       try {
         await context.appServices.login(oauthCode!);
-        context
-            .read<MixinRouterDelegate>()
-            .replaceLast(MixinRouterDelegate.homeUri);
+        context.replace(homeUri);
       } catch (error, s) {
         e('$error, $s');
         loading.value = false;
@@ -74,7 +72,7 @@ class AuthPage extends HookWidget {
                       onPressed: () {
                         final uri = Uri.parse(
                             'https://mixin.one/oauth/authorize?client_id=$clientId&scope=PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ&response_type=code');
-                        context.read<MixinRouterDelegate>().replaceLast(uri);
+                        context.toExternal(uri);
                       },
                       style: ElevatedButton.styleFrom(
                         primary: context.theme.accent,

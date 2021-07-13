@@ -9,7 +9,7 @@ import '../../../db/mixin_database.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
 import '../../../util/r.dart';
-import '../../router/mixin_router_delegate.dart';
+import '../../router/mixin_routes.dart';
 import '../avatar.dart';
 import '../brightness_observer.dart';
 
@@ -29,12 +29,8 @@ class TransactionItem extends HookWidget {
     final isPositive = item.isPositive;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () {
-        context.read<MixinRouterDelegate>().pushNewUri(
-              MixinRouterDelegate.snapshotDetailPath
-                  .toUri({'id': item.snapshotId}),
-            );
-      },
+      onTap: () =>
+          context.push(snapshotDetailPath.toUri({'id': item.snapshotId})),
       child: Container(
           height: kTransactionItemHeight,
           padding: const EdgeInsets.only(top: 4, bottom: 20),

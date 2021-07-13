@@ -11,7 +11,7 @@ import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
-import '../router/mixin_router_delegate.dart';
+import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
@@ -46,7 +46,7 @@ class _AssetDepositLoader extends HookWidget {
     //   if (notFound) {
     //     context
     //         .read<MixinRouterDelegate>()
-    //         .pushNewUri(MixinRouterDelegate.notFoundUri);
+    //         .pushNewUri(notFoundUri);
     //   }
     // }, [notFound]);
 
@@ -112,12 +112,8 @@ class _AssetDepositPage extends HookWidget {
               showCupertinoModalBottomSheet(
                   context: context,
                   builder: (context) => AssetSelectionListWidget(
-                        onTap: (String assetId) {
-                          context.read<MixinRouterDelegate>().pushNewUri(
-                                MixinRouterDelegate.assetDepositPath
-                                    .toUri({'id': assetId}),
-                              );
-                        },
+                        onTap: (String assetId) => context
+                            .push(assetDepositPath.toUri({'id': assetId})),
                         selectedAsset: asset,
                       ));
             },

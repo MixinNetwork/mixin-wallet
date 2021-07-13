@@ -53,12 +53,12 @@ dependencies:
   tuple: ^2.0.0
   hive: ^2.0.4
   hive_flutter: ^1.1.0
-  path_to_regexp: ^0.4.0
   ansicolor: ^2.0.1
   decimal: ^1.2.0
   rxdart: ^0.27.1
   qr_flutter: ^4.0.0
   modal_bottom_sheet: ^2.0.0
+  vrouter: ^1.2.0+5
 
 dev_dependencies:
   flutter_test:

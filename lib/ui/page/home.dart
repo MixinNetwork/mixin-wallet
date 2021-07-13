@@ -9,7 +9,7 @@ import '../../service/auth/auth_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
-import '../router/mixin_router_delegate.dart';
+import '../router/mixin_routes.dart';
 import '../widget/avatar.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
@@ -263,12 +263,8 @@ class _Item extends StatelessWidget {
         height: 70,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: GestureDetector(
-          onTap: () {
-            context.read<MixinRouterDelegate>().pushNewUri(
-                  MixinRouterDelegate.assetDetailPath
-                      .toUri({'id': data.assetId}),
-                );
-          },
+          onTap: () =>
+              context.push(assetDetailPath.toUri({'id': data.assetId})),
           child: Row(
             children: [
               SymbolIcon(symbolUrl: data.iconUrl, chainUrl: data.chainIconUrl),
