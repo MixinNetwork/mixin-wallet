@@ -429,6 +429,36 @@ class L10n {
       args: [],
     );
   }
+
+  /// `value now ${value}`
+  String walletTransactionCurrentValue(Object value) {
+    return Intl.message(
+      'value now \$$value',
+      name: 'walletTransactionCurrentValue',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `,value then ${value}`
+  String walletTransactionThatTimeValue(Object value) {
+    return Intl.message(
+      ',value then \$$value',
+      name: 'walletTransactionThatTimeValue',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `,value then N/A`
+  String get walletTransactionThatTimeNoValue {
+    return Intl.message(
+      ',value then N/A',
+      name: 'walletTransactionThatTimeNoValue',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

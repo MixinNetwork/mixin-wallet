@@ -36,5 +36,8 @@
   "trace": "Trace",
   "assetType": "Asset Type",
   "search": "Search",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "walletTransactionCurrentValue": "value now ${value}",
+  "walletTransactionThatTimeValue": ",value then ${value}",
+  "walletTransactionThatTimeNoValue": ",value then N/A"
 }

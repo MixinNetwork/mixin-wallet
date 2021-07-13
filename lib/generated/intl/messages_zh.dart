@@ -23,6 +23,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(value) => "该充值地址仅支持 ${value}.";
 
+  static String m8(value) => "价值 \$${value}";
+
+  static String m9(value) => "，当时价值 \$${value}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "assetType": MessageLookupByLibrary.simpleMessage("资产类型"),
@@ -45,6 +49,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额"),
         "transactionsId": MessageLookupByLibrary.simpleMessage("交易编号"),
         "transactionsStatus": MessageLookupByLibrary.simpleMessage("交易状态"),
-        "transactionsType": MessageLookupByLibrary.simpleMessage("交易类型")
+        "transactionsType": MessageLookupByLibrary.simpleMessage("交易类型"),
+        "walletTransactionCurrentValue": m8,
+        "walletTransactionThatTimeNoValue":
+            MessageLookupByLibrary.simpleMessage("，当时价值 暂无"),
+        "walletTransactionThatTimeValue": m9
       };
 }

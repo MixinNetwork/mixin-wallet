@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
@@ -80,50 +81,93 @@ class _SnapshotDetailHeader extends HookWidget {
   final AssetResult asset;
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: context.theme.accent,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 18),
-            SymbolIcon(
-              symbolUrl: asset.iconUrl,
-              chainUrl: asset.chainIconUrl,
-              size: 60,
-              chinaSize: 18,
-            ),
-            const SizedBox(height: 18),
-            Text.rich(TextSpan(children: [
-              TextSpan(
-                  text: snapshot.amount.numberFormat(),
-                  style: const TextStyle(
-                    fontFamily: 'Mixin Condensed',
-                    fontSize: 48,
-                    color: Colors.white,
-                  )),
-              const WidgetSpan(child: SizedBox(width: 2)),
-              TextSpan(
-                  text: asset.symbol,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white.withOpacity(0.4),
-                  )),
-            ])),
-            const SizedBox(height: 2),
-            Text(
-              context.l10n.approxOf(
-                snapshot.amountOfCurrentCurrency(asset).currencyFormat,
-              ),
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.white.withOpacity(0.5),
-              ),
-            ),
-            const SizedBox(height: 38),
-          ],
-        ),
-      );
+  Widget build(BuildContext context) {
+    final isPositive = (double.tryParse(snapshot.amount) ?? 0) > 0;
+    return Container(
+      color: context.theme.accent,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 18),
+          SymbolIcon(
+            symbolUrl: asset.iconUrl,
+            chainUrl: asset.chainIconUrl,
+            size: 60,
+            chinaSize: 18,
+          ),
+          const SizedBox(height: 18),
+          Text.rich(TextSpan(children: [
+            TextSpan(
+                text: snapshot.amount.numberFormat(),
+                style: TextStyle(
+                  fontFamily: 'Mixin Condensed',
+                  fontSize: 48,
+                  color: snapshot.type == SnapshotType.pending
+                      ? Colors.white
+                      : isPositive
+                          ? context.theme.green
+                          : context.theme.red,
+                )),
+            const WidgetSpan(child: SizedBox(width: 2)),
+            TextSpan(
+                text: asset.symbol,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white.withOpacity(0.4),
+                )),
+          ])),
+          const SizedBox(height: 2),
+          _ValuesDescription(snapshot: snapshot, asset: asset),
+          const SizedBox(height: 38),
+        ],
+      ),
+    );
+  }
+}
+
+class _ValuesDescription extends HookWidget {
+  const _ValuesDescription({
+    Key? key,
+    required this.asset,
+    required this.snapshot,
+  }) : super(key: key);
+
+  final AssetResult asset;
+  final SnapshotItem snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    final ticker = useMemoizedFuture(
+      () => context.appServices.client.snapshotApi.getTicker(
+        snapshot.assetId,
+        offset: snapshot.createdAt.toIso8601String(),
+      ),
+      keys: [snapshot.snapshotId],
+    ).data?.data;
+
+    final String description;
+
+    final currentValue = context.l10n.walletTransactionCurrentValue(
+      snapshot.amountOfCurrentCurrency(asset),
+    );
+    if (ticker == null) {
+      description = currentValue;
+    } else if (ticker.priceUsd == '0') {
+      description =
+          '$currentValue${context.l10n.walletTransactionThatTimeNoValue}';
+    } else {
+      description = '$currentValue'
+          '${context.l10n.walletTransactionThatTimeValue(snapshot.amount.asDecimal * ticker.priceUsd.asDecimal * asset.fiatRate.asDecimal)}';
+    }
+    return Text(
+      description,
+      style: TextStyle(
+        fontSize: 14,
+        color: Colors.white.withOpacity(0.5),
+      ),
+    );
+  }
 }
 
 class _TransactionDetailInfo extends StatelessWidget {

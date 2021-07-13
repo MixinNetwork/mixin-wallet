@@ -38,6 +38,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(value) => "This address only supports ${value}.";
 
+  static String m8(value) => "value now \$${value}";
+
+  static String m9(value) => ",value then \$${value}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "address": MessageLookupByLibrary.simpleMessage("Address"),
@@ -83,6 +87,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsType":
             MessageLookupByLibrary.simpleMessage("Transaction Type"),
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
+        "walletTransactionCurrentValue": m8,
+        "walletTransactionThatTimeNoValue":
+            MessageLookupByLibrary.simpleMessage(",value then N/A"),
+        "walletTransactionThatTimeValue": m9,
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal")
       };
 }

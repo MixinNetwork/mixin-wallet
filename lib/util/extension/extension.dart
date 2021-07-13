@@ -16,7 +16,6 @@ import '../l10n.dart';
 
 export 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart'
     show UuidHashcodeExtension;
-
 export 'package:provider/provider.dart' show ReadContext, WatchContext;
 
 export '../../ui/widget/brightness_observer.dart';
