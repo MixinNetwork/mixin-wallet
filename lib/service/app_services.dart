@@ -94,25 +94,33 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .assetResult(auth!.account.fiatCurrency, assetId);
   }
 
-  Future<void> _updateAssetIfNotExist(String assetId) async {
+  Future<Future<void> Function()?> _checkAssetExistWithReturnInsert(
+      String assetId) async {
     if (await mixinDatabase.assetDao
             .simpleAssetById(assetId)
-            .getSingleOrNull() ==
+            .getSingleOrNull() !=
         null) {
-      await updateAsset(assetId);
+      return null;
     }
+
+    final asset = (await client.assetApi.getAssetById(assetId)).data;
+    return () => mixinDatabase.assetDao.insert(asset);
   }
 
-  Future<void> _fetchUserIfNotExist(List<String> userIds) async {
-    if (userIds.isEmpty) {
-      return;
-    }
+  Future<Future<void> Function()?> _checkUsersExistWithReturnInsert(
+      List<String> userIds) async {
+    if (userIds.isEmpty) return null;
+
     final userNeedFetch = userIds.toList();
     final existUsers =
         (await mixinDatabase.userDao.findExistsUsers(userIds).get()).toSet();
     userNeedFetch.removeWhere(existUsers.contains);
+
+    if (userNeedFetch.isEmpty) return null;
+
     final users = await client.userApi.getUsers(userNeedFetch);
-    await mixinDatabase.userDao.insertAll(users.data
+
+    return () => mixinDatabase.userDao.insertAll(users.data
         .map((user) => User(
             userId: user.userId,
             identityNumber: user.identityNumber,
@@ -134,25 +142,43 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     String? offset,
     int limit = 30,
   }) async {
-    final response = await client.snapshotApi.getSnapshotsByAssetId(
-      assetId,
-      offset: offset,
-      limit: limit,
-    );
-    await mixinDatabase.snapshotDao.insertAll(response.data);
-    await _updateAssetIfNotExist(assetId);
-    unawaited(_fetchUserIfNotExist(
-        response.data.map((e) => e.opponentId).whereNotNull().toList()));
+    final result = await Future.wait([
+      client.snapshotApi.getSnapshotsByAssetId(
+        assetId,
+        offset: offset,
+        limit: limit,
+      ),
+      _checkAssetExistWithReturnInsert(assetId),
+    ]);
+    final response = result[0]! as sdk.MixinResponse<List<sdk.Snapshot>>;
+    final insertAsset = result[1] as Future<void> Function()?;
+
+    final insertUsers = await _checkUsersExistWithReturnInsert(
+        response.data.map((e) => e.opponentId).whereNotNull().toList());
+
+    await mixinDatabase.transaction(() async {
+      await Future.wait([
+        mixinDatabase.snapshotDao.insertAll(response.data),
+        insertUsers?.call(),
+        insertAsset?.call(),
+      ].where((element) => element != null).cast<Future>());
+    });
   }
 
   Future<void> updateSnapshotById({required String snapshotId}) async {
     final data = await client.snapshotApi.getSnapshotById(snapshotId);
-    await mixinDatabase.snapshotDao.insertAll([data.data]);
-    await _updateAssetIfNotExist(data.data.assetId);
 
-    if (data.data.opponentId != null) {
-      unawaited(_fetchUserIfNotExist([data.data.opponentId!]));
-    }
+    final closures = await Future.wait([
+      _checkUsersExistWithReturnInsert([data.data.opponentId!]),
+      _checkAssetExistWithReturnInsert(data.data.assetId),
+    ]);
+
+    await mixinDatabase.transaction(() async {
+      await Future.wait([
+        mixinDatabase.snapshotDao.insertAll([data.data]),
+        ...closures,
+      ].where((element) => element != null).cast<Future>());
+    });
   }
 
   Selectable<SnapshotItem> snapshots(String assetId,

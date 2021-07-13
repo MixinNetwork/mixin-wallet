@@ -9,4 +9,12 @@ void configureApp() {
   setUrlStrategy(PathUrlStrategy());
 }
 
-void replaceUrl(String? url) => window.location.replace(url);
+void replaceUrl(String? url) {
+  if (url == null) return;
+  final uri = Uri.tryParse(url);
+  if (uri?.host.isNotEmpty == true) {
+    return window.location.replace(url);
+  }
+  window.location.replace(url);
+  // window.history.replaceState(null, '', url);
+}
