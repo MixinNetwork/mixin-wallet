@@ -30,7 +30,8 @@ class _SnapshotDetailPageBody extends HookWidget {
   Widget build(BuildContext context) {
     final snapshotItem = useMemoizedStream(() => context
         .mixinDatabase.snapshotDao
-        .snapshotsByIds([snapshotId]).watchSingleOrNull()).data;
+        .snapshotsById(snapshotId)
+        .watchSingleOrNull()).data;
 
     useEffect(() {
       if (snapshotItem == null) {

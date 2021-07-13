@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -7,6 +9,7 @@ import 'package:moor/moor.dart';
 import '../db/dao/snapshot_dao.dart';
 import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
+import '../util/extension/extension.dart';
 import 'auth/auth.dart';
 import 'auth/auth_manager.dart';
 
@@ -91,6 +94,41 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .assetResult(auth!.account.fiatCurrency, assetId);
   }
 
+  Future<void> _updateAssetIfNotExist(String assetId) async {
+    if (await mixinDatabase.assetDao
+            .simpleAssetById(assetId)
+            .getSingleOrNull() ==
+        null) {
+      await updateAsset(assetId);
+    }
+  }
+
+  Future<void> _fetchUserIfNotExist(List<String> userIds) async {
+    if (userIds.isEmpty) {
+      return;
+    }
+    final userNeedFetch = userIds.toList();
+    final existUsers =
+        (await mixinDatabase.userDao.findExistsUsers(userIds).get()).toSet();
+    userNeedFetch.removeWhere(existUsers.contains);
+    final users = await client.userApi.getUsers(userNeedFetch);
+    await mixinDatabase.userDao.insertAll(users.data
+        .map((user) => User(
+            userId: user.userId,
+            identityNumber: user.identityNumber,
+            relationship: user.relationship,
+            fullName: user.fullName,
+            avatarUrl: user.avatarUrl,
+            phone: user.phone,
+            isVerified: user.isVerified,
+            appId: user.app?.appId,
+            biography: user.biography,
+            muteUntil: DateTime.tryParse(user.muteUntil),
+            isScam: user.isScam ? 1 : 0,
+            createdAt: user.createdAt))
+        .toList());
+  }
+
   Future<void> updateSnapshots(
     String assetId, {
     String? offset,
@@ -102,22 +140,18 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       limit: limit,
     );
     await mixinDatabase.snapshotDao.insertAll(response.data);
-    if (await mixinDatabase.assetDao
-            .simpleAssetById(assetId)
-            .getSingleOrNull() ==
-        null) {
-      await updateAsset(assetId);
-    }
+    await _updateAssetIfNotExist(assetId);
+    unawaited(_fetchUserIfNotExist(
+        response.data.map((e) => e.opponentId).whereNotNull().toList()));
   }
 
   Future<void> updateSnapshotById({required String snapshotId}) async {
     final data = await client.snapshotApi.getSnapshotById(snapshotId);
     await mixinDatabase.snapshotDao.insertAll([data.data]);
-    if (await mixinDatabase.assetDao
-            .simpleAssetById(data.data.assetId)
-            .getSingleOrNull() ==
-        null) {
-      await updateAsset(data.data.assetId);
+    await _updateAssetIfNotExist(data.data.assetId);
+
+    if (data.data.opponentId != null) {
+      unawaited(_fetchUserIfNotExist([data.data.opponentId!]));
     }
   }
 

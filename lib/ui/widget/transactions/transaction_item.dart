@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../util/extension/extension.dart';
+import '../../../util/hook.dart';
 import '../../../util/r.dart';
 import '../../router/mixin_router_delegate.dart';
 import '../avatar.dart';
@@ -13,13 +15,17 @@ import '../brightness_observer.dart';
 
 const kTransactionItemHeight = 70.0;
 
-class TransactionItem extends StatelessWidget {
+class TransactionItem extends HookWidget {
   const TransactionItem({Key? key, required this.item}) : super(key: key);
 
   final SnapshotItem item;
 
   @override
   Widget build(BuildContext context) {
+    final item = useMemoizedStream(() => context.mixinDatabase.snapshotDao
+            .snapshotsById(this.item.snapshotId)
+            .watchSingle()).data ??
+        this.item;
     final isPositive = double.parse(item.amount) > 0;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,

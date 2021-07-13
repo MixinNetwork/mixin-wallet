@@ -92,6 +92,12 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
         (s, u, a) => Limit(snapshotIds.length, null),
       );
 
+  Selectable<SnapshotItem> snapshotsById(String snapshotId) => db.snapshotItems(
+        (s, u, a) => s.snapshotId.equals(snapshotId),
+        (s, u, a) => const OrderBy.nothing(),
+        (s, u, a) => Limit(1, null),
+      );
+
   Selectable<SnapshotItem> snapshots(
     String assetId, {
     String? offset,
