@@ -13,5 +13,7 @@
   "from": "来自",
   "to": "至",
   "time": "时间",
-  "assetType": "资产类型"
+  "assetType": "资产类型",
+  "search": "搜索",
+  "cancel": "取消"
 }

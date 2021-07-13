@@ -40,4 +40,7 @@ class R {
 
   static const String resourcesTransactionWithDrawalSvg =
       'resources/transaction_with_drawal.svg';
+
+  static const String resourcesIcSearchSmallSvg =
+      'resources/ic_search_small.svg';
 }

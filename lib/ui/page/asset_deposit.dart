@@ -11,7 +11,9 @@ import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
+import '../router/mixin_router_delegate.dart';
 import '../widget/action_button.dart';
+import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
 import '../widget/interactable_box.dart';
 import '../widget/symbol.dart';
@@ -105,47 +107,62 @@ class _AssetDepositPage extends HookWidget {
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
         child: Column(children: [
           const SizedBox(height: 20),
-          _RoundContainer(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Row(
-              children: [
-                SymbolIcon(
-                    symbolUrl: asset.iconUrl,
-                    chainUrl: asset.iconUrl,
-                    size: 32),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        asset.symbol.overflow,
-                        style: TextStyle(
-                          color: context.theme.text,
-                          fontSize: 16,
-                          fontFamily: 'Nunito',
-                          fontWeight: FontWeight.w400,
+          InteractableBox(
+            onTap: () {
+              showCupertinoModalBottomSheet(
+                  context: context,
+                  builder: (context) => AssetSelectionListWidget(
+                        onTap: (String assetId) {
+                          context.read<MixinRouterDelegate>().pushNewUri(
+                                MixinRouterDelegate.assetDepositPath
+                                    .toUri({'id': assetId}),
+                              );
+                        },
+                        selectedAsset: asset,
+                      ));
+            },
+            child: _RoundContainer(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Row(
+                children: [
+                  SymbolIcon(
+                      symbolUrl: asset.iconUrl,
+                      chainUrl: asset.chainIconUrl,
+                      size: 32),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          asset.symbol.overflow,
+                          style: TextStyle(
+                            color: context.theme.text,
+                            fontSize: 16,
+                            fontFamily: 'Nunito',
+                            fontWeight: FontWeight.w400,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        '${asset.balance}${asset.symbol}',
-                        style: TextStyle(
-                          color: context.theme.secondaryText,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
+                        Text(
+                          '${asset.balance}${asset.symbol}',
+                          style: TextStyle(
+                            color: context.theme.secondaryText,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: SvgPicture.asset(R.resourcesIcArrowDownSvg),
-                )
-              ],
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: SvgPicture.asset(R.resourcesIcArrowDownSvg),
+                  )
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 10),
@@ -434,7 +451,7 @@ class _QRBottomSheetContent extends StatelessWidget {
                 ),
                 SymbolIcon(
                     symbolUrl: asset.iconUrl,
-                    chainUrl: asset.iconUrl,
+                    chainUrl: asset.chainIconUrl,
                     size: 42),
               ],
             ),

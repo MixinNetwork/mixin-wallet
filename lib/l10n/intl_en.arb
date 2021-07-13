@@ -34,5 +34,7 @@
   "to": "To",
   "time": "Time",
   "trace": "Trace",
-  "assetType": "Asset Type"
+  "assetType": "Asset Type",
+  "search": "Search",
+  "cancel": "Cancel"
 }

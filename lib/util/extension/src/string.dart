@@ -4,4 +4,7 @@ extension StringExtension on String {
   String get overflow => Characters(this)
       .replaceAll(Characters(''), Characters('\u{200B}'))
       .toString();
+
+  bool containsIgnoreCase(String secondString) =>
+      toLowerCase().contains(secondString.toLowerCase());
 }

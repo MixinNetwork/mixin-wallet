@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "assetType": MessageLookupByLibrary.simpleMessage("资产类型"),
+        "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
         "depositConfirmation": m4,
         "depositTip": m7,
@@ -38,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币，例如 TRX、BTT、USDT-TRON 等。"),
         "from": MessageLookupByLibrary.simpleMessage("来自"),
+        "search": MessageLookupByLibrary.simpleMessage("搜索"),
         "time": MessageLookupByLibrary.simpleMessage("时间"),
         "to": MessageLookupByLibrary.simpleMessage("至"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额"),
