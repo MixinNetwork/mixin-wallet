@@ -11,6 +11,7 @@ import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/mixin_bottom_sheet.dart';
 import '../widget/symbol.dart';
 import '../widget/transactions/transaction_list.dart';
 
@@ -73,14 +74,8 @@ class _AssetDetailPage extends StatelessWidget {
                 name: R.resourcesIcQuestionSvg,
                 color: Colors.white,
                 onTap: () {
-                  showModalBottomSheet(
+                  showMixinBottomSheet(
                     context: context,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                    ),
                     builder: (context) =>
                         _AssetDescriptionBottomSheet(asset: asset),
                   );
@@ -317,38 +312,24 @@ class _AssetDescriptionBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            height: 70,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(width: 20),
-                SymbolIcon(
-                  symbolUrl: asset.iconUrl,
-                  chainUrl: asset.chainIconUrl,
-                  size: 20,
-                  chinaSize: 8,
+          MixinBottomSheetTitle(
+            title: Row(children: [
+              SymbolIcon(
+                symbolUrl: asset.iconUrl,
+                chainUrl: asset.chainIconUrl,
+                size: 20,
+                chinaSize: 8,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                asset.name,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: context.theme.text,
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  asset.name,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: context.theme.text,
-                  ),
-                ),
-                const Spacer(),
-                ActionButton(
-                  name: R.resourcesIcCircleCloseSvg,
-                  size: 26,
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                const SizedBox(width: 12),
-              ],
-            ),
+              )
+            ]),
           ),
           _AssetBottomSheetTile(
             title: Text(context.l10n.symbol),
