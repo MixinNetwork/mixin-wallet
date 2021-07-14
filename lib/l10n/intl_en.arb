@@ -46,5 +46,11 @@
   "transactionsAssetKeyWarning": "Asset key is NOT a deposit address!",
   "addressSearchHint": "Label, Address",
   "addAddress": "+ Add address",
-  "delete": "Delete"
+  "delete": "Delete",
+  "filterTitle": "Filter",
+  "filterApply": "Apply",
+  "filterBy": "FILTER BY",
+  "sortBy": "SORT BY",
+  "amount": "Amount",
+  "filterAll": "All"
 }

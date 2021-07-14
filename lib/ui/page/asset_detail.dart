@@ -1,7 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
+import 'package:moor/moor.dart' show OrderingTerm;
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
@@ -9,6 +12,7 @@ import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
+import '../widget/filters.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
@@ -20,6 +24,19 @@ class AssetDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const _AssetDetailLoader();
+}
+
+enum _SortBy { time, amount }
+enum _FilterBy { all, transfer, deposit, withdrawal, fee, rebate, raw }
+
+class _SnapshotFilter extends Equatable {
+  const _SnapshotFilter(this._sortBy, this._filterBy);
+
+  final _SortBy _sortBy;
+  final _FilterBy _filterBy;
+
+  @override
+  List<Object?> get props => [_sortBy, _filterBy];
 }
 
 class _AssetDetailLoader extends HookWidget {
@@ -85,39 +102,78 @@ class _AssetDetailPage extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
-              child: TransactionListBuilder(
-                refreshSnapshots: (offset, limit) => context.appServices
-                    .updateSnapshots(asset.assetId,
-                        offset: offset, limit: limit),
-                loadMoreItemDb: (offset, limit) => context.appServices
-                    .snapshots(asset.assetId, offset: offset, limit: limit)
-                    .get(),
-                builder: (context, snapshots) => CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: _AssetHeader(asset: asset),
-                    ),
-                    const SliverToBoxAdapter(
-                      child: _AssetTransactionsHeader(),
-                    ),
-                    if (snapshots.isEmpty)
-                      const SliverToBoxAdapter(child: EmptyTransaction()),
-                    if (snapshots.isNotEmpty)
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) =>
-                              TransactionItem(item: snapshots[index]),
-                          childCount: snapshots.length,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
+              child: _AssetDetailBody(asset: asset),
             ),
             _BottomBar(asset: asset),
           ],
         ),
       );
+}
+
+List<String> _getSnapshotTypeByFilter(_FilterBy filter) {
+  switch (filter) {
+    case _FilterBy.all:
+      return const [];
+    case _FilterBy.transfer:
+      return const [SnapshotType.transfer, SnapshotType.pending];
+    case _FilterBy.deposit:
+      return const [SnapshotType.deposit];
+    case _FilterBy.withdrawal:
+      return const [SnapshotType.withdrawal];
+    case _FilterBy.fee:
+      return const [SnapshotType.fee];
+    case _FilterBy.rebate:
+      return const [SnapshotType.rebate];
+    case _FilterBy.raw:
+      return const [SnapshotType.raw];
+  }
+}
+
+class _AssetDetailBody extends HookWidget {
+  const _AssetDetailBody({
+    Key? key,
+    required this.asset,
+  }) : super(key: key);
+
+  final AssetResult asset;
+
+  @override
+  Widget build(BuildContext context) {
+    final filter = useState(const _SnapshotFilter(_SortBy.time, _FilterBy.all));
+    return TransactionListBuilder(
+      key: ValueKey(filter.value),
+      refreshSnapshots: (offset, limit) => context.appServices
+          .updateSnapshots(asset.assetId, offset: offset, limit: limit),
+      loadMoreItemDb: (offset, limit) => context.mixinDatabase.snapshotDao
+          .snapshots(asset.assetId,
+              offset: offset,
+              limit: limit,
+              order: filter.value._sortBy == _SortBy.time
+                  ? null
+                  : OrderingTerm.desc(context.mixinDatabase.snapshots.amount),
+              types: _getSnapshotTypeByFilter(filter.value._filterBy))
+          .get(),
+      builder: (context, snapshots) => CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: _AssetHeader(asset: asset),
+          ),
+          SliverToBoxAdapter(
+            child: _AssetTransactionsHeader(filter: filter),
+          ),
+          if (snapshots.isEmpty)
+            const SliverToBoxAdapter(child: EmptyTransaction()),
+          if (snapshots.isNotEmpty)
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => TransactionItem(item: snapshots[index]),
+                childCount: snapshots.length,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 }
 
 class _AssetHeader extends StatelessWidget {
@@ -175,7 +231,10 @@ class _AssetHeader extends StatelessWidget {
 class _AssetTransactionsHeader extends StatelessWidget {
   const _AssetTransactionsHeader({
     Key? key,
+    required this.filter,
   }) : super(key: key);
+
+  final ValueNotifier<_SnapshotFilter> filter;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -201,7 +260,18 @@ class _AssetTransactionsHeader extends StatelessWidget {
                 ),
                 const Spacer(),
                 InteractableBox(
-                  onTap: () {},
+                  onTap: () async {
+                    final filter = await showMixinBottomSheet<_SnapshotFilter>(
+                      context: context,
+                      builder: (context) => _FilterBottomSheetDialog(
+                        this.filter.value,
+                      ),
+                    );
+                    if (filter == null) {
+                      return;
+                    }
+                    this.filter.value = filter;
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: SvgPicture.asset(
@@ -321,14 +391,7 @@ class _AssetDescriptionBottomSheet extends StatelessWidget {
                 chinaSize: 8,
               ),
               const SizedBox(width: 10),
-              Text(
-                asset.name,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: context.theme.text,
-                ),
-              )
+              Text(asset.name)
             ]),
           ),
           _AssetBottomSheetTile(
@@ -408,4 +471,162 @@ class _AssetBottomSheetTile extends StatelessWidget {
           ],
         ),
       );
+}
+
+class _FilterBottomSheetDialog extends HookWidget {
+  const _FilterBottomSheetDialog(this.initialFilter, {Key? key})
+      : super(key: key);
+
+  final _SnapshotFilter initialFilter;
+
+  @override
+  Widget build(BuildContext context) {
+    final sortBy = useState(initialFilter._sortBy);
+    final filterBy = useState(initialFilter._filterBy);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          MixinBottomSheetTitle(title: Text(context.l10n.filterTitle)),
+          const SizedBox(height: 10),
+          _FilterSectionTitle(context.l10n.sortBy),
+          const SizedBox(height: 20),
+          _SortBySection(sortBy),
+          const SizedBox(height: 30),
+          _FilterSectionTitle(context.l10n.filterBy),
+          const SizedBox(height: 20),
+          _FilterBySection(filterBy),
+          const Spacer(),
+          Center(
+            child: _Button(
+              text: Text(context.l10n.filterApply),
+              onTap: () {
+                Navigator.pop(
+                    context,
+                    _SnapshotFilter(
+                      sortBy.value,
+                      filterBy.value,
+                    ));
+              },
+              decoration: BoxDecoration(color: context.theme.accent),
+            ),
+          ),
+          const SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
+}
+
+class _FilterSectionTitle extends StatelessWidget {
+  const _FilterSectionTitle(this.title, {Key? key}) : super(key: key);
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) => Text(
+        title,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFF222222),
+        ),
+      );
+}
+
+class _SortBySection extends StatelessWidget {
+  const _SortBySection(this.sortValue, {Key? key}) : super(key: key);
+
+  final ValueNotifier<_SortBy> sortValue;
+
+  @override
+  Widget build(BuildContext context) {
+    void onChanged(_SortBy value) => sortValue.value = value;
+    return DefaultTextStyle(
+      style: const TextStyle(fontSize: 16, color: Color(0xFF222222)),
+      child: Wrap(
+        direction: Axis.horizontal,
+        runSpacing: 20,
+        spacing: 20,
+        children: [
+          FilterWidget(
+            value: _SortBy.time,
+            groupValue: sortValue.value,
+            onChanged: onChanged,
+            child: Text(context.l10n.time),
+          ),
+          FilterWidget(
+            value: _SortBy.amount,
+            groupValue: sortValue.value,
+            onChanged: onChanged,
+            child: Text(context.l10n.amount),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _FilterBySection extends StatelessWidget {
+  const _FilterBySection(this.filterValue, {Key? key}) : super(key: key);
+
+  final ValueNotifier<_FilterBy> filterValue;
+
+  @override
+  Widget build(BuildContext context) {
+    void onChanged(_FilterBy value) => filterValue.value = value;
+    return DefaultTextStyle(
+      style: const TextStyle(fontSize: 16, color: Color(0xFF222222)),
+      child: Wrap(
+        direction: Axis.horizontal,
+        runSpacing: 20,
+        spacing: 20,
+        children: [
+          FilterWidget(
+            value: _FilterBy.all,
+            groupValue: filterValue.value,
+            onChanged: onChanged,
+            child: Text(context.l10n.filterAll),
+          ),
+          FilterWidget(
+            value: _FilterBy.transfer,
+            groupValue: filterValue.value,
+            onChanged: onChanged,
+            child: Text(context.l10n.transfer),
+          ),
+          FilterWidget(
+            value: _FilterBy.deposit,
+            groupValue: filterValue.value,
+            onChanged: onChanged,
+            child: Text(context.l10n.deposit),
+          ),
+          FilterWidget(
+            value: _FilterBy.withdrawal,
+            groupValue: filterValue.value,
+            onChanged: onChanged,
+            child: Text(context.l10n.withdrawal),
+          ),
+          FilterWidget(
+            value: _FilterBy.fee,
+            groupValue: filterValue.value,
+            onChanged: onChanged,
+            child: Text(context.l10n.fee),
+          ),
+          FilterWidget(
+            value: _FilterBy.rebate,
+            groupValue: filterValue.value,
+            onChanged: onChanged,
+            child: Text(context.l10n.rebate),
+          ),
+          FilterWidget(
+            value: _FilterBy.raw,
+            groupValue: filterValue.value,
+            onChanged: onChanged,
+            child: Text(context.l10n.raw),
+          ),
+        ],
+      ),
+    );
+  }
 }

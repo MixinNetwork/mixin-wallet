@@ -98,27 +98,33 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
         (s, u, a) => Limit(1, null),
       );
 
+  ///
+  /// [order] null to use desc createAt
   Selectable<SnapshotItem> snapshots(
     String assetId, {
     String? offset,
-    int count = 30,
+    int limit = 30,
+    OrderingTerm? order,
+    List<String> types = const [],
   }) =>
       db.snapshotItems(
         (s, u, a) {
-          final assetPredicate = a.assetId.equals(assetId);
-          if (offset == null) {
-            return assetPredicate;
+          Expression<bool?> predicate = a.assetId.equals(assetId);
+          if (offset != null) {
+            predicate &= s.createdAt.isSmallerThan(
+              Variable(DateTime.parse(offset).millisecondsSinceEpoch),
+            );
           }
-          return assetPredicate &
-              s.createdAt.isSmallerThan(
-                Variable(DateTime.parse(offset).millisecondsSinceEpoch),
-              );
+          if (types.isNotEmpty) {
+            predicate &= s.type.isIn(types);
+          }
+          return predicate;
         },
         (s, u, a) => OrderBy([
-          OrderingTerm.desc(s.createdAt),
+          order ?? OrderingTerm.desc(s.createdAt),
           OrderingTerm.desc(s.snapshotId),
         ]),
-        (s, u, a) => Limit(count, null),
+        (s, u, a) => Limit(limit, null),
       );
 
   Future<int> clearPendingDepositsByAssetId(String assetId) => db

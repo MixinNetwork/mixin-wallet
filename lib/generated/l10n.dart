@@ -529,6 +529,66 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Filter`
+  String get filterTitle {
+    return Intl.message(
+      'Filter',
+      name: 'filterTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Apply`
+  String get filterApply {
+    return Intl.message(
+      'Apply',
+      name: 'filterApply',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `FILTER BY`
+  String get filterBy {
+    return Intl.message(
+      'FILTER BY',
+      name: 'filterBy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SORT BY`
+  String get sortBy {
+    return Intl.message(
+      'SORT BY',
+      name: 'sortBy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Amount`
+  String get amount {
+    return Intl.message(
+      'Amount',
+      name: 'amount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get filterAll {
+    return Intl.message(
+      'All',
+      name: 'filterAll',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

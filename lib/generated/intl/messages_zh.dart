@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addAddress": MessageLookupByLibrary.simpleMessage("+ 添加地址"),
         "addressSearchHint": MessageLookupByLibrary.simpleMessage("标题，地址"),
+        "amount": MessageLookupByLibrary.simpleMessage("金额"),
         "assetType": MessageLookupByLibrary.simpleMessage("资产类型"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
@@ -47,9 +48,19 @@ class MessageLookup extends MessageLookupByLibrary {
             "该充值地址支持所有符合 ERC-20 标准的代币，例如 ETH、XIN、HT、LOOM、LEO、PRS 等。"),
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币，例如 TRX、BTT、USDT-TRON 等。"),
+        "depositing": MessageLookupByLibrary.simpleMessage("充值中"),
+        "fee": MessageLookupByLibrary.simpleMessage("手续费"),
+        "filterAll": MessageLookupByLibrary.simpleMessage("全部"),
+        "filterApply": MessageLookupByLibrary.simpleMessage("应用"),
+        "filterBy": MessageLookupByLibrary.simpleMessage("筛选"),
+        "filterTitle": MessageLookupByLibrary.simpleMessage("筛选"),
         "from": MessageLookupByLibrary.simpleMessage("来自"),
         "memo": MessageLookupByLibrary.simpleMessage("备注"),
+        "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
+        "raw": MessageLookupByLibrary.simpleMessage("其他"),
+        "rebate": MessageLookupByLibrary.simpleMessage("退款"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
+        "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
         "symbol": MessageLookupByLibrary.simpleMessage("符号"),
         "time": MessageLookupByLibrary.simpleMessage("时间"),
         "to": MessageLookupByLibrary.simpleMessage("至"),
@@ -59,9 +70,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsId": MessageLookupByLibrary.simpleMessage("交易编号"),
         "transactionsStatus": MessageLookupByLibrary.simpleMessage("交易状态"),
         "transactionsType": MessageLookupByLibrary.simpleMessage("交易类型"),
+        "transfer": MessageLookupByLibrary.simpleMessage("转账"),
         "walletTransactionCurrentValue": m8,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("，当时价值 暂无"),
-        "walletTransactionThatTimeValue": m9
+        "walletTransactionThatTimeValue": m9,
+        "withdrawal": MessageLookupByLibrary.simpleMessage("提现")
       };
 }

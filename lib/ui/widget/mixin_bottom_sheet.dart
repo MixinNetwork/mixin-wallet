@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../util/extension/extension.dart';
 import '../../util/r.dart';
 import 'action_button.dart';
 
@@ -9,7 +10,15 @@ Future<T?> showMixinBottomSheet<T>({
 }) =>
     showModalBottomSheet(
       context: context,
-      builder: builder,
+      builder: (context) => DecoratedBox(
+        decoration: BoxDecoration(
+          color: context.theme.background,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(8),
+          ),
+        ),
+        child: builder(context),
+      ),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(8),
@@ -34,7 +43,13 @@ class MixinBottomSheetTitle extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(width: 20),
-            title,
+            DefaultTextStyle(
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: context.theme.text,
+                ),
+                child: title),
             const Spacer(),
             action,
             const SizedBox(width: 12),

@@ -186,11 +186,6 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     });
   }
 
-  Selectable<SnapshotItem> snapshots(String assetId,
-          {String? offset, int limit = 30}) =>
-      mixinDatabase.snapshotDao
-          .snapshots(assetId, offset: offset, count: limit);
-
   Future<void> refreshPendingDeposits(AssetResult asset) =>
       _refreshPendingDeposits(asset.assetId, asset.destination, asset.tag);
 

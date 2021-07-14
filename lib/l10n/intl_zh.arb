@@ -26,5 +26,18 @@
   "transactionsAssetKeyWarning": "资产标识不是充值地址！",
   "addressSearchHint": "标题，地址",
   "addAddress": "+ 添加地址",
-  "delete": "删除"
+  "delete": "删除",
+  "filterTitle": "筛选",
+  "filterApply": "应用",
+  "filterBy": "筛选",
+  "sortBy": "排序",
+  "amount": "金额",
+  "filterAll": "全部",
+  "noTransaction": "暂无转账记录",
+  "withdrawal": "提现",
+  "fee": "手续费",
+  "rebate": "退款",
+  "transfer": "转账",
+  "depositing": "充值中",
+  "raw": "其他"
 }
