@@ -183,7 +183,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     await mixinDatabase.transaction(() async {
       await Future.wait([
         mixinDatabase.snapshotDao.insertAll([data.data]),
-        ...closures,
+        ...closures.map((e) => e?.call()),
       ].where((element) => element != null).cast<Future>());
     });
   }
