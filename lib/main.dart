@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
         ],
         child: VRouter(
           title: 'Mixin Wallet',
+          debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             L10n.delegate,
             GlobalMaterialLocalizations.delegate,
