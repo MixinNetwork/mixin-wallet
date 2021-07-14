@@ -16,4 +16,7 @@ class AddressDao extends DatabaseAccessor<MixinDatabase>
 
   Future deleteAddress(Addresse address) =>
       delete(db.addresses).delete(address);
+
+  Selectable<Addresse> addressesByAssetId(String assetId) =>
+      select(db.addresses)..where((tbl) => tbl.assetId.equals(assetId));
 }

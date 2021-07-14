@@ -4,12 +4,15 @@ import 'package:flutter/widgets.dart';
 import '../../util/extension/extension.dart';
 
 class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
-  const MixinAppBar({Key? key, this.leading, this.title, this.actions})
+  const MixinAppBar(
+      {Key? key, this.leading, this.title, this.backgroundColor, this.actions})
       : super(key: key);
 
   final Widget? leading;
 
   final Widget? title;
+
+  final Color? backgroundColor;
 
   final List<Widget>? actions;
 
@@ -26,7 +29,7 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
           fontSize: 18,
           color: Colors.white,
         ),
-        backgroundColor: context.theme.accent,
+        backgroundColor: backgroundColor ?? context.theme.accent,
       );
 
   @override

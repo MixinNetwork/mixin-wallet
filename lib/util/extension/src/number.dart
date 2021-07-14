@@ -100,3 +100,13 @@ extension SnapshotItemExtension on SnapshotItem {
 
   bool get isPositive => (double.tryParse(amount) ?? 0) > 0;
 }
+
+extension AddressExtension on Addresse {
+  String displayAddress() {
+    if (tag == null || tag?.isEmpty == true) {
+      return '$destination$tag';
+    } else {
+      return destination;
+    }
+  }
+}

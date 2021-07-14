@@ -43,5 +43,8 @@
   "symbol": "Symbol",
   "chain": "Chain",
   "contract": "Asset Key",
-  "transactionsAssetKeyWarning": "Asset key is NOT a deposit address!"
+  "transactionsAssetKeyWarning": "Asset key is NOT a deposit address!",
+  "addressSearchHint": "Label, Address",
+  "addAddress": "+ Add address",
+  "delete": "Delete"
 }

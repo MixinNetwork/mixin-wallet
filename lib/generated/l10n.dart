@@ -499,6 +499,36 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Label, Address`
+  String get addressSearchHint {
+    return Intl.message(
+      'Label, Address',
+      name: 'addressSearchHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `+ Add address`
+  String get addAddress {
+    return Intl.message(
+      '+ Add address',
+      name: 'addAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

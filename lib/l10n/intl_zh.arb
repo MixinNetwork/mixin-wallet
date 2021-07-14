@@ -23,5 +23,8 @@
   "symbol": "符号",
   "chain": "所属公链",
   "contract": "资产标识",
-  "transactionsAssetKeyWarning": "资产标识不是充值地址！"
+  "transactionsAssetKeyWarning": "资产标识不是充值地址！",
+  "addressSearchHint": "标题，地址",
+  "addAddress": "+ 添加地址",
+  "delete": "删除"
 }

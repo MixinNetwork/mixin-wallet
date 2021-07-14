@@ -16,6 +16,7 @@ import '../widget/action_button.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
 import '../widget/interactable_box.dart';
+import '../widget/mixin_appbar.dart';
 import '../widget/symbol.dart';
 
 class AssetDeposit extends StatelessWidget {
@@ -81,20 +82,13 @@ class _AssetDepositPage extends HookWidget {
     final checkedTag = useState<String?>(asset.tag);
     return Scaffold(
       backgroundColor: context.theme.background,
-      appBar: AppBar(
-        backgroundColor: context.theme.background,
-        elevation: 0,
+      appBar: MixinAppBar(
+        leading: const MixinBackButton(),
         title: Text(
           context.l10n.deposit,
-          style: TextStyle(
-            color: context.theme.text,
-            fontFamily: 'Nunito',
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: context.theme.text),
         ),
-        centerTitle: false,
-        leading: const MixinBackButton(),
+        backgroundColor: context.theme.background,
         actions: <Widget>[
           ActionButton(
               name: R.resourcesIcQuestionSvg,

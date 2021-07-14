@@ -88,6 +88,11 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     return mixinDatabase.assetDao.assetResults(auth!.account.fiatCurrency);
   }
 
+  Selectable<Addresse> addresses(String assetId) {
+    assert(isLogin);
+    return mixinDatabase.addressDao.addressesByAssetId(assetId);
+  }
+
   Selectable<AssetResult> assetResult(String assetId) {
     assert(isLogin);
     return mixinDatabase.assetDao

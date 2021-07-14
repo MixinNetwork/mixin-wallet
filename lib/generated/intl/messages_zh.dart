@@ -29,10 +29,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "addAddress": MessageLookupByLibrary.simpleMessage("+ 添加地址"),
+        "addressSearchHint": MessageLookupByLibrary.simpleMessage("标题，地址"),
         "assetType": MessageLookupByLibrary.simpleMessage("资产类型"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
         "contract": MessageLookupByLibrary.simpleMessage("资产标识"),
+        "delete": MessageLookupByLibrary.simpleMessage("删除"),
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
         "depositConfirmation": m4,
         "depositTip": m7,

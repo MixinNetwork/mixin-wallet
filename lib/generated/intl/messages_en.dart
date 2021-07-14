@@ -44,7 +44,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "addAddress": MessageLookupByLibrary.simpleMessage("+ Add address"),
         "address": MessageLookupByLibrary.simpleMessage("Address"),
+        "addressSearchHint":
+            MessageLookupByLibrary.simpleMessage("Label, Address"),
         "approxBalanceOfBtc": m0,
         "approxOf": m1,
         "assetType": MessageLookupByLibrary.simpleMessage("Asset Type"),
@@ -54,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
         "contract": MessageLookupByLibrary.simpleMessage("Asset Key"),
+        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
         "depositConfirmation": m4,
         "depositNotice": m5,
