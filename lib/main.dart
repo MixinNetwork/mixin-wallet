@@ -44,35 +44,44 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => AppServices(),
           ),
         ],
-        child: VRouter(
-          title: 'Mixin Wallet',
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: const [
-            L10n.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          supportedLocales: [
-            ...L10n.delegate.supportedLocales,
-          ],
-          theme: ThemeData(
-            pageTransitionsTheme: const PageTransitionsTheme(
-              builders: <TargetPlatform, PageTransitionsBuilder>{
-                TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
-                TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-                TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
-              },
-            ),
+        child: const _Router(),
+      );
+}
+
+class _Router extends StatelessWidget {
+  const _Router({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => VRouter(
+        title: 'Mixin Wallet',
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: const [
+          L10n.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          ...L10n.delegate.supportedLocales,
+        ],
+        theme: ThemeData(
+          pageTransitionsTheme: const PageTransitionsTheme(
+            builders: <TargetPlatform, PageTransitionsBuilder>{
+              TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
+              TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+              TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+            },
           ),
-          builder: (BuildContext context, Widget child) => DefaultTextStyle(
-            style: const TextStyle(height: 1),
-            child: BrightnessObserver(
-              lightThemeData: lightBrightnessThemeData,
-              child: child,
-            ),
-          ),
-          routes: mixinRoutes,
         ),
+        builder: (BuildContext context, Widget child) => DefaultTextStyle(
+          style: const TextStyle(height: 1),
+          child: BrightnessObserver(
+            lightThemeData: lightBrightnessThemeData,
+            child: child,
+          ),
+        ),
+        routes: buildMixinRoutes(context),
       );
 }

@@ -10,6 +10,7 @@ import '../db/dao/snapshot_dao.dart';
 import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
 import '../util/extension/extension.dart';
+import '../util/logger.dart';
 import 'auth/auth.dart';
 import 'auth/auth_manager.dart';
 
@@ -20,10 +21,14 @@ const clientSecret =
 class AppServices extends ChangeNotifier with EquatableMixin {
   AppServices() {
     client = sdk.Client(accessToken: accessToken);
-    _initDatabase();
+    initDbFuture = _initDatabase();
+    initDbFuture?.whenComplete(() {
+      initDbFuture = null;
+    });
   }
 
   late sdk.Client client;
+  Future? initDbFuture;
   MixinDatabase? _mixinDatabase;
 
   bool get databaseInitialized => _mixinDatabase != null;
@@ -59,7 +64,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Future<void> _initDatabase() async {
     if (accessToken == null) return;
+    i('init database start');
     _mixinDatabase = await constructDb(auth!.account.identityNumber);
+    i('init database done');
     notifyListeners();
   }
 
