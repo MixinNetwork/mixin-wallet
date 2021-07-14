@@ -1,5 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../util/extension/extension.dart';
@@ -44,6 +45,63 @@ class SymbolIcon extends StatelessWidget {
                 chainUrl,
                 width: chinaSize,
                 height: chinaSize,
+              ),
+            ),
+          ],
+        ),
+      );
+}
+
+class SymbolIconWithBorder extends StatelessWidget {
+  const SymbolIconWithBorder({
+    Key? key,
+    required this.symbolUrl,
+    required this.chainUrl,
+    required this.size,
+    required this.chainSize,
+    this.chainBorder = const BorderSide(color: Colors.white, width: 1),
+    this.symbolBorder = const BorderSide(color: Colors.white, width: 2),
+  }) : super(key: key);
+
+  final String symbolUrl;
+  final String chainUrl;
+  final double size;
+  final double chainSize;
+
+  final BorderSide chainBorder;
+  final BorderSide symbolBorder;
+
+  @override
+  Widget build(BuildContext context) => SizedBox.square(
+        dimension: size,
+        child: Stack(
+          children: [
+            Positioned.fill(
+                child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.symmetric(
+                        vertical: symbolBorder,
+                        horizontal: symbolBorder,
+                      ),
+                    ),
+                    child: Image.network(symbolUrl))),
+            Positioned(
+              left: 0,
+              bottom: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.symmetric(
+                    vertical: chainBorder,
+                    horizontal: chainBorder,
+                  ),
+                ),
+                child: Image.network(
+                  chainUrl,
+                  width: chainSize,
+                  height: chainSize,
+                ),
               ),
             ),
           ],

@@ -186,11 +186,13 @@ class _AssetHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 18),
-            SymbolIcon(
+            SymbolIconWithBorder(
               symbolUrl: asset.iconUrl,
               chainUrl: asset.chainIconUrl,
               size: 60,
-              chinaSize: 18,
+              chainSize: 18,
+              chainBorder: const BorderSide(color: Colors.white, width: 1.14),
+              symbolBorder: const BorderSide(color: Colors.white, width: 1.67),
             ),
             const SizedBox(height: 18),
             Text.rich(TextSpan(children: [
