@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
-import 'package:moor/moor.dart' show OrderingTerm;
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
@@ -148,9 +147,7 @@ class _AssetDetailBody extends HookWidget {
           .snapshots(asset.assetId,
               offset: offset,
               limit: limit,
-              order: filter.value._sortBy == _SortBy.time
-                  ? null
-                  : OrderingTerm.desc(context.mixinDatabase.snapshots.amount),
+              orderByAmount: filter.value._sortBy == _SortBy.amount,
               types: _getSnapshotTypeByFilter(filter.value._filterBy))
           .get(),
       builder: (context, snapshots) => CustomScrollView(

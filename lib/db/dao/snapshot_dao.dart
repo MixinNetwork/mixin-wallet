@@ -25,8 +25,7 @@ extension SnapshotConverter on sdk.Snapshot {
 extension SnapshotConverterForPendingDeposit on sdk.PendingDeposit {
   Snapshot toSnapshot(String assetId) => Snapshot(
         snapshotId: transactionId,
-        // FIXME: replace with enum?
-        type: 'pending',
+        type: sdk.SnapshotType.pending,
         assetId: assetId,
         amount: amount,
         createdAt: createdAt,
@@ -98,33 +97,27 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
         (s, u, a) => Limit(1, null),
       );
 
-  ///
-  /// [order] null to use desc createAt
   Selectable<SnapshotItem> snapshots(
     String assetId, {
-    String? offset,
+    int? offset,
     int limit = 30,
-    OrderingTerm? order,
+    bool orderByAmount = false,
     List<String> types = const [],
   }) =>
       db.snapshotItems(
         (s, u, a) {
           Expression<bool?> predicate = a.assetId.equals(assetId);
-          if (offset != null) {
-            predicate &= s.createdAt.isSmallerThan(
-              Variable(DateTime.parse(offset).millisecondsSinceEpoch),
-            );
-          }
           if (types.isNotEmpty) {
             predicate &= s.type.isIn(types);
           }
           return predicate;
         },
         (s, u, a) => OrderBy([
-          order ?? OrderingTerm.desc(s.createdAt),
+          if (orderByAmount) OrderingTerm.desc(_AmountSqlExpression(s)),
+          if (!orderByAmount) OrderingTerm.desc(s.createdAt),
           OrderingTerm.desc(s.snapshotId),
         ]),
-        (s, u, a) => Limit(limit, null),
+        (s, u, a) => Limit(limit, offset),
       );
 
   Future<int> clearPendingDepositsByAssetId(String assetId) => db
@@ -140,4 +133,15 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
                   tbl.transactionHash.isIn(hashList),
             ))
           .map((e) => e.snapshotId);
+}
+
+class _AmountSqlExpression<D> extends Expression<D> {
+  _AmountSqlExpression(this.s);
+
+  final Snapshots s;
+
+  @override
+  void writeInto(GenerationContext context) {
+    context.buffer.write('abs(${s.amount.escapedName})');
+  }
 }

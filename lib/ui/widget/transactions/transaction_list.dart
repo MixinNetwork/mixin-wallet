@@ -14,7 +14,7 @@ import 'transaction_list_controller.dart';
 export 'transaction_item.dart';
 
 typedef LoadMoreTransactionCallback = Future<List<SnapshotItem>> Function(
-  String? offset,
+  int? offset,
   int limit,
 );
 

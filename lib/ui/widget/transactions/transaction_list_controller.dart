@@ -31,22 +31,23 @@ class TransactionListController {
 
   bool _loading = false;
 
-  String? get _offset => _snapshotItems.isEmpty
-      ? null
-      : _snapshotItems.last.createdAt.toIso8601String();
+  Future<void> loadMoreItem() => _loadMoreItem(_pageSize);
 
-  Future<void> loadMoreItem() => _loadMoreItem(_offset, _pageSize);
-
-  Future<void> _loadMoreItem(String? offset, int limit) async {
+  Future<void> _loadMoreItem(int limit) async {
     if (_loading) {
       return;
     }
     _loading = true;
 
-    i('TransactionListController start to load. $offset, $limit');
+    final offset = _snapshotItems.length;
+    final lastItemCreatedAt = _snapshotItems.isEmpty
+        ? null
+        : _snapshotItems.last.createdAt.toIso8601String();
+
+    i('TransactionListController start to load. $offset, $limit $lastItemCreatedAt');
 
     final cacheDbResult = _loadMoreItemDb(offset, limit);
-    final networkResult = _refreshSnapshots(offset, limit);
+    final networkResult = _refreshSnapshots(lastItemCreatedAt, limit);
 
     try {
       _snapshotFromDb
@@ -113,7 +114,7 @@ class TransactionListController {
     _autoFillTask?.cancel();
     _autoFillTask = Timer(const Duration(milliseconds: 800), () {
       _autoFillTask = null;
-      _loadMoreItem(_offset, moreNeedLoad);
+      _loadMoreItem(moreNeedLoad);
     });
   }
 
