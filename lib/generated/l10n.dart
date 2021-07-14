@@ -589,6 +589,57 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Send to Address`
+  String get sendToAddress {
+    return Intl.message(
+      'Send to Address',
+      name: 'sendToAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Miner Fee`
+  String get minerFee {
+    return Intl.message(
+      'Miner Fee',
+      name: 'minerFee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select from Address Book`
+  String get selectFromAddressBook {
+    return Intl.message(
+      'Select from Address Book',
+      name: 'selectFromAddressBook',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A transaction fee of {value1} is required for withdrawing {value2}`
+  String withdrawalFee(Object value1, Object value2) {
+    return Intl.message(
+      'A transaction fee of $value1 is required for withdrawing $value2',
+      name: 'withdrawalFee',
+      desc: '',
+      args: [value1, value2],
+    );
+  }
+
+  /// `A transaction fee of {value1} is required for withdrawing {value2}. {value3} has a minimum {value4} {value5} reserve requirement.`
+  String withdrawalFeeReserve(Object value1, Object value2, Object value3,
+      Object value4, Object value5) {
+    return Intl.message(
+      'A transaction fee of $value1 is required for withdrawing $value2. $value3 has a minimum $value4 $value5 reserve requirement.',
+      name: 'withdrawalFeeReserve',
+      desc: '',
+      args: [value1, value2, value3, value4, value5],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

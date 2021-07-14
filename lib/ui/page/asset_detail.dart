@@ -307,7 +307,8 @@ class _BottomBar extends StatelessWidget {
             _Button(
               text: Text(context.l10n.send),
               decoration: BoxDecoration(color: context.theme.accent),
-              onTap: () {},
+              onTap: () =>
+                  context.push(withdrawalPath.toUri({'id': asset.assetId})),
             ),
             const SizedBox(width: 20),
             _Button(

@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/auth/auth_manager.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -191,13 +192,17 @@ class _Header extends HookWidget {
               _Button(
                 icon: SvgPicture.asset(R.resourcesSendSvg),
                 text: Text(context.l10n.send),
-                onTap: () {},
+                onTap: () {
+                  context.push(withdrawalPath.toUri({'id': bitcoin}));
+                },
               ),
               const SizedBox(width: 20),
               _Button(
                 icon: SvgPicture.asset(R.resourcesReceiveSvg),
                 text: Text(context.l10n.receive),
-                onTap: () {},
+                onTap: () {
+                  context.push(assetDepositPath.toUri({'id': bitcoin}));
+                },
               ),
             ],
           ),

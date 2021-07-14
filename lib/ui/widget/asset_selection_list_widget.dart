@@ -10,17 +10,17 @@ import '../../util/l10n.dart';
 import '../../util/r.dart';
 import 'brightness_observer.dart';
 import 'interactable_box.dart';
-import 'search_text_field_widget.dart';
+import 'search_header_widget.dart';
 import 'symbol.dart';
 
 class AssetSelectionListWidget extends HookWidget {
   const AssetSelectionListWidget({
     Key? key,
     required this.onTap,
-    this.selectedAsset,
+    this.selectedAssetId,
   }) : super(key: key);
 
-  final AssetResult? selectedAsset;
+  final String? selectedAssetId;
   final AssetSelectCallback onTap;
 
   @override
@@ -32,7 +32,7 @@ class AssetSelectionListWidget extends HookWidget {
         )),
     ).requireData;
 
-    var selectedAssetId = selectedAsset?.assetId;
+    var selectedAssetId = this.selectedAssetId;
     selectedAssetId ??= assetResults[0].assetId;
 
     final filterList = useState<List<AssetResult>>(assetResults);
@@ -42,43 +42,20 @@ class AssetSelectionListWidget extends HookWidget {
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
       child: Column(
         children: [
-          SizedBox(
-              height: 80,
-              child: Stack(children: [
-                Container(
-                    padding: const EdgeInsets.only(right: 80),
-                    child: Material(
-                        child: SearchTextFieldWidget(
-                      onChanged: (k) {
-                        if (k.isNotEmpty) {
-                          filterList.value = assetResults
-                              .where((e) =>
-                                  e.symbol.containsIgnoreCase(k) ||
-                                  e.name.containsIgnoreCase(k))
-                              .toList();
-                        } else {
-                          filterList.value = assetResults;
-                        }
-                      },
-                      fontSize: 16,
-                      controller: useTextEditingController(),
-                      hintText: context.l10n.search,
-                    ))),
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: InteractableBox(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(context.l10n.cancel,
-                          style: TextStyle(
-                            color: context.theme.text,
-                            fontFamily: 'PingFang HK',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                    )),
-              ])),
+          SearchHeaderWidget(
+            hintText: context.l10n.search,
+            onChanged: (k) {
+              if (k.isNotEmpty) {
+                filterList.value = assetResults
+                    .where((e) =>
+                        e.symbol.containsIgnoreCase(k) ||
+                        e.name.containsIgnoreCase(k))
+                    .toList();
+              } else {
+                filterList.value = assetResults;
+              }
+            },
+          ),
           Expanded(
               child: ListView.builder(
                   itemCount: filterList.value.length,

@@ -2,6 +2,7 @@ import '../mixin.moor';
 
 assetResults(:currentFiat AS TEXT) as AssetResult:
 SELECT asset.*,
+       tempAsset.symbol AS chainSymbol,
        tempAsset.icon_url AS chainIconUrl,
        fiat.rate AS fiatRate,
        tempAsset.name as chainName

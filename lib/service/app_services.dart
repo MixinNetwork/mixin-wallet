@@ -95,11 +95,6 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     return mixinDatabase.assetDao.assetResults(auth!.account.fiatCurrency);
   }
 
-  Selectable<Addresse> addresses(String assetId) {
-    assert(isLogin);
-    return mixinDatabase.addressDao.addressesByAssetId(assetId);
-  }
-
   Selectable<AssetResult> assetResult(String assetId) {
     assert(isLogin);
     return mixinDatabase.assetDao
@@ -232,6 +227,17 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .map((e) => e.toSnapshot(assetId))
         .toList();
     await mixinDatabase.snapshotDao.insertPendingDeposit(snapshots);
+  }
+
+  Selectable<Addresse> addresses(String assetId) {
+    assert(isLogin);
+    return mixinDatabase.addressDao.addressesByAssetId(assetId);
+  }
+
+  Future<void> updateAddresses(String assetId) async {
+    final addresses =
+        (await client.addressApi.getAddressesByAssetId(assetId)).data;
+    await mixinDatabase.addressDao.insertAllOnConflictUpdate(addresses);
   }
 
   @override

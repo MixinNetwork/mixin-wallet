@@ -7,4 +7,11 @@ extension StringExtension on String {
 
   bool containsIgnoreCase(String secondString) =>
       toLowerCase().contains(secondString.toLowerCase());
+
+  String formatAddress() {
+    if (length <= 10) {
+      return this;
+    }
+    return '${substring(0, 6)}...${substring(length - 4, length)}';
+  }
 }

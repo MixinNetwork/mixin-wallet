@@ -11,7 +11,7 @@ import '../../util/l10n.dart';
 import '../../util/r.dart';
 import 'brightness_observer.dart';
 import 'interactable_box.dart';
-import 'search_text_field_widget.dart';
+import 'search_header_widget.dart';
 
 class AddressSelectionWidget extends HookWidget {
   const AddressSelectionWidget({
@@ -27,66 +27,74 @@ class AddressSelectionWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    useMemoizedFuture(() => context.appServices.updateAddresses(assetId));
+
     final addresses =
         useMemoizedStream(() => context.appServices.addresses(assetId).watch())
-            .requireData;
+            .data;
 
     var selectedAddressId = selectedAddress?.addressId;
-    selectedAddressId ??= addresses[0].assetId;
+    if (selectedAddressId == null &&
+        addresses != null &&
+        addresses.isNotEmpty) {
+      selectedAddressId = addresses[0].addressId;
+    }
 
-    final filterList = useState<List<Addresse>>(addresses);
+    final filterList = useState<List<Addresse>?>(addresses);
 
     return Container(
       height: MediaQuery.of(context).size.height - 120,
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
       child: Column(
         children: [
-          SizedBox(
-              height: 80,
-              child: Stack(children: [
-                Container(
-                    padding: const EdgeInsets.only(right: 80),
-                    child: Material(
-                        child: SearchTextFieldWidget(
-                      onChanged: (k) {
-                        if (k.isNotEmpty) {
-                          filterList.value = addresses
-                              .where((e) =>
-                                  e.label.containsIgnoreCase(k) == true ||
-                                  e.displayAddress().containsIgnoreCase(k) ==
-                                      true)
-                              .toList();
-                        } else {
-                          filterList.value = addresses;
-                        }
-                      },
-                      fontSize: 16,
-                      controller: useTextEditingController(),
-                      hintText: context.l10n.addressSearchHint,
-                    ))),
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: InteractableBox(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(context.l10n.cancel,
+          SearchHeaderWidget(
+            hintText: context.l10n.addressSearchHint,
+            onChanged: (k) {
+              if (k.isNotEmpty) {
+                filterList.value = addresses
+                    ?.where((e) =>
+                        e.label.containsIgnoreCase(k) == true ||
+                        e.displayAddress().containsIgnoreCase(k) == true)
+                    .toList();
+              } else {
+                filterList.value = addresses;
+              }
+            },
+          ),
+          addresses != null && addresses.isNotEmpty
+              ? Expanded(
+                  child: ListView.builder(
+                      itemCount: filterList.value?.length ?? 0,
+                      itemBuilder: (BuildContext context, int index) => _Item(
+                            address: filterList.value![index],
+                            selectedAddressId: selectedAddressId,
+                            onTap: onTap,
+                          )))
+              : const SizedBox(),
+          const Spacer(),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                  width: 160,
+                  height: 44,
+                  child: TextButton(
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              const EdgeInsets.symmetric(
+                                  horizontal: 22, vertical: 11)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      side: BorderSide(
+                                          color: context.theme.accent)))),
+                      onPressed: () {},
+                      child: Text(context.l10n.addAddress,
                           style: TextStyle(
-                            color: context.theme.text,
-                            fontFamily: 'PingFang HK',
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )),
-                    )),
-              ])),
-          Expanded(
-              child: ListView.builder(
-                  itemCount: filterList.value.length,
-                  itemBuilder: (BuildContext context, int index) => _Item(
-                        address: filterList.value[index],
-                        selectedAddressId: selectedAddressId,
-                        onTap: onTap,
-                      ))),
+                            color: context.theme.accent,
+                          ))))),
+          const SizedBox(height: 70),
         ],
       ),
     );

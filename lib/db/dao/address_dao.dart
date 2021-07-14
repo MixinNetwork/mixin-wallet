@@ -1,8 +1,21 @@
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:moor/moor.dart';
 
 import '../mixin_database.dart';
 
 part 'address_dao.g.dart';
+
+extension AddressConverter on sdk.Address {
+  AddressesCompanion get asAddressesCompanion => AddressesCompanion.insert(
+      addressId: addressId,
+      type: type,
+      assetId: assetId,
+      destination: destination,
+      label: label,
+      updatedAt: updatedAt,
+      reserve: reserve,
+      fee: fee);
+}
 
 @UseDao(tables: [Addresses])
 class AddressDao extends DatabaseAccessor<MixinDatabase>
@@ -13,6 +26,15 @@ class AddressDao extends DatabaseAccessor<MixinDatabase>
 
   Future<int> insert(Addresse address) =>
       into(db.addresses).insertOnConflictUpdate(address);
+
+  Future<void> insertAllOnConflictUpdate(List<sdk.Address> addresses) async {
+    await db.batch((batch) {
+      batch.insertAllOnConflictUpdate(
+        db.addresses,
+        addresses.map((e) => e.asAddressesCompanion).toList(),
+      );
+    });
+  }
 
   Future deleteAddress(Addresse address) =>
       delete(db.addresses).delete(address);

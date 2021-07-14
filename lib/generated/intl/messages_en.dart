@@ -42,6 +42,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m9(value) => ",value then \$${value}";
 
+  static String m10(value1, value2) =>
+      "A transaction fee of ${value1} is required for withdrawing ${value2}";
+
+  static String m11(value1, value2, value3, value4, value5) =>
+      "A transaction fee of ${value1} is required for withdrawing ${value2}. ${value3} has a minimum ${value4} ${value5} reserve requirement.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addAddress": MessageLookupByLibrary.simpleMessage("+ Add address"),
@@ -80,13 +86,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterTitle": MessageLookupByLibrary.simpleMessage("Filter"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
         "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
+        "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "selectFromAddressBook":
+            MessageLookupByLibrary.simpleMessage("Select from Address Book"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
+        "sendToAddress":
+            MessageLookupByLibrary.simpleMessage("Send to Address"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
@@ -106,6 +117,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage(",value then N/A"),
         "walletTransactionThatTimeValue": m9,
-        "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal")
+        "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
+        "withdrawalFee": m10,
+        "withdrawalFeeReserve": m11
       };
 }

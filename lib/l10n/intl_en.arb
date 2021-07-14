@@ -52,5 +52,10 @@
   "filterBy": "FILTER BY",
   "sortBy": "SORT BY",
   "amount": "Amount",
-  "filterAll": "All"
+  "filterAll": "All",
+  "sendToAddress": "Send to Address",
+  "minerFee": "Miner Fee",
+  "selectFromAddressBook": "Select from Address Book",
+  "withdrawalFee": "A transaction fee of {value1} is required for withdrawing {value2}",
+  "withdrawalFeeReserve": "A transaction fee of {value1} is required for withdrawing {value2}. {value3} has a minimum {value4} {value5} reserve requirement."
 }

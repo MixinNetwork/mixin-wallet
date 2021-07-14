@@ -15,7 +15,7 @@ import '../page/withdrawal.dart';
 final homeUri = Uri(path: '/');
 final authUri = Uri(path: '/auth');
 final notFoundUri = Uri(path: '/404');
-final withdrawalUri = Uri(path: '/withdrawal');
+const withdrawalPath = '/withdrawal/:id';
 const assetDetailPath = '/tokens/:id';
 const assetDepositPath = '/tokens/:id/deposit';
 const snapshotDetailPath = '/snapshots/:id';
@@ -41,7 +41,7 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
           },
           stackedRoutes: [
             VWidget(path: homeUri.toString(), widget: const Home()),
-            VWidget(path: withdrawalUri.toString(), widget: const Withdrawal()),
+            VWidget(path: withdrawalPath, widget: const Withdrawal()),
             VWidget(path: assetDetailPath, widget: const AssetDetail()),
             VWidget(path: assetDepositPath, widget: const AssetDeposit()),
             VWidget(path: snapshotDetailPath, widget: const SnapshotDetail()),
