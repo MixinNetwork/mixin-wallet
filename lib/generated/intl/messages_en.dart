@@ -38,14 +38,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(value) => "This address only supports ${value}.";
 
-  static String m8(value) => "value now \$${value}";
+  static String m8(value, value2) => "${value}/${value2} confirmations";
 
-  static String m9(value) => ",value then \$${value}";
+  static String m9(value) => "value now ${value}";
 
-  static String m10(value1, value2) =>
+  static String m10(value) => ",value then ${value}";
+
+  static String m11(value1, value2) =>
       "A transaction fee of ${value1} is required for withdrawing ${value2}";
 
-  static String m11(value1, value2, value3, value4, value5) =>
+  static String m12(value1, value2, value3, value4, value5) =>
       "A transaction fee of ${value1} is required for withdrawing ${value2}. ${value3} has a minimum ${value4} ${value5} reserve requirement.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -89,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
+        "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
@@ -113,12 +116,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsType":
             MessageLookupByLibrary.simpleMessage("Transaction Type"),
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
-        "walletTransactionCurrentValue": m8,
+        "walletTransactionCurrentValue": m9,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage(",value then N/A"),
-        "walletTransactionThatTimeValue": m9,
+        "walletTransactionThatTimeValue": m10,
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
-        "withdrawalFee": m10,
-        "withdrawalFeeReserve": m11
+        "withdrawalFee": m11,
+        "withdrawalFeeReserve": m12
       };
 }

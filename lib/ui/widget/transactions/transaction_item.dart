@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -76,7 +78,11 @@ class TransactionItem extends HookWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(
-                        DateFormat.yMMMMd().format(item.createdAt),
+                        item.type == SnapshotType.pending
+                            ? context.l10n.pendingConfirmations(
+                                item.confirmations ?? 0,
+                                item.assetConfirmations)
+                            : DateFormat.yMMMMd().format(item.createdAt),
                         style: TextStyle(
                           fontSize: 14,
                           color: BrightnessData.themeOf(context).secondaryText,
@@ -164,24 +170,58 @@ class _TransactionIcon extends StatelessWidget {
     } else if (item.type == SnapshotType.deposit) {
       child = SvgPicture.asset(
         R.resourcesTransactionDepositSvg,
-        height: 44,
-        width: 44,
+        height: 55,
+        width: 55,
+        fit: BoxFit.cover,
+        allowDrawingOutsideViewBox: true,
+      );
+    } else if (item.type == SnapshotType.pending) {
+      final progress = (item.confirmations ?? 0) / item.assetConfirmations;
+      child = Stack(
+        alignment: Alignment.center,
+        children: [
+          SvgPicture.asset(
+            R.resourcesTransactionPendingSvg,
+            height: 44,
+            width: 44,
+          ),
+          Positioned.fill(
+              child: Container(color: Colors.black.withOpacity(0.5))),
+          Text(
+            '${(progress * 100).round()}%',
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          ),
+          Transform.rotate(
+            angle: 4.5 * 2 * math.pi / 12.0,
+            child: CircularProgressIndicator(
+              value: progress,
+              color: Colors.white,
+              strokeWidth: 2,
+            ),
+          ),
+        ],
       );
     } else if (item.type == SnapshotType.withdrawal) {
       child = SvgPicture.asset(
-        R.resourcesTransactionWithDrawalSvg,
+        R.resourcesTransactionWithdrawalSvg,
+        height: 44,
+        width: 44,
+      );
+    } else {
+      child = SvgPicture.asset(
+        R.resourcesTransactionNetSvg,
         height: 44,
         width: 44,
       );
     }
 
-    return Container(
-      height: 44,
+    return SizedBox(
       width: 44,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-      ),
-      child: child,
+      height: 44,
+      child: ClipOval(child: child),
     );
   }
 }

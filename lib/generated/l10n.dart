@@ -430,20 +430,20 @@ class L10n {
     );
   }
 
-  /// `value now ${value}`
+  /// `value now {value}`
   String walletTransactionCurrentValue(Object value) {
     return Intl.message(
-      'value now \$$value',
+      'value now $value',
       name: 'walletTransactionCurrentValue',
       desc: '',
       args: [value],
     );
   }
 
-  /// `,value then ${value}`
+  /// `,value then {value}`
   String walletTransactionThatTimeValue(Object value) {
     return Intl.message(
-      ',value then \$$value',
+      ',value then $value',
       name: 'walletTransactionThatTimeValue',
       desc: '',
       args: [value],
@@ -638,6 +638,16 @@ class L10n {
       name: 'withdrawalFeeReserve',
       desc: '',
       args: [value1, value2, value3, value4, value5],
+    );
+  }
+
+  /// `{value}/{value2} confirmations`
+  String pendingConfirmations(Object value, Object value2) {
+    return Intl.message(
+      '$value/$value2 confirmations',
+      name: 'pendingConfirmations',
+      desc: '',
+      args: [value, value2],
     );
   }
 }

@@ -37,8 +37,8 @@
   "assetType": "Asset Type",
   "search": "Search",
   "cancel": "Cancel",
-  "walletTransactionCurrentValue": "value now ${value}",
-  "walletTransactionThatTimeValue": ",value then ${value}",
+  "walletTransactionCurrentValue": "value now {value}",
+  "walletTransactionThatTimeValue": ",value then {value}",
   "walletTransactionThatTimeNoValue": ",value then N/A",
   "symbol": "Symbol",
   "chain": "Chain",
@@ -57,5 +57,6 @@
   "minerFee": "Miner Fee",
   "selectFromAddressBook": "Select from Address Book",
   "withdrawalFee": "A transaction fee of {value1} is required for withdrawing {value2}",
-  "withdrawalFeeReserve": "A transaction fee of {value1} is required for withdrawing {value2}. {value3} has a minimum {value4} {value5} reserve requirement."
+  "withdrawalFeeReserve": "A transaction fee of {value1} is required for withdrawing {value2}. {value3} has a minimum {value4} {value5} reserve requirement.",
+  "pendingConfirmations": "{value}/{value2} confirmations"
 }

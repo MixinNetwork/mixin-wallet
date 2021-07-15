@@ -23,9 +23,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(value) => "该充值地址仅支持 ${value}.";
 
-  static String m8(value) => "价值 \$${value}";
+  static String m8(value, value2) => "${value}/${value2} 区块确认数";
 
-  static String m9(value) => "，当时价值 \$${value}";
+  static String m9(value) => "价值 \$${value}";
+
+  static String m10(value) => "，当时价值 \$${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -57,6 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "from": MessageLookupByLibrary.simpleMessage("来自"),
         "memo": MessageLookupByLibrary.simpleMessage("备注"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
+        "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "rebate": MessageLookupByLibrary.simpleMessage("退款"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
@@ -71,10 +74,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsStatus": MessageLookupByLibrary.simpleMessage("交易状态"),
         "transactionsType": MessageLookupByLibrary.simpleMessage("交易类型"),
         "transfer": MessageLookupByLibrary.simpleMessage("转账"),
-        "walletTransactionCurrentValue": m8,
+        "walletTransactionCurrentValue": m9,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("，当时价值 暂无"),
-        "walletTransactionThatTimeValue": m9,
+        "walletTransactionThatTimeValue": m10,
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现")
       };
 }

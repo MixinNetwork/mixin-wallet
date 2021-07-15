@@ -25,11 +25,18 @@ class R {
 
   static const String resourcesIcCopySvg = 'resources/ic_copy.svg';
 
+  static const String resourcesIcFileSvg = 'resources/ic_file.svg';
+
   static const String resourcesIcQuestionSvg = 'resources/ic_question.svg';
 
   static const String resourcesIcSaveAlbumSvg = 'resources/ic_save_album.svg';
 
   static const String resourcesIcScanSvg = 'resources/ic_scan.svg';
+
+  static const String resourcesIcSearchSmallSvg =
+      'resources/ic_search_small.svg';
+
+  static const String resourcesIcSwitchSvg = 'resources/ic_switch.svg';
 
   static const String resourcesReceiveSvg = 'resources/receive.svg';
 
@@ -38,13 +45,12 @@ class R {
   static const String resourcesTransactionDepositSvg =
       'resources/transaction_deposit.svg';
 
-  static const String resourcesTransactionWithDrawalSvg =
-      'resources/transaction_with_drawal.svg';
+  static const String resourcesTransactionNetSvg =
+      'resources/transaction_net.svg';
 
-  static const String resourcesIcSearchSmallSvg =
-      'resources/ic_search_small.svg';
+  static const String resourcesTransactionPendingSvg =
+      'resources/transaction_pending.svg';
 
-  static const String resourcesIcFileSvg = 'resources/ic_file.svg';
-
-  static const String resourcesIcSwitchSvg = 'resources/ic_switch.svg';
+  static const String resourcesTransactionWithdrawalSvg =
+      'resources/transaction_withdrawal.svg';
 }

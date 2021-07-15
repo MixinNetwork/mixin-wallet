@@ -39,5 +39,6 @@
   "rebate": "退款",
   "transfer": "转账",
   "depositing": "充值中",
-  "raw": "其他"
+  "raw": "其他",
+  "pendingConfirmations": "{value}/{value2} 区块确认数"
 }
