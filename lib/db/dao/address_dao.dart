@@ -7,14 +7,17 @@ part 'address_dao.g.dart';
 
 extension AddressConverter on sdk.Address {
   AddressesCompanion get asAddressesCompanion => AddressesCompanion.insert(
-      addressId: addressId,
-      type: type,
-      assetId: assetId,
-      destination: destination,
-      label: label,
-      updatedAt: updatedAt,
-      reserve: reserve,
-      fee: fee);
+        addressId: addressId,
+        type: type,
+        assetId: assetId,
+        destination: destination,
+        label: label,
+        updatedAt: updatedAt,
+        reserve: reserve,
+        fee: fee,
+        tag: Value(tag),
+        dust: Value(dust),
+      );
 }
 
 @UseDao(tables: [Addresses])
@@ -24,17 +27,12 @@ class AddressDao extends DatabaseAccessor<MixinDatabase>
 
   Future<List<Addresse>> getAll() => select(db.addresses).get();
 
-  Future<int> insert(Addresse address) =>
-      into(db.addresses).insertOnConflictUpdate(address);
-
-  Future<void> insertAllOnConflictUpdate(List<sdk.Address> addresses) async {
-    await db.batch((batch) {
-      batch.insertAllOnConflictUpdate(
-        db.addresses,
-        addresses.map((e) => e.asAddressesCompanion).toList(),
-      );
-    });
-  }
+  Future<void> insertAllOnConflictUpdate(List<sdk.Address> addresses) =>
+      batch((batch) => batch.insertAll(
+            db.addresses,
+            addresses.map((e) => e.asAddressesCompanion).toList(),
+            mode: InsertMode.insertOrReplace,
+          ));
 
   Future deleteAddress(Addresse address) =>
       delete(db.addresses).delete(address);

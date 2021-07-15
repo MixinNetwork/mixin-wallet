@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
@@ -22,8 +21,8 @@ class AddressSelectionWidget extends HookWidget {
   }) : super(key: key);
 
   final String assetId;
-  final Address? selectedAddress;
-  final VoidCallback onTap;
+  final Addresse? selectedAddress;
+  final AddressSelectCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +30,10 @@ class AddressSelectionWidget extends HookWidget {
 
     final addresses =
         useMemoizedStream(() => context.appServices.addresses(assetId).watch())
-            .data;
+            .requireData;
 
     var selectedAddressId = selectedAddress?.addressId;
-    if (selectedAddressId == null &&
-        addresses != null &&
-        addresses.isNotEmpty) {
+    if (selectedAddressId == null && addresses.isNotEmpty) {
       selectedAddressId = addresses[0].addressId;
     }
 
@@ -52,7 +49,7 @@ class AddressSelectionWidget extends HookWidget {
             onChanged: (k) {
               if (k.isNotEmpty) {
                 filterList.value = addresses
-                    ?.where((e) =>
+                    .where((e) =>
                         e.label.containsIgnoreCase(k) == true ||
                         e.displayAddress().containsIgnoreCase(k) == true)
                     .toList();
@@ -61,16 +58,14 @@ class AddressSelectionWidget extends HookWidget {
               }
             },
           ),
-          addresses != null && addresses.isNotEmpty
-              ? Expanded(
-                  child: ListView.builder(
-                      itemCount: filterList.value?.length ?? 0,
-                      itemBuilder: (BuildContext context, int index) => _Item(
-                            address: filterList.value![index],
-                            selectedAddressId: selectedAddressId,
-                            onTap: onTap,
-                          )))
-              : const SizedBox(),
+          Expanded(
+              child: ListView.builder(
+                  itemCount: filterList.value?.length ?? 0,
+                  itemBuilder: (BuildContext context, int index) => _Item(
+                        address: filterList.value![index],
+                        selectedAddressId: selectedAddressId,
+                        onTap: onTap,
+                      ))),
           const Spacer(),
           Align(
               alignment: Alignment.bottomCenter,
@@ -111,58 +106,66 @@ class _Item extends StatelessWidget {
 
   final Addresse address;
   final String? selectedAddressId;
-  final VoidCallback onTap;
+  final AddressSelectCallback onTap;
 
   @override
-  Widget build(BuildContext context) => InteractableBox(
-        child: SizedBox(
-            child: Row(children: [
+  Widget build(BuildContext context) => ConstrainedBox(
+      constraints: const BoxConstraints(
+        minHeight: 66,
+      ),
+      child: InteractableBox(
+        child: Row(children: [
           Container(
             width: 44,
             height: 44,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(22),
-              color: const Color(0xfff8f8f8),
+              color: const Color(0xFFF5F7FA),
             ),
             child: const SizedBox(),
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  address.label.overflow,
-                  style: TextStyle(
-                    color: context.theme.text,
-                    fontSize: 16,
-                    fontFamily: 'Nunito',
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                address.label.overflow,
+                style: TextStyle(
+                  color: context.theme.text,
+                  fontSize: 16,
+                  fontFamily: 'Nunito',
+                  fontWeight: FontWeight.w600,
                 ),
-                Expanded(
-                  child: Text(
-                    address.displayAddress(),
-                    style: TextStyle(
-                      color: context.theme.secondaryText,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                address.displayAddress(),
+                softWrap: true,
+                style: TextStyle(
+                  color: context.theme.secondaryText,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
                 ),
-              ],
-            ),
-          ),
+              ),
+            ],
+          )),
+          const SizedBox(width: 48),
           selectedAddressId == address.addressId
               ? Align(
                   alignment: Alignment.centerRight,
                   child: SvgPicture.asset(R.resourcesIcCheckSvg),
                 )
               : const SizedBox(),
-        ])),
-        onTap: () => onTap,
-      );
+        ]),
+        onTap: () {
+          onTap(address);
+          Navigator.pop(context);
+        },
+      ));
 }
+
+typedef AddressSelectCallback = void Function(Addresse);

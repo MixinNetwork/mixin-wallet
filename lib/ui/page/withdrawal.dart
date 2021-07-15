@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../db/mixin_database.dart';
+import '../../service/auth/auth_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
+import '../widget/address_selection_widget.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
 import '../widget/interactable_box.dart';
@@ -48,20 +51,18 @@ class _WithdrawalPage extends HookWidget {
   Widget build(BuildContext context) {
     final selectedAddress = useState<Addresse?>(null);
     final valueFirst = useState<double>(0);
-    final valueSecond = useState<double>(0);
+    final valueSecond = useState<String>('0.00'.currencyFormatWithoutSymbol);
+    final symbolFirst = useState<bool>(false);
     final switched = useState<bool>(false);
+
+    final currency = auth!.account.fiatCurrency;
 
     final assetPriceUsd = double.tryParse(asset.priceUsd) ?? 1;
     final controller = useTextEditingController();
     useEffect(() {
       void notifyChanged() {
-        if (switched.value) {
-          valueFirst.value = double.tryParse(controller.text) ?? 0;
-          valueSecond.value = valueFirst.value / assetPriceUsd;
-        } else {
-          valueFirst.value = double.tryParse(controller.text) ?? 0;
-          valueSecond.value = valueFirst.value * assetPriceUsd;
-        }
+        refreshValues(controller, symbolFirst, switched, valueFirst,
+            valueSecond, assetPriceUsd);
       }
 
       controller.addListener(notifyChanged);
@@ -147,7 +148,15 @@ class _WithdrawalPage extends HookWidget {
           ),
           const SizedBox(height: 10),
           InteractableBox(
-            onTap: () {},
+            onTap: () {
+              showCupertinoModalBottomSheet(
+                  context: context,
+                  builder: (context) => AddressSelectionWidget(
+                        assetId: asset.assetId,
+                        selectedAddress: selectedAddress.value,
+                        onTap: (address) => selectedAddress.value = address,
+                      ));
+            },
             child: RoundContainer(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Row(
@@ -211,22 +220,42 @@ class _WithdrawalPage extends HookWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        TextField(
-                          style: TextStyle(
-                            color: context.theme.text,
-                            fontSize: 16,
-                            fontFamily: 'Nunito',
-                            fontWeight: FontWeight.w400,
+                        Row(children: [
+                          IntrinsicWidth(
+                              child: TextField(
+                            style: TextStyle(
+                              color: context.theme.text,
+                              fontSize: 16,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w400,
+                            ),
+                            maxLines: 1,
+                            decoration: InputDecoration(
+                              hintText: symbolFirst.value ? '' : '0.00 ',
+                              border: InputBorder.none,
+                            ),
+                            controller: controller,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp(
+                                  switched.value
+                                      ? r'^\d*\.?\d{0,2}'
+                                      : r'^\d*\.?\d{0,8}')),
+                            ],
+                          )),
+                          Text(
+                            symbolFirst.value
+                                ? (switched.value ? currency : asset.symbol)
+                                : '',
+                            style: TextStyle(
+                              color: context.theme.text,
+                              fontSize: 16,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                          maxLines: 1,
-                          decoration: InputDecoration(
-                            hintText: '0.00 ${asset.symbol}',
-                            border: InputBorder.none,
-                          ),
-                          controller: controller,
-                        ),
+                        ]),
                         Text(
-                          '${valueSecond.value} ${switched.value ? asset.symbol : 'USD'}',
+                          '${valueSecond.value} ${switched.value ? asset.symbol : currency}',
                           style: TextStyle(
                             color: context.theme.secondaryText,
                             fontSize: 13,
@@ -237,18 +266,66 @@ class _WithdrawalPage extends HookWidget {
                     ),
                   ),
                   Align(
-                    alignment: Alignment.centerRight,
-                    child: SvgPicture.asset(R.resourcesIcSwitchSvg),
-                  )
+                      alignment: Alignment.centerRight,
+                      child: InteractableBox(
+                          onTap: () {
+                            switched.value = !switched.value;
+                            refreshValues(controller, symbolFirst, switched,
+                                valueFirst, valueSecond, assetPriceUsd);
+                          },
+                          child: SvgPicture.asset(R.resourcesIcSwitchSvg))),
                 ],
               ),
             ),
           ),
           const SizedBox(height: 10),
           _FeeText(asset: asset, address: selectedAddress.value),
+          const Spacer(),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: InteractableBox(
+                onTap: () {},
+                child: Container(
+                    width: 160,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: const Color(0xffB2B3C7),
+                    ),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 11,
+                      horizontal: 22,
+                    ),
+                    child: Text(context.l10n.send,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: context.theme.background,
+                        )))),
+          ),
+          const SizedBox(height: 70),
         ]),
       ),
     );
+  }
+
+  void refreshValues(
+      TextEditingController controller,
+      ValueNotifier<bool> symbolFirst,
+      ValueNotifier<bool> switched,
+      ValueNotifier<double> valueFirst,
+      ValueNotifier<String> valueSecond,
+      double assetPriceUsd) {
+    final s = controller.text;
+    symbolFirst.value = s.isNotEmpty;
+    if (switched.value) {
+      valueFirst.value = double.tryParse(controller.text) ?? 0;
+      valueSecond.value = (valueFirst.value / assetPriceUsd).currencyFormatCoin;
+    } else {
+      valueFirst.value = double.tryParse(controller.text) ?? 0;
+      valueSecond.value =
+          (valueFirst.value * assetPriceUsd).currencyFormatWithoutSymbol;
+    }
   }
 }
 
@@ -265,7 +342,7 @@ class _FeeText extends StatelessWidget {
       return const SizedBox();
     }
     final reserveVal = double.tryParse(address!.reserve);
-    final bold = '${address!.fee} ${asset.chainIconUrl}';
+    final bold = '${address!.fee} ${asset.chainSymbol}';
     final String text;
     if (reserveVal == null || reserveVal <= 0) {
       text = context.l10n.withdrawalFee(bold, asset.name);

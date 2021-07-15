@@ -2658,7 +2658,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
             alias(this.fiats, 'fiat')),
         hasMultipleTables: true);
     return customSelect(
-        'SELECT asset.*, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id INNER JOIN fiats AS fiat ON fiat.code = :currentFiat WHERE ${generatedwhere.sql} ${generatedlimit.sql}',
+        'SELECT asset.*, tempAsset.symbol AS chainSymbol, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id INNER JOIN fiats AS fiat ON fiat.code = :currentFiat WHERE ${generatedwhere.sql} ${generatedlimit.sql}',
         variables: [
           Variable<String>(currentFiat),
           ...generatedwhere.introducedVariables,
@@ -2686,6 +2686,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         confirmations: row.read<int>('confirmations'),
         assetKey: row.read<String?>('asset_key'),
         depositEntries: row.read<String?>('deposit_entries'),
+        chainSymbol: row.read<String>('chainSymbol'),
         chainIconUrl: row.read<String>('chainIconUrl'),
         fiatRate: row.read<double>('fiatRate'),
         chainName: row.read<String>('chainName'),
@@ -2822,6 +2823,7 @@ class AssetResult {
   final int confirmations;
   final String? assetKey;
   final String? depositEntries;
+  final String chainSymbol;
   final String chainIconUrl;
   final double fiatRate;
   final String chainName;
@@ -2841,6 +2843,7 @@ class AssetResult {
     required this.confirmations,
     this.assetKey,
     this.depositEntries,
+    required this.chainSymbol,
     required this.chainIconUrl,
     required this.fiatRate,
     required this.chainName,
@@ -2878,13 +2881,16 @@ class AssetResult {
                                                               depositEntries
                                                                   .hashCode,
                                                               $mrjc(
-                                                                  chainIconUrl
+                                                                  chainSymbol
                                                                       .hashCode,
                                                                   $mrjc(
-                                                                      fiatRate
+                                                                      chainIconUrl
                                                                           .hashCode,
-                                                                      chainName
-                                                                          .hashCode))))))))))))))))));
+                                                                      $mrjc(
+                                                                          fiatRate
+                                                                              .hashCode,
+                                                                          chainName
+                                                                              .hashCode)))))))))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2904,6 +2910,7 @@ class AssetResult {
           other.confirmations == this.confirmations &&
           other.assetKey == this.assetKey &&
           other.depositEntries == this.depositEntries &&
+          other.chainSymbol == this.chainSymbol &&
           other.chainIconUrl == this.chainIconUrl &&
           other.fiatRate == this.fiatRate &&
           other.chainName == this.chainName);
@@ -2925,6 +2932,7 @@ class AssetResult {
           ..write('confirmations: $confirmations, ')
           ..write('assetKey: $assetKey, ')
           ..write('depositEntries: $depositEntries, ')
+          ..write('chainSymbol: $chainSymbol, ')
           ..write('chainIconUrl: $chainIconUrl, ')
           ..write('fiatRate: $fiatRate, ')
           ..write('chainName: $chainName')
