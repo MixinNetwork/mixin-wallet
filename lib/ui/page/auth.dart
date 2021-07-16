@@ -4,16 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../service/app_services.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
-
-// TODO should config for production or staging env
-const clientId = 'd0a44d9d-bb19-403c-afc5-ea26ea88123b';
-const clientSecret =
-    '29c9774449f38accd015638d463bc4f70242ecc39e154b939d47017ca9316420';
 
 class AuthPage extends HookWidget {
   const AuthPage({Key? key}) : super(key: key);
