@@ -24,9 +24,11 @@ class TransactionItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final item = useMemoizedStream(() => context.mixinDatabase.snapshotDao
-            .snapshotsById(this.item.snapshotId)
-            .watchSingle()).data ??
+    final item = useMemoizedStream(
+            () => context.mixinDatabase.snapshotDao
+                .snapshotsById(this.item.snapshotId)
+                .watchSingle(),
+            keys: [this.item.snapshotId]).data ??
         this.item;
     final isPositive = item.isPositive;
     return GestureDetector(
