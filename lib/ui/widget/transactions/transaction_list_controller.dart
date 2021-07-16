@@ -18,7 +18,12 @@ class TransactionListController {
 
   LoadMoreTransactionCallback _loadMoreItemDb;
   RefreshTransactionCallback _refreshSnapshots;
+
+  // the size of snapshot we need to load once.
+  // maybe more than the visible area.
   int _pageSize;
+
+  int? _pendingPageSize;
 
   final snapshots = ValueNotifier(const <SnapshotItem>[]);
 
@@ -66,6 +71,11 @@ class TransactionListController {
       e('failed to load item from network. $error $s');
     }
     _loading = false;
+
+    if (_pendingPageSize != null) {
+      updatePageSize(_pendingPageSize!);
+      _pendingPageSize = null;
+    }
   }
 
   void _notifySnapshotsItemUpdated() {
@@ -80,7 +90,7 @@ class TransactionListController {
     }
 
     if (_loading) {
-      // TODO check this after loading
+      _pendingPageSize = pageSize;
       return;
     }
 
