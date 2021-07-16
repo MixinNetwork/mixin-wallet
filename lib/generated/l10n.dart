@@ -510,10 +510,10 @@ class L10n {
     );
   }
 
-  /// `+ Add address`
+  /// `Add address`
   String get addAddress {
     return Intl.message(
-      '+ Add address',
+      'Add address',
       name: 'addAddress',
       desc: '',
       args: [],
@@ -648,6 +648,56 @@ class L10n {
       name: 'pendingConfirmations',
       desc: '',
       args: [value, value2],
+    );
+  }
+
+  /// `Label (e.g. exchanges, wallets, etc.)`
+  String get addAddressLabelHint {
+    return Intl.message(
+      'Label (e.g. exchanges, wallets, etc.)',
+      name: 'addAddressLabelHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `MEMO (Optional)`
+  String get memoOptional {
+    return Intl.message(
+      'MEMO (Optional)',
+      name: 'memoOptional',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Memo`
+  String get memoNo {
+    return Intl.message(
+      'No Memo',
+      name: 'memoNo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm if the receiving address requires a MEMO.`
+  String get memoHint {
+    return Intl.message(
+      'Confirm if the receiving address requires a MEMO.',
+      name: 'memoHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
     );
   }
 }

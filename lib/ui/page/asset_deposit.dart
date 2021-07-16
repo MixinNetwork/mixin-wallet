@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../db/converter/deposit_entry_converter.dart';
@@ -17,6 +16,7 @@ import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/mixin_bottom_sheet.dart';
 import '../widget/round_container.dart';
 import '../widget/symbol.dart';
 
@@ -104,8 +104,9 @@ class _AssetDepositPage extends HookWidget {
           const SizedBox(height: 20),
           InteractableBox(
             onTap: () {
-              showCupertinoModalBottomSheet(
+              showMixinBottomSheet(
                   context: context,
+                  isScrollControlled: true,
                   builder: (context) => AssetSelectionListWidget(
                         onTap: (String assetId) => context
                             .replace(assetDepositPath.toUri({'id': assetId})),
@@ -162,7 +163,7 @@ class _AssetDepositPage extends HookWidget {
                   children: [
                     InteractableBox(
                         onTap: () {
-                          showCupertinoModalBottomSheet(
+                          showMixinBottomSheet(
                               context: context,
                               builder: (context) => _AddressTypeBottomSheet(
                                     depositEntries: depositEntries,
@@ -346,10 +347,10 @@ class _Item extends StatelessWidget {
                         onTap: () {}),
                     const SizedBox(width: 12),
                     ActionButton(
-                        name: R.resourcesIcScanSvg,
+                        name: R.resourcesIcQrCodeSvg,
                         color: BrightnessData.themeOf(context).icon,
                         onTap: () {
-                          showCupertinoModalBottomSheet(
+                          showMixinBottomSheet(
                             context: context,
                             builder: (context) => _QRBottomSheetContent(
                               data: desc,
@@ -461,28 +462,11 @@ class _AddressTypeBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
         child: Column(
           children: [
-            SizedBox(
-                height: 70,
-                child: Row(
-                  children: [
-                    Text(context.l10n.address,
-                        style: TextStyle(
-                          color: context.theme.text,
-                          fontFamily: 'SF Pro Display',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        )),
-                    const Spacer(),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: ActionButton(
-                          name: R.resourcesIcCircleCloseSvg,
-                          onTap: () {
-                            Navigator.pop(context);
-                          }),
-                    ),
-                  ],
-                )),
+            MixinBottomSheetTitle(
+              title: Row(children: [
+                Text(context.l10n.address),
+              ]),
+            ),
             const SizedBox(height: 20),
             RoundContainer(
               height: 148,

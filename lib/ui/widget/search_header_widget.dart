@@ -17,7 +17,7 @@ class SearchHeaderWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-      height: 80,
+      height: 56,
       child: Stack(children: [
         Container(
             padding: const EdgeInsets.only(right: 80),

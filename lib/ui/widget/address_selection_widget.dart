@@ -8,8 +8,10 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/l10n.dart';
 import '../../util/r.dart';
+import 'address_add_widget.dart';
 import 'brightness_observer.dart';
 import 'interactable_box.dart';
+import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 
 class AddressSelectionWidget extends HookWidget {
@@ -40,10 +42,11 @@ class AddressSelectionWidget extends HookWidget {
     final filterList = useState<List<Addresse>?>(addresses);
 
     return Container(
-      height: MediaQuery.of(context).size.height - 120,
+      height: MediaQuery.of(context).size.height - 100,
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
       child: Column(
         children: [
+          const SizedBox(height: 20),
           SearchHeaderWidget(
             hintText: context.l10n.addressSearchHint,
             onChanged: (k) {
@@ -83,8 +86,15 @@ class AddressSelectionWidget extends HookWidget {
                                       borderRadius: BorderRadius.circular(12.0),
                                       side: BorderSide(
                                           color: context.theme.accent)))),
-                      onPressed: () {},
-                      child: Text(context.l10n.addAddress,
+                      onPressed: () {
+                        showMixinBottomSheet(
+                          context: context,
+                          builder: (context) =>
+                              AddressAddWidget(assetId: assetId),
+                          isScrollControlled: true,
+                        );
+                      },
+                      child: Text('+ ${context.l10n.addAddress}',
                           style: TextStyle(
                             fontSize: 16,
                             color: context.theme.accent,

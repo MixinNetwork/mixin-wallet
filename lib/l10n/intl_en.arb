@@ -45,7 +45,7 @@
   "contract": "Asset Key",
   "transactionsAssetKeyWarning": "Asset key is NOT a deposit address!",
   "addressSearchHint": "Label, Address",
-  "addAddress": "+ Add address",
+  "addAddress": "Add address",
   "delete": "Delete",
   "filterTitle": "Filter",
   "filterApply": "Apply",
@@ -58,5 +58,10 @@
   "selectFromAddressBook": "Select from Address Book",
   "withdrawalFee": "A transaction fee of {value1} is required for withdrawing {value2}",
   "withdrawalFeeReserve": "A transaction fee of {value1} is required for withdrawing {value2}. {value3} has a minimum {value4} {value5} reserve requirement.",
-  "pendingConfirmations": "{value}/{value2} confirmations"
+  "pendingConfirmations": "{value}/{value2} confirmations",
+  "addAddressLabelHint": "Label (e.g. exchanges, wallets, etc.)",
+  "memoOptional": "MEMO (Optional)",
+  "memoNo": "No Memo",
+  "memoHint": "Confirm if the receiving address requires a MEMO.",
+  "save": "Save"
 }

@@ -52,7 +52,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "addAddress": MessageLookupByLibrary.simpleMessage("+ Add address"),
+        "addAddress": MessageLookupByLibrary.simpleMessage("Add address"),
+        "addAddressLabelHint": MessageLookupByLibrary.simpleMessage(
+            "Label (e.g. exchanges, wallets, etc.)"),
         "address": MessageLookupByLibrary.simpleMessage("Address"),
         "addressSearchHint":
             MessageLookupByLibrary.simpleMessage("Label, Address"),
@@ -88,6 +90,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterTitle": MessageLookupByLibrary.simpleMessage("Filter"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
         "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
+        "memoHint": MessageLookupByLibrary.simpleMessage(
+            "Confirm if the receiving address requires a MEMO."),
+        "memoNo": MessageLookupByLibrary.simpleMessage("No Memo"),
+        "memoOptional": MessageLookupByLibrary.simpleMessage("MEMO (Optional)"),
         "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
@@ -95,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "selectFromAddressBook":
             MessageLookupByLibrary.simpleMessage("Select from Address Book"),

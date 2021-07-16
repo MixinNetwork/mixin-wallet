@@ -38,10 +38,11 @@ class AssetSelectionListWidget extends HookWidget {
     final filterList = useState<List<AssetResult>>(assetResults);
 
     return Container(
-      height: MediaQuery.of(context).size.height - 120,
+      height: MediaQuery.of(context).size.height - 100,
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
       child: Column(
         children: [
+          const SizedBox(height: 20),
           SearchHeaderWidget(
             hintText: context.l10n.search,
             onChanged: (k) {

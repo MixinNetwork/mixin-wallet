@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/auth/auth_manager.dart';
@@ -18,6 +17,7 @@ import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/mixin_bottom_sheet.dart';
 import '../widget/round_container.dart';
 import '../widget/symbol.dart';
 
@@ -94,8 +94,9 @@ class _WithdrawalPage extends HookWidget {
           const SizedBox(height: 20),
           InteractableBox(
             onTap: () {
-              showCupertinoModalBottomSheet(
+              showMixinBottomSheet(
                   context: context,
+                  isScrollControlled: true,
                   builder: (context) => AssetSelectionListWidget(
                         onTap: (String assetId) => context
                             .replace(withdrawalPath.toUri({'id': assetId})),
@@ -149,8 +150,9 @@ class _WithdrawalPage extends HookWidget {
           const SizedBox(height: 10),
           InteractableBox(
             onTap: () {
-              showCupertinoModalBottomSheet(
+              showMixinBottomSheet(
                   context: context,
+                  isScrollControlled: true,
                   builder: (context) => AddressSelectionWidget(
                         assetId: asset.assetId,
                         selectedAddress: selectedAddress.value,
@@ -208,74 +210,73 @@ class _WithdrawalPage extends HookWidget {
             ),
           ),
           const SizedBox(height: 10),
-          InteractableBox(
-            onTap: () {},
-            child: RoundContainer(
-              height: null,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Row(children: [
-                          IntrinsicWidth(
-                              child: TextField(
-                            style: TextStyle(
-                              color: context.theme.text,
-                              fontSize: 16,
-                              fontFamily: 'Nunito',
-                              fontWeight: FontWeight.w400,
-                            ),
-                            maxLines: 1,
-                            decoration: InputDecoration(
-                              hintText: symbolFirst.value ? '' : '0.00 ',
-                              border: InputBorder.none,
-                            ),
-                            controller: controller,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.allow(RegExp(
-                                  switched.value
-                                      ? r'^\d*\.?\d{0,2}'
-                                      : r'^\d*\.?\d{0,8}')),
-                            ],
-                          )),
-                          Text(
-                            symbolFirst.value
-                                ? (switched.value ? currency : asset.symbol)
-                                : '',
-                            style: TextStyle(
-                              color: context.theme.text,
-                              fontSize: 16,
-                              fontFamily: 'Nunito',
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ]),
-                        Text(
-                          '${valueSecond.value} ${switched.value ? asset.symbol : currency}',
+          RoundContainer(
+            height: null,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Row(children: [
+                        IntrinsicWidth(
+                            child: TextField(
                           style: TextStyle(
-                            color: context.theme.secondaryText,
-                            fontSize: 13,
+                            color: context.theme.text,
+                            fontSize: 16,
+                            fontFamily: 'Nunito',
+                            fontWeight: FontWeight.w400,
+                          ),
+                          maxLines: 1,
+                          decoration: InputDecoration(
+                            hintText: symbolFirst.value
+                                ? ''
+                                : '0.00 ${switched.value ? currency : asset.symbol}',
+                            border: InputBorder.none,
+                          ),
+                          controller: controller,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(RegExp(
+                                switched.value
+                                    ? r'^\d*\.?\d{0,2}'
+                                    : r'^\d*\.?\d{0,8}')),
+                          ],
+                        )),
+                        Text(
+                          symbolFirst.value
+                              ? (switched.value ? currency : asset.symbol)
+                              : '',
+                          style: TextStyle(
+                            color: context.theme.text,
+                            fontSize: 16,
+                            fontFamily: 'Nunito',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                      ],
-                    ),
+                      ]),
+                      Text(
+                        '${valueSecond.value} ${switched.value ? asset.symbol : currency}',
+                        style: TextStyle(
+                          color: context.theme.secondaryText,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
-                  Align(
-                      alignment: Alignment.centerRight,
-                      child: InteractableBox(
-                          onTap: () {
-                            switched.value = !switched.value;
-                            refreshValues(controller, symbolFirst, switched,
-                                valueFirst, valueSecond, assetPriceUsd);
-                          },
-                          child: SvgPicture.asset(R.resourcesIcSwitchSvg))),
-                ],
-              ),
+                ),
+                Align(
+                    alignment: Alignment.centerRight,
+                    child: InteractableBox(
+                        onTap: () {
+                          switched.value = !switched.value;
+                          refreshValues(controller, symbolFirst, switched,
+                              valueFirst, valueSecond, assetPriceUsd);
+                        },
+                        child: SvgPicture.asset(R.resourcesIcSwitchSvg))),
+              ],
             ),
           ),
           const SizedBox(height: 10),

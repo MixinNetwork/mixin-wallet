@@ -7,6 +7,7 @@ import 'action_button.dart';
 Future<T?> showMixinBottomSheet<T>({
   required BuildContext context,
   required WidgetBuilder builder,
+  bool isScrollControlled = false,
 }) =>
     showModalBottomSheet(
       context: context,
@@ -24,6 +25,7 @@ Future<T?> showMixinBottomSheet<T>({
           top: Radius.circular(8),
         ),
       ),
+      isScrollControlled: isScrollControlled,
     );
 
 class MixinBottomSheetTitle extends StatelessWidget {

@@ -53,4 +53,6 @@ class R {
 
   static const String resourcesTransactionWithdrawalSvg =
       'resources/transaction_withdrawal.svg';
+
+  static const String resourcesIcQrCodeSvg = 'resources/ic_qr_code.svg';
 }
