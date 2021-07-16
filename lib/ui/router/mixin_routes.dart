@@ -40,12 +40,18 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
             redirector.to('/auth');
           },
           stackedRoutes: [
-            VWidget(path: homeUri.toString(), widget: const Home()),
-            VWidget(path: withdrawalPath, widget: const Withdrawal()),
-            VWidget(path: assetDetailPath, widget: const AssetDetail()),
-            VWidget(path: assetDepositPath, widget: const AssetDeposit()),
-            VWidget(path: snapshotDetailPath, widget: const SnapshotDetail()),
-            VWidget(path: notFoundUri.toString(), widget: const NotFound()),
+            VWidget(
+                path: homeUri.toString(),
+                widget: const Home(),
+                stackedRoutes: [
+                  VWidget(path: withdrawalPath, widget: const Withdrawal()),
+                  VWidget(path: assetDetailPath, widget: const AssetDetail()),
+                  VWidget(path: assetDepositPath, widget: const AssetDeposit()),
+                  VWidget(
+                      path: snapshotDetailPath, widget: const SnapshotDetail()),
+                  VWidget(
+                      path: notFoundUri.toString(), widget: const NotFound()),
+                ]),
           ]),
       VRouteRedirector(path: ':_(.+)', redirectTo: '/404'),
     ];

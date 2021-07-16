@@ -13,7 +13,6 @@ import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset_selection_list_widget.dart';
-import '../widget/buttons.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
@@ -84,7 +83,6 @@ class _AssetDepositPage extends HookWidget {
     return Scaffold(
       backgroundColor: context.theme.background,
       appBar: MixinAppBar(
-        leading: const MixinBackButton(),
         title: Text(
           context.l10n.deposit,
           style: TextStyle(color: context.theme.text),

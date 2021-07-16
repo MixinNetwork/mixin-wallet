@@ -55,6 +55,7 @@ class _Router extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => VRouter(
+        onSystemPop: (redirector) async => redirector.pop(),
         title: 'Mixin Wallet',
         debugShowCheckedModeBanner: false,
         localizationsDelegates: const [

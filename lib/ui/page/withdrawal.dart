@@ -14,7 +14,6 @@ import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/address_selection_widget.dart';
 import '../widget/asset_selection_list_widget.dart';
-import '../widget/buttons.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
@@ -74,7 +73,6 @@ class _WithdrawalPage extends HookWidget {
     return Scaffold(
       backgroundColor: context.theme.background,
       appBar: MixinAppBar(
-        leading: const MixinBackButton(),
         title: Text(
           context.l10n.sendToAddress,
           style: TextStyle(color: context.theme.text),

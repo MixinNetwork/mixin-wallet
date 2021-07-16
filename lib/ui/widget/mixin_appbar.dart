@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../util/extension/extension.dart';
+import 'buttons.dart';
 
 class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
-  const MixinAppBar(
-      {Key? key, this.leading, this.title, this.backgroundColor, this.actions})
-      : super(key: key);
+  const MixinAppBar({
+    Key? key,
+    this.leading,
+    this.title,
+    this.backgroundColor,
+    this.actions,
+  }) : super(key: key);
 
   final Widget? leading;
 
@@ -18,7 +23,8 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => AppBar(
-        leading: leading,
+        leading: leading ??
+            (Navigator.canPop(context) ? const MixinBackButton() : null),
         toolbarHeight: preferredSize.height,
         elevation: 0,
         actions: actions,
