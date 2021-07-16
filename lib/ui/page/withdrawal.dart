@@ -101,7 +101,7 @@ class _WithdrawalPage extends HookWidget {
                 builder: (context) => AssetSelectionListWidget(
                   onTap: (AssetResult assetResult) {
                     assetState.value = assetResult;
-                    context.changeUrl(
+                    context.replace(
                         withdrawalPath.toUri({'id': assetResult.assetId}));
                   },
                   selectedAssetId: asset.assetId,

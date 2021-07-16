@@ -106,16 +106,17 @@ class _AssetDepositPage extends HookWidget {
           InteractableBox(
             onTap: () {
               showMixinBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) => AssetSelectionListWidget(
-                        onTap: (AssetResult assetResult) {
-                          context.changeUrl(assetDepositPath
-                              .toUri({'id': assetResult.assetId}));
-                          assetState.value = assetResult;
-                        },
-                        selectedAssetId: asset.assetId,
-                      ));
+                context: context,
+                isScrollControlled: true,
+                builder: (context) => AssetSelectionListWidget(
+                  onTap: (AssetResult assetResult) {
+                    context.replace(
+                        assetDepositPath.toUri({'id': assetResult.assetId}));
+                    assetState.value = assetResult;
+                  },
+                  selectedAssetId: asset.assetId,
+                ),
+              );
             },
             child: RoundContainer(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),

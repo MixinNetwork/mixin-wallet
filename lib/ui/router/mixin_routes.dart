@@ -44,13 +44,31 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                 path: homeUri.toString(),
                 widget: const Home(),
                 stackedRoutes: [
-                  VWidget(path: withdrawalPath, widget: const Withdrawal()),
-                  VWidget(path: assetDetailPath, widget: const AssetDetail()),
-                  VWidget(path: assetDepositPath, widget: const AssetDeposit()),
                   VWidget(
-                      path: snapshotDetailPath, widget: const SnapshotDetail()),
+                    key: const ValueKey('Withdrawal'),
+                    path: withdrawalPath,
+                    widget: const Withdrawal(),
+                  ),
                   VWidget(
-                      path: notFoundUri.toString(), widget: const NotFound()),
+                    key: const ValueKey('AssetDetail'),
+                    path: assetDetailPath,
+                    widget: const AssetDetail(),
+                  ),
+                  VWidget(
+                    key: const ValueKey('AssetDeposit'),
+                    path: assetDepositPath,
+                    widget: const AssetDeposit(),
+                  ),
+                  VWidget(
+                    key: const ValueKey('SnapshotDetail'),
+                    path: snapshotDetailPath,
+                    widget: const SnapshotDetail(),
+                  ),
+                  VWidget(
+                    key: const ValueKey('NotFound'),
+                    path: notFoundUri.toString(),
+                    widget: const NotFound(),
+                  ),
                 ]),
           ]),
       VRouteRedirector(path: ':_(.+)', redirectTo: '/404'),
