@@ -14,4 +14,7 @@ extension ProviderExtension on BuildContext {
   void push(Object url) => vRouter.to(url.toString());
 
   void toExternal(Object url) => vRouter.toExternal(url.toString());
+
+  void changeUrl(Object url) =>
+      window.history.replaceState(null, '', url.toString());
 }

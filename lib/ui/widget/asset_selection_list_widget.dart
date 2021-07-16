@@ -58,13 +58,15 @@ class AssetSelectionListWidget extends HookWidget {
             },
           ),
           Expanded(
-              child: ListView.builder(
-                  itemCount: filterList.value.length,
-                  itemBuilder: (BuildContext context, int index) => _Item(
-                        asset: filterList.value[index],
-                        selectedAssetId: selectedAssetId,
-                        onTap: onTap,
-                      ))),
+            child: ListView.builder(
+              itemCount: filterList.value.length,
+              itemBuilder: (BuildContext context, int index) => _Item(
+                asset: filterList.value[index],
+                selectedAssetId: selectedAssetId,
+                onTap: onTap,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -127,8 +129,11 @@ class _Item extends StatelessWidget {
                     )
                   : const SizedBox(),
             ])),
-        onTap: () => onTap(asset.assetId),
+        onTap: () {
+          onTap(asset);
+          Navigator.pop(context);
+        },
       );
 }
 
-typedef AssetSelectCallback = void Function(String);
+typedef AssetSelectCallback = void Function(AssetResult);

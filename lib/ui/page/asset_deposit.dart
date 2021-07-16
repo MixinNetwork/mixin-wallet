@@ -76,6 +76,9 @@ class _AssetDepositPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final assetState = useState(this.asset);
+    final asset = assetState.value;
+
     final depositEntries =
         const DepositEntryConverter().mapToDart(asset.depositEntries);
     final checkedDestination = useState<String>(asset.destination!);
@@ -106,8 +109,11 @@ class _AssetDepositPage extends HookWidget {
                   context: context,
                   isScrollControlled: true,
                   builder: (context) => AssetSelectionListWidget(
-                        onTap: (String assetId) => context
-                            .replace(assetDepositPath.toUri({'id': assetId})),
+                        onTap: (AssetResult assetResult) {
+                          context.changeUrl(assetDepositPath
+                              .toUri({'id': assetResult.assetId}));
+                          assetState.value = assetResult;
+                        },
                         selectedAssetId: asset.assetId,
                       ));
             },

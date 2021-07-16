@@ -48,6 +48,9 @@ class _WithdrawalPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final assetState = useState(this.asset);
+    final asset = assetState.value;
+
     final selectedAddress = useState<Addresse?>(null);
     final valueFirst = useState<double>(0);
     final valueSecond = useState<String>('0.00'.currencyFormatWithoutSymbol);
@@ -93,13 +96,17 @@ class _WithdrawalPage extends HookWidget {
           InteractableBox(
             onTap: () {
               showMixinBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) => AssetSelectionListWidget(
-                        onTap: (String assetId) => context
-                            .replace(withdrawalPath.toUri({'id': assetId})),
-                        selectedAssetId: asset.assetId,
-                      ));
+                context: context,
+                isScrollControlled: true,
+                builder: (context) => AssetSelectionListWidget(
+                  onTap: (AssetResult assetResult) {
+                    assetState.value = assetResult;
+                    context.changeUrl(
+                        withdrawalPath.toUri({'id': assetResult.assetId}));
+                  },
+                  selectedAssetId: asset.assetId,
+                ),
+              );
             },
             child: RoundContainer(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
