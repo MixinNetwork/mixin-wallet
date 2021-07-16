@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../db/mixin_database.dart';
-import '../../../util/extension/extension.dart';
 import '../../../util/logger.dart';
 import 'transaction_list.dart';
 
@@ -73,26 +72,6 @@ class TransactionListController {
     snapshots.value = [..._snapshotItems, ..._snapshotFromDb];
   }
 
-  void _refreshSnapshotsItem(List<SnapshotItem> items) {
-    final map = {for (var e in items) e.snapshotId: e};
-
-    void updateList(List<SnapshotItem> list) {
-      for (var i = 0; i < list.length; i++) {
-        final item = list[i];
-        final newItem = map[item.snapshotId];
-        if (newItem == null) {
-          continue;
-        }
-        list[i] = newItem;
-      }
-    }
-
-    updateList(_snapshotItems);
-    updateList(_snapshotFromDb);
-
-    _notifySnapshotsItemUpdated();
-  }
-
   // on [_pageSize] update, if current item count less than the new pageSize, we
   // need load more item to fill the blank.
   void updatePageSize(int pageSize) {
@@ -128,20 +107,12 @@ TransactionListController useTransactionListController({
   required LoadMoreTransactionCallback loadMoreItemDb,
   required RefreshTransactionCallback refreshSnapshots,
   int pageSize = _kLoadLimit,
-}) {
-  final controller = use(_TransactionListControllerHook(
-    loadMoreItemDb: loadMoreItemDb,
-    refreshSnapshots: refreshSnapshots,
-    pageSize: pageSize,
-  ));
-  final snapshotDao = useContext().appServices.mixinDatabase.snapshotDao;
-  useEffect(() {
-    final subscription = snapshotDao.updateTransactionStream
-        .listen(controller._refreshSnapshotsItem);
-    return subscription.cancel;
-  }, [snapshotDao]);
-  return controller;
-}
+}) =>
+    use(_TransactionListControllerHook(
+      loadMoreItemDb: loadMoreItemDb,
+      refreshSnapshots: refreshSnapshots,
+      pageSize: pageSize,
+    ));
 
 class _TransactionListControllerHook extends Hook<TransactionListController> {
   const _TransactionListControllerHook({
