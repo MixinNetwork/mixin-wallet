@@ -8,7 +8,6 @@ import '../../db/mixin_database.dart';
 import '../../service/auth/auth_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/symbol.dart';
 import '../widget/transactions/transaction_item.dart';

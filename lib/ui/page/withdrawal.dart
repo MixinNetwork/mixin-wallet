@@ -3,12 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/auth/auth_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
@@ -216,7 +218,7 @@ class _WithdrawalPage extends HookWidget {
           const SizedBox(height: 10),
           RoundContainer(
             height: null,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: Row(
               children: [
                 Expanded(
@@ -268,6 +270,7 @@ class _WithdrawalPage extends HookWidget {
                           fontWeight: FontWeight.w400,
                         ),
                       ),
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),
@@ -289,7 +292,27 @@ class _WithdrawalPage extends HookWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: InteractableBox(
-                onTap: () {},
+                onTap: () {
+                  final amount = switched.value
+                      ? valueSecond.value
+                      : controller.text.trim();
+                  if (amount.isEmpty) {
+                    i('Empty amount');
+                    return;
+                  }
+                  if (selectedAddress.value == null) {
+                    i('No selected address');
+                    return;
+                  }
+                  final addressId = selectedAddress.value!.addressId;
+                  final traceId = const Uuid().v4();
+                  final queryParams =
+                      'asset=${assetState.value.assetId}&address=$addressId&amount=$amount&trace=$traceId';
+                  i('queryParams: $queryParams');
+                  final uri =
+                      Uri.parse('https://mixin.one/withdrawal?$queryParams');
+                  context.toExternal(uri);
+                },
                 child: Container(
                     width: 160,
                     height: 44,

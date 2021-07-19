@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../util/extension/extension.dart';
 import '../../util/l10n.dart';
+import '../../util/logger.dart';
 import '../../util/r.dart';
 import 'brightness_observer.dart';
 import 'interactable_box.dart';
@@ -20,6 +22,8 @@ class AddressAddWidget extends HookWidget {
     final memoSwitchEnable = useState<bool>(true);
 
     final memoController = useTextEditingController();
+    final labelController = useTextEditingController();
+    final addressController = useTextEditingController();
 
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
@@ -46,7 +50,7 @@ class AddressAddWidget extends HookWidget {
                     hintText: context.l10n.addAddressLabelHint,
                     border: InputBorder.none,
                   ),
-                  controller: useTextEditingController(),
+                  controller: labelController,
                 )),
             const SizedBox(height: 10),
             RoundContainer(
@@ -64,7 +68,7 @@ class AddressAddWidget extends HookWidget {
                     hintText: context.l10n.address,
                     border: InputBorder.none,
                   ),
-                  controller: useTextEditingController(),
+                  controller: addressController,
                 )),
                 const SizedBox(width: 20),
                 Align(
@@ -124,7 +128,21 @@ class AddressAddWidget extends HookWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: InteractableBox(
-                  onTap: () {},
+                  onTap: () {
+                    final address = addressController.text.trim();
+                    final label = labelController.text.trim();
+                    if (address.isEmpty || label.isEmpty) {
+                      // TODO toast
+                      i('Empty address or label');
+                      return;
+                    }
+                    final queryParams =
+                        'action=add&asset=$assetId&destination=$address&tag=${memoController.text.trim()}&label=$label';
+                    i('queryParams: $queryParams');
+                    final uri =
+                        Uri.parse('https://mixin.one/address?$queryParams');
+                    context.toExternal(uri);
+                  },
                   child: Container(
                       width: 160,
                       height: 44,

@@ -59,6 +59,7 @@ dependencies:
   qr_flutter: ^4.0.0
   modal_bottom_sheet: ^2.0.0
   vrouter: ^1.2.0+5
+  uuid: ^3.0.4
 
 dev_dependencies:
   flutter_test:

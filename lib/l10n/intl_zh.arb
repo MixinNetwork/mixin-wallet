@@ -25,7 +25,7 @@
   "contract": "资产标识",
   "transactionsAssetKeyWarning": "资产标识不是充值地址！",
   "addressSearchHint": "标题，地址",
-  "addAddress": "+ 添加地址",
+  "addAddress": "添加地址",
   "delete": "删除",
   "filterTitle": "筛选",
   "filterApply": "应用",
