@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:moor/moor.dart';
+import 'package:vrouter/vrouter.dart';
 
 import '../db/dao/snapshot_dao.dart';
 import '../db/mixin_database.dart';
@@ -19,14 +21,34 @@ const clientSecret =
     '29c9774449f38accd015638d463bc4f70242ecc39e154b939d47017ca9316420';
 
 class AppServices extends ChangeNotifier with EquatableMixin {
-  AppServices() {
-    client = sdk.Client(accessToken: accessToken);
+  AppServices({
+    required this.vRouterStateKey,
+  }) {
+    client = sdk.Client(accessToken: accessToken, interceptors: interceptors);
     initDbFuture = _initDatabase();
     initDbFuture?.whenComplete(() {
       initDbFuture = null;
     });
   }
 
+  List<InterceptorsWrapper> get interceptors => [
+        InterceptorsWrapper(
+          onError: (
+            DioError e,
+            ErrorInterceptorHandler handler,
+          ) async {
+            if (e is sdk.MixinApiError &&
+                (e.error as sdk.MixinError).code == sdk.authentication) {
+              await setAuth(null);
+              vRouterStateKey.currentState
+                  ?.to('/auth', isReplacement: true);
+            }
+            handler.next(e);
+          },
+        )
+      ];
+
+  final GlobalKey<VRouterState> vRouterStateKey;
   late sdk.Client client;
   Future? initDbFuture;
   MixinDatabase? _mixinDatabase;
@@ -51,7 +73,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
     final token = response.data.accessToken;
 
-    final _client = sdk.Client(accessToken: token);
+    final _client = sdk.Client(accessToken: token, interceptors: interceptors);
 
     final mixinResponse = await _client.accountApi.getMe();
 

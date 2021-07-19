@@ -11,7 +11,7 @@ Future<void> initAuthManager() async {
 
 Auth? get auth => Hive.box('settings').get('auth') as Auth?;
 
-Future<void> setAuth(Auth value) => Hive.box('settings').put('auth', value);
+Future<void> setAuth(Auth? value) => Hive.box('settings').put('auth', value);
 
 String? get accessToken => auth?.accessToken;
 

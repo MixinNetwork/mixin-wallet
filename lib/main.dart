@@ -16,7 +16,7 @@ import 'util/logger.dart';
 Future<void> main() async {
   await initAuthManager();
   runZonedGuarded(
-    () => runApp(const MyApp()),
+    () => runApp(MyApp()),
     (Object error, StackTrace stack) {
       if (!kLogMode) return;
       e('$error, $stack');
@@ -35,26 +35,34 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final vRouterStateKey = GlobalKey<VRouterState>();
 
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (BuildContext context) => AppServices(),
+            create: (BuildContext context) => AppServices(
+              vRouterStateKey: vRouterStateKey,
+            ),
           ),
         ],
-        child: const _Router(),
+        child: _Router(vRouterStateKey: vRouterStateKey),
       );
 }
 
 class _Router extends StatelessWidget {
   const _Router({
+    required this.vRouterStateKey,
     Key? key,
   }) : super(key: key);
 
+  final GlobalKey<VRouterState> vRouterStateKey;
+
   @override
   Widget build(BuildContext context) => VRouter(
+        key: vRouterStateKey,
         onSystemPop: (redirector) async => redirector.pop(),
         title: 'Mixin Wallet',
         debugShowCheckedModeBanner: false,
