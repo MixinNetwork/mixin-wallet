@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../db/mixin_database.dart';
-import '../../service/auth/auth_manager.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../widget/mixin_appbar.dart';

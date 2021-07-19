@@ -13,8 +13,8 @@ import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
-import 'auth/auth.dart';
-import 'auth/auth_manager.dart';
+import 'profile/auth.dart';
+import 'profile/profile_manager.dart';
 
 const clientId = 'd0a44d9d-bb19-403c-afc5-ea26ea88123b';
 const clientSecret =
@@ -39,8 +39,8 @@ class AppServices extends ChangeNotifier with EquatableMixin {
           ) async {
             if (e is sdk.MixinApiError &&
                 (e.error as sdk.MixinError).code == sdk.authentication) {
-              await setAuth(null);
-              vRouterStateKey.currentState?.to('/auth', isReplacement: true);
+              // await setAuth(null);
+              // vRouterStateKey.currentState?.to('/auth', isReplacement: true);
             }
             handler.next(e);
           },
@@ -100,6 +100,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final fiats = (list.last as sdk.MixinResponse<List<sdk.Fiat>>).data;
 
     await mixinDatabase.transaction(() async {
+      await mixinDatabase.assetDao.resetAllBalance();
       await mixinDatabase.assetDao.insertAllOnConflictUpdate(assets);
       await mixinDatabase.fiatDao.insertAllOnConflictUpdate(fiats);
     });
@@ -114,6 +115,12 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   Selectable<AssetResult> assetResults() {
     assert(isLogin);
     return mixinDatabase.assetDao.assetResults(auth!.account.fiatCurrency);
+  }
+
+  Selectable<AssetResult> searchAssetResults(String keyword) {
+    assert(isLogin);
+    return mixinDatabase.assetDao
+        .searchAssetResults(auth!.account.fiatCurrency, keyword);
   }
 
   Selectable<AssetResult> assetResult(String assetId) {
@@ -298,4 +305,31 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         client,
         _mixinDatabase,
       ];
+
+  Future<void> searchAndUpdateAsset(String keyword) async {
+    if (keyword.isEmpty) return;
+    final mixinResponse = await client.assetApi.queryAsset(keyword);
+    await mixinDatabase.assetDao.insertAllOnConflictUpdate(mixinResponse.data);
+  }
+
+  Future<void> updateTopAssetIds() async {
+    final list = (await client.assetApi.getTopAssets()).data;
+    // todo update, now balance always 0
+    // unawaited(mixinDatabase.assetDao.insertAllOnConflictUpdate(list));
+    final assetIds = list.map((e) => e.assetId).toList();
+    replaceTopAssetIds(assetIds);
+  }
+
+  Stream<List<AssetResult>> watchAssetResultsOfIn(Iterable<String> assetIds) =>
+      mixinDatabase.assetDao
+          .assetResultsOfIn(auth!.account.fiatCurrency, assetIds)
+          .watch()
+          .map((list) {
+        final map = Map.fromEntries(list.map((e) => MapEntry(e.assetId, e)));
+        return assetIds
+            .map(map.remove)
+            .where((element) => element != null)
+            .cast<AssetResult>()
+            .toList();
+      });
 }

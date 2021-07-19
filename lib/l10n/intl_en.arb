@@ -64,5 +64,7 @@
   "memoNo": "No Memo",
   "memoHint": "Confirm if the receiving address requires a MEMO.",
   "save": "Save",
-  "allTransactions": "All Transactions"
+  "allTransactions": "All Transactions",
+  "assetTrending": "Trending",
+  "recentSearches": "Recent searches"
 }

@@ -10,7 +10,7 @@ import 'package:vrouter/vrouter.dart' show VRouterContext;
 
 import '../../db/mixin_database.dart';
 import '../../service/app_services.dart';
-import '../../service/auth/auth_manager.dart';
+import '../../service/profile/profile_manager.dart';
 import '../constants.dart';
 import '../l10n.dart';
 

@@ -10,4 +10,5 @@ FROM assets asset
 LEFT  JOIN assets tempAsset ON asset.chain_id = tempAsset.asset_id
 INNER JOIN fiats fiat ON fiat.code = :currentFiat
 WHERE $where
+ORDER BY $orderBy
 LIMIT $limit;

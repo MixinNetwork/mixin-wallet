@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:vrouter/vrouter.dart';
 
-import '../../service/auth/auth_manager.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../page/all_transactions.dart';
@@ -25,6 +25,7 @@ final transactionsUri = Uri(path: '/transactions');
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VGuard(
         beforeEnter: (redirector) async {
+          i('check is login: $isLogin');
           if (!isLogin) return;
           redirector.to('/');
         },

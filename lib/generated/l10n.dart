@@ -710,6 +710,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Trending`
+  String get assetTrending {
+    return Intl.message(
+      'Trending',
+      name: 'assetTrending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recent searches`
+  String get recentSearches {
+    return Intl.message(
+      'Recent searches',
+      name: 'recentSearches',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

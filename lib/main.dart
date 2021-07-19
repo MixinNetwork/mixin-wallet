@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:vrouter/vrouter.dart';
 
 import 'service/app_services.dart';
-import 'service/auth/auth_manager.dart';
+import 'service/profile/profile_manager.dart';
 import 'ui/brightness_theme_data.dart';
 import 'ui/router/mixin_routes.dart';
 import 'ui/widget/brightness_observer.dart';
@@ -14,7 +14,7 @@ import 'util/l10n.dart';
 import 'util/logger.dart';
 
 Future<void> main() async {
-  await initAuthManager();
+  await initStorage();
   runZonedGuarded(
     () => runApp(MyApp()),
     (Object error, StackTrace stack) {

@@ -63,6 +63,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "amount": MessageLookupByLibrary.simpleMessage("Amount"),
         "approxBalanceOfBtc": m0,
         "approxOf": m1,
+        "assetTrending": MessageLookupByLibrary.simpleMessage("Trending"),
         "assetType": MessageLookupByLibrary.simpleMessage("Asset Type"),
         "assets": MessageLookupByLibrary.simpleMessage("Assets"),
         "averageArrival": m2,
@@ -103,6 +104,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
+        "recentSearches":
+            MessageLookupByLibrary.simpleMessage("Recent searches"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "selectFromAddressBook":

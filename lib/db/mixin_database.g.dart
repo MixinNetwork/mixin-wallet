@@ -2648,9 +2648,14 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
       String currentFiat,
       Expression<bool?> Function(Assets asset, Assets tempAsset, Fiats fiat)
           where,
+      OrderBy Function(Assets asset, Assets tempAsset, Fiats fiat) orderBy,
       Limit Function(Assets asset, Assets tempAsset, Fiats fiat) limit) {
     final generatedwhere = $write(
         where(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
+            alias(this.fiats, 'fiat')),
+        hasMultipleTables: true);
+    final generatedorderBy = $write(
+        orderBy(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
             alias(this.fiats, 'fiat')),
         hasMultipleTables: true);
     final generatedlimit = $write(
@@ -2658,16 +2663,18 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
             alias(this.fiats, 'fiat')),
         hasMultipleTables: true);
     return customSelect(
-        'SELECT asset.*, tempAsset.symbol AS chainSymbol, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id INNER JOIN fiats AS fiat ON fiat.code = :currentFiat WHERE ${generatedwhere.sql} ${generatedlimit.sql}',
+        'SELECT asset.*, tempAsset.symbol AS chainSymbol, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id INNER JOIN fiats AS fiat ON fiat.code = :currentFiat WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
         variables: [
           Variable<String>(currentFiat),
           ...generatedwhere.introducedVariables,
+          ...generatedorderBy.introducedVariables,
           ...generatedlimit.introducedVariables
         ],
         readsFrom: {
           assets,
           fiats,
           ...generatedwhere.watchedTables,
+          ...generatedorderBy.watchedTables,
           ...generatedlimit.watchedTables,
         }).map((QueryRow row) {
       return AssetResult(

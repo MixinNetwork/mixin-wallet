@@ -5,15 +5,18 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../db/mixin_database.dart';
-import '../../service/auth/auth_manager.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
+import '../widget/asset_price.dart';
 import '../widget/avatar.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/mixin_bottom_sheet.dart';
+import '../widget/search_asset_bottom_sheet.dart';
 import '../widget/symbol.dart';
 
 class Home extends HookWidget {
@@ -97,12 +100,37 @@ class _AssetHeader extends StatelessWidget {
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(top: 8, right: 8),
-                child: InteractableBox(
-                  onTap: () {},
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: SvgPicture.asset(R.resourcesHamburgerMenuSvg),
-                  ),
+                child: Row(
+                  children: [
+                    InteractableBox(
+                      onTap: () => showMixinBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (BuildContext context) =>
+                              const SearchAssetBottomSheet()),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: SvgPicture.asset(
+                          R.resourcesIcSearchSvg,
+                          height: 24,
+                          width: 24,
+                          color: context.theme.icon,
+                        ),
+                      ),
+                    ),
+                    InteractableBox(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: SvgPicture.asset(
+                          R.resourcesHamburgerMenuSvg,
+                          height: 24,
+                          width: 24,
+                          color: context.theme.icon,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -301,24 +329,7 @@ class _Item extends StatelessWidget {
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  PercentageChange(
-                    valid: !data.priceUsd.isZero,
-                    changeUsd: data.changeUsd,
-                  ),
-                  Text(
-                    data.usdUnitPrice.currencyFormat,
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: context.theme.secondaryText,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
+              AssetPrice(data: data),
             ],
           ),
         ),

@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
-import '../../service/auth/auth_manager.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';

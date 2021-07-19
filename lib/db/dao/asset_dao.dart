@@ -35,12 +35,9 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
   Future<int> insert(sdk.Asset asset) =>
       into(db.assets).insertOnConflictUpdate(asset.asAssetsCompanion);
 
-  Future deleteAsset(Asset asset) => delete(db.assets).delete(asset);
+  Future<void> deleteAsset(Asset asset) => delete(db.assets).delete(asset);
 
   Future<void> insertAllOnConflictUpdate(List<sdk.Asset> assets) async {
-    await db.update(db.assets).write(const AssetsCompanion(
-          balance: Value('0.0'),
-        ));
     await db.batch((batch) {
       batch.insertAllOnConflictUpdate(
         db.assets,
@@ -49,13 +46,47 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
     });
   }
 
+  Future<void> resetAllBalance() async {
+    await db.update(db.assets).write(const AssetsCompanion(
+          balance: Value('0.0'),
+        ));
+  }
+
   Selectable<AssetResult> assetResults(String currentFiat) => db.assetResults(
-      currentFiat, (_, __, ___) => ignoreWhere, (_, __, ___) => maxLimit);
+        currentFiat,
+        (asset, _, __) => ignoreWhere,
+        (_, __, ___) => ignoreOrderBy,
+        (_, __, ___) => maxLimit,
+      );
+
+  Selectable<AssetResult> assetResultsOfIn(
+          String currentFiat, Iterable<String> assetIds) =>
+      db.assetResults(
+        currentFiat,
+        (asset, _, __) => asset.assetId.isIn(assetIds),
+        (_, __, ___) => ignoreOrderBy,
+        (_, __, ___) => maxLimit,
+      );
+
+  Selectable<AssetResult> searchAssetResults(
+          String currentFiat, String keyword) =>
+      db.assetResults(
+        currentFiat,
+        (asset, _, __) {
+          if (keyword.isEmpty) {
+            return ignoreWhere;
+          }
+          return asset.symbol.like('%$keyword%');
+        },
+        (asset, _, __) => OrderBy([OrderingTerm.asc(asset.symbol.length)]),
+        (_, __, ___) => maxLimit,
+      );
 
   Selectable<AssetResult> assetResult(String currentFiat, String assetId) =>
       db.assetResults(
           currentFiat,
           (Assets asset, _, __) => asset.assetId.equals(assetId),
+          (_, __, ___) => ignoreOrderBy,
           (_, __, ___) => Limit(1, null));
 
   Selectable<Asset> simpleAssetById(String assetId) => select(db.assets)
