@@ -29,7 +29,7 @@
   <title>mixin_wallet</title>
   <link rel="manifest" href="manifest.json">
   <script defer src="sql-wasm.js"></script>
-  <script defer src="main.dart.js" type="application/javascript"></script>
+  <script defer src="main.dart.js?v=BUILD_VERSION" type="application/javascript"></script>
 </head>
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
@@ -44,7 +44,7 @@
       }
       scriptLoaded = true;
       var scriptTag = document.createElement('script');
-      scriptTag.src = 'main.dart.js';
+      scriptTag.src = 'main.dart.js?v=BUILD_VERSION';
       scriptTag.type = 'application/javascript';
       document.body.append(scriptTag);
     }
