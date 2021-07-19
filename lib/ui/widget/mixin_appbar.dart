@@ -24,6 +24,14 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
 
   final Color? backButtonColor;
 
+  List<Widget> get validActions {
+    final isNotEmpty = actions?.isNotEmpty == true;
+    return [
+      if (isNotEmpty) ...actions!,
+      if (isNotEmpty) const SizedBox(width: 122),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) => AppBar(
         leading: leading ??
@@ -32,7 +40,7 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
                 : null),
         toolbarHeight: preferredSize.height,
         elevation: 0,
-        actions: actions,
+        actions: validActions,
         centerTitle: false,
         title: title,
         titleTextStyle: const TextStyle(

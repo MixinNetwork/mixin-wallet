@@ -86,7 +86,6 @@ class _WithdrawalPage extends HookWidget {
               name: R.resourcesIcFileSvg,
               color: BrightnessData.themeOf(context).icon,
               onTap: () {}),
-          const SizedBox(width: 122),
         ],
       ),
       body: Container(

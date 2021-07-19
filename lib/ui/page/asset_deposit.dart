@@ -96,7 +96,6 @@ class _AssetDepositPage extends HookWidget {
               name: R.resourcesIcQuestionSvg,
               color: BrightnessData.themeOf(context).icon,
               onTap: () {}),
-          const SizedBox(width: 122),
         ],
       ),
       body: Container(
