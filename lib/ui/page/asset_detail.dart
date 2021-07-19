@@ -84,6 +84,7 @@ class _AssetDetailPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: BrightnessData.themeOf(context).background,
         appBar: MixinAppBar(
+          backButtonColor: Colors.white,
           title: Text(asset.name),
           actions: [
             ActionButton(

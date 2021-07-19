@@ -19,9 +19,7 @@ class SnapshotDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: const MixinAppBar(
-          leading: MixinBackButton(
-            color: Colors.white,
-          ),
+          backButtonColor: Colors.white,
         ),
         backgroundColor: context.theme.background,
         body: _SnapshotDetailPageBody(context.pathParameters['id']!),

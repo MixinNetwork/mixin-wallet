@@ -10,6 +10,7 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
     this.leading,
     this.title,
     this.backgroundColor,
+    this.backButtonColor,
     this.actions,
   }) : super(key: key);
 
@@ -21,10 +22,14 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
 
   final List<Widget>? actions;
 
+  final Color? backButtonColor;
+
   @override
   Widget build(BuildContext context) => AppBar(
         leading: leading ??
-            (Navigator.canPop(context) ? const MixinBackButton() : null),
+            (Navigator.canPop(context)
+                ? MixinBackButton(color: backButtonColor)
+                : null),
         toolbarHeight: preferredSize.height,
         elevation: 0,
         actions: actions,
