@@ -270,6 +270,7 @@ class _Item extends StatelessWidget {
         child: GestureDetector(
           onTap: () =>
               context.push(assetDetailPath.toUri({'id': data.assetId})),
+          behavior: HitTestBehavior.opaque,
           child: Row(
             children: [
               SymbolIcon(symbolUrl: data.iconUrl, chainUrl: data.chainIconUrl),
