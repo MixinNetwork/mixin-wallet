@@ -700,6 +700,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `All Transactions`
+  String get allTransactions {
+    return Intl.message(
+      'All Transactions',
+      name: 'allTransactions',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

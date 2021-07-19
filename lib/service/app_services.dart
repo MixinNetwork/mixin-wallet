@@ -194,6 +194,30 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     });
   }
 
+  Future<void> updateAllSnapshots({
+    String? offset,
+    String? opponent,
+    int limit = 30,
+  }) async {
+    final snapshots = await client.snapshotApi
+        .getSnapshots(offset: offset, limit: limit, opponent: opponent)
+        .then((value) => value.data);
+
+    final closures = [
+      await _checkUsersExistWithReturnInsert(
+          snapshots.map((e) => e.opponentId).toSet().whereNotNull().toList()),
+      for (final assetId in snapshots.map((e) => e.assetId).toSet())
+        await _checkAssetExistWithReturnInsert(assetId)
+    ];
+
+    await mixinDatabase.transaction(() async {
+      await Future.wait([
+        mixinDatabase.snapshotDao.insertAll(snapshots),
+        ...closures.map((e) => e?.call())
+      ].whereNotNull());
+    });
+  }
+
   Future<void> updateSnapshotById({required String snapshotId}) async {
     final data = await client.snapshotApi.getSnapshotById(snapshotId);
 

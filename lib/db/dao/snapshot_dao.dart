@@ -78,6 +78,28 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
         (s, u, a) => Limit(1, null),
       );
 
+  Selectable<SnapshotItem> allSnapshots({
+    int? offset,
+    int limit = 30,
+    bool orderByAmount = false,
+    List<String> types = const [],
+  }) =>
+      db.snapshotItems(
+        (s, u, a) {
+          Expression<bool?> predicate = const Constant(true);
+          if (types.isNotEmpty) {
+            predicate &= s.type.isIn(types);
+          }
+          return predicate;
+        },
+        (s, u, a) => OrderBy([
+          if (orderByAmount) OrderingTerm.desc(_AmountSqlExpression(s)),
+          if (!orderByAmount) OrderingTerm.desc(s.createdAt),
+          OrderingTerm.desc(s.snapshotId),
+        ]),
+        (s, u, a) => Limit(limit, offset),
+      );
+
   Selectable<SnapshotItem> snapshots(
     String assetId, {
     int? offset,

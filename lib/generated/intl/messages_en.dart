@@ -58,6 +58,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "address": MessageLookupByLibrary.simpleMessage("Address"),
         "addressSearchHint":
             MessageLookupByLibrary.simpleMessage("Label, Address"),
+        "allTransactions":
+            MessageLookupByLibrary.simpleMessage("All Transactions"),
         "amount": MessageLookupByLibrary.simpleMessage("Amount"),
         "approxBalanceOfBtc": m0,
         "approxOf": m1,

@@ -63,5 +63,6 @@
   "memoOptional": "MEMO (Optional)",
   "memoNo": "No Memo",
   "memoHint": "Confirm if the receiving address requires a MEMO.",
-  "save": "Save"
+  "save": "Save",
+  "allTransactions": "All Transactions"
 }

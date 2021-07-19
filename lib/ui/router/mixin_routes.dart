@@ -4,6 +4,7 @@ import 'package:vrouter/vrouter.dart';
 import '../../service/auth/auth_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
+import '../page/all_transactions.dart';
 import '../page/asset_deposit.dart';
 import '../page/asset_detail.dart';
 import '../page/auth.dart';
@@ -19,6 +20,7 @@ const withdrawalPath = '/withdrawal/:id';
 const assetDetailPath = '/tokens/:id';
 const assetDepositPath = '/tokens/:id/deposit';
 const snapshotDetailPath = '/snapshots/:id';
+final transactionsUri = Uri(path: '/transactions');
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VGuard(
@@ -69,6 +71,11 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     path: notFoundUri.toString(),
                     widget: const NotFound(),
                   ),
+                  VWidget(
+                    key: const ValueKey('Transactions'),
+                    path: transactionsUri.toString(),
+                    widget: const AllTransactions(),
+                  )
                 ]),
           ]),
       VRouteRedirector(path: ':_(.+)', redirectTo: '/404'),
