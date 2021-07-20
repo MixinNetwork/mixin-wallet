@@ -39,8 +39,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
           ) async {
             if (e is sdk.MixinApiError &&
                 (e.error as sdk.MixinError).code == sdk.authentication) {
-              // await setAuth(null);
-              // vRouterStateKey.currentState?.to('/auth', isReplacement: true);
+              if (!kReleaseMode) return;
+              await setAuth(null);
+              vRouterStateKey.currentState?.to('/auth', isReplacement: true);
             }
             handler.next(e);
           },
