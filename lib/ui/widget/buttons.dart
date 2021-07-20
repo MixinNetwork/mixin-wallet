@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:mixin_wallet/util/extension/extension.dart';
+
 import '../../util/r.dart';
 import 'action_button.dart';
 import 'brightness_observer.dart';
@@ -21,7 +23,7 @@ class MixinBackButton extends StatelessWidget {
           color: color ?? BrightnessData.themeOf(context).icon,
           onTap: () {
             if (onTap != null) return onTap?.call();
-            Navigator.pop(context);
+            context.pop();
           },
         ),
       );
