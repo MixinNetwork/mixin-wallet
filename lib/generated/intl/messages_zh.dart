@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
         "contract": MessageLookupByLibrary.simpleMessage("资产标识"),
+        "copyToClipboard": MessageLookupByLibrary.simpleMessage("已复制到剪切板"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
         "depositConfirmation": m4,

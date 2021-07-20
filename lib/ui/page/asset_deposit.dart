@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -112,6 +113,8 @@ class _AssetDepositPage extends HookWidget {
                     context.replace(
                         assetDepositPath.toUri({'id': assetResult.assetId}));
                     assetState.value = assetResult;
+                    checkedDestination.value = assetResult.destination!;
+                    checkedTag.value = assetResult.tag;
                   },
                   selectedAssetId: asset.assetId,
                 ),
@@ -215,8 +218,6 @@ class _AssetDepositPage extends HookWidget {
             asset: asset,
             title: context.l10n.address,
             desc: checkedDestination.value,
-            onCopy: () {},
-            showQrCode: () {},
           ),
           const SizedBox(height: 10),
           asset.needShowMemo
@@ -224,8 +225,6 @@ class _AssetDepositPage extends HookWidget {
                   asset: asset,
                   title: context.l10n.memo,
                   desc: checkedTag.value ?? '',
-                  onCopy: () {},
-                  showQrCode: () {},
                 )
               : const SizedBox(),
           const SizedBox(height: 10),
@@ -299,15 +298,11 @@ class _Item extends StatelessWidget {
     required this.asset,
     required this.title,
     required this.desc,
-    required this.onCopy,
-    required this.showQrCode,
   }) : super(key: key);
 
   final AssetResult asset;
   final String title;
   final String desc;
-  final VoidCallback onCopy;
-  final VoidCallback showQrCode;
 
   @override
   Widget build(BuildContext context) => ConstrainedBox(
@@ -348,14 +343,21 @@ class _Item extends StatelessWidget {
                     ActionButton(
                         name: R.resourcesIcCopySvg,
                         color: BrightnessData.themeOf(context).icon,
-                        onTap: () {}),
-                    const SizedBox(width: 12),
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: desc))
+                              .then((_) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(context.l10n.copyToClipboard)));
+                          });
+                        }),
+                    const SizedBox(width: 4),
                     ActionButton(
                         name: R.resourcesIcQrCodeSvg,
                         color: BrightnessData.themeOf(context).icon,
                         onTap: () {
                           showMixinBottomSheet(
                             context: context,
+                            isScrollControlled: true,
                             builder: (context) => _QRBottomSheetContent(
                               data: desc,
                               asset: asset,
@@ -382,7 +384,7 @@ class _QRBottomSheetContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        height: 625,
+        height: MediaQuery.of(context).size.height - 200,
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
         child: Column(
           children: [

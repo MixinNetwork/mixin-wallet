@@ -66,5 +66,6 @@
   "save": "Save",
   "allTransactions": "All Transactions",
   "assetTrending": "Trending",
-  "recentSearches": "Recent searches"
+  "recentSearches": "Recent searches",
+  "copyToClipboard": "Copy to clipboard"
 }

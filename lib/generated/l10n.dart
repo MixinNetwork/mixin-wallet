@@ -730,6 +730,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Copy to clipboard`
+  String get copyToClipboard {
+    return Intl.message(
+      'Copy to clipboard',
+      name: 'copyToClipboard',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

@@ -61,7 +61,8 @@ class _WithdrawalPage extends HookWidget {
 
     final currency = auth!.account.fiatCurrency;
 
-    final assetPriceUsd = double.tryParse(asset.priceUsd) ?? 1;
+    final assetPriceUsd =
+        useState<double>(double.tryParse(asset.priceUsd) ?? 1);
     final controller = useTextEditingController();
     useEffect(() {
       void notifyChanged() {
@@ -101,9 +102,17 @@ class _WithdrawalPage extends HookWidget {
                 isScrollControlled: true,
                 builder: (context) => AssetSelectionListWidget(
                   onTap: (AssetResult assetResult) {
-                    assetState.value = assetResult;
                     context.replace(
                         withdrawalPath.toUri({'id': assetResult.assetId}));
+                    assetState.value = assetResult;
+                    if (selectedAddress.value?.assetId != assetResult.assetId) {
+                      assetPriceUsd.value =
+                          double.tryParse(assetResult.priceUsd) ?? 1;
+                      selectedAddress.value = null;
+                      switched.value = false;
+                      refreshValues(controller, symbolFirst, switched,
+                          valueFirst, valueSecond, assetPriceUsd);
+                    }
                   },
                   selectedAssetId: asset.assetId,
                 ),
@@ -344,16 +353,17 @@ class _WithdrawalPage extends HookWidget {
       ValueNotifier<bool> switched,
       ValueNotifier<double> valueFirst,
       ValueNotifier<String> valueSecond,
-      double assetPriceUsd) {
+      ValueNotifier<double> assetPriceUsd) {
     final s = controller.text;
     symbolFirst.value = s.isNotEmpty;
     if (switched.value) {
       valueFirst.value = double.tryParse(controller.text) ?? 0;
-      valueSecond.value = (valueFirst.value / assetPriceUsd).currencyFormatCoin;
+      valueSecond.value =
+          (valueFirst.value / assetPriceUsd.value).currencyFormatCoin;
     } else {
       valueFirst.value = double.tryParse(controller.text) ?? 0;
       valueSecond.value =
-          (valueFirst.value * assetPriceUsd).currencyFormatWithoutSymbol;
+          (valueFirst.value * assetPriceUsd.value).currencyFormatWithoutSymbol;
     }
   }
 }

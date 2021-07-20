@@ -43,5 +43,6 @@
   "pendingConfirmations": "{value}/{value2} 区块确认数",
   "allTransactions": "所有交易",
   "assetTrending": "热门资产",
-  "recentSearches": "最近搜索"
+  "recentSearches": "最近搜索",
+  "copyToClipboard": "已复制到剪切板"
 }

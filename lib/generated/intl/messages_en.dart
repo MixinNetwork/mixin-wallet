@@ -71,6 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
         "contract": MessageLookupByLibrary.simpleMessage("Asset Key"),
+        "copyToClipboard":
+            MessageLookupByLibrary.simpleMessage("Copy to clipboard"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
         "depositConfirmation": m4,
