@@ -44,5 +44,6 @@
   "allTransactions": "所有交易",
   "assetTrending": "热门资产",
   "recentSearches": "最近搜索",
-  "copyToClipboard": "已复制到剪切板"
+  "copyToClipboard": "已复制到剪切板",
+  "transactions": "转账记录"
 }
