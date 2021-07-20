@@ -30,7 +30,11 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
           redirector.to('/');
         },
         stackedRoutes: [
-          VWidget(path: '/auth', widget: const AuthPage()),
+          VWidget(
+            key: const ValueKey('Auth'),
+            path: '/auth',
+            widget: const AuthPage(),
+          ),
         ],
       ),
       VGuard(
