@@ -25,9 +25,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m8(value, value2) => "${value}/${value2} 区块确认数";
 
-  static String m9(value) => "价值 \$${value}";
+  static String m9(value) => "价值 ${value}";
 
-  static String m10(value) => "，当时价值 \$${value}";
+  static String m10(value) => "，当时价值 ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{

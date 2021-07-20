@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -149,7 +150,7 @@ class _ValuesDescription extends HookWidget {
     final String description;
 
     final currentValue = context.l10n.walletTransactionCurrentValue(
-      snapshot.amountOfCurrentCurrency(asset),
+      snapshot.amountOfCurrentCurrency(asset).abs().currencyFormat,
     );
     if (ticker == null) {
       description = currentValue;
@@ -157,8 +158,14 @@ class _ValuesDescription extends HookWidget {
       description =
           '$currentValue${context.l10n.walletTransactionThatTimeNoValue}';
     } else {
-      description = '$currentValue'
-          '${context.l10n.walletTransactionThatTimeValue(snapshot.amount.asDecimal * ticker.priceUsd.asDecimal * asset.fiatRate.asDecimal)}';
+      description = currentValue +
+          context.l10n.walletTransactionThatTimeValue(
+            (snapshot.amount.asDecimal *
+                    ticker.priceUsd.asDecimal *
+                    asset.fiatRate.asDecimal)
+                .abs()
+                .currencyFormat,
+          );
     }
     return Text(
       description,
