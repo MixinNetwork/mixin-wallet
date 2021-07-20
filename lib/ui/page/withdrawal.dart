@@ -155,15 +155,16 @@ class _WithdrawalPage extends HookWidget {
           ),
           const SizedBox(height: 10),
           InteractableBox(
-            onTap: () {
-              showMixinBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) => AddressSelectionWidget(
-                        assetId: asset.assetId,
-                        selectedAddress: selectedAddress.value,
-                        onTap: (address) => selectedAddress.value = address,
-                      ));
+            onTap: () async {
+              final selected = await showAddressSelectionBottomSheet(
+                context: context,
+                assetId: asset.assetId,
+                selectedAddress: selectedAddress.value,
+              );
+              if (selected == null) {
+                return;
+              }
+              selectedAddress.value = selected;
             },
             child: RoundContainer(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
