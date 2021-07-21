@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:mixin_wallet/util/extension/extension.dart';
 
+import '../../util/extension/extension.dart';
 import '../../util/r.dart';
 import 'action_button.dart';
 import 'brightness_observer.dart';
