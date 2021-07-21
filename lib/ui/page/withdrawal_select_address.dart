@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -13,35 +14,36 @@ import '../../util/hook.dart';
 import '../../util/l10n.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
-import 'address_add_widget.dart';
-import 'brightness_observer.dart';
-import 'interactable_box.dart';
-import 'mixin_bottom_sheet.dart';
-import 'search_header_widget.dart';
+import '../router/mixin_routes.dart';
+import '../widget/address_add_widget.dart';
+import '../widget/brightness_observer.dart';
+import '../widget/interactable_box.dart';
+import '../widget/mixin_bottom_sheet.dart';
+import '../widget/search_header_widget.dart';
 
-Future<Addresse?> showAddressSelectionBottomSheet({
-  required BuildContext context,
-  required String assetId,
-  Addresse? selectedAddress,
-}) =>
-    showMixinBottomSheet<Addresse>(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => AddressSelectionWidget(
-        assetId: assetId,
-        selectedAddress: selectedAddress,
-      ),
+class WithDrawSelectAddress extends StatelessWidget {
+  const WithDrawSelectAddress({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final assetId = context.pathParameters['id']!;
+    final selectedAddress = context.queryParameters['address'];
+    return _AddressSelectionWidget(
+      assetId: assetId,
+      selectedAddress: selectedAddress,
     );
+  }
+}
 
-class AddressSelectionWidget extends HookWidget {
-  const AddressSelectionWidget({
+class _AddressSelectionWidget extends HookWidget {
+  const _AddressSelectionWidget({
     Key? key,
     required this.assetId,
     this.selectedAddress,
   }) : super(key: key);
 
   final String assetId;
-  final Addresse? selectedAddress;
+  final String? selectedAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +84,9 @@ class AddressSelectionWidget extends HookWidget {
               onChanged: (k) {
                 filterKeywords.value = k.trim();
               },
+              onCancel: () {
+                context.pop();
+              },
             ),
           ),
           const SizedBox(height: 10),
@@ -90,8 +95,14 @@ class AddressSelectionWidget extends HookWidget {
               itemCount: filterList.length,
               itemBuilder: (BuildContext context, int index) => _Item(
                 address: filterList[index],
-                selectedAddressId: selectedAddress?.addressId,
-                onTap: () => Navigator.pop(context, filterList[index]),
+                selectedAddressId: selectedAddress,
+                onTap: () => context.replace(
+                  withdrawalPath.toUri({'id': assetId}).replace(
+                    queryParameters: {
+                      'address': filterList[index].addressId,
+                    },
+                  ),
+                ),
               ),
             ),
           ),
@@ -131,20 +142,26 @@ class AddressSelectionWidget extends HookWidget {
   }
 }
 
-class _DeleteConfirmDialog extends HookWidget {
-  const _DeleteConfirmDialog({
+typedef DeleteResultCallback = void Function(bool deleted);
+
+class _DeleteConfirmOverlay extends HookWidget {
+  const _DeleteConfirmOverlay({
     Key? key,
     required this.address,
+    required this.dismiss,
   }) : super(key: key);
 
   final Addresse address;
 
+  final DeleteResultCallback dismiss;
+
   @override
   Widget build(BuildContext context) {
+    final canceled = useState(false);
+
     useEffect(() {
-      var canceled = false;
       scheduleMicrotask(() async {
-        while (!canceled) {
+        while (!canceled.value) {
           try {
             final result = await context.appServices.client.addressApi
                 .getAddressById(address.addressId);
@@ -155,31 +172,84 @@ class _DeleteConfirmDialog extends HookWidget {
               if (mixinError.code == 404) {}
             }
             i('failed: $error, $stack');
-            if (!canceled) {
-              Navigator.of(context).pop(true);
+            if (!canceled.value) {
+              dismiss(true);
             }
             break;
           }
           await Future.delayed(const Duration(milliseconds: 2000));
         }
       });
-      return () => canceled = true;
+      return () => canceled.value = true;
     }, [address.addressId]);
 
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator(),
-          Text(context.l10n.delete),
-          InteractableBox(
-            child: Text(context.l10n.cancel),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        const ModalBarrier(
+          dismissible: false,
+          color: Colors.black45,
+          barrierSemanticsDismissible: false,
+        ),
+        Center(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: context.theme.background,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: SizedBox(
+              width: 200,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 24),
+                  CircularProgressIndicator(
+                    color: context.theme.text,
+                    strokeWidth: 2,
+                  ),
+                  const SizedBox(height: 14),
+                  Text(context.l10n.delete,
+                      style: TextStyle(
+                        color: context.theme.text,
+                        fontSize: 16,
+                        height: 1.4,
+                      )),
+                  const SizedBox(height: 14),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: InteractableBox(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: context.theme.accent,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.only(
+                            top: 12, bottom: 14, left: 54, right: 55),
+                        child: Center(
+                          child: Text(
+                            context.l10n.cancel,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        canceled.value = true;
+                        dismiss(false);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                ],
+              ),
+            ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -256,20 +326,28 @@ class _Item extends StatelessWidget {
         onDismiss: () {
           context.appServices.mixinDatabase.addressDao.deleteAddress(address);
         },
-        confirmDismiss: (direction) async {
+        confirmDismiss: (direction) {
+          final completer = Completer<bool>();
+
+          OverlayEntry? entry;
+          entry = OverlayEntry(
+              builder: (context) => _DeleteConfirmOverlay(
+                    address: address,
+                    dismiss: (deleted) {
+                      entry?.remove();
+                      completer.complete(deleted);
+                    },
+                  ));
+          Overlay.of(context)?.insert(entry);
+
           // https: //mixin.one/address?action=delete&asset=xxx&address=xxx
           final uri = Uri.https('mixin.one', 'address', {
             'action': 'delete',
             'asset': address.assetId,
             'address': address.addressId,
           });
-          context.toExternal(uri);
-          final ret = await showDialog<bool>(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => _DeleteConfirmDialog(address: address),
-          );
-          return ret == true;
+          context.toExternal(uri, openNewTab: true);
+          return completer.future;
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

@@ -12,11 +12,14 @@ import '../page/home.dart';
 import '../page/not_found.dart';
 import '../page/snapshot_detail.dart';
 import '../page/withdrawal.dart';
+import '../page/withdrawal_select_address.dart';
+import '../widget/mixin_bottom_sheet.dart';
 
 final homeUri = Uri(path: '/');
 final authUri = Uri(path: '/auth');
 final notFoundUri = Uri(path: '/404');
 const withdrawalPath = '/withdrawal/:id';
+const withdrawalAddressPath = '/withdrawal/:id/address';
 const assetDetailPath = '/tokens/:id';
 const assetDepositPath = '/tokens/:id/deposit';
 const snapshotDetailPath = '/snapshots/:id';
@@ -52,10 +55,19 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                 widget: const Home(),
                 stackedRoutes: [
                   VWidget(
-                    key: const ValueKey('Withdrawal'),
-                    path: withdrawalPath,
-                    widget: const Withdrawal(),
-                  ),
+                      key: const ValueKey('Withdrawal'),
+                      path: withdrawalPath,
+                      widget: const Withdrawal(),
+                      stackedRoutes: [
+                        VPage(
+                            path: withdrawalAddressPath,
+                            pageBuilder: (key, child, name) =>
+                                MixinBottomSheetDialogPage(
+                                  child: child,
+                                  key: key,
+                                ),
+                            widget: const WithDrawSelectAddress())
+                      ]),
                   VWidget(
                     key: const ValueKey('AssetDetail'),
                     path: assetDetailPath,

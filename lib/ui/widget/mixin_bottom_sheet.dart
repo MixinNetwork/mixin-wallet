@@ -1,8 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
 import 'action_button.dart';
+
+class MixinBottomSheetDialogPage<T> extends Page<T> {
+  const MixinBottomSheetDialogPage({
+    required this.child,
+    required LocalKey key,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Route<T> createRoute(BuildContext context) => ModalBottomSheetRoute(
+        builder: (context) => DecoratedBox(
+          decoration: BoxDecoration(
+            color: context.theme.background,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(8),
+            ),
+          ),
+          child: child,
+        ),
+        settings: this,
+        expanded: false,
+      );
+}
 
 Future<T?> showMixinBottomSheet<T>({
   required BuildContext context,

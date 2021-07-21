@@ -8,12 +8,18 @@ import 'interactable_box.dart';
 import 'search_text_field_widget.dart';
 
 class SearchHeaderWidget extends HookWidget {
-  const SearchHeaderWidget({Key? key, this.hintText, this.onChanged})
-      : super(key: key);
+  const SearchHeaderWidget({
+    Key? key,
+    this.hintText,
+    this.onChanged,
+    this.onCancel,
+  }) : super(key: key);
 
   final String? hintText;
 
   final ValueChanged<String>? onChanged;
+
+  final VoidCallback? onCancel;
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -35,9 +41,10 @@ class SearchHeaderWidget extends HookWidget {
           ),
           const SizedBox(width: 20),
           InteractableBox(
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: onCancel ??
+                () {
+                  Navigator.pop(context);
+                },
             child: Text(context.l10n.cancel,
                 style: TextStyle(
                   color: context.theme.text,

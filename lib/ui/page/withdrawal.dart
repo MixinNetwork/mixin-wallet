@@ -14,7 +14,6 @@ import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
-import '../widget/address_selection_widget.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
@@ -33,10 +32,14 @@ class Withdrawal extends HookWidget {
       () => context.appServices.assetResult(assetId!).getSingleOrNull(),
       keys: [assetId],
     ).data;
+
     if (data == null) {
       return const SizedBox();
     }
-    return _WithdrawalPage(asset: data);
+    return _WithdrawalPage(
+      asset: data,
+      selectedAddressId: context.queryParameters['address'],
+    );
   }
 }
 
@@ -44,16 +47,29 @@ class _WithdrawalPage extends HookWidget {
   const _WithdrawalPage({
     Key? key,
     required this.asset,
+    this.selectedAddressId,
   }) : super(key: key);
 
   final AssetResult asset;
+  final String? selectedAddressId;
 
   @override
   Widget build(BuildContext context) {
-    final assetState = useState(this.asset);
-    final asset = assetState.value;
+    var selectedAddress = useMemoizedFuture(() {
+      if (selectedAddressId == null) {
+        return Future.value(null);
+      }
+      return context.appServices.mixinDatabase.addressDao
+          .addressById(selectedAddressId!)
+          .getSingleOrNull();
+    }, keys: [selectedAddressId]).data;
 
-    final selectedAddress = useState<Addresse?>(null);
+    useEffect(() {
+      if (selectedAddress?.assetId != asset.assetId) {
+        selectedAddress = null;
+      }
+    }, [selectedAddress, asset.assetId]);
+
     final valueFirst = useState<double>(0);
     final valueSecond = useState<String>('0.00'.currencyFormatWithoutSymbol);
     final symbolFirst = useState<bool>(false);
@@ -103,16 +119,11 @@ class _WithdrawalPage extends HookWidget {
                 builder: (context) => AssetSelectionListWidget(
                   onTap: (AssetResult assetResult) {
                     context.replace(
-                        withdrawalPath.toUri({'id': assetResult.assetId}));
-                    assetState.value = assetResult;
-                    if (selectedAddress.value?.assetId != assetResult.assetId) {
-                      assetPriceUsd.value =
-                          double.tryParse(assetResult.priceUsd) ?? 1;
-                      selectedAddress.value = null;
-                      switched.value = false;
-                      refreshValues(controller, symbolFirst, switched,
-                          valueFirst, valueSecond, assetPriceUsd);
-                    }
+                      withdrawalPath.toUri({'id': assetResult.assetId}).replace(
+                          queryParameters: {
+                            'address': selectedAddress?.addressId
+                          }),
+                    );
                   },
                   selectedAssetId: asset.assetId,
                 ),
@@ -167,22 +178,18 @@ class _WithdrawalPage extends HookWidget {
           const SizedBox(height: 10),
           InteractableBox(
             onTap: () async {
-              final selected = await showAddressSelectionBottomSheet(
-                context: context,
-                assetId: asset.assetId,
-                selectedAddress: selectedAddress.value,
+              context.push(
+                withdrawalAddressPath.toUri({'id': asset.assetId}).replace(
+                  queryParameters: {'address': selectedAddress?.addressId},
+                ),
               );
-              if (selected == null) {
-                return;
-              }
-              selectedAddress.value = selected;
             },
             child: RoundContainer(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Row(
                 children: [
                   Expanded(
-                    child: selectedAddress.value == null
+                    child: selectedAddress == null
                         ? Text(
                             context.l10n.selectFromAddressBook,
                             style: TextStyle(
@@ -196,7 +203,7 @@ class _WithdrawalPage extends HookWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                selectedAddress.value!.label.overflow,
+                                selectedAddress!.label.overflow,
                                 style: TextStyle(
                                   color: context.theme.text,
                                   fontSize: 16,
@@ -207,7 +214,7 @@ class _WithdrawalPage extends HookWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                selectedAddress.value!
+                                selectedAddress!
                                     .displayAddress()
                                     .formatAddress(),
                                 style: TextStyle(
@@ -299,7 +306,7 @@ class _WithdrawalPage extends HookWidget {
             ),
           ),
           const SizedBox(height: 10),
-          _FeeText(asset: asset, address: selectedAddress.value),
+          _FeeText(asset: asset, address: selectedAddress),
           const Spacer(),
           Align(
             alignment: Alignment.bottomCenter,
@@ -312,14 +319,14 @@ class _WithdrawalPage extends HookWidget {
                     i('Empty amount');
                     return;
                   }
-                  if (selectedAddress.value == null) {
+                  if (selectedAddress == null) {
                     i('No selected address');
                     return;
                   }
-                  final addressId = selectedAddress.value!.addressId;
+                  final addressId = selectedAddress!.addressId;
                   final traceId = const Uuid().v4();
                   final uri = Uri.https('mixin.one', 'withdrawal', {
-                    'asset': assetState.value.assetId,
+                    'asset': asset.assetId,
                     'address': addressId,
                     'amount': amount,
                     'trace': traceId,

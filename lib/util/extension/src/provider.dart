@@ -13,7 +13,8 @@ extension ProviderExtension on BuildContext {
 
   void push(Object url) => vRouter.to(url.toString());
 
-  void toExternal(Object url) => vRouter.toExternal(url.toString());
+  void toExternal(Object url, {bool openNewTab = false}) =>
+      vRouter.toExternal(url.toString(), openNewTab: openNewTab);
 
   void pop() => vRouter.historyBack();
 }
