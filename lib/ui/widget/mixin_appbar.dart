@@ -28,7 +28,7 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
     final isNotEmpty = actions?.isNotEmpty == true;
     return [
       if (isNotEmpty) ...actions!,
-      if (isNotEmpty) const SizedBox(width: 122),
+      // if (isNotEmpty) const SizedBox(width: 122),
     ];
   }
 
