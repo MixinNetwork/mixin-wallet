@@ -167,22 +167,25 @@ class _AssetHeader extends StatelessWidget {
               symbolBorder: const BorderSide(color: Colors.white, width: 1.67),
             ),
             const SizedBox(height: 18),
-            Text.rich(TextSpan(children: [
-              TextSpan(
-                  text: asset.balance.numberFormat(),
-                  style: const TextStyle(
-                    fontFamily: 'Mixin Condensed',
-                    fontSize: 48,
-                    color: Colors.white,
-                  )),
-              const WidgetSpan(child: SizedBox(width: 2)),
-              TextSpan(
-                  text: asset.symbol,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white.withOpacity(0.4),
-                  )),
-            ])),
+            Text.rich(
+              TextSpan(children: [
+                TextSpan(
+                    text: asset.balance.numberFormat(),
+                    style: const TextStyle(
+                      fontFamily: 'Mixin Condensed',
+                      fontSize: 48,
+                      color: Colors.white,
+                    )),
+                const WidgetSpan(child: SizedBox(width: 2)),
+                TextSpan(
+                    text: asset.symbol,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white.withOpacity(0.4),
+                    )),
+              ]),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 2),
             Text(
               context.l10n.approxOf(
