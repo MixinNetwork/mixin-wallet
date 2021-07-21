@@ -66,8 +66,12 @@ class AuthPage extends HookWidget {
                     const SizedBox(height: 50),
                     ElevatedButton(
                       onPressed: () {
-                        final uri = Uri.parse(
-                            'https://mixin.one/oauth/authorize?client_id=$clientId&scope=PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ&response_type=code');
+                        final uri = Uri.https('mixin.one', 'oauth/authorize', {
+                          'client_id': clientId,
+                          'scope':
+                              'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ',
+                          'response_type': 'code',
+                        });
                         context.toExternal(uri);
                       },
                       style: ElevatedButton.styleFrom(

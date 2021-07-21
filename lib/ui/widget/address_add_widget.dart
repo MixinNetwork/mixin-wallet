@@ -136,11 +136,13 @@ class AddressAddWidget extends HookWidget {
                       i('Empty address or label');
                       return;
                     }
-                    final queryParams =
-                        'action=add&asset=$assetId&destination=$address&tag=${memoController.text.trim()}&label=$label';
-                    i('queryParams: $queryParams');
-                    final uri =
-                        Uri.parse('https://mixin.one/address?$queryParams');
+                    final uri = Uri.https('mixin.one', 'address', {
+                      'action': 'add',
+                      'asset': assetId,
+                      'destination': address,
+                      'tag': memoController.text.trim(),
+                      'label': label,
+                    });
                     context.toExternal(uri);
                   },
                   child: Container(

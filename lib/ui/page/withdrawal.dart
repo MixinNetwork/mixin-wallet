@@ -316,11 +316,12 @@ class _WithdrawalPage extends HookWidget {
                   }
                   final addressId = selectedAddress.value!.addressId;
                   final traceId = const Uuid().v4();
-                  final queryParams =
-                      'asset=${assetState.value.assetId}&address=$addressId&amount=$amount&trace=$traceId';
-                  i('queryParams: $queryParams');
-                  final uri =
-                      Uri.parse('https://mixin.one/withdrawal?$queryParams');
+                  final uri = Uri.https('mixin.one', 'withdrawal', {
+                    'asset': assetState.value.assetId,
+                    'address': addressId,
+                    'amount': amount,
+                    'trace': traceId,
+                  });
                   context.toExternal(uri);
                 },
                 child: Container(
