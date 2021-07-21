@@ -18,29 +18,34 @@ class SearchHeaderWidget extends HookWidget {
   @override
   Widget build(BuildContext context) => SizedBox(
       height: 56,
-      child: Stack(children: [
-        Container(
-            padding: const EdgeInsets.only(right: 80),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
             child: Material(
-                child: SearchTextFieldWidget(
-              onChanged: (k) => onChanged?.call(k),
-              fontSize: 16,
-              controller: useTextEditingController(),
-              hintText: hintText,
-            ))),
-        Align(
-            alignment: Alignment.centerRight,
-            child: InteractableBox(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Text(context.l10n.cancel,
-                  style: TextStyle(
-                    color: context.theme.text,
-                    fontFamily: 'PingFang HK',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  )),
-            )),
-      ]));
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: SearchTextFieldWidget(
+                onChanged: (k) => onChanged?.call(k),
+                fontSize: 16,
+                controller: useTextEditingController(),
+                hintText: hintText,
+              ),
+            ),
+          ),
+          const SizedBox(width: 20),
+          InteractableBox(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Text(context.l10n.cancel,
+                style: TextStyle(
+                  color: context.theme.text,
+                  fontFamily: 'PingFang HK',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                )),
+          ),
+        ],
+      ));
 }
