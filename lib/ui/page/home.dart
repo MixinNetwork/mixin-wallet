@@ -182,15 +182,18 @@ class _Header extends HookWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                currentCurrencyNumberFormat.currencySymbol,
-                style: TextStyle(
-                  color: context.theme.background,
-                  fontSize: 14,
-                  fontFamily: 'Nunito',
-                  fontWeight: FontWeight.w600,
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text(
+                  currentCurrencyNumberFormat.currencySymbol,
+                  style: TextStyle(
+                    color: context.theme.background,
+                    fontSize: 14,
+                    fontFamily: 'Nunito',
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               const SizedBox(width: 2),

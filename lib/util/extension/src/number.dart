@@ -5,7 +5,7 @@ extension CurrencyExtension on dynamic {
       currentCurrencyNumberFormat.format(num.tryParse('$this'));
 
   String get currencyFormatWithoutSymbol =>
-      currencyFormat.replaceAll('[^0123456789.,-]', '');
+      currencyFormat.replaceAll(currentCurrencyNumberFormat.currencySymbol, '');
 
   String get currencyFormatCoin => NumberFormat().format(num.tryParse('$this'));
 
