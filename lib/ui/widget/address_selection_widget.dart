@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
@@ -263,7 +264,10 @@ class _Item extends StatelessWidget {
             'asset': address.assetId,
             'address': address.addressId,
           });
-          context.toExternal(uri);
+          if (!await canLaunch(uri.toString())) {
+            return false;
+          }
+          await launch(uri.toString());
           final ret = await showDialog<bool>(
             context: context,
             barrierDismissible: false,

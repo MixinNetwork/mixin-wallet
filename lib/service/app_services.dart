@@ -16,9 +16,9 @@ import '../util/logger.dart';
 import 'profile/auth.dart';
 import 'profile/profile_manager.dart';
 
-const clientId = 'd0a44d9d-bb19-403c-afc5-ea26ea88123b';
+const clientId = 'b35af74d-cca6-400c-a62b-5a7e659de91e';
 const clientSecret =
-    '29c9774449f38accd015638d463bc4f70242ecc39e154b939d47017ca9316420';
+    '7da44c936619b5d1c60aac886e5dcc453c2d75efc04315faec26b67fb80c193f';
 
 class AppServices extends ChangeNotifier with EquatableMixin {
   AppServices({
