@@ -11,15 +11,15 @@ class SymbolIcon extends StatelessWidget {
     required this.symbolUrl,
     required this.chainUrl,
     this.size = 44,
-    this.chinaSize = 10,
-    this.chinaBorder = 2,
+    this.chainSize = 10,
+    this.chainBorder = 2,
   }) : super(key: key);
 
   final String symbolUrl;
   final String chainUrl;
   final double size;
-  final double chinaSize;
-  final double chinaBorder;
+  final double chainSize;
+  final double chainBorder;
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -30,7 +30,7 @@ class SymbolIcon extends StatelessWidget {
             Positioned.fill(
               child: ClipPath(
                 clipper: _SymbolCustomClipper(
-                  chainPlaceholderSize: chinaSize + chinaBorder,
+                  chainPlaceholderSize: chainSize + chainBorder,
                 ),
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: Image.network(
@@ -39,12 +39,12 @@ class SymbolIcon extends StatelessWidget {
               ),
             ),
             Positioned(
-              left: chinaBorder / 2,
-              bottom: chinaBorder / 2,
+              left: chainBorder / 2,
+              bottom: chainBorder / 2,
               child: Image.network(
                 chainUrl,
-                width: chinaSize,
-                height: chinaSize,
+                width: chainSize,
+                height: chainSize,
               ),
             ),
           ],

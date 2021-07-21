@@ -122,10 +122,12 @@ class _WithdrawalPage extends HookWidget {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Row(
                 children: [
-                  SymbolIcon(
-                      symbolUrl: asset.iconUrl,
-                      chainUrl: asset.chainIconUrl,
-                      size: 32),
+                  SymbolIconWithBorder(
+                    symbolUrl: asset.iconUrl,
+                    chainUrl: asset.chainIconUrl,
+                    size: 32,
+                    chainSize: 8,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(

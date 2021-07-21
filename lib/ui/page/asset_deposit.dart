@@ -124,10 +124,12 @@ class _AssetDepositPage extends HookWidget {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Row(
                 children: [
-                  SymbolIcon(
-                      symbolUrl: asset.iconUrl,
-                      chainUrl: asset.chainIconUrl,
-                      size: 32),
+                  SymbolIconWithBorder(
+                    symbolUrl: asset.iconUrl,
+                    chainUrl: asset.chainIconUrl,
+                    size: 32,
+                    chainSize: 8,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
@@ -229,24 +231,27 @@ class _AssetDepositPage extends HookWidget {
               : const SizedBox(),
           const SizedBox(height: 10),
           asset.needShowMemo
-              ? RoundContainer(
-                  height: null,
-                  radius: 8,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 13, horizontal: 16),
-                  color: const Color(0xfffcf1f2),
-                  child: Text(
-                    context.l10n.depositNotice(asset.symbol),
-                    style: TextStyle(
-                      color: context.theme.red,
-                      fontSize: 14,
-                      fontFamily: 'SF Pro Text',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+              ? Column(
+                  children: [
+                    RoundContainer(
+                        height: null,
+                        radius: 8,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 13, horizontal: 16),
+                        color: const Color(0xfffcf1f2),
+                        child: Text(
+                          context.l10n.depositNotice(asset.symbol),
+                          style: TextStyle(
+                            color: context.theme.red,
+                            fontSize: 14,
+                            fontFamily: 'SF Pro Text',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )),
+                    const SizedBox(height: 10)
+                  ],
                 )
               : const SizedBox(),
-          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: Align(
@@ -256,11 +261,11 @@ class _AssetDepositPage extends HookWidget {
                     color: context.theme.text,
                     fontSize: 14,
                     fontFamily: 'Nunito',
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w400,
                   )),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: Align(
@@ -418,10 +423,12 @@ class _QRBottomSheetContent extends StatelessWidget {
                   data: data,
                   size: 230,
                 ),
-                SymbolIcon(
-                    symbolUrl: asset.iconUrl,
-                    chainUrl: asset.chainIconUrl,
-                    size: 42),
+                SymbolIconWithBorder(
+                  symbolUrl: asset.iconUrl,
+                  chainUrl: asset.chainIconUrl,
+                  size: 44,
+                  chainSize: 10,
+                ),
               ],
             ),
             const SizedBox(height: 5),

@@ -358,7 +358,7 @@ class _AssetDescriptionBottomSheet extends StatelessWidget {
                 symbolUrl: asset.iconUrl,
                 chainUrl: asset.chainIconUrl,
                 size: 20,
-                chinaSize: 8,
+                chainSize: 8,
               ),
               const SizedBox(width: 10),
               Text(asset.name)

@@ -9,7 +9,6 @@ import '../../util/hook.dart';
 import '../../util/l10n.dart';
 import '../../util/r.dart';
 import 'brightness_observer.dart';
-import 'interactable_box.dart';
 import 'search_header_widget.dart';
 import 'symbol.dart';
 
@@ -86,14 +85,21 @@ class _Item extends StatelessWidget {
   final AssetSelectCallback onTap;
 
   @override
-  Widget build(BuildContext context) => InteractableBox(
-        child: SizedBox(
-            height: 80,
+  Widget build(BuildContext context) => SizedBox(
+        height: 80,
+        child: GestureDetector(
+            onTap: () {
+              onTap(asset);
+              Navigator.pop(context);
+            },
+            behavior: HitTestBehavior.opaque,
             child: Row(children: [
-              SymbolIcon(
-                  symbolUrl: asset.iconUrl,
-                  chainUrl: asset.chainIconUrl,
-                  size: 44),
+              SymbolIconWithBorder(
+                symbolUrl: asset.iconUrl,
+                chainUrl: asset.chainIconUrl,
+                size: 44,
+                chainSize: 10,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -130,10 +136,6 @@ class _Item extends StatelessWidget {
                     )
                   : const SizedBox(),
             ])),
-        onTap: () {
-          onTap(asset);
-          Navigator.pop(context);
-        },
       );
 }
 

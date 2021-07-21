@@ -301,7 +301,12 @@ class _Item extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           child: Row(
             children: [
-              SymbolIcon(symbolUrl: data.iconUrl, chainUrl: data.chainIconUrl),
+              SymbolIconWithBorder(
+                symbolUrl: data.iconUrl,
+                chainUrl: data.chainIconUrl,
+                size: 44,
+                chainSize: 10,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
