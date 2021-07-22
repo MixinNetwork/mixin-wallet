@@ -165,8 +165,10 @@ class _SearchAssetList extends HookWidget {
 
     return ListView.builder(
       itemCount: searchList.length,
-      itemBuilder: (BuildContext context, int index) =>
-          _Item(data: searchList[index]),
+      itemBuilder: (BuildContext context, int index) => _Item(
+        data: searchList[index],
+        replaceHistory: true,
+      ),
     );
   }
 }
@@ -175,9 +177,11 @@ class _Item extends StatelessWidget {
   const _Item({
     Key? key,
     required this.data,
+    this.replaceHistory = false,
   }) : super(key: key);
 
   final AssetResult data;
+  final bool replaceHistory;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -185,13 +189,20 @@ class _Item extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: GestureDetector(
           onTap: () {
-            putSearchAssetHistory(data.assetId);
+            if (replaceHistory) {
+              putSearchAssetHistory(data.assetId);
+            }
             context.push(assetDetailPath.toUri({'id': data.assetId}));
           },
           behavior: HitTestBehavior.opaque,
           child: Row(
             children: [
-              SymbolIcon(symbolUrl: data.iconUrl, chainUrl: data.chainIconUrl),
+              SymbolIconWithBorder(
+                symbolUrl: data.iconUrl,
+                chainUrl: data.chainIconUrl,
+                size: 44,
+                chainSize: 10,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
