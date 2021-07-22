@@ -161,7 +161,6 @@ class PercentageChange extends StatelessWidget {
       style: TextStyle(
         color: color,
         fontSize: 16,
-        fontFamily: 'Nunito',
       ),
     );
   }

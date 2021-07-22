@@ -228,7 +228,6 @@ class _AssetTransactionsHeader extends StatelessWidget {
                   style: TextStyle(
                     color: BrightnessData.themeOf(context).text,
                     fontSize: 16,
-                    fontFamily: 'Nunito',
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -417,7 +416,6 @@ class _AssetBottomSheetTile extends StatelessWidget {
               fit: FlexFit.tight,
               child: DefaultTextStyle(
                 style: TextStyle(
-                  fontFamily: 'SF Pro Text',
                   color: context.theme.secondaryText,
                   fontSize: 16,
                   height: 1.2,
@@ -432,7 +430,6 @@ class _AssetBottomSheetTile extends StatelessWidget {
               fit: FlexFit.tight,
               child: DefaultTextStyle(
                 style: TextStyle(
-                  fontFamily: 'SF Pro Text',
                   fontSize: 16,
                   color: context.theme.text,
                   height: 1.2,

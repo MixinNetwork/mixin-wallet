@@ -141,7 +141,6 @@ class _AssetDepositPage extends HookWidget {
                           style: TextStyle(
                             color: context.theme.text,
                             fontSize: 16,
-                            fontFamily: 'Nunito',
                             fontWeight: FontWeight.w400,
                           ),
                           maxLines: 1,
@@ -199,7 +198,6 @@ class _AssetDepositPage extends HookWidget {
                                   style: TextStyle(
                                     color: context.theme.text,
                                     fontSize: 16,
-                                    fontFamily: 'Nunito',
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
@@ -244,7 +242,6 @@ class _AssetDepositPage extends HookWidget {
                           style: TextStyle(
                             color: context.theme.red,
                             fontSize: 14,
-                            fontFamily: 'SF Pro Text',
                             fontWeight: FontWeight.w500,
                           ),
                         )),
@@ -260,7 +257,6 @@ class _AssetDepositPage extends HookWidget {
                   style: TextStyle(
                     color: context.theme.text,
                     fontSize: 14,
-                    fontFamily: 'Nunito',
                     fontWeight: FontWeight.w400,
                   )),
             ),
@@ -274,7 +270,6 @@ class _AssetDepositPage extends HookWidget {
                   style: TextStyle(
                     color: context.theme.secondaryText,
                     fontSize: 14,
-                    fontFamily: 'Nunito',
                     fontWeight: FontWeight.w400,
                   )),
             ),
@@ -286,7 +281,6 @@ class _AssetDepositPage extends HookWidget {
                 style: TextStyle(
                   color: context.theme.secondaryText,
                   fontSize: 14,
-                  fontFamily: 'Nunito',
                   fontWeight: FontWeight.w400,
                 )),
           ),
@@ -325,7 +319,6 @@ class _Item extends StatelessWidget {
                   Text(title,
                       style: TextStyle(
                         color: context.theme.secondaryText,
-                        fontFamily: 'Nunito',
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                       )),
@@ -334,7 +327,6 @@ class _Item extends StatelessWidget {
                       softWrap: true,
                       style: TextStyle(
                         color: context.theme.text,
-                        fontFamily: 'Nunito',
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       )),
@@ -400,7 +392,6 @@ class _QRBottomSheetContent extends StatelessWidget {
                     Text(context.l10n.address,
                         style: TextStyle(
                           color: context.theme.text,
-                          fontFamily: 'SF Pro Display',
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                         )),
@@ -436,7 +427,6 @@ class _QRBottomSheetContent extends StatelessWidget {
                 softWrap: true,
                 style: TextStyle(
                   color: context.theme.secondaryText,
-                  fontFamily: 'SF Pro Text',
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                 )),
@@ -532,7 +522,6 @@ class _AddressTypeItem extends StatelessWidget {
                 Text(_getDestinationType(destination, depositEntry.destination),
                     style: TextStyle(
                       color: context.theme.text,
-                      fontFamily: 'PingFang SC',
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     )),

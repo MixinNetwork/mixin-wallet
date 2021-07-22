@@ -97,7 +97,6 @@ class TransactionItem extends HookWidget {
                         style: TextStyle(
                           fontSize: 12,
                           color: BrightnessData.themeOf(context).text,
-                          fontFamily: 'SF Pro Text',
                           fontWeight: FontWeight.w500,
                         ),
                       ),

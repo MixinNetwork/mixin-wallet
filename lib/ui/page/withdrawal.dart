@@ -156,7 +156,6 @@ class _WithdrawalPage extends HookWidget {
                           style: TextStyle(
                             color: context.theme.text,
                             fontSize: 16,
-                            fontFamily: 'Nunito',
                             fontWeight: FontWeight.w400,
                           ),
                           maxLines: 1,
@@ -217,7 +216,6 @@ class _WithdrawalPage extends HookWidget {
                                 style: TextStyle(
                                   color: context.theme.text,
                                   fontSize: 16,
-                                  fontFamily: 'Nunito',
                                   fontWeight: FontWeight.w400,
                                 ),
                                 maxLines: 1,
@@ -261,7 +259,6 @@ class _WithdrawalPage extends HookWidget {
                           style: TextStyle(
                             color: context.theme.text,
                             fontSize: 16,
-                            fontFamily: 'Nunito',
                             fontWeight: FontWeight.w400,
                           ),
                           maxLines: 1,
@@ -286,7 +283,6 @@ class _WithdrawalPage extends HookWidget {
                           style: TextStyle(
                             color: context.theme.text,
                             fontSize: 16,
-                            fontFamily: 'Nunito',
                             fontWeight: FontWeight.w400,
                           ),
                         ),

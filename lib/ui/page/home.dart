@@ -92,7 +92,6 @@ class _AssetHeader extends StatelessWidget {
                   style: TextStyle(
                     color: context.theme.text,
                     fontSize: 16,
-                    fontFamily: 'Nunito',
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -191,7 +190,6 @@ class _Header extends HookWidget {
                   style: TextStyle(
                     color: context.theme.background,
                     fontSize: 14,
-                    fontFamily: 'Nunito',
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -321,7 +319,6 @@ class _Item extends StatelessWidget {
                       style: TextStyle(
                         color: context.theme.text,
                         fontSize: 16,
-                        fontFamily: 'Nunito',
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

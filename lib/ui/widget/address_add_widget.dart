@@ -42,7 +42,6 @@ class AddressAddWidget extends HookWidget {
                   style: TextStyle(
                     color: context.theme.text,
                     fontSize: 16,
-                    fontFamily: 'Nunito',
                     fontWeight: FontWeight.w400,
                   ),
                   maxLines: 1,
@@ -60,7 +59,6 @@ class AddressAddWidget extends HookWidget {
                   style: TextStyle(
                     color: context.theme.text,
                     fontSize: 16,
-                    fontFamily: 'Nunito',
                     fontWeight: FontWeight.w400,
                   ),
                   maxLines: 1,
@@ -85,7 +83,6 @@ class AddressAddWidget extends HookWidget {
                   style: TextStyle(
                     color: context.theme.text,
                     fontSize: 16,
-                    fontFamily: 'Nunito',
                     fontWeight: FontWeight.w400,
                   ),
                   enabled: memoSwitchEnable.value,

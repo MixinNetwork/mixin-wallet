@@ -203,7 +203,6 @@ class _Item extends StatelessWidget {
                       style: TextStyle(
                         color: context.theme.text,
                         fontSize: 16,
-                        fontFamily: 'Nunito',
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

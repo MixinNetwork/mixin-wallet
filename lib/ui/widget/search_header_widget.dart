@@ -41,7 +41,6 @@ class SearchHeaderWidget extends HookWidget {
             child: Text(context.l10n.cancel,
                 style: TextStyle(
                   color: context.theme.text,
-                  fontFamily: 'PingFang HK',
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 )),

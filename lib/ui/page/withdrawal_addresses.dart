@@ -160,7 +160,6 @@ class _Item extends StatelessWidget {
                     style: TextStyle(
                         color: context.theme.text,
                         fontSize: 16,
-                        fontFamily: 'Nunito',
                         fontWeight: FontWeight.w600,
                         height: 1.4),
                     maxLines: 1,
