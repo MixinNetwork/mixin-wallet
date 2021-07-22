@@ -39,4 +39,7 @@ class AddressDao extends DatabaseAccessor<MixinDatabase>
 
   Selectable<Addresse> addressesByAssetId(String assetId) =>
       select(db.addresses)..where((tbl) => tbl.assetId.equals(assetId));
+
+  Selectable<Addresse> addressesById(String addressId) =>
+      select(db.addresses)..where((tbl) => tbl.addressId.equals(addressId));
 }

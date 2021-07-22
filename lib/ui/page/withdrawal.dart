@@ -76,6 +76,23 @@ class _WithdrawalPage extends HookWidget {
       };
     }, [controller]);
 
+    useEffect(() {
+      final addressId = selectedAddress.value?.addressId;
+      if (addressId == null) {
+        return null;
+      }
+      // to check if selected address has been deleted.
+      final subscription = context.mixinDatabase.addressDao
+          .addressesById(addressId)
+          .watchSingleOrNull()
+          .listen((event) {
+        if (event == null) {
+          selectedAddress.value = null;
+        }
+      });
+      return subscription.cancel;
+    }, [selectedAddress.value?.addressId]);
+
     return Scaffold(
       backgroundColor: context.theme.background,
       appBar: MixinAppBar(
