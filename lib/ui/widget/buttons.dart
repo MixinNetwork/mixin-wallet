@@ -17,10 +17,12 @@ class MixinBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(right: 8.0),
+        padding: const EdgeInsets.only(left: 14),
         child: ActionButton(
           name: R.resourcesIcBackSvg,
           color: color ?? BrightnessData.themeOf(context).icon,
+          padding: const EdgeInsets.all(6),
+          size: 24,
           onTap: () {
             if (onTap != null) return onTap?.call();
             context.pop();

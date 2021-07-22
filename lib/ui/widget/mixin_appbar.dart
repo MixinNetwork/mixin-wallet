@@ -40,6 +40,7 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
                 : null),
         toolbarHeight: preferredSize.height,
         elevation: 0,
+        titleSpacing: 0,
         actions: validActions,
         centerTitle: false,
         title: title,
