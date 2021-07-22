@@ -20,7 +20,8 @@ class SearchAssetBottomSheet extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final keywordStreamController = useStreamController<String>();
-    final keywordStream = useMemoized(() => keywordStreamController.stream);
+    final keywordStream =
+        useMemoized(() => keywordStreamController.stream.distinct());
     final hasKeyword =
         useMemoizedStream(() => keywordStream.map((event) => event.isNotEmpty))
                 .data ??
@@ -145,7 +146,6 @@ class _SearchAssetList extends HookWidget {
     useMemoizedStream(
       () => keywordStream
           .where((event) => event.isNotEmpty)
-          .distinct()
           .debounceTime(const Duration(milliseconds: 100))
           .map(
             (String keyword) =>
@@ -153,13 +153,14 @@ class _SearchAssetList extends HookWidget {
           ),
     );
 
+    final keyword = useStream(keywordStream).data ?? '';
+
     final searchList = useMemoizedStream(
-          () => keywordStream.distinct().flatMap(
-            (keyword) {
-              if (keyword.isEmpty) return Stream.value(<AssetResult>[]);
-              return context.appServices.searchAssetResults(keyword).watch();
-            },
-          ),
+          () {
+            if (keyword.isEmpty) return Stream.value(<AssetResult>[]);
+            return context.appServices.searchAssetResults(keyword).watch();
+          },
+          keys: [keyword],
         ).data ??
         [];
 
