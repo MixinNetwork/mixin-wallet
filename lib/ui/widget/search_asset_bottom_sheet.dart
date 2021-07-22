@@ -32,12 +32,12 @@ class SearchAssetBottomSheet extends HookWidget {
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
       child: Column(
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           SearchHeaderWidget(
             hintText: context.l10n.search,
             onChanged: keywordStreamController.add,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Expanded(
             child: IndexedStack(
               index: hasKeyword ? 1 : 0,

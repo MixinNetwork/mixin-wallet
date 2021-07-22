@@ -74,7 +74,7 @@ class AddressSelectionWidget extends HookWidget {
       height: MediaQuery.of(context).size.height - 100,
       child: Column(
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Row(
             children: [
               const SizedBox(width: 10),
