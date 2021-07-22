@@ -12,11 +12,13 @@ import '../page/home.dart';
 import '../page/not_found.dart';
 import '../page/snapshot_detail.dart';
 import '../page/withdrawal.dart';
+import '../page/withdrawal_addresses.dart';
 
 final homeUri = Uri(path: '/');
 final authUri = Uri(path: '/auth');
 final notFoundUri = Uri(path: '/404');
 const withdrawalPath = '/withdrawal/:id';
+const withdrawalAddressesPath = '/withdrawal/:id/addresses';
 const assetDetailPath = '/tokens/:id';
 const assetDepositPath = '/tokens/:id/deposit';
 const snapshotDetailPath = '/snapshots/:id';
@@ -52,10 +54,15 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                 widget: const Home(),
                 stackedRoutes: [
                   VWidget(
-                    key: const ValueKey('Withdrawal'),
-                    path: withdrawalPath,
-                    widget: const Withdrawal(),
-                  ),
+                      key: const ValueKey('Withdrawal'),
+                      path: withdrawalPath,
+                      widget: const Withdrawal(),
+                      stackedRoutes: [
+                        VWidget(
+                          path: withdrawalAddressesPath,
+                          widget: const WithdrawalAddresses(),
+                        ),
+                      ]),
                   VWidget(
                     key: const ValueKey('AssetDetail'),
                     path: assetDetailPath,

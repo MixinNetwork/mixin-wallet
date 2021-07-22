@@ -40,6 +40,8 @@ class R {
   static const String resourcesIcSearchSmallSvg =
       'resources/ic_search_small.svg';
 
+  static const String resourcesIcSetSvg = 'resources/ic_set.svg';
+
   static const String resourcesIcSwitchSvg = 'resources/ic_switch.svg';
 
   static const String resourcesReceiveSvg = 'resources/receive.svg';
