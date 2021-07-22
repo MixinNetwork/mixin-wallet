@@ -184,8 +184,6 @@ class _Item extends StatelessWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         height: 1.4),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
                   Text(

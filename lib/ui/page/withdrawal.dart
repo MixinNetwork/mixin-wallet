@@ -158,8 +158,6 @@ class _WithdrawalPage extends HookWidget {
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           '${asset.balance}${asset.symbol}',
@@ -218,8 +216,6 @@ class _WithdrawalPage extends HookWidget {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                               ),
                               Text(
                                 selectedAddress.value!

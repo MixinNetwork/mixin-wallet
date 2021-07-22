@@ -204,7 +204,6 @@ class _Item extends StatelessWidget {
                         color: context.theme.text,
                         fontSize: 16,
                       ),
-                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
