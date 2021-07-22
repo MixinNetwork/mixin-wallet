@@ -168,18 +168,60 @@ class _DeleteConfirmDialog extends HookWidget {
     }, [address.addressId]);
 
     return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator(),
-          Text(context.l10n.delete),
-          InteractableBox(
-            child: Text(context.l10n.cancel),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: context.theme.background,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: SizedBox(
+          width: 200,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 24),
+              CircularProgressIndicator(
+                color: context.theme.text,
+                strokeWidth: 2,
+              ),
+              const SizedBox(height: 14),
+              Text(context.l10n.delete,
+                  style: TextStyle(
+                    color: context.theme.text,
+                    fontSize: 16,
+                    height: 1.4,
+                  )),
+              const SizedBox(height: 14),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: InteractableBox(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: context.theme.accent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.only(
+                        top: 12, bottom: 14, left: 54, right: 55),
+                    child: Center(
+                      child: Text(
+                        context.l10n.cancel,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              const SizedBox(height: 18),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
