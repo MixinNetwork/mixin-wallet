@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:very_good_analysis/very_good_analysis.dart';
 
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/l10n.dart';
 import '../../util/logger.dart';
-import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import 'brightness_observer.dart';
 import 'interactable_box.dart';
@@ -22,7 +21,19 @@ class AddressAddWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final memoSwitchEnable = useState<bool>(true);
+    final memoEnable = useState<bool>(true);
+    final memoEnableTextFirst = context.l10n.addAddressMemo;
+    final memoDisableTextFirst = context.l10n.addAddressNoMemo;
+    final memoHint =
+        assetId == ripple ? context.l10n.tagHint : context.l10n.memoHint;
+    final memoEnableTextSecond = assetId == ripple
+        ? context.l10n.addAddressTagAction
+        : context.l10n.addAddressMemoAction;
+    final memoDisableTextSecond = assetId == ripple
+        ? context.l10n.addAddressNoTagAction
+        : context.l10n.addAddressNoMemoAction;
+    final memoTextFirst = useState<String>(memoEnableTextFirst);
+    final memoTextSecond = useState<String>(memoEnableTextSecond);
 
     final memoController = useTextEditingController();
     final labelController = useTextEditingController();
@@ -47,7 +58,6 @@ class AddressAddWidget extends HookWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
-                  maxLines: 1,
                   decoration: InputDecoration(
                     hintText: context.l10n.addAddressLabelHint,
                     border: InputBorder.none,
@@ -56,74 +66,67 @@ class AddressAddWidget extends HookWidget {
                 )),
             const SizedBox(height: 10),
             RoundContainer(
-              child: Row(children: [
-                Expanded(
-                    child: TextField(
-                  style: TextStyle(
-                    color: context.theme.text,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    hintText: context.l10n.address,
-                    border: InputBorder.none,
-                  ),
-                  controller: addressController,
-                )),
-                const SizedBox(width: 20),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: SvgPicture.asset(R.resourcesIcScanSvg),
+              child: Center(
+                  child: TextField(
+                style: TextStyle(
+                  color: context.theme.text,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
                 ),
-              ]),
+                decoration: InputDecoration(
+                  hintText: context.l10n.address,
+                  border: InputBorder.none,
+                ),
+                controller: addressController,
+              )),
             ),
             const SizedBox(height: 10),
-            RoundContainer(
-              child: Row(children: [
-                Expanded(
-                    child: TextField(
-                  style: TextStyle(
-                    color: context.theme.text,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  enabled: memoSwitchEnable.value,
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    hintText: memoSwitchEnable.value
-                        ? context.l10n.memoOptional
-                        : context.l10n.memoNo,
-                    border: InputBorder.none,
-                  ),
-                  controller: memoController,
-                )),
-                const SizedBox(width: 20),
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: Switch(
-                      value: memoSwitchEnable.value,
-                      onChanged: (value) {
-                        memoSwitchEnable.value = value;
-                        if (!value) {
-                          memoController.clear();
-                        }
-                      },
+            memoEnable.value
+                ? Column(children: [
+                    RoundContainer(
+                        child: Center(
+                      child: TextField(
+                        style: TextStyle(
+                          color: context.theme.text,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: memoHint,
+                          border: InputBorder.none,
+                        ),
+                        controller: memoController,
+                      ),
                     )),
-              ]),
-            ),
-            const SizedBox(height: 10),
+                    const SizedBox(height: 10),
+                  ])
+                : const SizedBox(),
             Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  context.l10n.memoHint,
-                  softWrap: true,
-                  style: TextStyle(
-                    color: context.theme.secondaryText,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                )),
+                child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    child: InteractableBox(
+                        onTap: () {
+                          memoEnable.value = !memoEnable.value;
+                          if (!memoEnable.value) {
+                            memoController.clear();
+                          }
+                          memoTextFirst.value = memoEnable.value
+                              ? memoEnableTextFirst
+                              : memoDisableTextFirst;
+                          memoTextSecond.value = memoEnable.value
+                              ? memoEnableTextSecond
+                              : memoDisableTextSecond;
+                        },
+                        child: Text.rich(
+                            TextSpan(text: memoTextFirst.value, children: [
+                          TextSpan(
+                            text: memoTextSecond.value,
+                            style: const TextStyle(
+                                color: Color.fromRGBO(75, 124, 211, 1)),
+                          )
+                        ]))))),
             const Spacer(),
             Align(
               alignment: Alignment.bottomCenter,

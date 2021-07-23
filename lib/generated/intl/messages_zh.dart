@@ -32,6 +32,18 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addAddress": MessageLookupByLibrary.simpleMessage("添加地址"),
+        "addAddressMemo":
+            MessageLookupByLibrary.simpleMessage("地址标签、数字 ID 或备注。如果没有，"),
+        "addAddressMemoAction":
+            MessageLookupByLibrary.simpleMessage("点击不使用标签（Memo）"),
+        "addAddressNoMemo":
+            MessageLookupByLibrary.simpleMessage("如果你需要填写地址标签、数字 ID 或备注，"),
+        "addAddressNoMemoAction":
+            MessageLookupByLibrary.simpleMessage("点击添加标签（Memo）"),
+        "addAddressNoTagAction":
+            MessageLookupByLibrary.simpleMessage("点击添加标签（Tag）"),
+        "addAddressTagAction":
+            MessageLookupByLibrary.simpleMessage("点击不使用标签（Tag）"),
         "addressSearchHint": MessageLookupByLibrary.simpleMessage("标题，地址"),
         "allTransactions": MessageLookupByLibrary.simpleMessage("所有交易"),
         "amount": MessageLookupByLibrary.simpleMessage("金额"),
@@ -62,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "finishVerifyPIN": MessageLookupByLibrary.simpleMessage("完成验证 PIN 了？"),
         "from": MessageLookupByLibrary.simpleMessage("来自"),
         "memo": MessageLookupByLibrary.simpleMessage("备注"),
+        "memoHint": MessageLookupByLibrary.simpleMessage("标签（Memo）"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
@@ -71,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
         "sure": MessageLookupByLibrary.simpleMessage("确定"),
         "symbol": MessageLookupByLibrary.simpleMessage("符号"),
+        "tagHint": MessageLookupByLibrary.simpleMessage("标签（Tag）"),
         "time": MessageLookupByLibrary.simpleMessage("时间"),
         "to": MessageLookupByLibrary.simpleMessage("至"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额"),

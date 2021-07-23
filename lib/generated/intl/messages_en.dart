@@ -55,6 +55,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "addAddress": MessageLookupByLibrary.simpleMessage("Add address"),
         "addAddressLabelHint": MessageLookupByLibrary.simpleMessage(
             "Label (e.g. exchanges, wallets, etc.)"),
+        "addAddressMemo": MessageLookupByLibrary.simpleMessage(
+            "Destination Tag or ID Number or notes. If not, you can set it "),
+        "addAddressMemoAction": MessageLookupByLibrary.simpleMessage("No Memo"),
+        "addAddressNoMemo": MessageLookupByLibrary.simpleMessage(
+            "If you are required to fill in Destination Tag or ID Number or notes, you can "),
+        "addAddressNoMemoAction":
+            MessageLookupByLibrary.simpleMessage("Add Memo"),
+        "addAddressNoTagAction":
+            MessageLookupByLibrary.simpleMessage("Add Tag"),
+        "addAddressTagAction": MessageLookupByLibrary.simpleMessage("No Tag"),
         "address": MessageLookupByLibrary.simpleMessage("Address"),
         "addressSearchHint":
             MessageLookupByLibrary.simpleMessage("Label, Address"),
@@ -97,10 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Finished verifying PIN ?"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
         "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
-        "memoHint": MessageLookupByLibrary.simpleMessage(
-            "Confirm if the receiving address requires a MEMO."),
-        "memoNo": MessageLookupByLibrary.simpleMessage("No Memo"),
-        "memoOptional": MessageLookupByLibrary.simpleMessage("MEMO (Optional)"),
+        "memoHint": MessageLookupByLibrary.simpleMessage("Memo"),
         "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
@@ -120,6 +127,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "sure": MessageLookupByLibrary.simpleMessage("Sure"),
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
+        "tagHint": MessageLookupByLibrary.simpleMessage("Tag"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
         "to": MessageLookupByLibrary.simpleMessage("To"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),

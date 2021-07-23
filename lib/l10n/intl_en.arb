@@ -60,14 +60,19 @@
   "withdrawalFeeReserve": "A transaction fee of {value1} is required for withdrawing {value2}. {value3} has a minimum {value4} {value5} reserve requirement.",
   "pendingConfirmations": "{value}/{value2} confirmations",
   "addAddressLabelHint": "Label (e.g. exchanges, wallets, etc.)",
-  "memoOptional": "MEMO (Optional)",
-  "memoNo": "No Memo",
-  "memoHint": "Confirm if the receiving address requires a MEMO.",
   "save": "Save",
   "allTransactions": "All Transactions",
   "assetTrending": "Trending",
   "recentSearches": "Recent searches",
   "copyToClipboard": "Copy to clipboard",
   "finishVerifyPIN": "Finished verifying PIN ?",
-  "sure": "Sure"
+  "sure": "Sure",
+  "addAddressMemo": "Destination Tag or ID Number or notes. If not, you can set it ",
+  "addAddressNoMemo": "If you are required to fill in Destination Tag or ID Number or notes, you can ",
+  "addAddressTagAction": "No Tag",
+  "addAddressNoTagAction": "Add Tag",
+  "addAddressMemoAction": "No Memo",
+  "addAddressNoMemoAction": "Add Memo",
+  "memoHint": "Memo",
+  "tagHint": "Tag"
 }

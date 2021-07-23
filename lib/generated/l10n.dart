@@ -661,36 +661,6 @@ class L10n {
     );
   }
 
-  /// `MEMO (Optional)`
-  String get memoOptional {
-    return Intl.message(
-      'MEMO (Optional)',
-      name: 'memoOptional',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No Memo`
-  String get memoNo {
-    return Intl.message(
-      'No Memo',
-      name: 'memoNo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Confirm if the receiving address requires a MEMO.`
-  String get memoHint {
-    return Intl.message(
-      'Confirm if the receiving address requires a MEMO.',
-      name: 'memoHint',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Save`
   String get save {
     return Intl.message(
@@ -756,6 +726,86 @@ class L10n {
     return Intl.message(
       'Sure',
       name: 'sure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Destination Tag or ID Number or notes. If not, you can set it `
+  String get addAddressMemo {
+    return Intl.message(
+      'Destination Tag or ID Number or notes. If not, you can set it ',
+      name: 'addAddressMemo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If you are required to fill in Destination Tag or ID Number or notes, you can `
+  String get addAddressNoMemo {
+    return Intl.message(
+      'If you are required to fill in Destination Tag or ID Number or notes, you can ',
+      name: 'addAddressNoMemo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Tag`
+  String get addAddressTagAction {
+    return Intl.message(
+      'No Tag',
+      name: 'addAddressTagAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Tag`
+  String get addAddressNoTagAction {
+    return Intl.message(
+      'Add Tag',
+      name: 'addAddressNoTagAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Memo`
+  String get addAddressMemoAction {
+    return Intl.message(
+      'No Memo',
+      name: 'addAddressMemoAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Memo`
+  String get addAddressNoMemoAction {
+    return Intl.message(
+      'Add Memo',
+      name: 'addAddressNoMemoAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Memo`
+  String get memoHint {
+    return Intl.message(
+      'Memo',
+      name: 'memoHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tag`
+  String get tagHint {
+    return Intl.message(
+      'Tag',
+      name: 'tagHint',
       desc: '',
       args: [],
     );

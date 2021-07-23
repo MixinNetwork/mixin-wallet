@@ -47,5 +47,13 @@
   "copyToClipboard": "已复制到剪切板",
   "transactions": "转账记录",
   "finishVerifyPIN": "完成验证 PIN 了？",
-  "sure": "确定"
+  "sure": "确定",
+  "addAddressMemo": "地址标签、数字 ID 或备注。如果没有，",
+  "addAddressNoMemo": "如果你需要填写地址标签、数字 ID 或备注，",
+  "addAddressTagAction": "点击不使用标签（Tag）",
+  "addAddressNoTagAction": "点击添加标签（Tag）",
+  "addAddressMemoAction": "点击不使用标签（Memo）",
+  "addAddressNoMemoAction": "点击添加标签（Memo）",
+  "memoHint": "标签（Memo）",
+  "tagHint": "标签（Tag）"
 }
