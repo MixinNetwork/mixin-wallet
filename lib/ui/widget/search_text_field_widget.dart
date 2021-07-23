@@ -57,42 +57,39 @@ class SearchTextFieldWidget extends HookWidget {
       };
     }, [controller, onChanged]);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: TextField(
-        focusNode: focusNode,
-        autofocus: autofocus,
-        controller: controller,
-        style: TextStyle(
-          color: BrightnessData.themeOf(context).text,
-          fontSize: fontSize,
-        ),
-        scrollPadding: EdgeInsets.zero,
-        decoration: InputDecoration(
-          isDense: true,
-          border: outlineInputBorder,
-          focusedBorder: outlineInputBorder,
-          enabledBorder: outlineInputBorder,
-          filled: true,
-          fillColor: backgroundColor,
-          hoverColor: Colors.transparent,
-          focusColor: Colors.transparent,
-          prefixIconConstraints:
-              const BoxConstraints.expand(width: 40, height: 32),
-          prefixIcon: Padding(
-            padding: const EdgeInsets.only(left: 16, right: 8),
-            child: SvgPicture.asset(
-              R.resourcesIcSearchSmallSvg,
-              color: hintColor,
-            ),
-          ),
-          suffixIcon: _SearchClearIcon(controller),
-          contentPadding: const EdgeInsets.only(right: 8),
-          hintText: hintText,
-          hintStyle: TextStyle(
+    return TextField(
+      focusNode: focusNode,
+      autofocus: autofocus,
+      controller: controller,
+      style: TextStyle(
+        color: BrightnessData.themeOf(context).text,
+        fontSize: fontSize,
+      ),
+      scrollPadding: EdgeInsets.zero,
+      decoration: InputDecoration(
+        isDense: true,
+        border: outlineInputBorder,
+        focusedBorder: outlineInputBorder,
+        enabledBorder: outlineInputBorder,
+        filled: true,
+        fillColor: backgroundColor,
+        hoverColor: Colors.transparent,
+        focusColor: Colors.transparent,
+        prefixIconConstraints:
+            const BoxConstraints.expand(width: 40, height: 32),
+        prefixIcon: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 8),
+          child: SvgPicture.asset(
+            R.resourcesIcSearchSmallSvg,
             color: hintColor,
-            fontSize: fontSize,
           ),
+        ),
+        suffixIcon: _SearchClearIcon(controller),
+        contentPadding: const EdgeInsets.only(right: 4),
+        hintText: hintText,
+        hintStyle: TextStyle(
+          color: hintColor,
+          fontSize: fontSize,
         ),
       ),
     );
@@ -117,7 +114,7 @@ class _SearchClearIcon extends HookWidget {
             controller.text = '';
           },
           child: Padding(
-            padding: const EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.only(right: 4),
             child: Icon(
               Icons.close,
               color: BrightnessData.themeOf(context).secondaryText,

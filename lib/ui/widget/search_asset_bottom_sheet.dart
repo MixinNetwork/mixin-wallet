@@ -123,7 +123,7 @@ class _SubTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 2),
         child: Text(
           title,
           style: const TextStyle(
@@ -187,7 +187,7 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         height: 70,
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: GestureDetector(
           onTap: () {
             if (replaceHistory) {

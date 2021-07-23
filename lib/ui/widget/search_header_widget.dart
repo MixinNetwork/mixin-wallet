@@ -17,7 +17,7 @@ class SearchHeaderWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-      height: 56,
+      height: 48,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -27,7 +27,7 @@ class SearchHeaderWidget extends HookWidget {
                   borderRadius: BorderRadius.circular(12)),
               child: SearchTextFieldWidget(
                 onChanged: (k) => onChanged?.call(k),
-                fontSize: 16,
+                fontSize: 14,
                 controller: useTextEditingController(),
                 hintText: hintText,
               ),
@@ -41,7 +41,7 @@ class SearchHeaderWidget extends HookWidget {
             child: Text(context.l10n.cancel,
                 style: TextStyle(
                   color: context.theme.text,
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                 )),
           ),
