@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:vrouter/vrouter.dart';
@@ -14,6 +15,7 @@ import 'util/l10n.dart';
 import 'util/logger.dart';
 
 Future<void> main() async {
+  await dotenv.load(fileName: '.env');
   await initStorage();
   runZonedGuarded(
     () => runApp(MyApp()),

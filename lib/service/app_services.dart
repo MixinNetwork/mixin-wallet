@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:moor/moor.dart';
 import 'package:vrouter/vrouter.dart';
@@ -16,9 +17,9 @@ import '../util/logger.dart';
 import 'profile/auth.dart';
 import 'profile/profile_manager.dart';
 
-const clientId = 'b35af74d-cca6-400c-a62b-5a7e659de91e';
-const clientSecret =
-    '7da44c936619b5d1c60aac886e5dcc453c2d75efc04315faec26b67fb80c193f';
+String get clientId => dotenv.env['CLIENT_ID']!;
+
+String get clientSecret => dotenv.env['CLIENT_SECRET']!;
 
 class AppServices extends ChangeNotifier with EquatableMixin {
   AppServices({

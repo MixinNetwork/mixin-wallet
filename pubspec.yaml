@@ -60,6 +60,7 @@ dependencies:
   modal_bottom_sheet: ^2.0.0
   vrouter: ^1.2.0+5
   uuid: ^3.0.4
+  flutter_dotenv: ^5.0.0
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +113,7 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
   assets:
+    - .env
   # assets start
 
   # GENERATED CODE - DO NOT MODIFY MANUALLY
