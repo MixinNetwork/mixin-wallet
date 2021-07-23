@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:moor/moor.dart';
 import 'package:vrouter/vrouter.dart';
@@ -14,12 +13,9 @@ import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
+import 'env.dart';
 import 'profile/auth.dart';
 import 'profile/profile_manager.dart';
-
-String get clientId => dotenv.env['CLIENT_ID']!;
-
-String get clientSecret => dotenv.env['CLIENT_SECRET']!;
 
 class AppServices extends ChangeNotifier with EquatableMixin {
   AppServices({
@@ -65,7 +61,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Future<void> login(String oauthCode) async {
     final response = await client.oauthApi
-        .post(sdk.OauthRequest(clientId, clientSecret, oauthCode));
+        .post(sdk.OauthRequest(Env.clientId, Env.clientSecret, oauthCode));
 
     final scope = response.data.scope;
     if (!scope.contains('ASSETS:READ') || !scope.contains('SNAPSHOTS:READ')) {

@@ -2663,7 +2663,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
             alias(this.fiats, 'fiat')),
         hasMultipleTables: true);
     return customSelect(
-        'SELECT asset.*, tempAsset.symbol AS chainSymbol, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id INNER JOIN fiats AS fiat ON fiat.code = :currentFiat WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
+        'SELECT asset.*, tempAsset.symbol AS chainSymbol, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id INNER JOIN fiats AS fiat ON fiat.code = ?1 WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
         variables: [
           Variable<String>(currentFiat),
           ...generatedwhere.introducedVariables,

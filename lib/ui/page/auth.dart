@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../service/app_services.dart';
+import '../../service/env.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
@@ -67,7 +67,7 @@ class AuthPage extends HookWidget {
                     ElevatedButton(
                       onPressed: () {
                         final uri = Uri.https('mixin.one', 'oauth/authorize', {
-                          'client_id': clientId,
+                          'client_id': Env.clientId,
                           'scope':
                               'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ',
                           'response_type': 'code',
