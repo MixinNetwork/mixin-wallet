@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,7 +16,11 @@ import 'util/l10n.dart';
 import 'util/logger.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: '.env');
+  if (kReleaseMode) {
+    await dotenv.load(fileName: 'release.env');
+  } else {
+    await dotenv.load(fileName: '.env');
+  }
   await initStorage();
   runZonedGuarded(
     () => runApp(MyApp()),
