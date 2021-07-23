@@ -17,7 +17,7 @@ import 'util/logger.dart';
 
 Future<void> main() async {
   if (kReleaseMode) {
-    await dotenv.load(fileName: 'release.env');
+    await dotenv.load(fileName: '.prodution.env');
   } else {
     await dotenv.load(fileName: '.env');
   }

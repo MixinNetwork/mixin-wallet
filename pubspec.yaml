@@ -114,7 +114,7 @@ flutter:
 
   assets:
     - .env
-    - release.env
+    - .production.env
   # assets start
 
   # GENERATED CODE - DO NOT MODIFY MANUALLY
