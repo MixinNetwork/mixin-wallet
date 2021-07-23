@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
@@ -313,7 +316,7 @@ class _WithdrawalPage extends HookWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: InteractableBox(
-                onTap: () {
+                onTap: () async {
                   final amount = switched.value
                       ? valueSecond.value
                       : controller.text.trim();
@@ -327,13 +330,37 @@ class _WithdrawalPage extends HookWidget {
                   }
                   final addressId = selectedAddress.value!.addressId;
                   final traceId = const Uuid().v4();
+                  final assetId = assetState.value.assetId;
                   final uri = Uri.https('mixin.one', 'withdrawal', {
-                    'asset': assetState.value.assetId,
+                    'asset': assetId,
                     'address': addressId,
                     'amount': amount,
                     'trace': traceId,
                   });
-                  context.toExternal(uri);
+                  if (!await canLaunch(uri.toString())) {
+                    return;
+                  }
+                  await launch(uri.toString());
+                  await showDialog<bool>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) => AlertDialog(
+                            content: Text(context.l10n.finishVerifyPIN),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(context.l10n.cancel)),
+                              TextButton(
+                                  onPressed: () async {
+                                    unawaited(context.appServices
+                                        .updateAsset(assetId));
+                                    context.pop();
+                                  },
+                                  child: Text(context.l10n.sure)),
+                            ],
+                          ));
                 },
                 child: Container(
                     width: 160,

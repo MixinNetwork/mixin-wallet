@@ -740,6 +740,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Finished verifying PIN ?`
+  String get finishVerifyPIN {
+    return Intl.message(
+      'Finished verifying PIN ?',
+      name: 'finishVerifyPIN',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sure`
+  String get sure {
+    return Intl.message(
+      'Sure',
+      name: 'sure',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

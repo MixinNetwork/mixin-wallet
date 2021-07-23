@@ -12,8 +12,10 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
+import '../widget/address_add_widget.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/mixin_bottom_sheet.dart';
 import '../widget/search_text_field_widget.dart';
 
 class WithdrawalAddresses extends HookWidget {
@@ -78,6 +80,36 @@ class WithdrawalAddresses extends HookWidget {
           ),
           const SizedBox(height: 22),
           Expanded(child: _WithdrawalAddressList(addresses: filterList)),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                  width: 160,
+                  height: 44,
+                  child: TextButton(
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              const EdgeInsets.symmetric(
+                                  horizontal: 22, vertical: 11)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      side: BorderSide(
+                                          color: context.theme.accent)))),
+                      onPressed: () {
+                        showMixinBottomSheet(
+                          context: context,
+                          builder: (context) =>
+                              AddressAddWidget(assetId: assetId),
+                          isScrollControlled: true,
+                        );
+                      },
+                      child: Text('+ ${context.l10n.addAddress}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: context.theme.accent,
+                          ))))),
+          const SizedBox(height: 70),
         ],
       ),
     );

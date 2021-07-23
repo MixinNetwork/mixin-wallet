@@ -67,5 +67,7 @@
   "allTransactions": "All Transactions",
   "assetTrending": "Trending",
   "recentSearches": "Recent searches",
-  "copyToClipboard": "Copy to clipboard"
+  "copyToClipboard": "Copy to clipboard",
+  "finishVerifyPIN": "Finished verifying PIN ?",
+  "sure": "Sure"
 }

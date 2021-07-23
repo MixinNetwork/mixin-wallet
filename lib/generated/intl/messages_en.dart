@@ -93,6 +93,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterApply": MessageLookupByLibrary.simpleMessage("Apply"),
         "filterBy": MessageLookupByLibrary.simpleMessage("FILTER BY"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("Filter"),
+        "finishVerifyPIN":
+            MessageLookupByLibrary.simpleMessage("Finished verifying PIN ?"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
         "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
         "memoHint": MessageLookupByLibrary.simpleMessage(
@@ -116,6 +118,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendToAddress":
             MessageLookupByLibrary.simpleMessage("Send to Address"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
+        "sure": MessageLookupByLibrary.simpleMessage("Sure"),
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
         "to": MessageLookupByLibrary.simpleMessage("To"),

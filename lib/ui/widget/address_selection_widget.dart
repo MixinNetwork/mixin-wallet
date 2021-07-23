@@ -13,7 +13,6 @@ import '../../util/l10n.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import 'action_button.dart';
-import 'address_add_widget.dart';
 import 'brightness_observer.dart';
 import 'interactable_box.dart';
 import 'mixin_bottom_sheet.dart';
@@ -108,36 +107,6 @@ class AddressSelectionWidget extends HookWidget {
               ),
             ),
           ),
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                  width: 160,
-                  height: 44,
-                  child: TextButton(
-                      style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsets>(
-                              const EdgeInsets.symmetric(
-                                  horizontal: 22, vertical: 11)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      side: BorderSide(
-                                          color: context.theme.accent)))),
-                      onPressed: () {
-                        showMixinBottomSheet(
-                          context: context,
-                          builder: (context) =>
-                              AddressAddWidget(assetId: assetId),
-                          isScrollControlled: true,
-                        );
-                      },
-                      child: Text('+ ${context.l10n.addAddress}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: context.theme.accent,
-                          ))))),
-          const SizedBox(height: 70),
         ],
       ),
     );

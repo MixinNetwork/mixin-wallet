@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:very_good_analysis/very_good_analysis.dart';
 
 import '../../util/extension/extension.dart';
 import '../../util/l10n.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
+import '../router/mixin_routes.dart';
 import 'brightness_observer.dart';
 import 'interactable_box.dart';
 import 'mixin_bottom_sheet.dart';
@@ -125,7 +128,7 @@ class AddressAddWidget extends HookWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: InteractableBox(
-                  onTap: () {
+                  onTap: () async {
                     final address = addressController.text.trim();
                     final label = labelController.text.trim();
                     if (address.isEmpty || label.isEmpty) {
@@ -140,7 +143,31 @@ class AddressAddWidget extends HookWidget {
                       'tag': memoController.text.trim(),
                       'label': label,
                     });
-                    context.toExternal(uri);
+                    if (!await canLaunch(uri.toString())) {
+                      return;
+                    }
+                    await launch(uri.toString());
+                    await showDialog<bool>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) => AlertDialog(
+                              content: Text(context.l10n.finishVerifyPIN),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(context.l10n.cancel)),
+                                TextButton(
+                                    onPressed: () async {
+                                      unawaited(context.appServices
+                                          .updateAddresses(assetId));
+                                      context.replace(withdrawalAddressesPath
+                                          .toUri({'id': assetId}));
+                                    },
+                                    child: Text(context.l10n.sure)),
+                              ],
+                            ));
                   },
                   child: Container(
                       width: 160,

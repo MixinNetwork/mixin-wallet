@@ -45,5 +45,7 @@
   "assetTrending": "热门资产",
   "recentSearches": "最近搜索",
   "copyToClipboard": "已复制到剪切板",
-  "transactions": "转账记录"
+  "transactions": "转账记录",
+  "finishVerifyPIN": "完成验证 PIN 了？",
+  "sure": "确定"
 }
