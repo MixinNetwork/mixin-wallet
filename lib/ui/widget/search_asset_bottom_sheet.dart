@@ -219,11 +219,12 @@ class _Item extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      data.name,
+                      data.name.overflow,
                       style: TextStyle(
                         color: context.theme.secondaryText,
                         fontSize: 14,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
