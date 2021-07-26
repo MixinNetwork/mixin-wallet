@@ -8,6 +8,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../db/converter/deposit_entry_converter.dart';
 import '../../db/mixin_database.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -85,22 +86,24 @@ class _AssetDepositPage extends HookWidget {
     final checkedDestination = useState<String>(asset.destination!);
     final checkedTag = useState<String?>(asset.tag);
     return Scaffold(
-      backgroundColor: context.theme.background,
+      backgroundColor: context.theme.accent,
       appBar: MixinAppBar(
-        title: Text(
-          context.l10n.deposit,
-          style: TextStyle(color: context.theme.text),
-        ),
-        backgroundColor: context.theme.background,
+        title: Text(context.l10n.deposit),
+        backButtonColor: Colors.white,
         actions: <Widget>[
           ActionButton(
               name: R.resourcesIcQuestionSvg,
-              color: BrightnessData.themeOf(context).icon,
+              color: Colors.white,
               onTap: () {}),
         ],
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+        decoration: BoxDecoration(
+          borderRadius:
+              const BorderRadius.vertical(top: Radius.circular(topRadius)),
+          color: context.theme.background,
+        ),
         child: Column(children: [
           const SizedBox(height: 20),
           InteractableBox(

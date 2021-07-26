@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../db/mixin_database.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -216,7 +217,8 @@ class _AssetTransactionsHeader extends StatelessWidget {
         height: 64,
         child: DecoratedBox(
           decoration: const BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+            borderRadius:
+                BorderRadius.vertical(top: Radius.circular(topRadius)),
             color: Colors.white,
           ),
           child: Center(

@@ -8,6 +8,7 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../db/mixin_database.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
@@ -16,7 +17,7 @@ import '../widget/address_add_widget.dart';
 import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
-import '../widget/search_text_field_widget.dart';
+import '../widget/search_header_widget.dart';
 
 class WithdrawalAddresses extends HookWidget {
   const WithdrawalAddresses({Key? key}) : super(key: key);
@@ -52,67 +53,64 @@ class WithdrawalAddresses extends HookWidget {
     final controller = useTextEditingController();
 
     return Scaffold(
-      appBar: MixinAppBar(
-        title: Text(
-          context.l10n.address,
-          style: TextStyle(color: context.theme.text),
+        appBar: MixinAppBar(
+          title: Text(context.l10n.address),
+          backButtonColor: Colors.white,
         ),
-        backgroundColor: context.theme.background,
-      ),
-      backgroundColor: context.theme.background,
-      body: Column(
-        children: [
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SizedBox(
-              height: 56,
-              child: Material(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                child: SearchTextFieldWidget(
-                  hintText: context.l10n.addAddressLabelHint,
-                  onChanged: (value) => filterKeywords.value = value,
-                  controller: controller,
-                ),
-              ),
-            ),
+        backgroundColor: context.theme.accent,
+        body: Container(
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+          decoration: BoxDecoration(
+            borderRadius:
+                const BorderRadius.vertical(top: Radius.circular(topRadius)),
+            color: context.theme.background,
           ),
-          const SizedBox(height: 22),
-          Expanded(child: _WithdrawalAddressList(addresses: filterList)),
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                  width: 160,
-                  height: 44,
-                  child: TextButton(
-                      style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsets>(
-                              const EdgeInsets.symmetric(
-                                  horizontal: 22, vertical: 11)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+          child: Column(
+            children: [
+              const SizedBox(height: 12),
+              SearchHeaderWidget(
+                hintText: context.l10n.addressSearchHint,
+                onChanged: (k) {
+                  filterKeywords.value = k;
+                },
+                controller: controller,
+                cancelVisible: false,
+              ),
+              const SizedBox(height: 22),
+              Expanded(child: _WithdrawalAddressList(addresses: filterList)),
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SizedBox(
+                      width: 160,
+                      height: 44,
+                      child: TextButton(
+                          style: ButtonStyle(
+                              padding: MaterialStateProperty.all<EdgeInsets>(
+                                  const EdgeInsets.symmetric(
+                                      horizontal: 22, vertical: 11)),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12.0),
                                       side: BorderSide(
                                           color: context.theme.accent)))),
-                      onPressed: () {
-                        showMixinBottomSheet(
-                          context: context,
-                          builder: (context) =>
-                              AddressAddWidget(assetId: assetId),
-                          isScrollControlled: true,
-                        );
-                      },
-                      child: Text('+ ${context.l10n.addAddress}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: context.theme.accent,
-                          ))))),
-          const SizedBox(height: 70),
-        ],
-      ),
-    );
+                          onPressed: () {
+                            showMixinBottomSheet(
+                              context: context,
+                              builder: (context) =>
+                                  AddressAddWidget(assetId: assetId),
+                              isScrollControlled: true,
+                            );
+                          },
+                          child: Text('+ ${context.l10n.addAddress}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: context.theme.accent,
+                              ))))),
+              const SizedBox(height: 70),
+            ],
+          ),
+        ));
   }
 }
 

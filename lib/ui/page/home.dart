@@ -80,7 +80,8 @@ class _AssetHeader extends StatelessWidget {
         color: context.theme.accent,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+            borderRadius:
+                const BorderRadius.vertical(top: Radius.circular(topRadius)),
             color: context.theme.background,
           ),
           child: Row(

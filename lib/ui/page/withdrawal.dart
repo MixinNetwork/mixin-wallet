@@ -97,22 +97,22 @@ class _WithdrawalPage extends HookWidget {
     }, [selectedAddress.value?.addressId]);
 
     return Scaffold(
-      backgroundColor: context.theme.background,
+      backgroundColor: context.theme.accent,
       appBar: MixinAppBar(
-        title: Text(
-          context.l10n.sendToAddress,
-          style: TextStyle(color: context.theme.text),
-        ),
-        backgroundColor: context.theme.background,
+        title: Text(context.l10n.sendToAddress),
+        backButtonColor: Colors.white,
         actions: <Widget>[
           ActionButton(
-              name: R.resourcesIcFileSvg,
-              color: BrightnessData.themeOf(context).icon,
-              onTap: () {}),
+              name: R.resourcesIcFileSvg, color: Colors.white, onTap: () {}),
         ],
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+        decoration: BoxDecoration(
+          borderRadius:
+              const BorderRadius.vertical(top: Radius.circular(topRadius)),
+          color: context.theme.background,
+        ),
         child: Column(children: [
           const SizedBox(height: 20),
           InteractableBox(

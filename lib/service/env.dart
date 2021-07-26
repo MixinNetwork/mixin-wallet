@@ -17,5 +17,6 @@ abstract class _ProdEnv {
 
 class Env {
   static const clientId = kReleaseMode ? _ProdEnv.clientId : _DevEnv.clientId;
-  static const clientSecret = kReleaseMode ? _ProdEnv.clientSecret : _DevEnv.clientSecret;
+  static const clientSecret =
+      kReleaseMode ? _ProdEnv.clientSecret : _DevEnv.clientSecret;
 }

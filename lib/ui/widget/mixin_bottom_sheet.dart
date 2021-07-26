@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../util/constants.dart';
 
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
@@ -15,14 +16,14 @@ Future<T?> showMixinBottomSheet<T>({
         decoration: BoxDecoration(
           color: context.theme.background,
           borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(8),
+            top: Radius.circular(topRadius),
           ),
         ),
         child: builder(context),
       ),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(8),
+          top: Radius.circular(topRadius),
         ),
       ),
       isScrollControlled: isScrollControlled,
