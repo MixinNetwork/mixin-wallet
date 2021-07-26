@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mixin_wallet/ui/widget/mixin_elevated_button.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
@@ -16,6 +15,7 @@ import '../widget/asset_price.dart';
 import '../widget/avatar.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
+import '../widget/mixin_elevated_button.dart';
 import '../widget/search_asset_bottom_sheet.dart';
 import '../widget/symbol.dart';
 

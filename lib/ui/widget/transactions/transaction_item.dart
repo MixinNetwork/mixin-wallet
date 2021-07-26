@@ -36,7 +36,7 @@ class TransactionItem extends HookWidget {
           context.push(snapshotDetailPath.toUri({'id': item.snapshotId})),
       child: Container(
           height: kTransactionItemHeight,
-          padding: const EdgeInsets.only(top: 2, bottom: 18),
+          padding: const EdgeInsets.only(top: 10, bottom: 10),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
