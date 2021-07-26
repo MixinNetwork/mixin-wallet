@@ -154,6 +154,7 @@ class _AssetHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         color: context.theme.accent,
+        padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
