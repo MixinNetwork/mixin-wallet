@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../util/extension/extension.dart';
@@ -160,12 +161,18 @@ class _TransactionIcon extends StatelessWidget {
     Widget? child;
 
     if (item.type == SnapshotType.transfer) {
-      child = Avatar(
-        avatarUrl: item.avatarUrl,
-        userId: item.opponentId ?? '',
-        name: item.opponentFulName ?? '',
-        size: 44,
-        borderWidth: 0,
+      child = InkResponse(
+        onTap: () {
+          assert(item.opponentId != null);
+          launch('mixin://users/${item.opponentId}');
+        },
+        child: Avatar(
+          avatarUrl: item.avatarUrl,
+          userId: item.opponentId ?? '',
+          name: item.opponentFulName ?? '',
+          size: 44,
+          borderWidth: 0,
+        ),
       );
     } else if (item.type == SnapshotType.deposit) {
       child = SvgPicture.asset(
