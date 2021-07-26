@@ -19,7 +19,6 @@ import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/address_selection_widget.dart';
 import '../widget/asset_selection_list_widget.dart';
-import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/round_container.dart';
@@ -115,7 +114,7 @@ class _WithdrawalPage extends HookWidget {
         ),
         child: Column(children: [
           const SizedBox(height: 20),
-          InteractableBox(
+          InkWell(
             onTap: () {
               showMixinBottomSheet(
                 context: context,
@@ -182,7 +181,7 @@ class _WithdrawalPage extends HookWidget {
             ),
           ),
           const SizedBox(height: 10),
-          InteractableBox(
+          InkWell(
             onTap: () async {
               final selected = await showAddressSelectionBottomSheet(
                 context: context,
@@ -300,7 +299,7 @@ class _WithdrawalPage extends HookWidget {
                 ),
                 Align(
                     alignment: Alignment.centerRight,
-                    child: InteractableBox(
+                    child: InkWell(
                         onTap: () {
                           switched.value = !switched.value;
                           refreshValues(controller, symbolFirst, switched,
@@ -315,7 +314,7 @@ class _WithdrawalPage extends HookWidget {
           const Spacer(),
           Align(
             alignment: Alignment.bottomCenter,
-            child: InteractableBox(
+            child: InkWell(
                 onTap: () async {
                   final amount = switched.value
                       ? valueSecond.value

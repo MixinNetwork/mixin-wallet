@@ -14,7 +14,6 @@ import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import 'action_button.dart';
 import 'brightness_observer.dart';
-import 'interactable_box.dart';
 import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 
@@ -128,7 +127,7 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: InteractableBox(
+        child: InkWell(
           onTap: onTap,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

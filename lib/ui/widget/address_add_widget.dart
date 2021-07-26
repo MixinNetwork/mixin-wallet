@@ -10,7 +10,6 @@ import '../../util/l10n.dart';
 import '../../util/logger.dart';
 import '../router/mixin_routes.dart';
 import 'brightness_observer.dart';
-import 'interactable_box.dart';
 import 'mixin_bottom_sheet.dart';
 import 'round_container.dart';
 
@@ -106,7 +105,7 @@ class AddressAddWidget extends HookWidget {
                 child: Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                    child: InteractableBox(
+                    child: InkWell(
                         onTap: () {
                           memoEnable.value = !memoEnable.value;
                           if (!memoEnable.value) {
@@ -130,7 +129,7 @@ class AddressAddWidget extends HookWidget {
             const Spacer(),
             Align(
               alignment: Alignment.bottomCenter,
-              child: InteractableBox(
+              child: InkWell(
                   onTap: () async {
                     final address = addressController.text.trim();
                     final label = labelController.text.trim();

@@ -1,13 +1,13 @@
 import 'dart:math' as math;
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../../util/extension/extension.dart';
 import '../filters.dart';
-import '../interactable_box.dart';
 import '../mixin_bottom_sheet.dart';
 
 Future<SnapshotFilter?> showFilterBottomSheetDialog(
@@ -234,7 +234,7 @@ class _Button extends StatelessWidget {
   final BoxDecoration decoration;
 
   @override
-  Widget build(BuildContext context) => InteractableBox(
+  Widget build(BuildContext context) => InkWell(
         onTap: onTap,
         child: Container(
           height: 44,

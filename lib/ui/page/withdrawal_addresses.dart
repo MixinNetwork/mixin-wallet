@@ -14,7 +14,6 @@ import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../widget/address_add_widget.dart';
-import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/search_header_widget.dart';
@@ -167,7 +166,7 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: InteractableBox(
+        child: InkWell(
           onTap: () {},
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,7 +322,7 @@ class _DeleteConfirmDialog extends HookWidget {
               const SizedBox(height: 14),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: InteractableBox(
+                child: InkWell(
                   child: Container(
                     decoration: BoxDecoration(
                       color: context.theme.accent,

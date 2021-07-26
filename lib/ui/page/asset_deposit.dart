@@ -15,7 +15,6 @@ import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset_selection_list_widget.dart';
-import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/round_container.dart';
@@ -106,7 +105,7 @@ class _AssetDepositPage extends HookWidget {
         ),
         child: Column(children: [
           const SizedBox(height: 20),
-          InteractableBox(
+          InkWell(
             onTap: () {
               showMixinBottomSheet(
                 context: context,
@@ -170,7 +169,7 @@ class _AssetDepositPage extends HookWidget {
           (depositEntries != null && depositEntries.length > 1)
               ? Column(
                   children: [
-                    InteractableBox(
+                    InkWell(
                         onTap: () {
                           showMixinBottomSheet(
                               context: context,
@@ -509,7 +508,7 @@ class _AddressTypeItem extends StatelessWidget {
   final _AddressTypeCallback onTap;
 
   @override
-  Widget build(BuildContext context) => InteractableBox(
+  Widget build(BuildContext context) => InkWell(
         onTap: () {
           if (checkedDestination != depositEntry.destination) {
             onTap(depositEntry);

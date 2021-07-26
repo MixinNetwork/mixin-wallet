@@ -31,8 +31,7 @@ class TransactionItem extends HookWidget {
             keys: [this.item.snapshotId]).data ??
         this.item;
     final isPositive = item.isPositive;
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
+    return InkWell(
       onTap: () =>
           context.push(snapshotDetailPath.toUri({'id': item.snapshotId})),
       child: Container(

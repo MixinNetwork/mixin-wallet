@@ -88,12 +88,11 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox(
         height: 80,
-        child: GestureDetector(
+        child: InkWell(
             onTap: () {
               onTap(asset);
               Navigator.pop(context);
             },
-            behavior: HitTestBehavior.opaque,
             child: Row(children: [
               SymbolIconWithBorder(
                 symbolUrl: asset.iconUrl,

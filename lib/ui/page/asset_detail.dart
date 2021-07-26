@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mixin_wallet/ui/widget/mixin_elevated_button.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/constants.dart';
@@ -10,7 +11,6 @@ import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
-import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/symbol.dart';
@@ -235,7 +235,7 @@ class _AssetTransactionsHeader extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                InteractableBox(
+                InkWell(
                   onTap: () async {
                     final filter = await showFilterBottomSheetDialog(
                       context,
@@ -279,68 +279,32 @@ class _BottomBar extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             const Spacer(),
-            _Button(
-              text: Text(context.l10n.send),
-              decoration: BoxDecoration(color: context.theme.accent),
+            MixinElevatedButton(
+              fixedSize: const Size(140, 44),
+              primary: context.theme.accent,
+              child: Text(context.l10n.send),
               onTap: () =>
                   context.push(withdrawalPath.toUri({'id': asset.assetId})),
             ),
             const SizedBox(width: 20),
-            _Button(
-              text: Text(
-                context.l10n.receive,
-                style: TextStyle(color: context.theme.accent),
+            MixinElevatedButton(
+              fixedSize: const Size(140, 44),
+              primary: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
+                side: BorderSide(color: context.theme.accent),
               ),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                color: context.theme.accent,
-                width: 1,
-              )),
+              child: Text(
+                context.l10n.receive,
+                style: TextStyle(
+                  color: context.theme.accent,
+                ),
+              ),
               onTap: () =>
                   context.push(assetDepositPath.toUri({'id': asset.assetId})),
             ),
             const Spacer(),
           ],
-        ),
-      );
-}
-
-class _Button extends StatelessWidget {
-  const _Button({
-    Key? key,
-    required this.text,
-    required this.onTap,
-    required this.decoration,
-  }) : super(key: key);
-
-  final Widget text;
-  final VoidCallback onTap;
-
-  final BoxDecoration decoration;
-
-  @override
-  Widget build(BuildContext context) => InteractableBox(
-        onTap: onTap,
-        child: Container(
-          height: 44,
-          width: 140,
-          decoration: decoration.copyWith(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(
-            vertical: 12,
-            horizontal: 32,
-          ),
-          child: Center(
-            child: DefaultTextStyle(
-              style: TextStyle(
-                color: context.theme.background,
-                fontSize: 14,
-              ),
-              child: text,
-            ),
-          ),
         ),
       );
 }

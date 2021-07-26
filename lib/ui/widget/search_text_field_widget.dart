@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import '../../util/r.dart';
 
 import 'brightness_observer.dart';
-import 'interacter_decorated_box.dart';
 
 class SearchTextFieldWidget extends HookWidget {
   const SearchTextFieldWidget({
@@ -109,7 +108,7 @@ class _SearchClearIcon extends HookWidget {
     } else {
       return MouseRegion(
         cursor: SystemMouseCursors.basic,
-        child: InteractableDecoratedBox(
+        child: InkWell(
           onTap: () {
             controller.text = '';
           },

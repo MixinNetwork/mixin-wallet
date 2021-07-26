@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../util/l10n.dart';
 import 'brightness_observer.dart';
-import 'interactable_box.dart';
 import 'search_text_field_widget.dart';
 
 class SearchHeaderWidget extends HookWidget {
@@ -42,7 +41,7 @@ class SearchHeaderWidget extends HookWidget {
           cancelVisible
               ? Row(children: [
                   const SizedBox(width: 20),
-                  InteractableBox(
+                  InkWell(
                       onTap: () {
                         Navigator.pop(context);
                       },

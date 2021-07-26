@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'interactable_box.dart';
-
 class FilterWidget<T> extends StatelessWidget {
   const FilterWidget({
     Key? key,
@@ -19,7 +17,7 @@ class FilterWidget<T> extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => InteractableBox(
+  Widget build(BuildContext context) => InkWell(
         onTap: () => onChanged?.call(value),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),

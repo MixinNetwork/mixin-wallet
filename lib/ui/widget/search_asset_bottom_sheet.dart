@@ -188,14 +188,13 @@ class _Item extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         height: 70,
         padding: const EdgeInsets.symmetric(vertical: 10),
-        child: GestureDetector(
+        child: InkWell(
           onTap: () {
             if (replaceHistory) {
               putSearchAssetHistory(data.assetId);
             }
             context.push(assetDetailPath.toUri({'id': data.assetId}));
           },
-          behavior: HitTestBehavior.opaque,
           child: Row(
             children: [
               SymbolIconWithBorder(

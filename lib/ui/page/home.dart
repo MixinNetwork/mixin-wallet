@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mixin_wallet/ui/widget/mixin_elevated_button.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
@@ -13,7 +14,6 @@ import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/asset_price.dart';
 import '../widget/avatar.dart';
-import '../widget/interactable_box.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/search_asset_bottom_sheet.dart';
@@ -102,7 +102,7 @@ class _AssetHeader extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8, right: 8),
                 child: Row(
                   children: [
-                    InteractableBox(
+                    InkWell(
                       onTap: () => showMixinBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -118,7 +118,7 @@ class _AssetHeader extends StatelessWidget {
                         ),
                       ),
                     ),
-                    InteractableBox(
+                    InkWell(
                       onTap: () {},
                       child: Padding(
                         padding: const EdgeInsets.all(12),
@@ -255,14 +255,10 @@ class _Button extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => InteractableBox(
+  Widget build(BuildContext context) => MixinElevatedButton(
         onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: const Color(0x19ffffff),
-          ),
-          alignment: Alignment.center,
+        primary: const Color(0x19ffffff),
+        child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 12,
             horizontal: 32,
@@ -294,13 +290,11 @@ class _Item extends StatelessWidget {
   final AssetResult data;
 
   @override
-  Widget build(BuildContext context) => Container(
-        height: 70,
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: GestureDetector(
-          onTap: () =>
-              context.push(assetDetailPath.toUri({'id': data.assetId})),
-          behavior: HitTestBehavior.opaque,
+  Widget build(BuildContext context) => InkWell(
+        onTap: () => context.push(assetDetailPath.toUri({'id': data.assetId})),
+        child: Container(
+          height: 70,
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Row(
             children: [
               SymbolIconWithBorder(
