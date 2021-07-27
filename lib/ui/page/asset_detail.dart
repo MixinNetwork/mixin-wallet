@@ -314,7 +314,7 @@ class _AssetDescriptionBottomSheet extends StatelessWidget {
         children: [
           MixinBottomSheetTitle(
             title: Row(children: [
-              SymbolIcon(
+              SymbolIconWithBorder(
                 symbolUrl: asset.iconUrl,
                 chainUrl: asset.chainIconUrl,
                 size: 20,

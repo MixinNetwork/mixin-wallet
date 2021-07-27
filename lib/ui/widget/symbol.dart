@@ -1,56 +1,8 @@
 import 'package:decimal/decimal.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../util/extension/extension.dart';
-
-class SymbolIcon extends StatelessWidget {
-  const SymbolIcon({
-    Key? key,
-    required this.symbolUrl,
-    required this.chainUrl,
-    this.size = 44,
-    this.chainSize = 10,
-    this.chainBorder = 2,
-  }) : super(key: key);
-
-  final String symbolUrl;
-  final String chainUrl;
-  final double size;
-  final double chainSize;
-  final double chainBorder;
-
-  @override
-  Widget build(BuildContext context) => SizedBox(
-        height: size,
-        width: size,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: ClipPath(
-                clipper: _SymbolCustomClipper(
-                  chainPlaceholderSize: chainSize + chainBorder,
-                ),
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: Image.network(
-                  symbolUrl,
-                ),
-              ),
-            ),
-            Positioned(
-              left: chainBorder / 2,
-              bottom: chainBorder / 2,
-              child: Image.network(
-                chainUrl,
-                width: chainSize,
-                height: chainSize,
-              ),
-            ),
-          ],
-        ),
-      );
-}
 
 class SymbolIconWithBorder extends StatelessWidget {
   const SymbolIconWithBorder({
@@ -107,31 +59,6 @@ class SymbolIconWithBorder extends StatelessWidget {
           ],
         ),
       );
-}
-
-class _SymbolCustomClipper extends CustomClipper<Path> with EquatableMixin {
-  _SymbolCustomClipper({this.chainPlaceholderSize = 12});
-
-  final double chainPlaceholderSize;
-
-  @override
-  Path getClip(Size size) {
-    assert(size.shortestSide > chainPlaceholderSize);
-
-    final symbol = Path()..addOval(Offset.zero & size);
-    final chain = Path()
-      ..addOval(Offset(0, size.height - chainPlaceholderSize) &
-          Size.square(chainPlaceholderSize));
-
-    return Path.combine(PathOperation.difference, symbol, chain);
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) =>
-      this != oldClipper;
-
-  @override
-  List<Object?> get props => [chainPlaceholderSize];
 }
 
 class PercentageChange extends StatelessWidget {
