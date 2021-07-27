@@ -66,6 +66,10 @@ class _SnapshotDetailPageBody extends HookWidget {
             snapshot: snapshotItem,
             asset: asset,
           ),
+          Transform.translate(
+            offset: const Offset(0, -1),
+            child: Container(height: 2, color: context.theme.background),
+          )
         ],
       ),
     );
