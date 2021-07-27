@@ -50,12 +50,12 @@ class _ProgressBody extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          CircularProgressIndicator(),
-          SizedBox(
+        children: [
+          const CircularProgressIndicator(),
+          const SizedBox(
             height: 30,
           ),
-          Text('An open source cryptocurrency wallet'),
+          Text(context.l10n.authTips),
         ],
       );
 }

@@ -59,7 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "authSlogan": MessageLookupByLibrary.simpleMessage(
             "Mixin 钱包是一款用户友好、安全且功能强大的多链数字钱包。"),
         "authTips":
-            MessageLookupByLibrary.simpleMessage("你知道吗？Mixin 是一个开源的加密的钱包"),
+            MessageLookupByLibrary.simpleMessage("你知道吗？Mixin 是一个开源的加密钱包"),
         "authorize": MessageLookupByLibrary.simpleMessage("授权使用"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
