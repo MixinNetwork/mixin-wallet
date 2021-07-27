@@ -27,15 +27,17 @@ class SearchAssetBottomSheet extends HookWidget {
                 .data ??
             false;
 
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height - 100,
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
       child: Column(
         children: [
           const SizedBox(height: 10),
-          SearchHeaderWidget(
-            hintText: context.l10n.search,
-            onChanged: keywordStreamController.add,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: SearchHeaderWidget(
+              hintText: context.l10n.search,
+              onChanged: keywordStreamController.add,
+            ),
           ),
           const SizedBox(height: 10),
           Expanded(
@@ -123,7 +125,7 @@ class _SubTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 2),
+        padding: const EdgeInsets.symmetric(horizontal: 22),
         child: Text(
           title,
           style: const TextStyle(
@@ -197,6 +199,7 @@ class _Item extends StatelessWidget {
           },
           child: Row(
             children: [
+              const SizedBox(width: 20),
               SymbolIconWithBorder(
                 symbolUrl: data.iconUrl,
                 chainUrl: data.chainIconUrl,
@@ -227,6 +230,7 @@ class _Item extends StatelessWidget {
                 ),
               ),
               AssetPrice(data: data),
+              const SizedBox(width: 20),
             ],
           ),
         ),
