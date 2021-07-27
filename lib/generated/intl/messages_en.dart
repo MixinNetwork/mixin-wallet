@@ -41,12 +41,6 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m9(value) => ",value then ${value}";
 
-  static String m10(value1, value2) =>
-      "A transaction fee of ${value1} is required for withdrawing ${value2}";
-
-  static String m11(value1, value2, value3, value4, value5) =>
-      "A transaction fee of ${value1} is required for withdrawing ${value2}. ${value3} has a minimum ${value4} ${value5} reserve requirement.";
-
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addAddress": MessageLookupByLibrary.simpleMessage("Add address"),
@@ -105,6 +99,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
         "memoHint": MessageLookupByLibrary.simpleMessage("Memo"),
         "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
+        "minimumReserve":
+            MessageLookupByLibrary.simpleMessage("Minimum reserve:"),
+        "minimumWithdrawal":
+            MessageLookupByLibrary.simpleMessage("Minimum withdrawal:"),
+        "networkFee": MessageLookupByLibrary.simpleMessage("Network fee:"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "pendingConfirmations": m7,
@@ -141,8 +140,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage(",value then N/A"),
         "walletTransactionThatTimeValue": m9,
-        "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
-        "withdrawalFee": m10,
-        "withdrawalFeeReserve": m11
+        "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal")
       };
 }

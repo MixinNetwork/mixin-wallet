@@ -41,8 +41,6 @@
   "sendToAddress": "转出到地址",
   "minerFee": "挖矿手续费",
   "selectFromAddressBook": "从地址簿选择",
-  "withdrawalFee": "提现 {value2} 需要交易手续费 {value1}",
-  "withdrawalFeeReserve": "提现 {value2} 需要交易手续费 {value1}，{value3} 最少需要保留 {value4} {value5}。",
   "addAddressLabelHint": "地址名称，例如 OceanOne",
   "save": "保存",
   "noTransaction": "暂无转账记录",
@@ -67,5 +65,8 @@
   "addAddressMemoAction": "点击不使用标签（Memo）",
   "addAddressNoMemoAction": "点击添加标签（Memo）",
   "memoHint": "标签（Memo）",
-  "tagHint": "标签（Tag）"
+  "tagHint": "标签（Tag）",
+  "networkFee": "网络手续费：",
+  "minimumWithdrawal": "最小提现数量：",
+  "minimumReserve": "最少保留数量："
 }

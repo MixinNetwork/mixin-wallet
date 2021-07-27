@@ -310,7 +310,11 @@ class _WithdrawalPage extends HookWidget {
             ),
           ),
           const SizedBox(height: 10),
-          _FeeText(asset: asset, address: selectedAddress.value),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+            child: _FeeText(asset: asset, address: selectedAddress.value),
+          ),
           const Spacer(),
           Align(
             alignment: Alignment.bottomCenter,
@@ -419,19 +423,46 @@ class _FeeText extends StatelessWidget {
       return const SizedBox();
     }
     final reserveVal = double.tryParse(address!.reserve);
-    final bold = '${address!.fee} ${asset.chainSymbol}';
-    final String text;
-    if (reserveVal == null || reserveVal <= 0) {
-      text = context.l10n.withdrawalFee(bold, asset.name);
-    } else {
-      text = context.l10n.withdrawalFeeReserve(
-          bold, asset.symbol, asset.name, address!.reserve, asset.symbol);
-    }
-    return Text(text,
+    final dustVal = double.tryParse(address!.dust ?? '0');
+    final showReserve = reserveVal != null && reserveVal > 0;
+    final showDust = dustVal != null && dustVal > 0;
+
+    return Text.rich(TextSpan(
         style: TextStyle(
           color: context.theme.secondaryText,
           fontSize: 13,
-          fontWeight: FontWeight.w400,
-        ));
+          height: 2,
+        ),
+        children: [
+          TextSpan(text: '${context.l10n.networkFee} '),
+          TextSpan(
+              text: '${address!.fee} ${asset.chainSymbol}',
+              style: TextStyle(
+                color: context.theme.text,
+                fontWeight: FontWeight.bold,
+              )),
+          showDust
+              ? TextSpan(text: '\n${context.l10n.minimumWithdrawal} ')
+              : const TextSpan(),
+          showDust
+              ? TextSpan(
+                  text: '${address!.dust} ${asset.symbol}',
+                  style: TextStyle(
+                    color: context.theme.text,
+                    fontWeight: FontWeight.bold,
+                  ))
+              : const TextSpan(),
+          showReserve
+              ? TextSpan(text: '\n${context.l10n.minimumReserve} ')
+              : const TextSpan(),
+          showReserve
+              ? TextSpan(
+                  text: '${address!.reserve} ${asset.symbol}',
+                  style: TextStyle(
+                    color: context.theme.text,
+                    fontWeight: FontWeight.bold,
+                  ))
+              : const TextSpan(),
+        ]));
   }
 }

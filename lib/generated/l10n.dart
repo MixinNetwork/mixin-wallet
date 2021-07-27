@@ -610,27 +610,6 @@ class L10n {
     );
   }
 
-  /// `A transaction fee of {value1} is required for withdrawing {value2}`
-  String withdrawalFee(Object value1, Object value2) {
-    return Intl.message(
-      'A transaction fee of $value1 is required for withdrawing $value2',
-      name: 'withdrawalFee',
-      desc: '',
-      args: [value1, value2],
-    );
-  }
-
-  /// `A transaction fee of {value1} is required for withdrawing {value2}. {value3} has a minimum {value4} {value5} reserve requirement.`
-  String withdrawalFeeReserve(Object value1, Object value2, Object value3,
-      Object value4, Object value5) {
-    return Intl.message(
-      'A transaction fee of $value1 is required for withdrawing $value2. $value3 has a minimum $value4 $value5 reserve requirement.',
-      name: 'withdrawalFeeReserve',
-      desc: '',
-      args: [value1, value2, value3, value4, value5],
-    );
-  }
-
   /// `{value}/{value2} confirmations`
   String pendingConfirmations(Object value, Object value2) {
     return Intl.message(
@@ -796,6 +775,36 @@ class L10n {
     return Intl.message(
       'Tag',
       name: 'tagHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Network fee:`
+  String get networkFee {
+    return Intl.message(
+      'Network fee:',
+      name: 'networkFee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum withdrawal:`
+  String get minimumWithdrawal {
+    return Intl.message(
+      'Minimum withdrawal:',
+      name: 'minimumWithdrawal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum reserve:`
+  String get minimumReserve {
+    return Intl.message(
+      'Minimum reserve:',
+      name: 'minimumReserve',
       desc: '',
       args: [],
     );
