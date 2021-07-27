@@ -74,5 +74,9 @@
   "tagHint": "Tag",
   "networkFee": "Network fee:",
   "minimumWithdrawal": "Minimum withdrawal:",
-  "minimumReserve": "Minimum reserve:"
+  "minimumReserve": "Minimum reserve:",
+  "mixinWallet": "Mixin Wallet",
+  "authSlogan": "Mixin Wallet is a user-friendly, secure and powerful multi-chain digital wallet.",
+  "authHint": "Read-only authorization cannot use your assets, please rest assured",
+  "authorize": "Authorize"
 }

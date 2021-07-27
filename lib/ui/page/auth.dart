@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,68 +34,118 @@ class AuthPage extends HookWidget {
     }, keys: [oauthCode]);
 
     return Scaffold(
+      backgroundColor: context.theme.background,
       body: Center(
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),
           child: loading.value
               ? const CircularProgressIndicator()
-              : Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8.0, top: 80, right: 8, bottom: 20),
-                      child: SvgPicture.asset(R.resourcesAuthLogoSvg),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    const Text(
-                      'Mixin Wallet',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 30.0, right: 30),
-                      child: Text(
-                        'Mixin Wallet is a user-friendly, secure and powerful multi-chain digital wallet.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                    ),
-                    const SizedBox(height: 50),
-                    ElevatedButton(
-                      onPressed: () {
-                        final uri = Uri.https('mixin.one', 'oauth/authorize', {
-                          'client_id': Env.clientId,
-                          'scope':
-                              'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ',
-                          'response_type': 'code',
-                        });
-                        context.toExternal(uri);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: context.theme.accent,
-                        padding: const EdgeInsets.only(
-                            left: 32, top: 18, bottom: 18, right: 32),
-                      ),
-                      child: const Text('LOGIN'),
-                    ),
-                    const SizedBox(height: 30),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 30.0, right: 30),
-                      child: Text(
-                        'Read-only authorization cannot use your assets, please rest assured',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                    ),
-                  ],
-                ),
+              : const _AuthBody(),
         ),
       ),
     );
   }
+}
+
+class _AuthBody extends StatelessWidget {
+  const _AuthBody({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: LayoutBuilder(builder: (context, constraints) {
+              final aspect = constraints.maxWidth / constraints.maxHeight;
+              return SizedBox(
+                width: constraints.maxWidth,
+                height: constraints.maxHeight,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: aspect > 1
+                        ? context.theme.background
+                        : context.theme.accent,
+                  ),
+                  child: SvgPicture.asset(
+                    R.resourcesAuthBgSvg,
+                    fit: aspect > 1 ? BoxFit.fitHeight : BoxFit.fitWidth,
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    alignment: Alignment.bottomCenter,
+                  ),
+                ),
+              );
+            }),
+          ),
+          // To hide the bottom of picture 1-pixel gap.
+          Transform.translate(
+            offset: const Offset(0, -1),
+            child: Container(height: 2, color: context.theme.background),
+          ),
+          Text(
+            context.l10n.mixinWallet,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: context.theme.text,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: LayoutBuilder(
+              builder: (context, constraints) => ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: 0,
+                  maxWidth: math.min(constraints.maxWidth, 315.0),
+                ),
+                child: Text(
+                  context.l10n.authSlogan.overflow,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: context.theme.text.withOpacity(0.8),
+                    height: 1.25,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 46),
+          ElevatedButton(
+            onPressed: () {
+              final uri = Uri.https('mixin.one', 'oauth/authorize', {
+                'client_id': Env.clientId,
+                'scope':
+                    'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ',
+                'response_type': 'code',
+              });
+              context.toExternal(uri);
+            },
+            style: ElevatedButton.styleFrom(
+              primary: context.theme.accent,
+              padding: const EdgeInsets.symmetric(
+                vertical: 13,
+                horizontal: 47,
+              ),
+            ),
+            child: Text(context.l10n.authorize),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Text(
+              context.l10n.authHint.overflow,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: context.theme.text.withOpacity(0.3),
+              ),
+            ),
+          ),
+          const SizedBox(height: 50),
+        ],
+      );
 }

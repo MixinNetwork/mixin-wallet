@@ -4,7 +4,7 @@
 // **************************************************************************
 class R {
   const R._();
-  static const String resourcesAuthLogoSvg = 'resources/auth_logo.svg';
+  static const String resourcesAuthBgSvg = 'resources/auth_bg.svg';
 
   static const String resourcesEmptyTransactionSvg =
       'resources/empty_transaction.svg';

@@ -809,6 +809,46 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Mixin Wallet`
+  String get mixinWallet {
+    return Intl.message(
+      'Mixin Wallet',
+      name: 'mixinWallet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mixin Wallet is a user-friendly, secure and powerful multi-chain digital wallet.`
+  String get authSlogan {
+    return Intl.message(
+      'Mixin Wallet is a user-friendly, secure and powerful multi-chain digital wallet.',
+      name: 'authSlogan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Read-only authorization cannot use your assets, please rest assured`
+  String get authHint {
+    return Intl.message(
+      'Read-only authorization cannot use your assets, please rest assured',
+      name: 'authHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Authorize`
+  String get authorize {
+    return Intl.message(
+      'Authorize',
+      name: 'authorize',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

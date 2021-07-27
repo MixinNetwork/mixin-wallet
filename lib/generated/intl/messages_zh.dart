@@ -55,6 +55,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "assetTrending": MessageLookupByLibrary.simpleMessage("热门资产"),
         "assetType": MessageLookupByLibrary.simpleMessage("资产类型"),
         "assets": MessageLookupByLibrary.simpleMessage("资产"),
+        "authHint": MessageLookupByLibrary.simpleMessage("只读授权无法动用你的资产，请放心使用"),
+        "authSlogan": MessageLookupByLibrary.simpleMessage(
+            "Mixin 钱包是一款用户友好、安全且功能强大的多链数字钱包。"),
+        "authorize": MessageLookupByLibrary.simpleMessage("授权使用"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
         "contract": MessageLookupByLibrary.simpleMessage("资产标识"),
@@ -85,6 +89,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minerFee": MessageLookupByLibrary.simpleMessage("挖矿手续费"),
         "minimumReserve": MessageLookupByLibrary.simpleMessage("最少保留数量："),
         "minimumWithdrawal": MessageLookupByLibrary.simpleMessage("最小提现数量："),
+        "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin 钱包"),
         "networkFee": MessageLookupByLibrary.simpleMessage("网络手续费："),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "pendingConfirmations": m7,
