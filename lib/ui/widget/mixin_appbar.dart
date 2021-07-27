@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import 'buttons.dart';
 
@@ -54,4 +55,43 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(44);
+}
+
+class ListRoundedHeaderContainer extends StatelessWidget {
+  const ListRoundedHeaderContainer({
+    Key? key,
+    this.radius = topRadius,
+    this.height = 50,
+    required this.child,
+  }) : super(key: key);
+
+  final double height;
+  final double radius;
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+        height: height,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: 20,
+                color: context.theme.accent,
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.vertical(top: Radius.circular(radius)),
+                color: context.theme.background,
+              ),
+              child: child,
+            ),
+          ],
+        ),
+      );
 }

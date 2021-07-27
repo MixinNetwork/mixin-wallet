@@ -1,5 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -75,66 +76,57 @@ class _AssetHeader extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
-        height: 50,
-        color: context.theme.accent,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(topRadius)),
-            color: context.theme.background,
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20, left: 20),
-                child: Text(
-                  context.l10n.assets,
-                  style: TextStyle(
-                    color: context.theme.text,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+  Widget build(BuildContext context) => ListRoundedHeaderContainer(
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 20, left: 20),
+              child: Text(
+                context.l10n.assets,
+                style: TextStyle(
+                  color: context.theme.text,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(top: 8, right: 8),
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () => showMixinBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) =>
+                            const SearchAssetBottomSheet()),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: SvgPicture.asset(
+                        R.resourcesIcSearchSvg,
+                        height: 24,
+                        width: 24,
+                        color: context.theme.icon,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(top: 8, right: 8),
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () => showMixinBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (BuildContext context) =>
-                              const SearchAssetBottomSheet()),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: SvgPicture.asset(
-                          R.resourcesIcSearchSvg,
-                          height: 24,
-                          width: 24,
-                          color: context.theme.icon,
-                        ),
+                  InkWell(
+                    onTap: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: SvgPicture.asset(
+                        R.resourcesHamburgerMenuSvg,
+                        height: 24,
+                        width: 24,
+                        color: context.theme.icon,
                       ),
                     ),
-                    InkWell(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: SvgPicture.asset(
-                          R.resourcesHamburgerMenuSvg,
-                          height: 24,
-                          width: 24,
-                          color: context.theme.icon,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
 }

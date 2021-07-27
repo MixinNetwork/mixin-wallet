@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mixin_wallet/ui/widget/mixin_elevated_button.dart';
 
 import '../../db/mixin_database.dart';
-import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -13,6 +11,7 @@ import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
+import '../widget/mixin_elevated_button.dart';
 import '../widget/symbol.dart';
 import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
@@ -213,52 +212,44 @@ class _AssetTransactionsHeader extends StatelessWidget {
   final ValueNotifier<SnapshotFilter> filter;
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: context.theme.accent,
+  Widget build(BuildContext context) => ListRoundedHeaderContainer(
         height: 64,
-        child: DecoratedBox(
-          decoration: const BoxDecoration(
-            borderRadius:
-                BorderRadius.vertical(top: Radius.circular(topRadius)),
-            color: Colors.white,
-          ),
-          child: Center(
-            child: Row(
-              children: [
-                const SizedBox(width: 20),
-                Text(
-                  context.l10n.transactions,
-                  style: TextStyle(
+        child: Center(
+          child: Row(
+            children: [
+              const SizedBox(width: 20),
+              Text(
+                context.l10n.transactions,
+                style: TextStyle(
+                  color: BrightnessData.themeOf(context).text,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const Spacer(),
+              InkWell(
+                onTap: () async {
+                  final filter = await showFilterBottomSheetDialog(
+                    context,
+                    initial: this.filter.value,
+                  );
+                  if (filter == null) {
+                    return;
+                  }
+                  this.filter.value = filter;
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: SvgPicture.asset(
+                    R.resourcesFilterSvg,
                     color: BrightnessData.themeOf(context).text,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    height: 24,
+                    width: 24,
                   ),
                 ),
-                const Spacer(),
-                InkWell(
-                  onTap: () async {
-                    final filter = await showFilterBottomSheetDialog(
-                      context,
-                      initial: this.filter.value,
-                    );
-                    if (filter == null) {
-                      return;
-                    }
-                    this.filter.value = filter;
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: SvgPicture.asset(
-                      R.resourcesFilterSvg,
-                      color: BrightnessData.themeOf(context).text,
-                      height: 24,
-                      width: 24,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 20),
-              ],
-            ),
+              ),
+              const SizedBox(width: 20),
+            ],
           ),
         ),
       );
