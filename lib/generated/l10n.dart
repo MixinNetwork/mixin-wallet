@@ -849,6 +849,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `An open source cryptocurrency wallet`
+  String get authTips {
+    return Intl.message(
+      'An open source cryptocurrency wallet',
+      name: 'authTips',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

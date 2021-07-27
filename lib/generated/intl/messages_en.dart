@@ -71,6 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Read-only authorization cannot use your assets, please rest assured"),
         "authSlogan": MessageLookupByLibrary.simpleMessage(
             "Mixin Wallet is a user-friendly, secure and powerful multi-chain digital wallet."),
+        "authTips": MessageLookupByLibrary.simpleMessage(
+            "An open source cryptocurrency wallet"),
         "authorize": MessageLookupByLibrary.simpleMessage("Authorize"),
         "averageArrival": m2,
         "balanceOfBtc": m3,

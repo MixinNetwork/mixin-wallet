@@ -38,13 +38,26 @@ class AuthPage extends HookWidget {
       body: Center(
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),
-          child: loading.value
-              ? const CircularProgressIndicator()
-              : const _AuthBody(),
+          child: loading.value ? _ProgressBody() : const _AuthBody(),
         ),
       ),
     );
   }
+}
+
+class _ProgressBody extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          CircularProgressIndicator(),
+          SizedBox(
+            height: 30,
+          ),
+          Text('An open source cryptocurrency wallet'),
+        ],
+      );
 }
 
 class _AuthBody extends StatelessWidget {
