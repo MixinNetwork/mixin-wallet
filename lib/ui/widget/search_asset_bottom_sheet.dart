@@ -215,7 +215,6 @@ class _Item extends StatelessWidget {
                         color: context.theme.text,
                         fontSize: 16,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       data.name.overflow,
@@ -223,7 +222,6 @@ class _Item extends StatelessWidget {
                         color: context.theme.secondaryText,
                         fontSize: 14,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
