@@ -1,8 +1,1 @@
-<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect opacity="0.01" width="30" height="30" fill="white"/>
-<path d="M5 11H25V23C25 24.1046 24.1046 25 23 25H7C5.89543 25 5 24.1046 5 23V11Z" stroke="#2F3032" stroke-width="2"/>
-<rect x="11" y="17" width="8" height="2" rx="1" fill="#2F3032"/>
-<rect x="16" y="14" width="8" height="2" rx="1" transform="rotate(90 16 14)" fill="#2F3032"/>
-<rect x="7" y="7" width="16" height="2" rx="1" fill="#2F3032"/>
-<rect x="9" y="4" width="12" height="2" rx="1" fill="#2F3032"/>
-</svg>
+<svg width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity=".01" fill="#fff" d="M0 0h30v30H0z"/><path d="M5 11h20v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V11z" stroke="#2F3032" stroke-width="2"/><rect x="11" y="17" width="8" height="2" rx="1" fill="#2F3032"/><rect x="16" y="14" width="8" height="2" rx="1" transform="rotate(90 16 14)" fill="#2F3032"/><rect x="7" y="7" width="16" height="2" rx="1" fill="#2F3032"/><rect x="9" y="4" width="12" height="2" rx="1" fill="#2F3032"/></svg>
