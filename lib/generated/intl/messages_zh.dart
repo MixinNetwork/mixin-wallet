@@ -19,19 +19,28 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'zh';
 
-  static String m4(value) => "充值到账至少需要 ${value} 个区块确认。";
+  static String m4(value) => "充值到账至少需要 ${value} 个区块确认";
 
-  static String m7(value) => "该充值地址仅支持 ${value}.";
+  static String m5(value) => "注意：地址和 Memo(标签)同时使用才能充值 ${value} 到 Mixin。";
 
-  static String m8(value, value2) => "${value}/${value2} 区块确认数";
+  static String m6(value) => "该充值地址仅支持 ${value}.";
 
-  static String m9(value) => "价值 ${value}";
+  static String m7(value, value2) => "${value}/${value2} 区块确认数";
 
-  static String m10(value) => "，当时价值 ${value}";
+  static String m8(value) => "价值 ${value}";
+
+  static String m9(value) => "，当时价值 ${value}";
+
+  static String m10(value1, value2) => "提现 ${value2} 需要交易手续费 ${value1}";
+
+  static String m11(value1, value2, value3, value4, value5) =>
+      "提现 ${value2} 需要交易手续费 ${value1}，${value3} 最少需要保留 ${value4} ${value5}。";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addAddress": MessageLookupByLibrary.simpleMessage("添加地址"),
+        "addAddressLabelHint":
+            MessageLookupByLibrary.simpleMessage("地址名称，例如 OceanOne"),
         "addAddressMemo":
             MessageLookupByLibrary.simpleMessage("地址标签、数字 ID 或备注。如果没有，"),
         "addAddressMemoAction":
@@ -44,11 +53,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("点击添加标签（Tag）"),
         "addAddressTagAction":
             MessageLookupByLibrary.simpleMessage("点击不使用标签（Tag）"),
+        "address": MessageLookupByLibrary.simpleMessage("地址"),
         "addressSearchHint": MessageLookupByLibrary.simpleMessage("标题，地址"),
         "allTransactions": MessageLookupByLibrary.simpleMessage("所有交易"),
         "amount": MessageLookupByLibrary.simpleMessage("金额"),
         "assetTrending": MessageLookupByLibrary.simpleMessage("热门资产"),
         "assetType": MessageLookupByLibrary.simpleMessage("资产类型"),
+        "assets": MessageLookupByLibrary.simpleMessage("资产"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
         "contract": MessageLookupByLibrary.simpleMessage("资产标识"),
@@ -56,7 +67,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
         "depositConfirmation": m4,
-        "depositTip": m7,
+        "depositNotice": m5,
+        "depositTip": m6,
         "depositTipBtc":
             MessageLookupByLibrary.simpleMessage("该充值地址仅支持 BTC 和 Omni USDT。"),
         "depositTipEos": MessageLookupByLibrary.simpleMessage(
@@ -75,12 +87,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "from": MessageLookupByLibrary.simpleMessage("来自"),
         "memo": MessageLookupByLibrary.simpleMessage("备注"),
         "memoHint": MessageLookupByLibrary.simpleMessage("标签（Memo）"),
+        "minerFee": MessageLookupByLibrary.simpleMessage("挖矿手续费"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
-        "pendingConfirmations": m8,
+        "pendingConfirmations": m7,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "rebate": MessageLookupByLibrary.simpleMessage("退款"),
+        "receive": MessageLookupByLibrary.simpleMessage("转入"),
         "recentSearches": MessageLookupByLibrary.simpleMessage("最近搜索"),
+        "save": MessageLookupByLibrary.simpleMessage("保存"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
+        "selectFromAddressBook": MessageLookupByLibrary.simpleMessage("从地址簿选择"),
+        "send": MessageLookupByLibrary.simpleMessage("转出"),
+        "sendToAddress": MessageLookupByLibrary.simpleMessage("转出到地址"),
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
         "sure": MessageLookupByLibrary.simpleMessage("确定"),
         "symbol": MessageLookupByLibrary.simpleMessage("符号"),
@@ -95,10 +113,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsStatus": MessageLookupByLibrary.simpleMessage("交易状态"),
         "transactionsType": MessageLookupByLibrary.simpleMessage("交易类型"),
         "transfer": MessageLookupByLibrary.simpleMessage("转账"),
-        "walletTransactionCurrentValue": m9,
+        "walletTransactionCurrentValue": m8,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("，当时价值 暂无"),
-        "walletTransactionThatTimeValue": m10,
-        "withdrawal": MessageLookupByLibrary.simpleMessage("提现")
+        "walletTransactionThatTimeValue": m9,
+        "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),
+        "withdrawalFee": m10,
+        "withdrawalFeeReserve": m11
       };
 }

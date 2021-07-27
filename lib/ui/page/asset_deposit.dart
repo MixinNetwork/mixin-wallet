@@ -261,19 +261,6 @@ class _AssetDepositPage extends HookWidget {
                   )),
             ),
           ),
-          const SizedBox(height: 6),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(context.l10n.depositOnlyDesc(asset.symbol),
-                  style: TextStyle(
-                    color: context.theme.secondaryText,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  )),
-            ),
-          ),
           const Spacer(),
           Align(
             alignment: Alignment.bottomCenter,

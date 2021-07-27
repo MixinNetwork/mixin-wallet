@@ -230,16 +230,6 @@ class L10n {
     );
   }
 
-  /// `Sending coin or token other than {value} to this address my result in the loss of your deposit.`
-  String depositOnlyDesc(Object value) {
-    return Intl.message(
-      'Sending coin or token other than $value to this address my result in the loss of your deposit.',
-      name: 'depositOnlyDesc',
-      desc: '',
-      args: [value],
-    );
-  }
-
   /// `Deposit will arrive after at least {value} block confirmations`
   String depositConfirmation(Object value) {
     return Intl.message(
