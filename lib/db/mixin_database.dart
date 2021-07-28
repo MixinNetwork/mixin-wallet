@@ -36,15 +36,24 @@ class MixinDatabase extends _$MixinDatabase {
   MixinDatabase.connect(DatabaseConnection c) : super.connect(c);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   final eventBus = DataBaseEventBus();
 
   @override
-  MigrationStrategy get migration => MigrationStrategy(beforeOpen: (_) async {
-        if (executor.dialect == SqlDialect.sqlite) {
-          await customStatement('PRAGMA journal_mode=WAL');
-          await customStatement('PRAGMA foreign_keys=ON');
-        }
-      });
+  MigrationStrategy get migration => MigrationStrategy(
+        beforeOpen: (_) async {
+          if (executor.dialect == SqlDialect.sqlite) {
+            await customStatement('PRAGMA journal_mode=WAL');
+            await customStatement('PRAGMA foreign_keys=ON');
+          }
+        },
+        onUpgrade: (m, from, to) async {
+          // delete all tables and restart
+          for (var table in allTables) {
+            await m.deleteTable(table.actualTableName);
+            await m.createTable(table);
+          }
+        },
+      );
 }
