@@ -165,10 +165,12 @@ class _Item extends StatelessWidget {
   final Addresse address;
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-        child: InkWell(
-          onTap: () {},
+  Widget build(BuildContext context) => Material(
+      color: context.theme.background,
+      child: InkWell(
+        onTap: () {},
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -213,7 +215,7 @@ class _Item extends StatelessWidget {
             ],
           ),
         ),
-      );
+      ));
 }
 
 class _SwipeToDismiss extends StatelessWidget {

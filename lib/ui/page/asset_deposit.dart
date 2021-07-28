@@ -93,7 +93,9 @@ class _AssetDepositPage extends HookWidget {
           ActionButton(
               name: R.resourcesIcQuestionSvg,
               color: Colors.white,
-              onTap: () {}),
+              onTap: () {
+                context.toExternal(depositHelpLink, openNewTab: true);
+              }),
         ],
       ),
       body: Container(

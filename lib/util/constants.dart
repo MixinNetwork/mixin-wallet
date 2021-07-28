@@ -5,3 +5,6 @@ const ripple = '23dfb5a5-5d7b-48b6-905f-3970e3176e27';
 const tron = '25dabac5-056a-48ff-b9f9-f67395dc407c';
 
 const topRadius = 20.0;
+
+const depositHelpLink =
+    'https://mixinmessenger.zendesk.com/hc/articles/360018789931';

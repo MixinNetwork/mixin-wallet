@@ -125,10 +125,12 @@ class _Item extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: InkWell(
-          onTap: onTap,
+  Widget build(BuildContext context) => Material(
+      color: context.theme.background,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -180,5 +182,5 @@ class _Item extends StatelessWidget {
             ],
           ),
         ),
-      );
+      ));
 }

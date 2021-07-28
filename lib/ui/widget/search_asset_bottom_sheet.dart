@@ -187,16 +187,18 @@ class _Item extends StatelessWidget {
   final bool replaceHistory;
 
   @override
-  Widget build(BuildContext context) => Container(
-        height: 70,
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: InkWell(
-          onTap: () {
-            if (replaceHistory) {
-              putSearchAssetHistory(data.assetId);
-            }
-            context.push(assetDetailPath.toUri({'id': data.assetId}));
-          },
+  Widget build(BuildContext context) => Material(
+      color: context.theme.background,
+      child: InkWell(
+        onTap: () {
+          if (replaceHistory) {
+            putSearchAssetHistory(data.assetId);
+          }
+          context.push(assetDetailPath.toUri({'id': data.assetId}));
+        },
+        child: Container(
+          height: 70,
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
             children: [
               const SizedBox(width: 20),
@@ -234,5 +236,5 @@ class _Item extends StatelessWidget {
             ],
           ),
         ),
-      );
+      ));
 }

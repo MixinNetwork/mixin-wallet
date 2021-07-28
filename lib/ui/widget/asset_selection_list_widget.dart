@@ -36,26 +36,27 @@ class AssetSelectionListWidget extends HookWidget {
 
     final filterList = useState<List<AssetResult>>(assetResults);
 
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height - 100,
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
       child: Column(
         children: [
           const SizedBox(height: 10),
-          SearchHeaderWidget(
-            hintText: context.l10n.search,
-            onChanged: (k) {
-              if (k.isNotEmpty) {
-                filterList.value = assetResults
-                    .where((e) =>
-                        e.symbol.containsIgnoreCase(k) ||
-                        e.name.containsIgnoreCase(k))
-                    .toList();
-              } else {
-                filterList.value = assetResults;
-              }
-            },
-          ),
+          Padding(
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+              child: SearchHeaderWidget(
+                hintText: context.l10n.search,
+                onChanged: (k) {
+                  if (k.isNotEmpty) {
+                    filterList.value = assetResults
+                        .where((e) =>
+                            e.symbol.containsIgnoreCase(k) ||
+                            e.name.containsIgnoreCase(k))
+                        .toList();
+                  } else {
+                    filterList.value = assetResults;
+                  }
+                },
+              )),
           const SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
@@ -86,13 +87,16 @@ class _Item extends StatelessWidget {
   final AssetSelectCallback onTap;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-        height: 80,
-        child: InkWell(
-            onTap: () {
-              onTap(asset);
-              Navigator.pop(context);
-            },
+  Widget build(BuildContext context) => Material(
+      color: context.theme.background,
+      child: InkWell(
+        onTap: () {
+          onTap(asset);
+          Navigator.pop(context);
+        },
+        child: Container(
+            height: 80,
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: Row(children: [
               SymbolIconWithBorder(
                 symbolUrl: asset.iconUrl,
@@ -134,7 +138,7 @@ class _Item extends StatelessWidget {
                     )
                   : const SizedBox(),
             ])),
-      );
+      ));
 }
 
 typedef AssetSelectCallback = void Function(AssetResult);
