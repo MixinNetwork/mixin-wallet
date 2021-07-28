@@ -81,8 +81,7 @@ class PercentageChange extends StatelessWidget {
       final change = (decimal * Decimal.fromInt(100))
           .toDouble()
           .currencyFormatWithoutSymbol;
-      print(change);
-      text = '$change %';
+      text = '$change%';
     } else {
       text = context.l10n.none;
     }
