@@ -78,7 +78,11 @@ class PercentageChange extends StatelessWidget {
     if (valid) {
       final decimal = Decimal.parse(changeUsd);
       color = decimal.isNegative ? context.theme.red : context.theme.green;
-      text = '${(decimal * Decimal.fromInt(100)).toDouble().currencyFormat} %';
+      final change = (decimal * Decimal.fromInt(100))
+          .toDouble()
+          .currencyFormatWithoutSymbol;
+      print(change);
+      text = '$change %';
     } else {
       text = context.l10n.none;
     }
@@ -87,7 +91,7 @@ class PercentageChange extends StatelessWidget {
       textAlign: TextAlign.right,
       style: TextStyle(
         color: color,
-        fontSize: 16,
+        fontSize: 14,
       ),
     );
   }

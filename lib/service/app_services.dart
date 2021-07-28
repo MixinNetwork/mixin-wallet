@@ -21,7 +21,10 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   AppServices({
     required this.vRouterStateKey,
   }) {
-    client = sdk.Client(accessToken: accessToken, interceptors: interceptors);
+    client = sdk.Client(
+        accessToken: accessToken,
+        interceptors: interceptors,
+        httpLogLevel: sdk.HttpLogLevel.none);
     initDbFuture = _initDatabase();
     initDbFuture?.whenComplete(() {
       initDbFuture = null;
