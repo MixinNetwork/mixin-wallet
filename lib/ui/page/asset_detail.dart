@@ -222,8 +222,7 @@ class _AssetTransactionsHeader extends StatelessWidget {
                 context.l10n.transactions,
                 style: TextStyle(
                   color: BrightnessData.themeOf(context).text,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
                 ),
               ),
               const Spacer(),
@@ -265,7 +264,7 @@ class _BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [

@@ -332,7 +332,7 @@ class _TransactionInfoTile extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           DefaultTextStyle(
-            style: TextStyle(fontSize: 16, color: context.theme.text),
+            style: TextStyle(fontSize: 14, color: context.theme.text),
             child: subtitle,
           ),
           const SizedBox(height: 20),

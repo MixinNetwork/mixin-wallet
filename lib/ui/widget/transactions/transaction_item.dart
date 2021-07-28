@@ -54,9 +54,8 @@ class TransactionItem extends HookWidget {
                     children: [
                       DefaultTextStyle(
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: context.theme.text,
-                          fontWeight: FontWeight.w600,
                         ),
                         child: TransactionTypeWidget(item: item),
                       ),
@@ -64,13 +63,13 @@ class TransactionItem extends HookWidget {
                       Text(
                         '${isPositive ? '+' : ''}${item.amount.numberFormat()}',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: item.type == SnapshotType.pending
                               ? context.theme.secondaryText
                               : isPositive
                                   ? context.theme.green
                                   : context.theme.red,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
