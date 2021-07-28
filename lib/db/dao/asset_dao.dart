@@ -52,44 +52,52 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
         ));
   }
 
-  Selectable<AssetResult> assetResults(String currentFiat) => db.assetResults(
+  Selectable<AssetResult> assetResultsNotHidden(String currentFiat) =>
+      db.assetResults(
         currentFiat,
-        (asset, _, __) => ignoreWhere,
-        (_, __, ___) => ignoreOrderBy,
-        (_, __, ___) => maxLimit,
+        (asset, _, ae, f) => ae.hidden.isNull() | ae.hidden.equals(false),
+        (_, __, ___, f) => ignoreOrderBy,
+        (_, __, ___, f) => maxLimit,
       );
 
   Selectable<AssetResult> assetResultsOfIn(
           String currentFiat, Iterable<String> assetIds) =>
       db.assetResults(
         currentFiat,
-        (asset, _, __) => asset.assetId.isIn(assetIds),
-        (_, __, ___) => ignoreOrderBy,
-        (_, __, ___) => maxLimit,
+        (asset, _, __, f) => asset.assetId.isIn(assetIds),
+        (_, __, ___, f) => ignoreOrderBy,
+        (_, __, ___, f) => maxLimit,
       );
 
   Selectable<AssetResult> searchAssetResults(
           String currentFiat, String keyword) =>
       db.assetResults(
         currentFiat,
-        (asset, _, __) {
+        (asset, _, __, ae) {
           if (keyword.isEmpty) {
             return ignoreWhere;
           }
           return asset.symbol.like('%$keyword%');
         },
-        (asset, _, __) => OrderBy([OrderingTerm.asc(asset.symbol.length)]),
-        (_, __, ___) => maxLimit,
+        (asset, _, __, f) => OrderBy([OrderingTerm.asc(asset.symbol.length)]),
+        (_, __, ___, f) => maxLimit,
       );
 
   Selectable<AssetResult> assetResult(String currentFiat, String assetId) =>
       db.assetResults(
           currentFiat,
-          (Assets asset, _, __) => asset.assetId.equals(assetId),
-          (_, __, ___) => ignoreOrderBy,
-          (_, __, ___) => Limit(1, null));
+          (Assets asset, _, __, ___) => asset.assetId.equals(assetId),
+          (_, __, ___, f) => ignoreOrderBy,
+          (_, __, ___, f) => Limit(1, null));
 
   Selectable<Asset> simpleAssetById(String assetId) => select(db.assets)
     ..where((tbl) => tbl.assetId.equals(assetId))
     ..limit(1);
+
+  Selectable<AssetResult> hiddenAssets(String currentFiat) => db.assetResults(
+        currentFiat,
+        (asset, tempAsset, ae, fiat) => ae.hidden.equals(true),
+        (asset, tempAsset, ae, fiat) => ignoreOrderBy,
+        (asset, tempAsset, ae, fiat) => maxLimit,
+      );
 }

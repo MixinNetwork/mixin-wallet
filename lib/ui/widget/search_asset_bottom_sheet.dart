@@ -10,7 +10,7 @@ import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../router/mixin_routes.dart';
-import 'asset_price.dart';
+import 'asset.dart';
 import 'search_header_widget.dart';
 import 'symbol.dart';
 

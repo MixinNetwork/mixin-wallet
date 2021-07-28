@@ -81,5 +81,7 @@
   "authorize": "Authorize",
   "authTips": "An open source cryptocurrency wallet",
   "hiddenAssets": "Hidden Assets",
-  "hideSmallAssets": "Hide small assets"
+  "hideSmallAssets": "Hide small assets",
+  "hide": "Hide",
+  "show": "Show"
 }

@@ -104,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Finished verifying PIN ?"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
         "hiddenAssets": MessageLookupByLibrary.simpleMessage("Hidden Assets"),
+        "hide": MessageLookupByLibrary.simpleMessage("Hide"),
         "hideSmallAssets":
             MessageLookupByLibrary.simpleMessage("Hide small assets"),
         "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
@@ -130,6 +131,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "sendToAddress":
             MessageLookupByLibrary.simpleMessage("Send to Address"),
+        "show": MessageLookupByLibrary.simpleMessage("Show"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "sure": MessageLookupByLibrary.simpleMessage("Sure"),
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),

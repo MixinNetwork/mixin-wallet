@@ -10,3 +10,5 @@ CREATE TABLE snapshots (snapshot_id TEXT NOT NULL,type TEXT NOT NULL,asset_id TE
 CREATE TABLE users (user_id TEXT NOT NULL, identity_number TEXT NOT NULL, relationship TEXT MAPPED BY `const UserRelationshipConverter()`, full_name TEXT, avatar_url TEXT, phone TEXT, is_verified BOOLEAN, created_at INTEGER MAPPED BY `const MillisDateConverter()`, mute_until INTEGER MAPPED BY `const MillisDateConverter()`, has_pin INTEGER, app_id TEXT, biography TEXT, is_scam INTEGER, PRIMARY KEY(user_id) );
 
 CREATE TABLE fiats (code TEXT NOT NULL, rate DOUBLE NOT NULL, PRIMARY KEY(code));
+
+CREATE TABLE assets_extra (asset_id TEXT NOT NULL, hidden BOOLEAN, PRIMARY KEY(asset_id));

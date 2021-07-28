@@ -8,6 +8,7 @@ import '../page/all_transactions.dart';
 import '../page/asset_deposit.dart';
 import '../page/asset_detail.dart';
 import '../page/auth.dart';
+import '../page/hidden_assets.dart';
 import '../page/home.dart';
 import '../page/not_found.dart';
 import '../page/snapshot_detail.dart';
@@ -23,6 +24,7 @@ const assetDetailPath = '/tokens/:id';
 const assetDepositPath = '/tokens/:id/deposit';
 const snapshotDetailPath = '/snapshots/:id';
 final transactionsUri = Uri(path: '/transactions');
+final hiddenAssetsUri = Uri(path: '/hiddenAssets');
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VGuard(
@@ -87,7 +89,12 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     key: const ValueKey('Transactions'),
                     path: transactionsUri.toString(),
                     widget: const AllTransactions(),
-                  )
+                  ),
+                  VWidget(
+                    key: const ValueKey('HiddenAssets'),
+                    path: hiddenAssetsUri.toString(),
+                    widget: const HiddenAssets(),
+                  ),
                 ]),
           ]),
       VRouteRedirector(path: ':_(.+)', redirectTo: '/404'),

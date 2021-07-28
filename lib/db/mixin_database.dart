@@ -6,6 +6,7 @@ import 'converter/millis_date_converter.dart';
 import 'converter/user_relationship_converter.dart';
 import 'dao/address_dao.dart';
 import 'dao/asset_dao.dart';
+import 'dao/assets_extra_dao.dart';
 import 'dao/fiat_dao.dart';
 import 'dao/snapshot_dao.dart';
 import 'dao/user_dao.dart';
@@ -25,6 +26,7 @@ part 'mixin_database.g.dart';
     SnapshotDao,
     UserDao,
     FiatDao,
+    AssetsExtraDao,
   ],
   queries: {},
 )

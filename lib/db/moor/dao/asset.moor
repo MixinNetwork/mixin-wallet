@@ -5,9 +5,11 @@ SELECT asset.*,
        tempAsset.symbol AS chainSymbol,
        tempAsset.icon_url AS chainIconUrl,
        fiat.rate AS fiatRate,
-       tempAsset.name as chainName
+       tempAsset.name as chainName,
+       ae.hidden
 FROM assets asset
 LEFT  JOIN assets tempAsset ON asset.chain_id = tempAsset.asset_id
+LEFT  JOIN assets_extra ae ON ae.asset_id = asset.asset_id
 INNER JOIN fiats fiat ON fiat.code = :currentFiat
 WHERE $where
 ORDER BY $orderBy

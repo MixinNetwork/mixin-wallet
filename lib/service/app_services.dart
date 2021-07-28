@@ -112,7 +112,8 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Selectable<AssetResult> assetResults() {
     assert(isLogin);
-    return mixinDatabase.assetDao.assetResults(auth!.account.fiatCurrency);
+    return mixinDatabase.assetDao
+        .assetResultsNotHidden(auth!.account.fiatCurrency);
   }
 
   Selectable<AssetResult> searchAssetResults(String keyword) {
@@ -125,6 +126,16 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     assert(isLogin);
     return mixinDatabase.assetDao
         .assetResult(auth!.account.fiatCurrency, assetId);
+  }
+
+  Selectable<AssetResult> hiddenAssetResult() {
+    assert(isLogin);
+    return mixinDatabase.assetDao.hiddenAssets(auth!.account.fiatCurrency);
+  }
+
+  Future<void> updateAssetHidden(String assetId, {required bool hidden}) {
+    assert(isLogin);
+    return mixinDatabase.assetsExtraDao.updateHidden(assetId, hidden);
   }
 
   Future<Future<void> Function()?> _checkAssetExistWithReturnInsert(

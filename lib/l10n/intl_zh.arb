@@ -75,5 +75,7 @@
   "authorize": "授权使用",
   "authTips": "你知道吗？Mixin 是一个开源的加密钱包",
   "hiddenAssets": "隐藏的资产",
-  "hideSmallAssets": "隐藏小额资产"
+  "hideSmallAssets": "隐藏小额资产",
+  "hide": "隐藏",
+  "show": "显示"
 }

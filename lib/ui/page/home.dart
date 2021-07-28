@@ -12,13 +12,12 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
-import '../widget/asset_price.dart';
+import '../widget/asset.dart';
 import '../widget/avatar.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/mixin_elevated_button.dart';
 import '../widget/search_asset_bottom_sheet.dart';
-import '../widget/symbol.dart';
 
 class Home extends HookWidget {
   const Home({Key? key}) : super(key: key);
@@ -58,9 +57,17 @@ class Home extends HookWidget {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) => _Item(
-                data: assetResults[index],
-              ),
+              (BuildContext context, int index) {
+                final item = assetResults[index];
+                return _SwipeToHide(
+                  key: ValueKey(item.assetId),
+                  child: AssetWidget(data: item),
+                  onDismiss: () {
+                    context.appServices
+                        .updateAssetHidden(item.assetId, hidden: true);
+                  },
+                );
+              },
               childCount: assetResults.length,
             ),
           ),
@@ -278,57 +285,49 @@ class _Button extends StatelessWidget {
       );
 }
 
-class _Item extends StatelessWidget {
-  const _Item({
-    Key? key,
-    required this.data,
+class _SwipeToHide extends StatelessWidget {
+  const _SwipeToHide({
+    required Key key,
+    required this.child,
+    required this.onDismiss,
   }) : super(key: key);
 
-  final AssetResult data;
+  final Widget child;
+  final VoidCallback onDismiss;
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: () => context.push(assetDetailPath.toUri({'id': data.assetId})),
-        child: Container(
-          height: 70,
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Row(
-            children: [
-              SymbolIconWithBorder(
-                symbolUrl: data.iconUrl,
-                chainUrl: data.chainIconUrl,
-                size: 44,
-                chainSize: 10,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      '${data.balance} ${data.symbol}'.overflow,
-                      style: TextStyle(
-                        color: context.theme.text,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      context.l10n.approxOf(
-                          data.amountOfCurrentCurrency.currencyFormat),
-                      style: TextStyle(
-                        color: context.theme.secondaryText,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              AssetPrice(data: data),
-            ],
-          ),
+  Widget build(BuildContext context) {
+    final Widget indicator = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 18),
+      child: Text(
+        context.l10n.hide,
+        style: const TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+          color: Colors.white,
         ),
-      );
+      ),
+    );
+    return Dismissible(
+      key: ValueKey(key),
+      onDismissed: (direction) => onDismiss(),
+      background: Container(
+        color: context.theme.red,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: indicator,
+        ),
+      ),
+      secondaryBackground: Container(
+        color: context.theme.red,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: indicator,
+        ),
+      ),
+      child: child,
+    );
+  }
 }
 
 class _MenuBottomSheet extends HookWidget {
@@ -345,14 +344,13 @@ class _MenuBottomSheet extends HookWidget {
           topRounded: true,
           leading: SvgPicture.asset(R.resourcesAllTransactionsSvg),
           title: Text(context.l10n.allTransactions),
-          onTap: () {
-            context.push(transactionsUri);
-          },
+          onTap: () => context.push(transactionsUri),
         ),
         _MenuItem(
           bottomRounded: true,
           leading: SvgPicture.asset(R.resourcesHiddenSvg),
           title: Text(context.l10n.hiddenAssets),
+          onTap: () => context.push(hiddenAssetsUri),
         ),
         const SizedBox(height: 11),
         _MenuItem(

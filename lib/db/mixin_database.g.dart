@@ -2568,6 +2568,189 @@ class Fiats extends Table with TableInfo<Fiats, Fiat> {
   bool get dontWriteConstraints => true;
 }
 
+class AssetsExtraData extends DataClass implements Insertable<AssetsExtraData> {
+  final String assetId;
+  final bool? hidden;
+  AssetsExtraData({required this.assetId, this.hidden});
+  factory AssetsExtraData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return AssetsExtraData(
+      assetId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}asset_id'])!,
+      hidden: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}hidden']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['asset_id'] = Variable<String>(assetId);
+    if (!nullToAbsent || hidden != null) {
+      map['hidden'] = Variable<bool?>(hidden);
+    }
+    return map;
+  }
+
+  AssetsExtraCompanion toCompanion(bool nullToAbsent) {
+    return AssetsExtraCompanion(
+      assetId: Value(assetId),
+      hidden:
+          hidden == null && nullToAbsent ? const Value.absent() : Value(hidden),
+    );
+  }
+
+  factory AssetsExtraData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return AssetsExtraData(
+      assetId: serializer.fromJson<String>(json['asset_id']),
+      hidden: serializer.fromJson<bool?>(json['hidden']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'asset_id': serializer.toJson<String>(assetId),
+      'hidden': serializer.toJson<bool?>(hidden),
+    };
+  }
+
+  AssetsExtraData copyWith(
+          {String? assetId, Value<bool?> hidden = const Value.absent()}) =>
+      AssetsExtraData(
+        assetId: assetId ?? this.assetId,
+        hidden: hidden.present ? hidden.value : this.hidden,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('AssetsExtraData(')
+          ..write('assetId: $assetId, ')
+          ..write('hidden: $hidden')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(assetId.hashCode, hidden.hashCode));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AssetsExtraData &&
+          other.assetId == this.assetId &&
+          other.hidden == this.hidden);
+}
+
+class AssetsExtraCompanion extends UpdateCompanion<AssetsExtraData> {
+  final Value<String> assetId;
+  final Value<bool?> hidden;
+  const AssetsExtraCompanion({
+    this.assetId = const Value.absent(),
+    this.hidden = const Value.absent(),
+  });
+  AssetsExtraCompanion.insert({
+    required String assetId,
+    this.hidden = const Value.absent(),
+  }) : assetId = Value(assetId);
+  static Insertable<AssetsExtraData> custom({
+    Expression<String>? assetId,
+    Expression<bool?>? hidden,
+  }) {
+    return RawValuesInsertable({
+      if (assetId != null) 'asset_id': assetId,
+      if (hidden != null) 'hidden': hidden,
+    });
+  }
+
+  AssetsExtraCompanion copyWith(
+      {Value<String>? assetId, Value<bool?>? hidden}) {
+    return AssetsExtraCompanion(
+      assetId: assetId ?? this.assetId,
+      hidden: hidden ?? this.hidden,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (assetId.present) {
+      map['asset_id'] = Variable<String>(assetId.value);
+    }
+    if (hidden.present) {
+      map['hidden'] = Variable<bool?>(hidden.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AssetsExtraCompanion(')
+          ..write('assetId: $assetId, ')
+          ..write('hidden: $hidden')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class AssetsExtra extends Table with TableInfo<AssetsExtra, AssetsExtraData> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  AssetsExtra(this._db, [this._alias]);
+  final VerificationMeta _assetIdMeta = const VerificationMeta('assetId');
+  late final GeneratedColumn<String?> assetId = GeneratedColumn<String?>(
+      'asset_id', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _hiddenMeta = const VerificationMeta('hidden');
+  late final GeneratedColumn<bool?> hidden = GeneratedColumn<bool?>(
+      'hidden', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [assetId, hidden];
+  @override
+  String get aliasedName => _alias ?? 'assets_extra';
+  @override
+  String get actualTableName => 'assets_extra';
+  @override
+  VerificationContext validateIntegrity(Insertable<AssetsExtraData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('asset_id')) {
+      context.handle(_assetIdMeta,
+          assetId.isAcceptableOrUnknown(data['asset_id']!, _assetIdMeta));
+    } else if (isInserting) {
+      context.missing(_assetIdMeta);
+    }
+    if (data.containsKey('hidden')) {
+      context.handle(_hiddenMeta,
+          hidden.isAcceptableOrUnknown(data['hidden']!, _hiddenMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {assetId};
+  @override
+  AssetsExtraData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return AssetsExtraData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  AssetsExtra createAlias(String alias) {
+    return AssetsExtra(_db, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const ['PRIMARY KEY(asset_id)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 abstract class _$MixinDatabase extends GeneratedDatabase {
   _$MixinDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   _$MixinDatabase.connect(DatabaseConnection c) : super.connect(c);
@@ -2576,11 +2759,14 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final Snapshots snapshots = Snapshots(this);
   late final Users users = Users(this);
   late final Fiats fiats = Fiats(this);
+  late final AssetsExtra assetsExtra = AssetsExtra(this);
   late final AddressDao addressDao = AddressDao(this as MixinDatabase);
   late final AssetDao assetDao = AssetDao(this as MixinDatabase);
   late final SnapshotDao snapshotDao = SnapshotDao(this as MixinDatabase);
   late final UserDao userDao = UserDao(this as MixinDatabase);
   late final FiatDao fiatDao = FiatDao(this as MixinDatabase);
+  late final AssetsExtraDao assetsExtraDao =
+      AssetsExtraDao(this as MixinDatabase);
   Selectable<SnapshotItem> snapshotItems(
       Expression<bool?> Function(Snapshots s, Users u, Assets a) where,
       OrderBy Function(Snapshots s, Users u, Assets a) order,
@@ -2646,24 +2832,28 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
 
   Selectable<AssetResult> assetResults(
       String currentFiat,
-      Expression<bool?> Function(Assets asset, Assets tempAsset, Fiats fiat)
+      Expression<bool?> Function(
+              Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat)
           where,
-      OrderBy Function(Assets asset, Assets tempAsset, Fiats fiat) orderBy,
-      Limit Function(Assets asset, Assets tempAsset, Fiats fiat) limit) {
+      OrderBy Function(
+              Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat)
+          orderBy,
+      Limit Function(Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat)
+          limit) {
     final generatedwhere = $write(
         where(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
-            alias(this.fiats, 'fiat')),
+            alias(this.assetsExtra, 'ae'), alias(this.fiats, 'fiat')),
         hasMultipleTables: true);
     final generatedorderBy = $write(
         orderBy(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
-            alias(this.fiats, 'fiat')),
+            alias(this.assetsExtra, 'ae'), alias(this.fiats, 'fiat')),
         hasMultipleTables: true);
     final generatedlimit = $write(
         limit(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
-            alias(this.fiats, 'fiat')),
+            alias(this.assetsExtra, 'ae'), alias(this.fiats, 'fiat')),
         hasMultipleTables: true);
     return customSelect(
-        'SELECT asset.*, tempAsset.symbol AS chainSymbol, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id INNER JOIN fiats AS fiat ON fiat.code = ?1 WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
+        'SELECT asset.*, tempAsset.symbol AS chainSymbol, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName, ae.hidden FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id LEFT JOIN assets_extra AS ae ON ae.asset_id = asset.asset_id INNER JOIN fiats AS fiat ON fiat.code = ?1 WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
         variables: [
           Variable<String>(currentFiat),
           ...generatedwhere.introducedVariables,
@@ -2673,6 +2863,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         readsFrom: {
           assets,
           fiats,
+          assetsExtra,
           ...generatedwhere.watchedTables,
           ...generatedorderBy.watchedTables,
           ...generatedlimit.watchedTables,
@@ -2697,6 +2888,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         chainIconUrl: row.read<String>('chainIconUrl'),
         fiatRate: row.read<double>('fiatRate'),
         chainName: row.read<String>('chainName'),
+        hidden: row.read<bool?>('hidden'),
       );
     });
   }
@@ -2705,7 +2897,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [addresses, assets, snapshots, users, fiats];
+      [addresses, assets, snapshots, users, fiats, assetsExtra];
 }
 
 class SnapshotItem {
@@ -2834,6 +3026,7 @@ class AssetResult {
   final String chainIconUrl;
   final double fiatRate;
   final String chainName;
+  final bool? hidden;
   AssetResult({
     required this.assetId,
     required this.symbol,
@@ -2854,6 +3047,7 @@ class AssetResult {
     required this.chainIconUrl,
     required this.fiatRate,
     required this.chainName,
+    this.hidden,
   });
   @override
   int get hashCode => $mrjf($mrjc(
@@ -2896,8 +3090,9 @@ class AssetResult {
                                                                       $mrjc(
                                                                           fiatRate
                                                                               .hashCode,
-                                                                          chainName
-                                                                              .hashCode)))))))))))))))))));
+                                                                          $mrjc(
+                                                                              chainName.hashCode,
+                                                                              hidden.hashCode))))))))))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2920,7 +3115,8 @@ class AssetResult {
           other.chainSymbol == this.chainSymbol &&
           other.chainIconUrl == this.chainIconUrl &&
           other.fiatRate == this.fiatRate &&
-          other.chainName == this.chainName);
+          other.chainName == this.chainName &&
+          other.hidden == this.hidden);
   @override
   String toString() {
     return (StringBuffer('AssetResult(')
@@ -2942,7 +3138,8 @@ class AssetResult {
           ..write('chainSymbol: $chainSymbol, ')
           ..write('chainIconUrl: $chainIconUrl, ')
           ..write('fiatRate: $fiatRate, ')
-          ..write('chainName: $chainName')
+          ..write('chainName: $chainName, ')
+          ..write('hidden: $hidden')
           ..write(')'))
         .toString();
   }
