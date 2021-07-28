@@ -18,14 +18,11 @@ class AllTransactions extends HookWidget {
       appBar: MixinAppBar(
         title: Text(
           context.l10n.allTransactions,
-          style: TextStyle(
-            color: context.theme.text,
-          ),
         ),
-        backgroundColor: context.theme.background,
+        backButtonColor: Colors.white,
         actions: [
           ActionButton(
-            name: R.resourcesFilterSvg,
+            name: R.resourcesFilterWhiteSvg,
             size: 24,
             onTap: () async {
               final selection = await showFilterBottomSheetDialog(
@@ -41,9 +38,11 @@ class AllTransactions extends HookWidget {
         ],
       ),
       backgroundColor: context.theme.background,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: _AllTransactionsBody(filter: filter.value),
+      body: Column(
+        children: [
+          const ListRoundedHeaderContainer(height: 18),
+          Expanded(child: _AllTransactionsBody(filter: filter.value)),
+        ],
       ),
     );
   }

@@ -62,13 +62,13 @@ class ListRoundedHeaderContainer extends StatelessWidget {
     Key? key,
     this.radius = topRadius,
     this.height = 50,
-    required this.child,
+    this.child,
   }) : super(key: key);
 
-  final double height;
+  final double? height;
   final double radius;
 
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) => SizedBox(
