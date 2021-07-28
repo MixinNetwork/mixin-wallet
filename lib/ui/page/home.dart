@@ -112,7 +112,12 @@ class _AssetHeader extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showMixinBottomSheet(
+                        context: context,
+                        builder: (context) => const _MenuBottomSheet(),
+                      );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: SvgPicture.asset(
@@ -321,6 +326,113 @@ class _Item extends StatelessWidget {
               ),
               AssetPrice(data: data),
             ],
+          ),
+        ),
+      );
+}
+
+class _MenuBottomSheet extends HookWidget {
+  const _MenuBottomSheet({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final hideSmallAssets = useState(false);
+    return Column(
+      children: [
+        MixinBottomSheetTitle(title: Text(context.l10n.assets)),
+        const SizedBox(height: 9),
+        _MenuItem(
+          topRounded: true,
+          leading: SvgPicture.asset(R.resourcesAllTransactionsSvg),
+          title: Text(context.l10n.allTransactions),
+          onTap: () {
+            context.push(transactionsUri);
+          },
+        ),
+        _MenuItem(
+          bottomRounded: true,
+          leading: SvgPicture.asset(R.resourcesHiddenSvg),
+          title: Text(context.l10n.hiddenAssets),
+        ),
+        const SizedBox(height: 11),
+        _MenuItem(
+          topRounded: true,
+          bottomRounded: true,
+          title: Text(context.l10n.hideSmallAssets),
+          leading: SvgPicture.asset(R.resourcesHideAssetsSvg),
+          trailing: Switch(
+            value: hideSmallAssets.value,
+            activeColor: const Color(0xff333333),
+            onChanged: (bool value) => hideSmallAssets.value = value,
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _MenuItem extends StatelessWidget {
+  const _MenuItem({
+    Key? key,
+    required this.title,
+    required this.leading,
+    this.topRounded = false,
+    this.bottomRounded = false,
+    this.trailing,
+    this.onTap,
+  }) : super(key: key);
+
+  final Widget title;
+  final Widget leading;
+  final Widget? trailing;
+
+  final VoidCallback? onTap;
+
+  final bool topRounded;
+  final bool bottomRounded;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(
+            top: topRounded ? const Radius.circular(12) : Radius.zero,
+            bottom: bottomRounded ? const Radius.circular(12) : Radius.zero,
+          ),
+          color: const Color(0xfff8f8f8),
+        ),
+        padding: EdgeInsets.only(
+          top: topRounded ? 10 : 0,
+          bottom: bottomRounded ? 10 : 0,
+        ),
+        child: Material(
+          child: InkWell(
+            onTap: onTap,
+            child: SizedBox(
+              height: 64,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(width: 20),
+                  SizedBox.square(dimension: 24, child: leading),
+                  const SizedBox(width: 10),
+                  DefaultTextStyle(
+                    style: TextStyle(
+                      fontSize: 16,
+                      height: 1.5,
+                      color: context.theme.text,
+                    ),
+                    child: title,
+                  ),
+                  const Spacer(),
+                  if (trailing != null)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: trailing,
+                    ),
+                ],
+              ),
+            ),
           ),
         ),
       );

@@ -73,5 +73,7 @@
   "authSlogan": "Mixin 钱包是一款用户友好、安全且功能强大的多链数字钱包。",
   "authHint": "只读授权无法动用你的资产，请放心使用",
   "authorize": "授权使用",
-  "authTips": "你知道吗？Mixin 是一个开源的加密钱包"
+  "authTips": "你知道吗？Mixin 是一个开源的加密钱包",
+  "hiddenAssets": "隐藏的资产",
+  "hideSmallAssets": "隐藏小额资产"
 }

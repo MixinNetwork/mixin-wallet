@@ -859,6 +859,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Hidden Assets`
+  String get hiddenAssets {
+    return Intl.message(
+      'Hidden Assets',
+      name: 'hiddenAssets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide small assets`
+  String get hideSmallAssets {
+    return Intl.message(
+      'Hide small assets',
+      name: 'hideSmallAssets',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

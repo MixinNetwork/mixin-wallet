@@ -86,6 +86,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterTitle": MessageLookupByLibrary.simpleMessage("筛选"),
         "finishVerifyPIN": MessageLookupByLibrary.simpleMessage("完成验证 PIN 了？"),
         "from": MessageLookupByLibrary.simpleMessage("来自"),
+        "hiddenAssets": MessageLookupByLibrary.simpleMessage("隐藏的资产"),
+        "hideSmallAssets": MessageLookupByLibrary.simpleMessage("隐藏小额资产"),
         "memo": MessageLookupByLibrary.simpleMessage("备注"),
         "memoHint": MessageLookupByLibrary.simpleMessage("标签（Memo）"),
         "minerFee": MessageLookupByLibrary.simpleMessage("挖矿手续费"),

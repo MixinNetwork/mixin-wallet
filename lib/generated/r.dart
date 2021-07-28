@@ -4,6 +4,9 @@
 // **************************************************************************
 class R {
   const R._();
+  static const String resourcesAllTransactionsSvg =
+      'resources/all_transactions.svg';
+
   static const String resourcesAuthBgSvg = 'resources/auth_bg.svg';
 
   static const String resourcesEmptyTransactionSvg =
@@ -13,6 +16,10 @@ class R {
 
   static const String resourcesHamburgerMenuSvg =
       'resources/hamburger_menu.svg';
+
+  static const String resourcesHiddenSvg = 'resources/hidden.svg';
+
+  static const String resourcesHideAssetsSvg = 'resources/hide_assets.svg';
 
   static const String resourcesIcArrowDownSvg = 'resources/ic_arrow_down.svg';
 

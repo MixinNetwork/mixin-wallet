@@ -103,6 +103,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "finishVerifyPIN":
             MessageLookupByLibrary.simpleMessage("Finished verifying PIN ?"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
+        "hiddenAssets": MessageLookupByLibrary.simpleMessage("Hidden Assets"),
+        "hideSmallAssets":
+            MessageLookupByLibrary.simpleMessage("Hide small assets"),
         "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
         "memoHint": MessageLookupByLibrary.simpleMessage("Memo"),
         "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
