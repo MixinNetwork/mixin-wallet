@@ -49,6 +49,7 @@ class TransactionItem extends HookWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   const SizedBox(height: 3),
+                  const Spacer(),
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -101,6 +102,7 @@ class TransactionItem extends HookWidget {
                       ),
                     ],
                   ),
+                  const Spacer(),
                   const SizedBox(height: 1),
                 ],
               )),
