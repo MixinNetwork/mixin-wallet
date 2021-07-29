@@ -34,12 +34,13 @@ class ActionButton extends StatelessWidget {
         color: color,
       );
     }
-    return MixinElevatedButton(
-      shape: const CircleBorder(),
-      padding: padding,
-      primary: Colors.transparent,
+    return InkResponse(
       onTap: onTap,
-      child: _child,
+      radius: size,
+      child: Padding(
+        padding: padding,
+        child: _child,
+      ),
     );
   }
 }
