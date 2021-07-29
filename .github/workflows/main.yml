@@ -32,6 +32,11 @@ jobs:
       - name: Run Build Runner
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
+      - name: Generator ENV
+        run: |
+        echo "CLIENT_ID=DEV_KEY\nCLIENT_SECRET=DEV_KEY" > .development.env
+        echo "CLIENT_ID=PRODUCTION_KEY\nCLIENT_SECRET=PRODUCTION_KEY" > .production.env
+
       # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
         run: flutter analyze
