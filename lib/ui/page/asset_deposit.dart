@@ -322,36 +322,36 @@ class _Item extends StatelessWidget {
                 ],
               ),
             ),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  children: [
-                    ActionButton(
-                        name: R.resourcesIcCopySvg,
-                        color: BrightnessData.themeOf(context).icon,
-                        onTap: () {
-                          Clipboard.setData(ClipboardData(text: desc))
-                              .then((_) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(context.l10n.copyToClipboard)));
-                          });
-                        }),
-                    const SizedBox(width: 4),
-                    ActionButton(
-                        name: R.resourcesIcQrCodeSvg,
-                        color: BrightnessData.themeOf(context).icon,
-                        onTap: () {
-                          showMixinBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (context) => _QRBottomSheetContent(
-                              data: desc,
-                              asset: asset,
-                            ),
-                          );
-                        }),
-                  ],
-                )),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ActionButton(
+                  name: R.resourcesIcCopySvg,
+                  color: BrightnessData.themeOf(context).icon,
+                  onTap: () {
+                    Clipboard.setData(ClipboardData(text: desc)).then((_) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(context.l10n.copyToClipboard)));
+                    });
+                  },
+                ),
+                const SizedBox(width: 4),
+                ActionButton(
+                  name: R.resourcesIcQrCodeSvg,
+                  color: BrightnessData.themeOf(context).icon,
+                  onTap: () {
+                    showMixinBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) => _QRBottomSheetContent(
+                        data: desc,
+                        asset: asset,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
             const SizedBox(height: 70),
           ],
         ),

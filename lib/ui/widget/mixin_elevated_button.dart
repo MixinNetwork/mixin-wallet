@@ -29,12 +29,15 @@ class MixinElevatedButton extends StatelessWidget {
           primary: primary,
           elevation: 0.0,
           shape: shape,
-          padding: padding,
+          padding: EdgeInsets.zero,
           minimumSize: Size.zero,
           fixedSize: fixedSize,
           alignment: alignment,
         ),
         onPressed: onTap,
-        child: child,
+        child: Padding(
+          padding: padding ?? EdgeInsets.zero,
+          child: child,
+        ),
       );
 }
