@@ -34,8 +34,14 @@ jobs:
 
       - name: Generator ENV
         run: |
-        echo "CLIENT_ID=DEV_KEY\nCLIENT_SECRET=DEV_KEY" > .development.env
-        echo "CLIENT_ID=PRODUCTION_KEY\nCLIENT_SECRET=PRODUCTION_KEY" > .production.env
+          tee .development.env &>/dev/null << EOF
+          CLIENT_ID=DEV_KEY
+          CLIENT_SECRET=DEV_KEY
+          EOF
+          tee .production.env &>/dev/null << EOF
+          CLIENT_ID=PRODUCTION_KEY
+          CLIENT_SECRET=PRODUCTION_KEY
+          EOF
 
       # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
