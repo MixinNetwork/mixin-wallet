@@ -397,9 +397,8 @@ class _AssetBottomSheetTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(width: 20),
             Flexible(
-              flex: 2,
+              flex: 20,
               fit: FlexFit.tight,
               child: DefaultTextStyle(
                 style: TextStyle(
@@ -411,9 +410,9 @@ class _AssetBottomSheetTile extends StatelessWidget {
                 child: title,
               ),
             ),
-            const SizedBox(width: 20),
+            const Spacer(flex: 5),
             Flexible(
-              flex: 7,
+              flex: 65,
               fit: FlexFit.tight,
               child: DefaultTextStyle(
                 style: TextStyle(
@@ -424,7 +423,7 @@ class _AssetBottomSheetTile extends StatelessWidget {
                 child: subtitle,
               ),
             ),
-            const Spacer(flex: 1),
+            const Spacer(flex: 10),
           ],
         ),
       );
