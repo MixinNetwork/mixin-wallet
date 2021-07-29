@@ -273,7 +273,7 @@ class _AssetDepositPage extends HookWidget {
                   fontWeight: FontWeight.w400,
                 )),
           ),
-          const SizedBox(height: 70),
+          const SizedBox(height: 50),
         ]),
       ),
     );
@@ -299,6 +299,7 @@ class _Item extends StatelessWidget {
       ),
       child: RoundContainer(
         height: null,
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
         child: Row(
           children: [
             Expanded(
