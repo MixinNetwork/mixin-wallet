@@ -29,9 +29,6 @@ jobs:
       - name: Verify formatting
         run: flutter format --set-exit-if-changed .
 
-      - name: Run Build Runner
-        run: flutter pub run build_runner build --delete-conflicting-outputs
-
       - name: Generator ENV
         run: |
           tee .development.env &>/dev/null << EOF
@@ -42,6 +39,9 @@ jobs:
           CLIENT_ID=PRODUCTION_KEY
           CLIENT_SECRET=PRODUCTION_KEY
           EOF
+
+      - name: Run Build Runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
 
       # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
