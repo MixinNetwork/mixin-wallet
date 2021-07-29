@@ -18,6 +18,7 @@ extension SnapshotConverter on sdk.Snapshot {
         receiver: Value(receiver),
         memo: Value(memo),
         confirmations: Value(confirmations),
+        traceId: Value(traceId),
       );
 }
 
