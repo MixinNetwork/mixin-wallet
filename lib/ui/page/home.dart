@@ -103,6 +103,7 @@ class _AssetHeader extends StatelessWidget {
               child: Row(
                 children: [
                   InkWell(
+                    customBorder: const CircleBorder(),
                     onTap: () => showMixinBottomSheet(
                         context: context,
                         isScrollControlled: true,
@@ -119,6 +120,7 @@ class _AssetHeader extends StatelessWidget {
                     ),
                   ),
                   InkWell(
+                    customBorder: const CircleBorder(),
                     onTap: () {
                       showMixinBottomSheet(
                         context: context,

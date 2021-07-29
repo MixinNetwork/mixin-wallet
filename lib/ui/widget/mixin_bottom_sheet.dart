@@ -12,12 +12,10 @@ Future<T?> showMixinBottomSheet<T>({
 }) =>
     showModalBottomSheet(
       context: context,
-      builder: (context) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: context.theme.background,
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(topRadius),
-          ),
+      builder: (context) => Material(
+        color: context.theme.background,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(topRadius),
         ),
         child: builder(context),
       ),

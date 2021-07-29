@@ -40,17 +40,21 @@ class SearchHeaderWidget extends HookWidget {
           ),
           cancelVisible
               ? Row(children: [
-                  const SizedBox(width: 20),
+                  const SizedBox(width: 8),
                   InkWell(
+                      customBorder: const CircleBorder(),
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Text(context.l10n.cancel,
-                          style: TextStyle(
-                            color: context.theme.text,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(context.l10n.cancel,
+                            style: TextStyle(
+                              color: context.theme.text,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            )),
+                      )),
                 ])
               : const SizedBox(),
         ],

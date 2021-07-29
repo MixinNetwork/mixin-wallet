@@ -83,12 +83,9 @@ class ListRoundedHeaderContainer extends StatelessWidget {
                 color: context.theme.accent,
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(radius)),
-                color: context.theme.background,
-              ),
+            Material(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(radius)),
+              color: context.theme.background,
               child: child,
             ),
           ],
