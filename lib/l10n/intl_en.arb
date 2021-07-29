@@ -83,5 +83,8 @@
   "hiddenAssets": "Hidden Assets",
   "hideSmallAssets": "Hide small assets",
   "hide": "Hide",
-  "show": "Show"
+  "show": "Show",
+  "alreadyHidden": "{value} has been hidden",
+  "alreadyShown": "{value} has been shown",
+  "undo": "UNDO"
 }

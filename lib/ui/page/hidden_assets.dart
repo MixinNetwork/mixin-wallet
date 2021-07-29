@@ -43,6 +43,16 @@ class _HiddenAssetsList extends HookWidget {
           key: ValueKey(item.assetId),
           onDismiss: () {
             context.appServices.updateAssetHidden(item.assetId, hidden: false);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(context.l10n.alreadyHidden(item.name)),
+              action: SnackBarAction(
+                label: context.l10n.undo,
+                onPressed: () {
+                  context.appServices
+                      .updateAssetHidden(item.assetId, hidden: true);
+                },
+              ),
+            ));
           },
           child: AssetWidget(data: item),
         );

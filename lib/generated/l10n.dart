@@ -899,6 +899,36 @@ class L10n {
       args: [],
     );
   }
+
+  /// `{value} has been hidden`
+  String alreadyHidden(Object value) {
+    return Intl.message(
+      '$value has been hidden',
+      name: 'alreadyHidden',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `{value} has been shown`
+  String alreadyShown(Object value) {
+    return Intl.message(
+      '$value has been shown',
+      name: 'alreadyShown',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `UNDO`
+  String get undo {
+    return Intl.message(
+      'UNDO',
+      name: 'undo',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

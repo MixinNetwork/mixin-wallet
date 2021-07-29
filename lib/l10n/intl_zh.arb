@@ -77,5 +77,8 @@
   "hiddenAssets": "隐藏的资产",
   "hideSmallAssets": "隐藏小额资产",
   "hide": "隐藏",
-  "show": "显示"
+  "show": "显示",
+  "alreadyHidden": "已隐藏 {value}",
+  "alreadyShown": "已显示 {value}",
+  "undo": "撤销"
 }

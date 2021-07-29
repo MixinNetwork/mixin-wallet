@@ -19,27 +19,31 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(value) => "≈ ${value} BTC";
+  static String m0(value) => "${value} has been hidden";
 
-  static String m1(value) => "≈ ${value}";
+  static String m1(value) => "${value} has been shown";
 
-  static String m2(value) => "Average arrival time:${value}";
+  static String m2(value) => "≈ ${value} BTC";
 
-  static String m3(value) => "${value} BTC";
+  static String m3(value) => "≈ ${value}";
 
-  static String m4(value) =>
+  static String m4(value) => "Average arrival time:${value}";
+
+  static String m5(value) => "${value} BTC";
+
+  static String m6(value) =>
       "Deposit will arrive after at least ${value} block confirmations";
 
-  static String m5(value) =>
+  static String m7(value) =>
       "Notice: Both an Account Memo and an Account Name are required to successfully deposit your ${value} to Mixin.";
 
-  static String m6(value) => "This address only supports ${value}.";
+  static String m8(value) => "This address only supports ${value}.";
 
-  static String m7(value, value2) => "${value}/${value2} confirmations";
+  static String m9(value, value2) => "${value}/${value2} confirmations";
 
-  static String m8(value) => "value now ${value}";
+  static String m10(value) => "value now ${value}";
 
-  static String m9(value) => "value then ${value}";
+  static String m11(value) => "value then ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -61,9 +65,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Label, Address"),
         "allTransactions":
             MessageLookupByLibrary.simpleMessage("All Transactions"),
+        "alreadyHidden": m0,
+        "alreadyShown": m1,
         "amount": MessageLookupByLibrary.simpleMessage("Amount"),
-        "approxBalanceOfBtc": m0,
-        "approxOf": m1,
+        "approxBalanceOfBtc": m2,
+        "approxOf": m3,
         "assetTrending": MessageLookupByLibrary.simpleMessage("Trending"),
         "assetType": MessageLookupByLibrary.simpleMessage("Asset Type"),
         "assets": MessageLookupByLibrary.simpleMessage("Assets"),
@@ -74,8 +80,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "authTips": MessageLookupByLibrary.simpleMessage(
             "An open source cryptocurrency wallet"),
         "authorize": MessageLookupByLibrary.simpleMessage("Authorize"),
-        "averageArrival": m2,
-        "balanceOfBtc": m3,
+        "averageArrival": m4,
+        "balanceOfBtc": m5,
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
         "contract": MessageLookupByLibrary.simpleMessage("Asset Key"),
@@ -83,9 +89,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Copy to clipboard"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
-        "depositConfirmation": m4,
-        "depositNotice": m5,
-        "depositTip": m6,
+        "depositConfirmation": m6,
+        "depositNotice": m7,
+        "depositTip": m8,
         "depositTipBtc": MessageLookupByLibrary.simpleMessage(
             "This address only supports BTC and Omni USDT."),
         "depositTipEos": MessageLookupByLibrary.simpleMessage(
@@ -118,7 +124,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkFee": MessageLookupByLibrary.simpleMessage("Network fee:"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
-        "pendingConfirmations": m7,
+        "pendingConfirmations": m9,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
@@ -149,10 +155,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsType":
             MessageLookupByLibrary.simpleMessage("Transaction Type"),
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
-        "walletTransactionCurrentValue": m8,
+        "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
+        "walletTransactionCurrentValue": m10,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
-        "walletTransactionThatTimeValue": m9,
+        "walletTransactionThatTimeValue": m11,
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal")
       };
 }
