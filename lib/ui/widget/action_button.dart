@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'mixin_elevated_button.dart';
-
 class ActionButton extends StatelessWidget {
   const ActionButton({
     this.name,
