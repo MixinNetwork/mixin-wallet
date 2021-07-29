@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../db/mixin_database.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -72,16 +73,19 @@ class _AssetDetailPage extends StatelessWidget {
           backButtonColor: Colors.white,
           title: Text(asset.name),
           actions: [
-            ActionButton(
-                name: R.resourcesIcQuestionSvg,
-                color: Colors.white,
-                onTap: () {
-                  showMixinBottomSheet(
-                    context: context,
-                    builder: (context) =>
-                        _AssetDescriptionBottomSheet(asset: asset),
-                  );
-                }),
+            Center(
+              child: ActionButton(
+                  name: R.resourcesIcQuestionSvg,
+                  color: Colors.white,
+                  size: 20,
+                  onTap: () {
+                    showMixinBottomSheet(
+                      context: context,
+                      builder: (context) =>
+                          _AssetDescriptionBottomSheet(asset: asset),
+                    );
+                  }),
+            ),
           ],
         ),
         body: Column(
@@ -168,24 +172,27 @@ class _AssetHeader extends StatelessWidget {
               symbolBorder: const BorderSide(color: Colors.white, width: 1.67),
             ),
             const SizedBox(height: 18),
-            Text.rich(
-              TextSpan(children: [
-                TextSpan(
-                    text: asset.balance.numberFormat(),
-                    style: const TextStyle(
-                      fontFamily: 'Mixin Condensed',
-                      fontSize: 48,
-                      color: Colors.white,
-                    )),
-                const WidgetSpan(child: SizedBox(width: 2)),
-                TextSpan(
-                    text: asset.symbol,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white.withOpacity(0.4),
-                    )),
-              ]),
-              textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text.rich(
+                TextSpan(children: [
+                  TextSpan(
+                      text: asset.balance.numberFormat().overflow,
+                      style: const TextStyle(
+                        fontFamily: 'Mixin Condensed',
+                        fontSize: 48,
+                        color: Colors.white,
+                      )),
+                  const TextSpan(text: ' '),
+                  TextSpan(
+                      text: asset.symbol.overflow,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white.withOpacity(0.4),
+                      )),
+                ]),
+                textAlign: TextAlign.center,
+              ),
             ),
             const SizedBox(height: 2),
             Text(
@@ -212,44 +219,67 @@ class _AssetTransactionsHeader extends StatelessWidget {
   final ValueNotifier<SnapshotFilter> filter;
 
   @override
-  Widget build(BuildContext context) => ListRoundedHeaderContainer(
-        height: 64,
-        child: Center(
-          child: Row(
-            children: [
-              const SizedBox(width: 20),
-              Text(
-                context.l10n.transactions,
-                style: TextStyle(
-                  color: BrightnessData.themeOf(context).text,
-                  fontSize: 14,
-                ),
+  Widget build(BuildContext context) => SizedBox(
+        height: 54,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                color: context.theme.accent,
+                height: 20,
               ),
-              const Spacer(),
-              InkWell(
-                onTap: () async {
-                  final filter = await showFilterBottomSheetDialog(
-                    context,
-                    initial: this.filter.value,
-                  );
-                  if (filter == null) {
-                    return;
-                  }
-                  this.filter.value = filter;
-                },
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(topRadius),
+                ),
+                color: context.theme.background,
+              ),
+              child: Material(
+                color: Colors.transparent,
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: SvgPicture.asset(
-                    R.resourcesFilterSvg,
-                    color: BrightnessData.themeOf(context).text,
-                    height: 24,
-                    width: 24,
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const SizedBox(width: 20),
+                      Text(
+                        context.l10n.transactions,
+                        style: TextStyle(
+                          color: BrightnessData.themeOf(context).text,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const Spacer(),
+                      InkResponse(
+                        onTap: () async {
+                          final filter = await showFilterBottomSheetDialog(
+                            context,
+                            initial: this.filter.value,
+                          );
+                          if (filter == null) {
+                            return;
+                          }
+                          this.filter.value = filter;
+                        },
+                        radius: 20,
+                        child: SvgPicture.asset(
+                          R.resourcesFilterSvg,
+                          color: BrightnessData.themeOf(context).text,
+                          height: 24,
+                          width: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                    ],
                   ),
                 ),
               ),
-              const SizedBox(width: 20),
-            ],
-          ),
+            ),
+          ],
         ),
       );
 }
