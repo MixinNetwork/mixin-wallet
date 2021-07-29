@@ -8,7 +8,7 @@ class SymbolIconWithBorder extends StatelessWidget {
   const SymbolIconWithBorder({
     Key? key,
     required this.symbolUrl,
-    required this.chainUrl,
+    this.chainUrl,
     required this.size,
     required this.chainSize,
     this.chainBorder = const BorderSide(color: Colors.white, width: 1),
@@ -16,7 +16,7 @@ class SymbolIconWithBorder extends StatelessWidget {
   }) : super(key: key);
 
   final String symbolUrl;
-  final String chainUrl;
+  final String? chainUrl;
   final double size;
   final double chainSize;
 
@@ -50,7 +50,7 @@ class SymbolIconWithBorder extends StatelessWidget {
                   ),
                 ),
                 child: Image.network(
-                  chainUrl,
+                  chainUrl ?? '',
                   width: chainSize,
                   height: chainSize,
                 ),

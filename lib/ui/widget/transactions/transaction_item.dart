@@ -82,7 +82,7 @@ class TransactionItem extends HookWidget {
                         item.type == SnapshotType.pending
                             ? context.l10n.pendingConfirmations(
                                 item.confirmations ?? 0,
-                                item.assetConfirmations)
+                                item.assetConfirmations ?? 0)
                             : DateFormat.yMMMMd().format(item.createdAt),
                         style: TextStyle(
                           fontSize: 14,
@@ -92,7 +92,7 @@ class TransactionItem extends HookWidget {
                       ),
                       const Spacer(),
                       Text(
-                        item.assetSymbol,
+                        item.assetSymbol ?? '',
                         style: TextStyle(
                           fontSize: 12,
                           color: BrightnessData.themeOf(context).text,
@@ -191,7 +191,8 @@ class _TransactionIcon extends StatelessWidget {
         allowDrawingOutsideViewBox: true,
       );
     } else if (item.type == SnapshotType.pending) {
-      final progress = (item.confirmations ?? 0) / item.assetConfirmations;
+      final progress =
+          (item.confirmations ?? 0) / (item.assetConfirmations ?? 1);
       child = Stack(
         alignment: Alignment.center,
         children: [

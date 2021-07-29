@@ -1221,6 +1221,7 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
   final String amount;
   final DateTime createdAt;
   final String? opponentId;
+  final String? traceId;
   final String? transactionHash;
   final String? sender;
   final String? receiver;
@@ -1233,6 +1234,7 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
       required this.amount,
       required this.createdAt,
       this.opponentId,
+      this.traceId,
       this.transactionHash,
       this.sender,
       this.receiver,
@@ -1254,6 +1256,8 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']))!,
       opponentId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}opponent_id']),
+      traceId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}trace_id']),
       transactionHash: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}transaction_hash']),
       sender: const StringType()
@@ -1279,6 +1283,9 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
     }
     if (!nullToAbsent || opponentId != null) {
       map['opponent_id'] = Variable<String?>(opponentId);
+    }
+    if (!nullToAbsent || traceId != null) {
+      map['trace_id'] = Variable<String?>(traceId);
     }
     if (!nullToAbsent || transactionHash != null) {
       map['transaction_hash'] = Variable<String?>(transactionHash);
@@ -1308,6 +1315,9 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
       opponentId: opponentId == null && nullToAbsent
           ? const Value.absent()
           : Value(opponentId),
+      traceId: traceId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(traceId),
       transactionHash: transactionHash == null && nullToAbsent
           ? const Value.absent()
           : Value(transactionHash),
@@ -1333,6 +1343,7 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
       amount: serializer.fromJson<String>(json['amount']),
       createdAt: serializer.fromJson<DateTime>(json['created_at']),
       opponentId: serializer.fromJson<String?>(json['opponent_id']),
+      traceId: serializer.fromJson<String?>(json['trace_id']),
       transactionHash: serializer.fromJson<String?>(json['transaction_hash']),
       sender: serializer.fromJson<String?>(json['sender']),
       receiver: serializer.fromJson<String?>(json['receiver']),
@@ -1350,6 +1361,7 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
       'amount': serializer.toJson<String>(amount),
       'created_at': serializer.toJson<DateTime>(createdAt),
       'opponent_id': serializer.toJson<String?>(opponentId),
+      'trace_id': serializer.toJson<String?>(traceId),
       'transaction_hash': serializer.toJson<String?>(transactionHash),
       'sender': serializer.toJson<String?>(sender),
       'receiver': serializer.toJson<String?>(receiver),
@@ -1365,6 +1377,7 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
           String? amount,
           DateTime? createdAt,
           Value<String?> opponentId = const Value.absent(),
+          Value<String?> traceId = const Value.absent(),
           Value<String?> transactionHash = const Value.absent(),
           Value<String?> sender = const Value.absent(),
           Value<String?> receiver = const Value.absent(),
@@ -1377,6 +1390,7 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
         amount: amount ?? this.amount,
         createdAt: createdAt ?? this.createdAt,
         opponentId: opponentId.present ? opponentId.value : this.opponentId,
+        traceId: traceId.present ? traceId.value : this.traceId,
         transactionHash: transactionHash.present
             ? transactionHash.value
             : this.transactionHash,
@@ -1395,6 +1409,7 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
           ..write('amount: $amount, ')
           ..write('createdAt: $createdAt, ')
           ..write('opponentId: $opponentId, ')
+          ..write('traceId: $traceId, ')
           ..write('transactionHash: $transactionHash, ')
           ..write('sender: $sender, ')
           ..write('receiver: $receiver, ')
@@ -1418,13 +1433,17 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
                       $mrjc(
                           opponentId.hashCode,
                           $mrjc(
-                              transactionHash.hashCode,
+                              traceId.hashCode,
                               $mrjc(
-                                  sender.hashCode,
+                                  transactionHash.hashCode,
                                   $mrjc(
-                                      receiver.hashCode,
-                                      $mrjc(memo.hashCode,
-                                          confirmations.hashCode)))))))))));
+                                      sender.hashCode,
+                                      $mrjc(
+                                          receiver.hashCode,
+                                          $mrjc(
+                                              memo.hashCode,
+                                              confirmations
+                                                  .hashCode))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1435,6 +1454,7 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
           other.amount == this.amount &&
           other.createdAt == this.createdAt &&
           other.opponentId == this.opponentId &&
+          other.traceId == this.traceId &&
           other.transactionHash == this.transactionHash &&
           other.sender == this.sender &&
           other.receiver == this.receiver &&
@@ -1449,6 +1469,7 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
   final Value<String> amount;
   final Value<DateTime> createdAt;
   final Value<String?> opponentId;
+  final Value<String?> traceId;
   final Value<String?> transactionHash;
   final Value<String?> sender;
   final Value<String?> receiver;
@@ -1461,6 +1482,7 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
     this.amount = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.opponentId = const Value.absent(),
+    this.traceId = const Value.absent(),
     this.transactionHash = const Value.absent(),
     this.sender = const Value.absent(),
     this.receiver = const Value.absent(),
@@ -1474,6 +1496,7 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
     required String amount,
     required DateTime createdAt,
     this.opponentId = const Value.absent(),
+    this.traceId = const Value.absent(),
     this.transactionHash = const Value.absent(),
     this.sender = const Value.absent(),
     this.receiver = const Value.absent(),
@@ -1491,6 +1514,7 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
     Expression<String>? amount,
     Expression<DateTime>? createdAt,
     Expression<String?>? opponentId,
+    Expression<String?>? traceId,
     Expression<String?>? transactionHash,
     Expression<String?>? sender,
     Expression<String?>? receiver,
@@ -1504,6 +1528,7 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
       if (amount != null) 'amount': amount,
       if (createdAt != null) 'created_at': createdAt,
       if (opponentId != null) 'opponent_id': opponentId,
+      if (traceId != null) 'trace_id': traceId,
       if (transactionHash != null) 'transaction_hash': transactionHash,
       if (sender != null) 'sender': sender,
       if (receiver != null) 'receiver': receiver,
@@ -1519,6 +1544,7 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
       Value<String>? amount,
       Value<DateTime>? createdAt,
       Value<String?>? opponentId,
+      Value<String?>? traceId,
       Value<String?>? transactionHash,
       Value<String?>? sender,
       Value<String?>? receiver,
@@ -1531,6 +1557,7 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
       amount: amount ?? this.amount,
       createdAt: createdAt ?? this.createdAt,
       opponentId: opponentId ?? this.opponentId,
+      traceId: traceId ?? this.traceId,
       transactionHash: transactionHash ?? this.transactionHash,
       sender: sender ?? this.sender,
       receiver: receiver ?? this.receiver,
@@ -1561,6 +1588,9 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
     if (opponentId.present) {
       map['opponent_id'] = Variable<String?>(opponentId.value);
     }
+    if (traceId.present) {
+      map['trace_id'] = Variable<String?>(traceId.value);
+    }
     if (transactionHash.present) {
       map['transaction_hash'] = Variable<String?>(transactionHash.value);
     }
@@ -1588,6 +1618,7 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
           ..write('amount: $amount, ')
           ..write('createdAt: $createdAt, ')
           ..write('opponentId: $opponentId, ')
+          ..write('traceId: $traceId, ')
           ..write('transactionHash: $transactionHash, ')
           ..write('sender: $sender, ')
           ..write('receiver: $receiver, ')
@@ -1637,6 +1668,10 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
   late final GeneratedColumn<String?> opponentId = GeneratedColumn<String?>(
       'opponent_id', aliasedName, true,
       typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  final VerificationMeta _traceIdMeta = const VerificationMeta('traceId');
+  late final GeneratedColumn<String?> traceId = GeneratedColumn<String?>(
+      'trace_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _transactionHashMeta =
       const VerificationMeta('transactionHash');
   late final GeneratedColumn<String?> transactionHash =
@@ -1669,6 +1704,7 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
         amount,
         createdAt,
         opponentId,
+        traceId,
         transactionHash,
         sender,
         receiver,
@@ -1716,6 +1752,10 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
           _opponentIdMeta,
           opponentId.isAcceptableOrUnknown(
               data['opponent_id']!, _opponentIdMeta));
+    }
+    if (data.containsKey('trace_id')) {
+      context.handle(_traceIdMeta,
+          traceId.isAcceptableOrUnknown(data['trace_id']!, _traceIdMeta));
     }
     if (data.containsKey('transaction_hash')) {
       context.handle(
@@ -2806,6 +2846,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         createdAt:
             Snapshots.$converter0.mapToDart(row.read<int>('created_at'))!,
         opponentId: row.read<String?>('opponent_id'),
+        traceId: row.read<String?>('trace_id'),
         transactionHash: row.read<String?>('transaction_hash'),
         sender: row.read<String?>('sender'),
         receiver: row.read<String?>('receiver'),
@@ -2813,8 +2854,8 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         confirmations: row.read<int?>('confirmations'),
         avatarUrl: row.read<String?>('avatar_url'),
         opponentFulName: row.read<String?>('opponent_ful_name'),
-        assetSymbol: row.read<String>('asset_symbol'),
-        assetConfirmations: row.read<int>('asset_confirmations'),
+        assetSymbol: row.read<String?>('asset_symbol'),
+        assetConfirmations: row.read<int?>('asset_confirmations'),
       );
     });
   }
@@ -2884,10 +2925,10 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         confirmations: row.read<int>('confirmations'),
         assetKey: row.read<String?>('asset_key'),
         depositEntries: row.read<String?>('deposit_entries'),
-        chainSymbol: row.read<String>('chainSymbol'),
-        chainIconUrl: row.read<String>('chainIconUrl'),
+        chainSymbol: row.read<String?>('chainSymbol'),
+        chainIconUrl: row.read<String?>('chainIconUrl'),
         fiatRate: row.read<double>('fiatRate'),
-        chainName: row.read<String>('chainName'),
+        chainName: row.read<String?>('chainName'),
         hidden: row.read<bool?>('hidden'),
       );
     });
@@ -2907,6 +2948,7 @@ class SnapshotItem {
   final String amount;
   final DateTime createdAt;
   final String? opponentId;
+  final String? traceId;
   final String? transactionHash;
   final String? sender;
   final String? receiver;
@@ -2914,8 +2956,8 @@ class SnapshotItem {
   final int? confirmations;
   final String? avatarUrl;
   final String? opponentFulName;
-  final String assetSymbol;
-  final int assetConfirmations;
+  final String? assetSymbol;
+  final int? assetConfirmations;
   SnapshotItem({
     required this.snapshotId,
     required this.type,
@@ -2923,6 +2965,7 @@ class SnapshotItem {
     required this.amount,
     required this.createdAt,
     this.opponentId,
+    this.traceId,
     this.transactionHash,
     this.sender,
     this.receiver,
@@ -2930,8 +2973,8 @@ class SnapshotItem {
     this.confirmations,
     this.avatarUrl,
     this.opponentFulName,
-    required this.assetSymbol,
-    required this.assetConfirmations,
+    this.assetSymbol,
+    this.assetConfirmations,
   });
   @override
   int get hashCode => $mrjf($mrjc(
@@ -2947,23 +2990,27 @@ class SnapshotItem {
                       $mrjc(
                           opponentId.hashCode,
                           $mrjc(
-                              transactionHash.hashCode,
+                              traceId.hashCode,
                               $mrjc(
-                                  sender.hashCode,
+                                  transactionHash.hashCode,
                                   $mrjc(
-                                      receiver.hashCode,
+                                      sender.hashCode,
                                       $mrjc(
-                                          memo.hashCode,
+                                          receiver.hashCode,
                                           $mrjc(
-                                              confirmations.hashCode,
+                                              memo.hashCode,
                                               $mrjc(
-                                                  avatarUrl.hashCode,
+                                                  confirmations.hashCode,
                                                   $mrjc(
-                                                      opponentFulName.hashCode,
+                                                      avatarUrl.hashCode,
                                                       $mrjc(
-                                                          assetSymbol.hashCode,
-                                                          assetConfirmations
-                                                              .hashCode)))))))))))))));
+                                                          opponentFulName
+                                                              .hashCode,
+                                                          $mrjc(
+                                                              assetSymbol
+                                                                  .hashCode,
+                                                              assetConfirmations
+                                                                  .hashCode))))))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2974,6 +3021,7 @@ class SnapshotItem {
           other.amount == this.amount &&
           other.createdAt == this.createdAt &&
           other.opponentId == this.opponentId &&
+          other.traceId == this.traceId &&
           other.transactionHash == this.transactionHash &&
           other.sender == this.sender &&
           other.receiver == this.receiver &&
@@ -2992,6 +3040,7 @@ class SnapshotItem {
           ..write('amount: $amount, ')
           ..write('createdAt: $createdAt, ')
           ..write('opponentId: $opponentId, ')
+          ..write('traceId: $traceId, ')
           ..write('transactionHash: $transactionHash, ')
           ..write('sender: $sender, ')
           ..write('receiver: $receiver, ')
@@ -3022,10 +3071,10 @@ class AssetResult {
   final int confirmations;
   final String? assetKey;
   final String? depositEntries;
-  final String chainSymbol;
-  final String chainIconUrl;
+  final String? chainSymbol;
+  final String? chainIconUrl;
   final double fiatRate;
-  final String chainName;
+  final String? chainName;
   final bool? hidden;
   AssetResult({
     required this.assetId,
@@ -3043,10 +3092,10 @@ class AssetResult {
     required this.confirmations,
     this.assetKey,
     this.depositEntries,
-    required this.chainSymbol,
-    required this.chainIconUrl,
+    this.chainSymbol,
+    this.chainIconUrl,
     required this.fiatRate,
-    required this.chainName,
+    this.chainName,
     this.hidden,
   });
   @override

@@ -359,7 +359,7 @@ class _AssetDescriptionBottomSheet extends StatelessWidget {
           ),
           _AssetBottomSheetTile(
             title: Text(context.l10n.chain),
-            subtitle: Text(asset.chainName),
+            subtitle: Text(asset.chainName ?? ''),
           ),
           _AssetBottomSheetTile(
             title: Text(context.l10n.contract),
