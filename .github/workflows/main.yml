@@ -21,7 +21,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'master' # 'master', 'beta', 'dev' or 'stable'
-      
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -29,12 +29,15 @@ jobs:
       - name: Verify formatting
         run: flutter format --set-exit-if-changed .
 
+      - name: Run Build Runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
       # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
         run: flutter analyze
-        
+
       - name: Run tests
         run: flutter test --no-sound-null-safety
-      
+
       - name: Build APP
         run: flutter build web
