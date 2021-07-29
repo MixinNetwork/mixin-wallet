@@ -75,7 +75,10 @@ class _FilterBottomSheetDialog extends HookWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MixinBottomSheetTitle(title: Text(context.l10n.filterTitle)),
+              MixinBottomSheetTitle(
+                title: Text(context.l10n.filterTitle),
+                padding: EdgeInsets.zero,
+              ),
               const SizedBox(height: 10),
               _FilterSectionTitle(context.l10n.sortBy),
               const SizedBox(height: 20),
@@ -234,12 +237,11 @@ class _Button extends StatelessWidget {
   final BoxDecoration decoration;
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        child: Container(
-          height: 44,
-          width: 140,
-          decoration: decoration.copyWith(
+  Widget build(BuildContext context) => ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: context.theme.accent,
+          fixedSize: const Size(140, 44),
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           alignment: Alignment.center,
@@ -247,14 +249,15 @@ class _Button extends StatelessWidget {
             vertical: 12,
             horizontal: 32,
           ),
-          child: Center(
-            child: DefaultTextStyle(
-              style: TextStyle(
-                color: context.theme.background,
-                fontSize: 14,
-              ),
-              child: text,
+        ),
+        onPressed: onTap,
+        child: Center(
+          child: DefaultTextStyle(
+            style: TextStyle(
+              color: context.theme.background,
+              fontSize: 14,
             ),
+            child: text,
           ),
         ),
       );

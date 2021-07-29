@@ -32,29 +32,33 @@ class MixinBottomSheetTitle extends StatelessWidget {
     Key? key,
     required this.title,
     this.action = const _BottomSheetCloseButton(),
+    this.padding = const EdgeInsets.only(left: 20, right: 12),
   }) : super(key: key);
 
   final Widget title;
   final Widget action;
 
+  final EdgeInsets padding;
+
   @override
   Widget build(BuildContext context) => SizedBox(
         height: 70,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(width: 20),
-            DefaultTextStyle(
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: context.theme.text,
-                ),
-                child: title),
-            const Spacer(),
-            action,
-            const SizedBox(width: 12),
-          ],
+        child: Padding(
+          padding: padding,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              DefaultTextStyle(
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: context.theme.text,
+                  ),
+                  child: title),
+              const Spacer(),
+              action,
+            ],
+          ),
         ),
       );
 }

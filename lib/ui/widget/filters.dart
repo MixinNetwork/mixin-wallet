@@ -17,18 +17,24 @@ class FilterWidget<T> extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: () => onChanged?.call(value),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
-          decoration: BoxDecoration(
-            color: value == groupValue ? const Color(0xFFF5F7FA) : Colors.white,
+  Widget build(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          color: value == groupValue ? const Color(0xFFF5F7FA) : Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: value == groupValue
+              ? Border.all(color: const Color(0xFFF5F7FA))
+              : Border.all(color: const Color(0xFFE5E7EB)),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
             borderRadius: BorderRadius.circular(8),
-            border: value == groupValue
-                ? Border.all(color: const Color(0xFFF5F7FA))
-                : Border.all(color: const Color(0xFFE5E7EB)),
+            onTap: () => onChanged?.call(value),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+              child: child,
+            ),
           ),
-          child: child,
         ),
       );
 }
