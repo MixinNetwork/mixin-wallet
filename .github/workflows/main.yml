@@ -1,0 +1,54 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'master' # 'master', 'beta', 'dev' or 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # verify the use of 'dart format' on each commit.
+      - name: Verify formatting
+        run: flutter format --set-exit-if-changed .
+
+      - name: Generator ENV
+        run: |
+          tee .development.env &>/dev/null << EOF
+          CLIENT_ID=DEV_KEY
+          CLIENT_SECRET=DEV_KEY
+          EOF
+          tee .production.env &>/dev/null << EOF
+          CLIENT_ID=PRODUCTION_KEY
+          CLIENT_SECRET=PRODUCTION_KEY
+          EOF
+
+      - name: Run Build Runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      # Consider passing '--fatal-infos' for slightly stricter analysis.
+      - name: Analyze project source
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test --no-sound-null-safety
+
+      - name: Build APP
+        run: flutter build web
