@@ -430,20 +430,20 @@ class L10n {
     );
   }
 
-  /// `,value then {value}`
+  /// `value then {value}`
   String walletTransactionThatTimeValue(Object value) {
     return Intl.message(
-      ',value then $value',
+      'value then $value',
       name: 'walletTransactionThatTimeValue',
       desc: '',
       args: [value],
     );
   }
 
-  /// `,value then N/A`
+  /// `value then N/A`
   String get walletTransactionThatTimeNoValue {
     return Intl.message(
-      ',value then N/A',
+      'value then N/A',
       name: 'walletTransactionThatTimeNoValue',
       desc: '',
       args: [],

@@ -104,29 +104,35 @@ class _SnapshotDetailHeader extends HookWidget {
               symbolBorder: const BorderSide(color: Colors.white, width: 1.67),
             ),
             const SizedBox(height: 18),
-            Text.rich(TextSpan(children: [
-              TextSpan(
-                  text: snapshot.amount.numberFormat(),
-                  style: TextStyle(
-                    fontFamily: 'Mixin Condensed',
-                    fontSize: 48,
-                    color: snapshot.type == SnapshotType.pending
-                        ? Colors.white
-                        : snapshot.isPositive
-                            ? context.theme.green
-                            : context.theme.red,
-                  )),
-              const WidgetSpan(child: SizedBox(width: 2)),
-              TextSpan(
-                  text: asset.symbol,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white.withOpacity(0.4),
-                  )),
-            ])),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SelectableText.rich(
+                TextSpan(children: [
+                  TextSpan(
+                      text: snapshot.amount.numberFormat().overflow,
+                      style: TextStyle(
+                        fontFamily: 'Mixin Condensed',
+                        fontSize: 48,
+                        color: snapshot.type == SnapshotType.pending
+                            ? Colors.white
+                            : snapshot.isPositive
+                                ? context.theme.green
+                                : context.theme.red,
+                      )),
+                  const TextSpan(text: ' '),
+                  TextSpan(
+                      text: asset.symbol.overflow,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white.withOpacity(0.4),
+                      )),
+                ]),
+                textAlign: TextAlign.center,
+              ),
+            ),
             const SizedBox(height: 2),
             _ValuesDescription(snapshot: snapshot, asset: asset),
-            const SizedBox(height: 38),
+            const SizedBox(height: 28),
           ],
         ),
       );
@@ -152,31 +158,36 @@ class _ValuesDescription extends HookWidget {
       keys: [snapshot.snapshotId],
     ).data?.data;
 
-    final String description;
+    final String? thatTimeValue;
 
     final currentValue = context.l10n.walletTransactionCurrentValue(
       snapshot.amountOfCurrentCurrency(asset).abs().currencyFormat,
     );
+
     if (ticker == null) {
-      description = currentValue;
+      thatTimeValue = null;
     } else if (ticker.priceUsd == '0') {
-      description =
-          '$currentValue${context.l10n.walletTransactionThatTimeNoValue}';
+      thatTimeValue = context.l10n.walletTransactionThatTimeNoValue;
     } else {
-      description = currentValue +
-          context.l10n.walletTransactionThatTimeValue(
-            (snapshot.amount.asDecimal *
-                    ticker.priceUsd.asDecimal *
-                    asset.fiatRate.asDecimal)
-                .abs()
-                .currencyFormat,
-          );
+      thatTimeValue = context.l10n.walletTransactionThatTimeValue(
+        (snapshot.amount.asDecimal *
+                ticker.priceUsd.asDecimal *
+                asset.fiatRate.asDecimal)
+            .abs()
+            .currencyFormat,
+      );
     }
-    return Text(
-      description,
+    return DefaultTextStyle(
       style: TextStyle(
         fontSize: 14,
         color: Colors.white.withOpacity(0.5),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(currentValue),
+          if (thatTimeValue != null) Text(thatTimeValue),
+        ],
       ),
     );
   }
@@ -215,11 +226,14 @@ class _TransactionDetailInfo extends StatelessWidget {
                 ),
                 _TransactionInfoTile(
                   title: Text(context.l10n.transactionsType.toUpperCase()),
-                  subtitle: TransactionTypeWidget(item: snapshot),
+                  subtitle: TransactionTypeWidget(
+                    item: snapshot,
+                    selectable: true,
+                  ),
                 ),
                 _TransactionInfoTile(
                   title: Text(context.l10n.assetType.toUpperCase()),
-                  subtitle: Text(asset.name),
+                  subtitle: SelectableText(asset.name),
                 ),
                 _TransactionInfoTile(
                   title: Text(context.l10n.from.toUpperCase()),
@@ -231,13 +245,13 @@ class _TransactionDetailInfo extends StatelessWidget {
                 ),
                 _TransactionInfoTile(
                   title: Text(context.l10n.memo.toUpperCase()),
-                  subtitle: Text(snapshot.memo ?? ''),
+                  subtitle: SelectableText(snapshot.memo ?? ''),
                 ),
                 _TransactionInfoTile(
                   title: Text(context.l10n.time.toUpperCase()),
-                  subtitle:
-                      Text('${DateFormat.yMMMMd().format(snapshot.createdAt)} '
-                          '${DateFormat.Hms().format(snapshot.createdAt)}'),
+                  subtitle: SelectableText(
+                      '${DateFormat.yMMMMd().format(snapshot.createdAt)} '
+                      '${DateFormat.Hms().format(snapshot.createdAt)}'),
                 ),
               ],
             ),
@@ -275,7 +289,7 @@ class _From extends StatelessWidget {
         break;
     }
 
-    return Text(sender);
+    return SelectableText(sender);
   }
 }
 
@@ -304,7 +318,7 @@ class _To extends StatelessWidget {
         receiver = snapshot.receiver ?? '';
         break;
     }
-    return Text(receiver);
+    return SelectableText(receiver);
   }
 }
 

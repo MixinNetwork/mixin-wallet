@@ -112,9 +112,15 @@ class TransactionItem extends HookWidget {
 }
 
 class TransactionTypeWidget extends StatelessWidget {
-  const TransactionTypeWidget({Key? key, required this.item}) : super(key: key);
+  const TransactionTypeWidget({
+    Key? key,
+    required this.item,
+    this.selectable = false,
+  }) : super(key: key);
 
   final SnapshotItem item;
+
+  final bool selectable;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +152,10 @@ class TransactionTypeWidget extends StatelessWidget {
         break;
     }
 
-    return Text(title);
+    if (!selectable) {
+      return Text(title);
+    }
+    return SelectableText(title);
   }
 }
 

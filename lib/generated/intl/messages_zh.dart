@@ -29,7 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m8(value) => "价值 ${value}";
 
-  static String m9(value) => "，当时价值 ${value}";
+  static String m9(value) => "当时价值 ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -124,7 +124,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transfer": MessageLookupByLibrary.simpleMessage("转账"),
         "walletTransactionCurrentValue": m8,
         "walletTransactionThatTimeNoValue":
-            MessageLookupByLibrary.simpleMessage("，当时价值 暂无"),
+            MessageLookupByLibrary.simpleMessage("当时价值 暂无"),
         "walletTransactionThatTimeValue": m9,
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现")
       };
