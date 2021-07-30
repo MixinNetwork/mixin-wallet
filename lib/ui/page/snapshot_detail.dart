@@ -109,14 +109,13 @@ class _SnapshotDetailHeader extends HookWidget {
             ),
             const SizedBox(height: 18),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: SelectableText.rich(
                 TextSpan(children: [
                   TextSpan(
                       text: snapshot.amount.numberFormat().overflow,
                       style: TextStyle(
-                        fontFamily: 'Mixin Condensed',
-                        fontSize: 48,
+                        fontSize: 34,
                         color: snapshot.type == SnapshotType.pending
                             ? Colors.white
                             : snapshot.isPositive

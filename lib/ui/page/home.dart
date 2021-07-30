@@ -220,7 +220,7 @@ class _Header extends HookWidget {
                 balance.currencyFormatWithoutSymbol,
                 style: TextStyle(
                   color: context.theme.background,
-                  fontSize: 48,
+                  fontSize: 34,
                 ),
               ),
             ],
