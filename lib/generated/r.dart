@@ -4,6 +4,8 @@
 // **************************************************************************
 class R {
   const R._();
+  static const String resourcesAlertSvg = 'resources/alert.svg';
+
   static const String resourcesAllTransactionsSvg =
       'resources/all_transactions.svg';
 

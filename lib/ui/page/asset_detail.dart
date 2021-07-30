@@ -69,14 +69,14 @@ class _AssetDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: BrightnessData.themeOf(context).background,
+        backgroundColor: context.theme.background,
         appBar: MixinAppBar(
           backButtonColor: Colors.white,
           title: Text(asset.name),
           actions: [
             Center(
               child: ActionButton(
-                  name: R.resourcesIcQuestionSvg,
+                  name: R.resourcesAlertSvg,
                   color: Colors.white,
                   size: 20,
                   onTap: () {
