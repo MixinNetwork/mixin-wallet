@@ -9,6 +9,7 @@ import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/over_scroller.dart';
 import '../widget/symbol.dart';
 import '../widget/transactions/transaction_item.dart';
 
@@ -54,23 +55,26 @@ class _SnapshotDetailPageBody extends HookWidget {
     if (snapshotItem == null || asset == null) {
       return const SizedBox();
     }
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _SnapshotDetailHeader(
-            snapshot: snapshotItem,
-            asset: asset,
-          ),
-          _TransactionDetailInfo(
-            snapshot: snapshotItem,
-            asset: asset,
-          ),
-          Transform.translate(
-            offset: const Offset(0, -1),
-            child: Container(height: 2, color: context.theme.background),
-          )
-        ],
+    return ColoredOverScrollTopWidget(
+      background: context.theme.accent,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _SnapshotDetailHeader(
+              snapshot: snapshotItem,
+              asset: asset,
+            ),
+            _TransactionDetailInfo(
+              snapshot: snapshotItem,
+              asset: asset,
+            ),
+            Transform.translate(
+              offset: const Offset(0, -1),
+              child: Container(height: 2, color: context.theme.background),
+            )
+          ],
+        ),
       ),
     );
   }

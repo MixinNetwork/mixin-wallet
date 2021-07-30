@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mixin_wallet/ui/widget/over_scroller.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
@@ -47,41 +48,44 @@ class Home extends HookWidget {
           ),
         ),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: _Header(data: assetResults),
-          ),
-          const SliverToBoxAdapter(
-            child: _AssetHeader(),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                final item = assetResults[index];
-                return _SwipeToHide(
-                  key: ValueKey(item.assetId),
-                  child: AssetWidget(data: item),
-                  onDismiss: () {
-                    context.appServices
-                        .updateAssetHidden(item.assetId, hidden: true);
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(context.l10n.alreadyHidden(item.name)),
-                      action: SnackBarAction(
-                        label: context.l10n.undo,
-                        onPressed: () {
-                          context.appServices
-                              .updateAssetHidden(item.assetId, hidden: false);
-                        },
-                      ),
-                    ));
-                  },
-                );
-              },
-              childCount: assetResults.length,
+      body: ColoredOverScrollTopWidget(
+        background: context.theme.accent,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: _Header(data: assetResults),
             ),
-          ),
-        ],
+            const SliverToBoxAdapter(
+              child: _AssetHeader(),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  final item = assetResults[index];
+                  return _SwipeToHide(
+                    key: ValueKey(item.assetId),
+                    child: AssetWidget(data: item),
+                    onDismiss: () {
+                      context.appServices
+                          .updateAssetHidden(item.assetId, hidden: true);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(context.l10n.alreadyHidden(item.name)),
+                        action: SnackBarAction(
+                          label: context.l10n.undo,
+                          onPressed: () {
+                            context.appServices
+                                .updateAssetHidden(item.assetId, hidden: false);
+                          },
+                        ),
+                      ));
+                    },
+                  );
+                },
+                childCount: assetResults.length,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

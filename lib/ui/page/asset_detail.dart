@@ -13,6 +13,7 @@ import '../widget/action_button.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/mixin_elevated_button.dart';
+import '../widget/over_scroller.dart';
 import '../widget/symbol.dart';
 import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
@@ -121,29 +122,32 @@ class _AssetDetailBody extends HookWidget {
               orderByAmount: filter.value.sortBy == SortBy.amount,
               types: filter.value.filterBy.snapshotTypes)
           .get(),
-      builder: (context, snapshots) => CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: _AssetHeader(asset: asset),
-          ),
-          SliverToBoxAdapter(
-            child: _AssetTransactionsHeader(filter: filter),
-          ),
-          if (snapshots.isEmpty)
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(top: 130),
-                child: EmptyTransaction(),
-              ),
+      builder: (context, snapshots) => ColoredOverScrollTopWidget(
+        background: context.theme.accent,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: _AssetHeader(asset: asset),
             ),
-          if (snapshots.isNotEmpty)
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => TransactionItem(item: snapshots[index]),
-                childCount: snapshots.length,
-              ),
+            SliverToBoxAdapter(
+              child: _AssetTransactionsHeader(filter: filter),
             ),
-        ],
+            if (snapshots.isEmpty)
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 130),
+                  child: EmptyTransaction(),
+                ),
+              ),
+            if (snapshots.isNotEmpty)
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => TransactionItem(item: snapshots[index]),
+                  childCount: snapshots.length,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
