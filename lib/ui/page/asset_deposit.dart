@@ -456,6 +456,7 @@ class _AddressTypeBottomSheet extends StatelessWidget {
         child: Column(
           children: [
             MixinBottomSheetTitle(
+              padding: EdgeInsets.zero,
               title: Row(children: [
                 Text(context.l10n.address),
               ]),

@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mixin_wallet/ui/widget/over_scroller.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
@@ -18,6 +17,7 @@ import '../widget/avatar.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/mixin_elevated_button.dart';
+import '../widget/over_scroller.dart';
 import '../widget/search_asset_bottom_sheet.dart';
 
 class Home extends HookWidget {
