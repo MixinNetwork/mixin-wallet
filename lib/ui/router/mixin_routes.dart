@@ -52,6 +52,7 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
           },
           stackedRoutes: [
             VWidget(
+                key: const ValueKey('Home'),
                 path: homeUri.toString(),
                 widget: const Home(),
                 stackedRoutes: [
@@ -61,6 +62,7 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                       widget: const Withdrawal(),
                       stackedRoutes: [
                         VWidget(
+                          key: const ValueKey('WithdrawalAddresses'),
                           path: withdrawalAddressesPath,
                           widget: const WithdrawalAddresses(),
                         ),
@@ -69,16 +71,18 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     key: const ValueKey('AssetDetail'),
                     path: assetDetailPath,
                     widget: const AssetDetail(),
+                    stackedRoutes: [
+                      VWidget(
+                        key: const ValueKey('SnapshotDetail'),
+                        path: snapshotDetailPath,
+                        widget: const SnapshotDetail(),
+                      ),
+                    ],
                   ),
                   VWidget(
                     key: const ValueKey('AssetDeposit'),
                     path: assetDepositPath,
                     widget: const AssetDeposit(),
-                  ),
-                  VWidget(
-                    key: const ValueKey('SnapshotDetail'),
-                    path: snapshotDetailPath,
-                    widget: const SnapshotDetail(),
                   ),
                   VWidget(
                     key: const ValueKey('NotFound'),

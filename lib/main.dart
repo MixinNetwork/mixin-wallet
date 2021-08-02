@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -66,6 +67,14 @@ class _Router extends StatelessWidget {
         key: vRouterStateKey,
         title: 'Mixin Wallet',
         debugShowCheckedModeBanner: false,
+        buildTransition: (Animation<double> animation,
+                Animation<double> secondaryAnimation, Widget child) =>
+            CupertinoPageTransition(
+          primaryRouteAnimation: animation,
+          secondaryRouteAnimation: secondaryAnimation,
+          linearTransition: true,
+          child: child,
+        ),
         localizationsDelegates: const [
           L10n.delegate,
           GlobalMaterialLocalizations.delegate,
