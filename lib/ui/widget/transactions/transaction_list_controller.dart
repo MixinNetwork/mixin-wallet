@@ -35,6 +35,8 @@ class TransactionListController {
 
   bool _loading = false;
 
+  var _disposed = false;
+
   Future<void> loadMoreItem() => _loadMoreItem(_pageSize);
 
   Future<void> _loadMoreItem(int limit) async {
@@ -64,13 +66,20 @@ class TransactionListController {
 
     try {
       await networkResult;
-      _snapshotItems.addAll(await _loadMoreItemDb(offset, limit));
-      _snapshotFromDb.clear();
-      _notifySnapshotsItemUpdated();
+      if (!_disposed) {
+        _snapshotItems.addAll(await _loadMoreItemDb(offset, limit));
+        _snapshotFromDb.clear();
+        _notifySnapshotsItemUpdated();
+      }
     } catch (error, s) {
       e('failed to load item from network. $error $s');
     }
+
     _loading = false;
+
+    if (_disposed) {
+      return;
+    }
 
     if (_pendingPageSize != null) {
       updatePageSize(_pendingPageSize!);
@@ -108,6 +117,7 @@ class TransactionListController {
   }
 
   void dispose() {
+    _disposed = true;
     _autoFillTask?.cancel();
     _autoFillTask = null;
   }
