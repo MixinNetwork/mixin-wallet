@@ -343,7 +343,6 @@ class _Item extends StatelessWidget {
                   onTap: () {
                     showMixinBottomSheet(
                       context: context,
-                      isScrollControlled: true,
                       builder: (context) => _QRBottomSheetContent(
                         data: desc,
                         asset: asset,
@@ -371,7 +370,6 @@ class _QRBottomSheetContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        height: MediaQuery.of(context).size.height - 200,
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
         child: Column(
           children: [
@@ -420,15 +418,6 @@ class _QRBottomSheetContent extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                 )),
-            const Spacer(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: ActionButton(
-                  name: R.resourcesIcSaveAlbumSvg,
-                  color: BrightnessData.themeOf(context).icon,
-                  size: 30,
-                  onTap: () {}),
-            ),
             const SizedBox(height: 64),
           ],
         ),
