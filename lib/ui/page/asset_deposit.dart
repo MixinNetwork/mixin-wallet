@@ -299,10 +299,12 @@ class _Item extends StatelessWidget {
       ),
       child: RoundContainer(
         height: null,
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+        padding: EdgeInsets.zero,
         child: Row(
           children: [
             Expanded(
+                child: Padding(
+              padding: const EdgeInsets.only(left: 20, top: 12, bottom: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -322,37 +324,43 @@ class _Item extends StatelessWidget {
                       )),
                 ],
               ),
-            ),
+            )),
             Row(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                ActionButton(
-                  name: R.resourcesIcCopySvg,
-                  color: BrightnessData.themeOf(context).icon,
-                  onTap: () {
-                    Clipboard.setData(ClipboardData(text: desc)).then((_) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(context.l10n.copyToClipboard)));
-                    });
-                  },
-                ),
-                const SizedBox(width: 4),
-                ActionButton(
-                  name: R.resourcesIcQrCodeSvg,
-                  color: BrightnessData.themeOf(context).icon,
-                  onTap: () {
-                    showMixinBottomSheet(
-                      context: context,
-                      builder: (context) => _QRBottomSheetContent(
-                        data: desc,
-                        asset: asset,
-                      ),
-                    );
-                  },
-                ),
+                SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: Material(
+                        child: ActionButton(
+                      name: R.resourcesIcCopySvg,
+                      padding: const EdgeInsets.all(12),
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: desc)).then((_) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(context.l10n.copyToClipboard)));
+                        });
+                      },
+                    ))),
+                SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: Material(
+                        child: ActionButton(
+                      name: R.resourcesIcQrCodeSvg,
+                      padding: const EdgeInsets.all(12),
+                      onTap: () {
+                        showMixinBottomSheet(
+                          context: context,
+                          builder: (context) => _QRBottomSheetContent(
+                            data: desc,
+                            asset: asset,
+                          ),
+                        );
+                      },
+                    ))),
+                const SizedBox(width: 12)
               ],
             ),
-            const SizedBox(height: 70),
           ],
         ),
       ));
@@ -451,23 +459,22 @@ class _AddressTypeBottomSheet extends StatelessWidget {
               ]),
             ),
             const SizedBox(height: 20),
-            RoundContainer(
-              height: 148,
-              child: Column(
-                children: [
-                  _AddressTypeItem(
-                      depositEntry: depositEntries[0],
-                      destination: destination,
-                      checkedDestination: checkedDestination,
-                      onTap: onTap),
-                  _AddressTypeItem(
-                      depositEntry: depositEntries[1],
-                      destination: destination,
-                      checkedDestination: checkedDestination,
-                      onTap: onTap),
-                ],
-              ),
-            )
+            Column(
+              children: [
+                _AddressTypeItem(
+                    depositEntry: depositEntries[0],
+                    destination: destination,
+                    checkedDestination: checkedDestination,
+                    onTap: onTap,
+                    isTop: true),
+                _AddressTypeItem(
+                    depositEntry: depositEntries[1],
+                    destination: destination,
+                    checkedDestination: checkedDestination,
+                    onTap: onTap,
+                    isTop: false),
+              ],
+            ),
           ],
         ),
       );
@@ -480,41 +487,58 @@ class _AddressTypeItem extends StatelessWidget {
     required this.destination,
     required this.checkedDestination,
     required this.onTap,
+    required this.isTop,
   }) : super(key: key);
 
   final DepositEntry depositEntry;
   final String destination;
   final String checkedDestination;
   final _AddressTypeCallback onTap;
+  final bool isTop;
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: () {
-          if (checkedDestination != depositEntry.destination) {
-            onTap(depositEntry);
-          }
-        },
-        child: Container(
-            height: 64,
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-            child: Row(
-              children: [
-                Text(_getDestinationType(destination, depositEntry.destination),
-                    style: TextStyle(
-                      color: context.theme.text,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    )),
-                const Spacer(),
-                depositEntry.destination == checkedDestination
-                    ? Align(
-                        alignment: Alignment.centerRight,
-                        child: SvgPicture.asset(R.resourcesIcCheckSvg),
-                      )
-                    : const SizedBox(),
-              ],
-            )),
-      );
+  Widget build(BuildContext context) {
+    const radius = Radius.circular(12);
+    final borderRadius = isTop
+        ? const BorderRadius.vertical(top: radius)
+        : const BorderRadius.vertical(bottom: radius);
+    return SizedBox(
+        height: 74,
+        child: Material(
+          shape: RoundedRectangleBorder(borderRadius: borderRadius),
+          child: InkWell(
+              customBorder: RoundedRectangleBorder(
+                borderRadius: borderRadius,
+              ),
+              onTap: () {
+                if (checkedDestination != depositEntry.destination) {
+                  onTap(depositEntry);
+                }
+              },
+              child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: Row(
+                    children: [
+                      Text(
+                          _getDestinationType(
+                              destination, depositEntry.destination),
+                          style: TextStyle(
+                            color: context.theme.text,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          )),
+                      const Spacer(),
+                      depositEntry.destination == checkedDestination
+                          ? Align(
+                              alignment: Alignment.centerRight,
+                              child: SvgPicture.asset(R.resourcesIcCheckSvg),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ))),
+        ));
+  }
 }
 
 typedef _AddressTypeCallback = void Function(DepositEntry);
