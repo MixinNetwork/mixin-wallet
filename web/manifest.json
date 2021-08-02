@@ -1,11 +1,11 @@
 {
-    "name": "mixin_wallet",
-    "short_name": "mixin_wallet",
+    "name": "Mixin Wallet",
+    "short_name": "Mixin Wallet",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Mixin Flutter Wallet",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
