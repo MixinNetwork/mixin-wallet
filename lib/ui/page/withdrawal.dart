@@ -15,7 +15,6 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
-import '../widget/action_button.dart';
 import '../widget/address_selection_widget.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/mixin_appbar.dart';
@@ -100,10 +99,6 @@ class _WithdrawalPage extends HookWidget {
       appBar: MixinAppBar(
         title: Text(context.l10n.sendToAddress),
         backButtonColor: Colors.white,
-        actions: <Widget>[
-          ActionButton(
-              name: R.resourcesIcFileSvg, color: Colors.white, onTap: () {}),
-        ],
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
