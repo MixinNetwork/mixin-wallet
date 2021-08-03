@@ -98,7 +98,9 @@ class _AssetHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListRoundedHeaderContainer(
+        height: 54,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 20, left: 20),
@@ -113,7 +115,7 @@ class _AssetHeader extends StatelessWidget {
             ),
             const Spacer(),
             Padding(
-              padding: const EdgeInsets.only(top: 8, right: 8),
+              padding: const EdgeInsets.only(top: 14, right: 8),
               child: Row(
                 children: [
                   InkWell(
@@ -124,7 +126,7 @@ class _AssetHeader extends StatelessWidget {
                         builder: (BuildContext context) =>
                             const SearchAssetBottomSheet()),
                     child: Padding(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(6),
                       child: SvgPicture.asset(
                         R.resourcesIcSearchSvg,
                         height: 24,
@@ -133,6 +135,7 @@ class _AssetHeader extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(width: 12),
                   InkWell(
                     customBorder: const CircleBorder(),
                     onTap: () {
@@ -142,7 +145,7 @@ class _AssetHeader extends StatelessWidget {
                       );
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(6),
                       child: SvgPicture.asset(
                         R.resourcesHamburgerMenuSvg,
                         height: 24,
@@ -151,6 +154,7 @@ class _AssetHeader extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(width: 6),
                 ],
               ),
             ),
