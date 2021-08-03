@@ -335,10 +335,10 @@ class _Item extends StatelessWidget {
                       name: R.resourcesIcCopySvg,
                       padding: const EdgeInsets.all(12),
                       onTap: () {
-                        Clipboard.setData(ClipboardData(text: desc)).then((_) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(context.l10n.copyToClipboard)));
-                        });
+                        Clipboard.setData(ClipboardData(text: desc));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            behavior: SnackBarBehavior.floating,
+                            content: Text(context.l10n.copyToClipboard)));
                       },
                     ))),
                 SizedBox(
@@ -355,6 +355,7 @@ class _Item extends StatelessWidget {
                             data: desc,
                             asset: asset,
                           ),
+                          isScrollControlled: true,
                         );
                       },
                     ))),
@@ -378,6 +379,7 @@ class _QRBottomSheetContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+        height: 480,
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
         child: Column(
           children: [
