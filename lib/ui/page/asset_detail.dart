@@ -178,7 +178,7 @@ class _AssetHeader extends StatelessWidget {
             const SizedBox(height: 18),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Text.rich(
+              child: SelectableText.rich(
                 TextSpan(children: [
                   TextSpan(
                       text: asset.balance.numberFormat().overflow,
@@ -195,6 +195,7 @@ class _AssetHeader extends StatelessWidget {
                       )),
                 ]),
                 textAlign: TextAlign.center,
+                enableInteractiveSelection: false,
               ),
             ),
             const SizedBox(height: 2),
