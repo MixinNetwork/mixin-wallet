@@ -13,7 +13,6 @@ import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
@@ -60,6 +59,7 @@ class _WithdrawalPage extends HookWidget {
     final valueSecond = useState<String>('0.00'.currencyFormatWithoutSymbol);
     final symbolFirst = useState<bool>(false);
     final switched = useState<bool>(false);
+    final sendEnable = useState<bool>(false);
 
     final currency = auth!.account.fiatCurrency;
 
@@ -68,8 +68,8 @@ class _WithdrawalPage extends HookWidget {
     final controller = useTextEditingController();
     useEffect(() {
       void notifyChanged() {
-        refreshValues(controller, symbolFirst, switched, valueFirst,
-            valueSecond, assetPriceUsd);
+        refreshValues(controller, symbolFirst, switched, selectedAddress,
+            sendEnable, valueFirst, valueSecond, assetPriceUsd);
       }
 
       controller.addListener(notifyChanged);
@@ -129,8 +129,15 @@ class _WithdrawalPage extends HookWidget {
                           double.tryParse(assetResult.priceUsd) ?? 1;
                       selectedAddress.value = null;
                       switched.value = false;
-                      refreshValues(controller, symbolFirst, switched,
-                          valueFirst, valueSecond, assetPriceUsd);
+                      refreshValues(
+                          controller,
+                          symbolFirst,
+                          switched,
+                          selectedAddress,
+                          sendEnable,
+                          valueFirst,
+                          valueSecond,
+                          assetPriceUsd);
                     }
                   },
                   selectedAssetId: asset.assetId,
@@ -192,6 +199,8 @@ class _WithdrawalPage extends HookWidget {
                 return;
               }
               selectedAddress.value = selected;
+              refreshValues(controller, symbolFirst, switched, selectedAddress,
+                  sendEnable, valueFirst, valueSecond, assetPriceUsd);
             },
             child: RoundContainer(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -302,8 +311,15 @@ class _WithdrawalPage extends HookWidget {
                     child: InkWell(
                         onTap: () {
                           switched.value = !switched.value;
-                          refreshValues(controller, symbolFirst, switched,
-                              valueFirst, valueSecond, assetPriceUsd);
+                          refreshValues(
+                              controller,
+                              symbolFirst,
+                              switched,
+                              selectedAddress,
+                              sendEnable,
+                              valueFirst,
+                              valueSecond,
+                              assetPriceUsd);
                         },
                         child: SvgPicture.asset(R.resourcesIcSwitchSvg))),
               ],
@@ -324,11 +340,15 @@ class _WithdrawalPage extends HookWidget {
                       ? valueSecond.value
                       : controller.text.trim();
                   if (amount.isEmpty) {
-                    i('Empty amount');
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(context.l10n.emptyAmount)));
                     return;
                   }
                   if (selectedAddress.value == null) {
-                    i('No selected address');
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(context.l10n.noAddressSelected)));
                     return;
                   }
                   final addressId = selectedAddress.value!.addressId;
@@ -370,7 +390,9 @@ class _WithdrawalPage extends HookWidget {
                     height: 44,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: const Color(0xffB2B3C7),
+                      color: sendEnable.value
+                          ? context.theme.accent
+                          : const Color(0xffB2B3C7),
                     ),
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(
@@ -393,6 +415,8 @@ class _WithdrawalPage extends HookWidget {
       TextEditingController controller,
       ValueNotifier<bool> symbolFirst,
       ValueNotifier<bool> switched,
+      ValueNotifier<Addresse?> addressSelected,
+      ValueNotifier<bool> sendEnable,
       ValueNotifier<double> valueFirst,
       ValueNotifier<String> valueSecond,
       ValueNotifier<double> assetPriceUsd) {
@@ -407,6 +431,7 @@ class _WithdrawalPage extends HookWidget {
       valueSecond.value =
           (valueFirst.value * assetPriceUsd.value).currencyFormatWithoutSymbol;
     }
+    sendEnable.value = valueFirst.value > 0 && addressSelected.value != null;
   }
 }
 

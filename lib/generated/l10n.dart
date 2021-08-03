@@ -929,6 +929,36 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Empty amount`
+  String get emptyAmount {
+    return Intl.message(
+      'Empty amount',
+      name: 'emptyAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No address selected`
+  String get noAddressSelected {
+    return Intl.message(
+      'No address selected',
+      name: 'noAddressSelected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empty address or label`
+  String get emptyLabelOrAddress {
+    return Intl.message(
+      'Empty address or label',
+      name: 'emptyLabelOrAddress',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

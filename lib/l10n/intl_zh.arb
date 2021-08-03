@@ -80,5 +80,8 @@
   "show": "显示",
   "alreadyHidden": "已隐藏 {value}",
   "alreadyShown": "已显示 {value}",
-  "undo": "撤销"
+  "undo": "撤销",
+  "emptyAmount": "金额不能为空",
+  "noAddressSelected": "需要选择一个地址",
+  "emptyLabelOrAddress": "地址和标题不能为空"
 }

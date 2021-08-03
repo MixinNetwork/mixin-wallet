@@ -85,6 +85,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币，例如 TRX、BTT、USDT-TRON 等。"),
         "depositing": MessageLookupByLibrary.simpleMessage("充值中"),
+        "emptyAmount": MessageLookupByLibrary.simpleMessage("金额不能为空"),
+        "emptyLabelOrAddress":
+            MessageLookupByLibrary.simpleMessage("地址和标题不能为空"),
         "fee": MessageLookupByLibrary.simpleMessage("手续费"),
         "filterAll": MessageLookupByLibrary.simpleMessage("全部"),
         "filterApply": MessageLookupByLibrary.simpleMessage("应用"),
@@ -102,6 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumWithdrawal": MessageLookupByLibrary.simpleMessage("最小提现数量："),
         "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin 钱包"),
         "networkFee": MessageLookupByLibrary.simpleMessage("网络手续费："),
+        "noAddressSelected": MessageLookupByLibrary.simpleMessage("需要选择一个地址"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "pendingConfirmations": m9,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),

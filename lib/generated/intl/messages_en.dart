@@ -101,6 +101,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "This address supports all TRC-10 and TRC-20 tokens, such as TRX, BTT, USDT-TRON, etc."),
         "depositing": MessageLookupByLibrary.simpleMessage("Depositing"),
+        "emptyAmount": MessageLookupByLibrary.simpleMessage("Empty amount"),
+        "emptyLabelOrAddress":
+            MessageLookupByLibrary.simpleMessage("Empty address or label"),
         "fee": MessageLookupByLibrary.simpleMessage("Fee"),
         "filterAll": MessageLookupByLibrary.simpleMessage("All"),
         "filterApply": MessageLookupByLibrary.simpleMessage("Apply"),
@@ -122,6 +125,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Minimum withdrawal:"),
         "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin Wallet"),
         "networkFee": MessageLookupByLibrary.simpleMessage("Network fee:"),
+        "noAddressSelected":
+            MessageLookupByLibrary.simpleMessage("No address selected"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "pendingConfirmations": m9,

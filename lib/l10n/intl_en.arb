@@ -86,5 +86,8 @@
   "show": "Show",
   "alreadyHidden": "{value} has been hidden",
   "alreadyShown": "{value} has been shown",
-  "undo": "UNDO"
+  "undo": "UNDO",
+  "emptyAmount": "Empty amount",
+  "noAddressSelected": "No address selected",
+  "emptyLabelOrAddress": "Empty address or label"
 }
