@@ -1,0 +1,4 @@
+import '../mixin.moor';
+
+findFriendsNotBot:
+SELECT * FROM users WHERE relationship = 'FRIEND' AND app_id IS NULL ORDER BY full_name, identity_number ASC;

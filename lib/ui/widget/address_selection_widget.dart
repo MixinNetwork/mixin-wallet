@@ -13,33 +13,40 @@ import '../../util/l10n.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import 'action_button.dart';
+import 'avatar.dart';
 import 'brightness_observer.dart';
 import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 
-Future<Addresse?> showAddressSelectionBottomSheet({
+/// The result might be [User] or [Addresse].
+Future<dynamic> showAddressSelectionBottomSheet({
   required BuildContext context,
   required String assetId,
   Addresse? selectedAddress,
-}) =>
-    showMixinBottomSheet<Addresse>(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => AddressSelectionWidget(
-        assetId: assetId,
-        selectedAddress: selectedAddress,
-      ),
-    );
+  User? selectedUser,
+}) {
+  assert(!(selectedUser != null && selectedAddress != null));
+  return showMixinBottomSheet<dynamic>(
+    context: context,
+    isScrollControlled: true,
+    builder: (context) => _AddressSelectionWidget(
+      assetId: assetId,
+      selectedAddress: selectedAddress,
+    ),
+  );
+}
 
-class AddressSelectionWidget extends HookWidget {
-  const AddressSelectionWidget({
+class _AddressSelectionWidget extends HookWidget {
+  const _AddressSelectionWidget({
     Key? key,
     required this.assetId,
     this.selectedAddress,
+    this.selectedUser,
   }) : super(key: key);
 
   final String assetId;
   final Addresse? selectedAddress;
+  final User? selectedUser;
 
   @override
   Widget build(BuildContext context) {
@@ -54,18 +61,32 @@ class AddressSelectionWidget extends HookWidget {
         ).data ??
         const [];
 
+    final friends =
+        useMemoizedStream(() => context.appServices.friends().watch()).data ??
+            const [];
+
+    useMemoized(() {
+      context.appServices.updateFriends();
+    });
+
     final filterKeywords = useState('');
     final filterList = useMemoized(() {
       if (filterKeywords.value.isEmpty) {
-        return addresses;
+        return [
+          ...addresses,
+          ...friends,
+        ];
       }
-      return addresses
-          .where(
-            (e) =>
-                e.label.containsIgnoreCase(filterKeywords.value) ||
-                e.displayAddress().containsIgnoreCase(filterKeywords.value),
-          )
-          .toList();
+      return [
+        ...addresses.where(
+          (e) =>
+              e.label.containsIgnoreCase(filterKeywords.value) ||
+              e.displayAddress().containsIgnoreCase(filterKeywords.value),
+        ),
+        ...friends.where((e) =>
+            e.identityNumber.containsIgnoreCase(filterKeywords.value) ||
+            (e.fullName?.containsIgnoreCase(filterKeywords.value) == true)),
+      ];
     }, [filterKeywords.value, addresses]);
 
     return SizedBox(
@@ -99,11 +120,22 @@ class AddressSelectionWidget extends HookWidget {
           Expanded(
             child: ListView.builder(
               itemCount: filterList.length,
-              itemBuilder: (BuildContext context, int index) => _Item(
-                address: filterList[index],
-                selectedAddressId: selectedAddress?.addressId,
-                onTap: () => Navigator.pop(context, filterList[index]),
-              ),
+              itemBuilder: (BuildContext context, int index) {
+                final item = filterList[index];
+                if (item is Addresse) {
+                  return _AddressItem(
+                    address: item,
+                    selectedAddressId: selectedAddress?.addressId,
+                  );
+                } else if (item is User) {
+                  return _UserItem(
+                    user: item,
+                    selectedUserId: selectedUser?.userId,
+                  );
+                }
+                assert(false, 'invalid item in list: $item');
+                return const SizedBox();
+              },
             ),
           ),
         ],
@@ -112,17 +144,71 @@ class AddressSelectionWidget extends HookWidget {
   }
 }
 
-class _Item extends StatelessWidget {
-  const _Item({
+class _UserItem extends StatelessWidget {
+  const _UserItem({
+    Key? key,
+    required this.selectedUserId,
+    required this.user,
+  }) : super(key: key);
+
+  final String? selectedUserId;
+  final User user;
+
+  @override
+  Widget build(BuildContext context) => _ItemTile(
+        onTap: () => Navigator.pop(context, user),
+        title: Text(user.fullName?.overflow ?? ''),
+        subtitle: Text(user.identityNumber),
+        selected: user.userId == selectedUserId,
+        leading: Avatar(
+            size: 44,
+            borderWidth: 0,
+            avatarUrl: user.avatarUrl,
+            userId: user.userId,
+            name: user.fullName ?? '?'),
+      );
+}
+
+class _AddressItem extends StatelessWidget {
+  const _AddressItem({
     Key? key,
     required this.address,
     required this.selectedAddressId,
-    required this.onTap,
   }) : super(key: key);
 
   final Addresse address;
   final String? selectedAddressId;
+
+  @override
+  Widget build(BuildContext context) => _ItemTile(
+        onTap: () => Navigator.pop(context, address),
+        title: Text(address.label.overflow),
+        subtitle: Text(address.displayAddress().overflow),
+        selected: address.addressId == selectedAddressId,
+        leading: SvgPicture.asset(
+          R.resourcesTransactionNetSvg,
+          height: 44,
+          width: 44,
+        ),
+      );
+}
+
+class _ItemTile extends StatelessWidget {
+  const _ItemTile({
+    Key? key,
+    required this.leading,
+    required this.onTap,
+    required this.title,
+    required this.subtitle,
+    required this.selected,
+  }) : super(key: key);
+
+  final Widget leading;
   final VoidCallback onTap;
+  final Widget title;
+  final Widget subtitle;
+
+  final bool selected;
 
   @override
   Widget build(BuildContext context) => Material(
@@ -134,11 +220,10 @@ class _Item extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipOval(
-                child: SvgPicture.asset(
-                  R.resourcesTransactionNetSvg,
-                  height: 44,
-                  width: 44,
+              SizedBox.square(
+                dimension: 44,
+                child: ClipOval(
+                  child: leading,
                 ),
               ),
               const SizedBox(width: 12),
@@ -147,17 +232,16 @@ class _Item extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    address.label.overflow,
+                  DefaultTextStyle(
                     style: TextStyle(
                         color: context.theme.text,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         height: 1.4),
+                    child: title,
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    address.displayAddress(),
+                  DefaultTextStyle(
                     softWrap: true,
                     style: TextStyle(
                       color: context.theme.secondaryText,
@@ -165,20 +249,20 @@ class _Item extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       height: 1.4,
                     ),
+                    child: subtitle,
                   ),
                 ],
               )),
               const SizedBox(width: 48),
-              selectedAddressId == address.addressId
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 14),
-                      child: SvgPicture.asset(
-                        R.resourcesIcCheckSvg,
-                        width: 20,
-                        height: 20,
-                      ),
-                    )
-                  : const SizedBox(),
+              if (selected)
+                Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: SvgPicture.asset(
+                    R.resourcesIcCheckSvg,
+                    width: 20,
+                    height: 20,
+                  ),
+                )
             ],
           ),
         ),

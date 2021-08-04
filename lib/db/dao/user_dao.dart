@@ -1,8 +1,25 @@
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:moor/moor.dart';
 
 import '../mixin_database.dart';
 
 part 'user_dao.g.dart';
+
+extension UserMapper on sdk.User {
+  User toDbUser() => User(
+      userId: userId,
+      identityNumber: identityNumber,
+      relationship: relationship,
+      fullName: fullName,
+      avatarUrl: avatarUrl,
+      phone: phone,
+      isVerified: isVerified,
+      appId: app?.appId,
+      biography: biography,
+      muteUntil: DateTime.tryParse(muteUntil),
+      isScam: isScam ? 1 : 0,
+      createdAt: createdAt);
+}
 
 @UseDao(tables: [User])
 class UserDao extends DatabaseAccessor<MixinDatabase> with _$UserDaoMixin {

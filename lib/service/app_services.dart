@@ -9,6 +9,7 @@ import 'package:moor/moor.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../db/dao/snapshot_dao.dart';
+import '../db/dao/user_dao.dart';
 import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
 import '../util/extension/extension.dart';
@@ -167,21 +168,8 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
     final users = await client.userApi.getUsers(userNeedFetch);
 
-    return () => mixinDatabase.userDao.insertAll(users.data
-        .map((user) => User(
-            userId: user.userId,
-            identityNumber: user.identityNumber,
-            relationship: user.relationship,
-            fullName: user.fullName,
-            avatarUrl: user.avatarUrl,
-            phone: user.phone,
-            isVerified: user.isVerified,
-            appId: user.app?.appId,
-            biography: user.biography,
-            muteUntil: DateTime.tryParse(user.muteUntil),
-            isScam: user.isScam ? 1 : 0,
-            createdAt: user.createdAt))
-        .toList());
+    return () => mixinDatabase.userDao
+        .insertAll(users.data.map((user) => user.toDbUser()).toList());
   }
 
   Future<void> updateSnapshots(
@@ -302,6 +290,19 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final addresses =
         (await client.addressApi.getAddressesByAssetId(assetId)).data;
     await mixinDatabase.addressDao.insertAllOnConflictUpdate(addresses);
+  }
+
+  Selectable<User> friends() => mixinDatabase.findFriendsNotBot();
+
+  Future<void> updateFriends() async {
+    assert(isLogin);
+    try {
+      final friends = await client.accountApi.getFriends();
+      await mixinDatabase.userDao
+          .insertAll(friends.data.map((e) => e.toDbUser()).toList());
+    } catch (e) {
+      d('update friends failed: $e');
+    }
   }
 
   @override

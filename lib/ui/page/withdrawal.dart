@@ -17,6 +17,7 @@ import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/address_selection_widget.dart';
 import '../widget/asset_selection_list_widget.dart';
+import '../widget/avatar.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/round_container.dart';
@@ -54,6 +55,7 @@ class _WithdrawalPage extends HookWidget {
     final asset = assetState.value;
 
     final selectedAddress = useState<Addresse?>(null);
+    final selectedUser = useState<User?>(null);
     final valueFirst = useState<double>(0);
     final valueSecond = useState<String>('0.00'.currencyFormatWithoutSymbol);
     final symbolFirst = useState<bool>(false);
@@ -68,7 +70,7 @@ class _WithdrawalPage extends HookWidget {
     useEffect(() {
       void notifyChanged() {
         refreshValues(controller, symbolFirst, switched, selectedAddress,
-            sendEnable, valueFirst, valueSecond, assetPriceUsd);
+            selectedUser, sendEnable, valueFirst, valueSecond, assetPriceUsd);
       }
 
       controller.addListener(notifyChanged);
@@ -76,6 +78,8 @@ class _WithdrawalPage extends HookWidget {
         controller.removeListener(notifyChanged);
       };
     }, [controller]);
+
+    assert(!(selectedAddress.value != null && selectedUser.value != null));
 
     useEffect(() {
       final addressId = selectedAddress.value?.addressId;
@@ -129,6 +133,7 @@ class _WithdrawalPage extends HookWidget {
                           symbolFirst,
                           switched,
                           selectedAddress,
+                          selectedUser,
                           sendEnable,
                           valueFirst,
                           valueSecond,
@@ -190,58 +195,27 @@ class _WithdrawalPage extends HookWidget {
                 assetId: asset.assetId,
                 selectedAddress: selectedAddress.value,
               );
-              if (selected == null) {
-                return;
+              if (selected is Addresse) {
+                selectedAddress.value = selected;
+                selectedUser.value = null;
+              } else if (selected is User) {
+                selectedAddress.value = null;
+                selectedUser.value = selected;
               }
-              selectedAddress.value = selected;
-              refreshValues(controller, symbolFirst, switched, selectedAddress,
-                  sendEnable, valueFirst, valueSecond, assetPriceUsd);
+              refreshValues(
+                  controller,
+                  symbolFirst,
+                  switched,
+                  selectedAddress,
+                  selectedUser,
+                  sendEnable,
+                  valueFirst,
+                  valueSecond,
+                  assetPriceUsd);
             },
-            child: RoundContainer(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: selectedAddress.value == null
-                        ? Text(
-                            context.l10n.selectFromAddressBook,
-                            style: TextStyle(
-                              color: context.theme.secondaryText,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                selectedAddress.value!.label.overflow,
-                                style: TextStyle(
-                                  color: context.theme.text,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Text(
-                                selectedAddress.value!
-                                    .displayAddress()
-                                    .formatAddress(),
-                                style: TextStyle(
-                                  color: context.theme.secondaryText,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: SvgPicture.asset(R.resourcesIcArrowDownSvg),
-                  )
-                ],
-              ),
+            child: _AddressOrUserWidget(
+              selectedAddress: selectedAddress.value,
+              selectedUser: selectedUser.value,
             ),
           ),
           const SizedBox(height: 10),
@@ -311,6 +285,7 @@ class _WithdrawalPage extends HookWidget {
                               symbolFirst,
                               switched,
                               selectedAddress,
+                              selectedUser,
                               sendEnable,
                               valueFirst,
                               valueSecond,
@@ -340,21 +315,36 @@ class _WithdrawalPage extends HookWidget {
                         content: Text(context.l10n.emptyAmount)));
                     return;
                   }
-                  if (selectedAddress.value == null) {
+                  final address = selectedAddress.value;
+                  final user = selectedUser.value;
+                  if (address == null && user == null) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         behavior: SnackBarBehavior.floating,
                         content: Text(context.l10n.noAddressSelected)));
                     return;
                   }
-                  final addressId = selectedAddress.value!.addressId;
                   final traceId = const Uuid().v4();
                   final assetId = assetState.value.assetId;
-                  final uri = Uri.https('mixin.one', 'withdrawal', {
-                    'asset': assetId,
-                    'address': addressId,
-                    'amount': amount,
-                    'trace': traceId,
-                  });
+
+                  // TODO add memo.
+                  Uri? uri;
+                  if (address != null) {
+                    final addressId = selectedAddress.value!.addressId;
+                    uri = Uri.https('mixin.one', 'withdrawal', {
+                      'asset': assetId,
+                      'address': addressId,
+                      'amount': amount,
+                      'trace': traceId,
+                    });
+                  } else if (user != null) {
+                    uri = Uri.https('mixin.one', 'pay', {
+                      'amount': amount,
+                      'trace': traceId,
+                      'asset': assetId,
+                      'recipient': user.userId,
+                    });
+                  }
+                  assert(uri != null);
                   if (!await canLaunch(uri.toString())) {
                     return;
                   }
@@ -411,6 +401,7 @@ class _WithdrawalPage extends HookWidget {
       ValueNotifier<bool> symbolFirst,
       ValueNotifier<bool> switched,
       ValueNotifier<Addresse?> addressSelected,
+      ValueNotifier<User?> userSelected,
       ValueNotifier<bool> sendEnable,
       ValueNotifier<double> valueFirst,
       ValueNotifier<String> valueSecond,
@@ -426,7 +417,105 @@ class _WithdrawalPage extends HookWidget {
       valueSecond.value =
           (valueFirst.value * assetPriceUsd.value).currencyFormatWithoutSymbol;
     }
-    sendEnable.value = valueFirst.value > 0 && addressSelected.value != null;
+    sendEnable.value = valueFirst.value > 0 &&
+        (addressSelected.value != null || userSelected.value != null);
+  }
+}
+
+class _AddressOrUserWidget extends StatelessWidget {
+  const _AddressOrUserWidget({
+    Key? key,
+    this.selectedAddress,
+    this.selectedUser,
+  }) : super(key: key);
+
+  final Addresse? selectedAddress;
+  final User? selectedUser;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget? child;
+    Widget? leading;
+    if (selectedAddress == null && selectedUser == null) {
+      child = Text(
+        context.l10n.selectFromAddressBook,
+        style: TextStyle(
+          color: context.theme.secondaryText,
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+        ),
+      );
+    } else if (selectedAddress != null) {
+      child = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Spacer(flex: 2),
+          Text(
+            selectedAddress!.label.overflow,
+            style: TextStyle(
+              color: context.theme.text,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const Spacer(),
+          Text(
+            selectedAddress!.displayAddress().formatAddress(),
+            style: TextStyle(
+              color: context.theme.secondaryText,
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const Spacer(flex: 2),
+        ],
+      );
+    } else if (selectedUser != null) {
+      leading = Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Avatar(
+            size: 32,
+            avatarUrl: selectedUser!.avatarUrl,
+            userId: selectedUser!.userId,
+            borderWidth: 0,
+            name: selectedUser!.fullName ?? '?'),
+      );
+      child = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Spacer(flex: 2),
+          Text(
+            selectedUser!.fullName?.overflow ?? '',
+            style: TextStyle(
+              color: context.theme.text,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const Spacer(flex: 1),
+          Text(
+            selectedUser!.identityNumber,
+            style: TextStyle(
+              color: context.theme.secondaryText,
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const Spacer(flex: 2),
+        ],
+      );
+    }
+    assert(child != null);
+    return RoundContainer(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (leading != null) leading,
+          Expanded(child: child ?? const SizedBox()),
+          SvgPicture.asset(R.resourcesIcArrowDownSvg)
+        ],
+      ),
+    );
   }
 }
 

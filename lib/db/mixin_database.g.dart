@@ -2807,6 +2807,15 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final FiatDao fiatDao = FiatDao(this as MixinDatabase);
   late final AssetsExtraDao assetsExtraDao =
       AssetsExtraDao(this as MixinDatabase);
+  Selectable<User> findFriendsNotBot() {
+    return customSelect(
+        'SELECT * FROM users WHERE relationship = \'FRIEND\' AND app_id IS NULL ORDER BY full_name, identity_number ASC',
+        variables: [],
+        readsFrom: {
+          users,
+        }).map(users.mapFromRow);
+  }
+
   Selectable<SnapshotItem> snapshotItems(
       Expression<bool?> Function(Snapshots s, Users u, Assets a) where,
       OrderBy Function(Snapshots s, Users u, Assets a) order,
