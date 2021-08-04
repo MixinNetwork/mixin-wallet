@@ -67,14 +67,6 @@ class _Router extends StatelessWidget {
         key: vRouterStateKey,
         title: 'Mixin Wallet',
         debugShowCheckedModeBanner: false,
-        buildTransition: (Animation<double> animation,
-                Animation<double> secondaryAnimation, Widget child) =>
-            CupertinoPageTransition(
-          primaryRouteAnimation: animation,
-          secondaryRouteAnimation: secondaryAnimation,
-          linearTransition: true,
-          child: child,
-        ),
         localizationsDelegates: const [
           L10n.delegate,
           GlobalMaterialLocalizations.delegate,
