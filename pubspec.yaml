@@ -60,6 +60,7 @@ dependencies:
   vrouter: ^1.2.0+5
   uuid: ^3.0.4
   envify: ^2.0.1
+  path_to_regexp: ^0.4.0
 
 dependency_overrides:
   analyzer: ^2.0.0

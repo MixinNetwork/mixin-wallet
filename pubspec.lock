@@ -56,7 +56,7 @@ packages:
       name: build
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.1.0"
   build_config:
     dependency: transitive
     description:
@@ -84,14 +84,14 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.6"
+    version: "2.1.0"
   build_runner_core:
     dependency: transitive
     description:
       name: build_runner_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.0.1"
+    version: "7.1.0"
   built_collection:
     dependency: transitive
     description:
@@ -224,14 +224,14 @@ packages:
       name: envify
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.2"
   envify_generator:
     dependency: "direct dev"
     description:
       name: envify_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.2"
   equatable:
     dependency: "direct main"
     description:
@@ -542,7 +542,7 @@ packages:
     source: hosted
     version: "2.0.3"
   path_to_regexp:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_to_regexp
       url: "https://pub.dartlang.org"
@@ -692,7 +692,7 @@ packages:
       name: source_helper
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   source_span:
     dependency: transitive
     description:
@@ -853,14 +853,14 @@ packages:
       name: very_good_analysis
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.2"
+    version: "2.3.0"
   vrouter:
     dependency: "direct main"
     description:
       name: vrouter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0+6"
+    version: "1.2.0+9"
   watcher:
     dependency: transitive
     description:
