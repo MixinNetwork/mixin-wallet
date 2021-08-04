@@ -1,0 +1,11 @@
+runtime: python39
+service: mixinwallet-com
+
+handlers:
+  - url: /
+    static_files: web/index.html
+    upload: web/index.html
+
+  - url: /(.*)
+    static_files: web/\1
+    upload: web/(.*)
