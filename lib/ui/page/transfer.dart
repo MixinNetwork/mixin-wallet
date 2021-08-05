@@ -57,7 +57,7 @@ class _TransferToContactBody extends HookWidget {
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               TransferAssetItem(
                 asset: asset.value,
                 onAssetChange: (value) => asset.value = value,
@@ -83,8 +83,9 @@ class _TransferToContactBody extends HookWidget {
                     }
                     if (user.value == null) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          content: Text(context.l10n.noAddressSelected)));
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(context.l10n.noContactSelected),
+                      ));
                       return;
                     }
 

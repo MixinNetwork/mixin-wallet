@@ -129,6 +129,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkFee": MessageLookupByLibrary.simpleMessage("Network fee:"),
         "noAddressSelected":
             MessageLookupByLibrary.simpleMessage("No address selected"),
+        "noContactSelected":
+            MessageLookupByLibrary.simpleMessage("No contact selected"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "pendingConfirmations": m9,

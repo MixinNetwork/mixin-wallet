@@ -9,6 +9,7 @@ import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
+import 'address_selection_widget.dart';
 import 'asset_selection_list_widget.dart';
 import 'avatar.dart';
 import 'contact_selection_widget.dart';
@@ -219,6 +220,90 @@ class TransferContactWidget extends StatelessWidget {
                       borderWidth: 0,
                       name: user!.fullName ?? '?'),
                 ),
+              Expanded(
+                child: child,
+              ),
+              SvgPicture.asset(R.resourcesIcArrowDownSvg),
+              const SizedBox(width: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TransferAddressWidget extends StatelessWidget {
+  const TransferAddressWidget({
+    Key? key,
+    required this.address,
+    required this.onAddressChanged,
+    required this.asset,
+  }) : super(key: key);
+
+  final Addresse? address;
+  final void Function(Addresse) onAddressChanged;
+  final AssetResult asset;
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget child;
+    if (address != null) {
+      child = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Spacer(flex: 2),
+          Text(
+            address!.label.overflow,
+            style: TextStyle(
+              color: context.theme.text,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const Spacer(flex: 1),
+          Text(
+            address!.displayAddress().formatAddress(),
+            style: TextStyle(
+              color: context.theme.secondaryText,
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const Spacer(flex: 2),
+        ],
+      );
+    } else {
+      child = Text(
+        context.l10n.selectFromAddressBook,
+        style: TextStyle(
+          color: context.theme.secondaryText,
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+        ),
+      );
+    }
+    return Material(
+      borderRadius: BorderRadius.circular(12),
+      color: const Color(0xfff8f8f8),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () async {
+          final selected = await showAddressSelectionBottomSheet(
+            context: context,
+            selectedAddress: address,
+            assetId: asset.assetId,
+          );
+          if (selected != null) {
+            onAddressChanged(selected);
+          }
+        },
+        child: SizedBox(
+          height: 56,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(width: 20),
               Expanded(
                 child: child,
               ),

@@ -1029,6 +1029,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `No contact selected`
+  String get noContactSelected {
+    return Intl.message(
+      'No contact selected',
+      name: 'noContactSelected',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
