@@ -17,7 +17,6 @@ import 'brightness_observer.dart';
 import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 
-/// The result might be [User] or [Addresse].
 Future<Addresse?> showAddressSelectionBottomSheet({
   required BuildContext context,
   required String assetId,

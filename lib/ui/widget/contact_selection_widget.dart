@@ -9,7 +9,6 @@ import 'avatar.dart';
 import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 
-/// The result might be [User] or [Addresse].
 Future<User?> showContactSelectionBottomSheet({
   required BuildContext context,
   User? selectedUser,
