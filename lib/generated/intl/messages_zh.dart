@@ -70,7 +70,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
         "contact": MessageLookupByLibrary.simpleMessage("联系人"),
-        "contactSearchHint": MessageLookupByLibrary.simpleMessage("名称, ID"),
+        "contactSearchHint":
+            MessageLookupByLibrary.simpleMessage("名称, Mixin ID"),
         "contract": MessageLookupByLibrary.simpleMessage("资产标识"),
         "copyToClipboard": MessageLookupByLibrary.simpleMessage("已复制到剪切板"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),

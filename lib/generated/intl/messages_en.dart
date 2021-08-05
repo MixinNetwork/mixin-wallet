@@ -85,7 +85,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
         "contact": MessageLookupByLibrary.simpleMessage("Contact"),
-        "contactSearchHint": MessageLookupByLibrary.simpleMessage("Name, ID"),
+        "contactSearchHint":
+            MessageLookupByLibrary.simpleMessage("Name, Mixin ID"),
         "contract": MessageLookupByLibrary.simpleMessage("Asset Key"),
         "copyToClipboard":
             MessageLookupByLibrary.simpleMessage("Copy to clipboard"),

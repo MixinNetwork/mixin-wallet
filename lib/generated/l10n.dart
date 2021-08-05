@@ -1020,10 +1020,10 @@ class L10n {
     );
   }
 
-  /// `Name, ID`
+  /// `Name, Mixin ID`
   String get contactSearchHint {
     return Intl.message(
-      'Name, ID',
+      'Name, Mixin ID',
       name: 'contactSearchHint',
       desc: '',
       args: [],

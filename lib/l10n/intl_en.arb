@@ -96,6 +96,6 @@
   "contact": "Contact",
   "selectFromContacts": "Select from contacts",
   "sendToContact": "Send to contact",
-  "contactSearchHint": "Name, ID",
+  "contactSearchHint": "Name, Mixin ID",
   "noContactSelected": "No contact selected"
 }
