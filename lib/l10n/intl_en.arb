@@ -89,5 +89,12 @@
   "undo": "UNDO",
   "emptyAmount": "Empty amount",
   "noAddressSelected": "No address selected",
-  "emptyLabelOrAddress": "Empty address or label"
+  "emptyLabelOrAddress": "Empty address or label",
+  "sendTo": "Send to",
+  "sendToAddressDescription": "Withdraw to an exchange or wallet.",
+  "sendToContactDescription": "Transfer to Mixin Messenger contact.",
+  "contact": "Contact",
+  "selectFromContacts": "Select from contacts",
+  "sendToContact": "Send to contact",
+  "contactSearchHint": "Name, ID"
 }

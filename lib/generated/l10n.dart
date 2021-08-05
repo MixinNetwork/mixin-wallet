@@ -959,6 +959,76 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Send to`
+  String get sendTo {
+    return Intl.message(
+      'Send to',
+      name: 'sendTo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Withdraw to an exchange or wallet.`
+  String get sendToAddressDescription {
+    return Intl.message(
+      'Withdraw to an exchange or wallet.',
+      name: 'sendToAddressDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer to Mixin Messenger contact.`
+  String get sendToContactDescription {
+    return Intl.message(
+      'Transfer to Mixin Messenger contact.',
+      name: 'sendToContactDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact`
+  String get contact {
+    return Intl.message(
+      'Contact',
+      name: 'contact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select from contacts`
+  String get selectFromContacts {
+    return Intl.message(
+      'Select from contacts',
+      name: 'selectFromContacts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send to contact`
+  String get sendToContact {
+    return Intl.message(
+      'Send to contact',
+      name: 'sendToContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name, ID`
+  String get contactSearchHint {
+    return Intl.message(
+      'Name, ID',
+      name: 'contactSearchHint',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

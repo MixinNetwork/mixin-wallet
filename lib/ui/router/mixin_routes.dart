@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:mixin_wallet/ui/page/transfer.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../../service/profile/profile_manager.dart';
@@ -25,6 +26,7 @@ const assetDepositPath = '/tokens/:id/deposit';
 const snapshotDetailPath = '/snapshots/:id';
 final transactionsUri = Uri(path: '/transactions');
 final hiddenAssetsUri = Uri(path: '/hiddenAssets');
+const transferPath = '/transfer/:id';
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VGuard(
@@ -67,6 +69,11 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                           widget: const WithdrawalAddresses(),
                         ),
                       ]),
+                  VWidget(
+                    key: const ValueKey('Transfer'),
+                    path: transferPath,
+                    widget: const Transfer(),
+                  ),
                   VWidget(
                     key: const ValueKey('AssetDetail'),
                     path: assetDetailPath,

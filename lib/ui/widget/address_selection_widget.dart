@@ -155,7 +155,7 @@ class _UserItem extends StatelessWidget {
   final User user;
 
   @override
-  Widget build(BuildContext context) => _ItemTile(
+  Widget build(BuildContext context) => AddressSelectionItemTile(
         onTap: () => Navigator.pop(context, user),
         title: Text(user.fullName?.overflow ?? ''),
         subtitle: Text(user.identityNumber),
@@ -180,7 +180,7 @@ class _AddressItem extends StatelessWidget {
   final String? selectedAddressId;
 
   @override
-  Widget build(BuildContext context) => _ItemTile(
+  Widget build(BuildContext context) => AddressSelectionItemTile(
         onTap: () => Navigator.pop(context, address),
         title: Text(address.label.overflow),
         subtitle: Text(address.displayAddress().overflow),
@@ -193,8 +193,8 @@ class _AddressItem extends StatelessWidget {
       );
 }
 
-class _ItemTile extends StatelessWidget {
-  const _ItemTile({
+class AddressSelectionItemTile extends StatelessWidget {
+  const AddressSelectionItemTile({
     Key? key,
     required this.leading,
     required this.onTap,

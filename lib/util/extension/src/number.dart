@@ -18,6 +18,8 @@ extension StringCurrencyExtension on String {
 
   Decimal get asDecimal => Decimal.parse(this);
 
+  Decimal get asDecimalOrZero => Decimal.tryParse(this) ?? Decimal.zero;
+
   String numberFormat() {
     if (isEmpty) return this;
     try {

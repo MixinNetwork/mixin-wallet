@@ -14,11 +14,13 @@ import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/asset.dart';
 import '../widget/avatar.dart';
+import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/mixin_elevated_button.dart';
 import '../widget/over_scroller.dart';
 import '../widget/search_asset_bottom_sheet.dart';
+import '../widget/transfer.dart';
 
 class Home extends HookWidget {
   const Home({Key? key}) : super(key: key);
@@ -246,9 +248,7 @@ class _Header extends HookWidget {
               _Button(
                 icon: SvgPicture.asset(R.resourcesSendSvg),
                 text: Text(context.l10n.send),
-                onTap: () {
-                  context.push(withdrawalPath.toUri({'id': bitcoin}));
-                },
+                onTap: () => showTransferRouterBottomSheet(context: context),
               ),
               const SizedBox(width: 20),
               _Button(
@@ -360,20 +360,20 @@ class _MenuBottomSheet extends HookWidget {
       children: [
         MixinBottomSheetTitle(title: Text(context.l10n.assets)),
         const SizedBox(height: 9),
-        _MenuItem(
+        MenuItemWidget(
           topRounded: true,
           leading: SvgPicture.asset(R.resourcesAllTransactionsSvg),
           title: Text(context.l10n.allTransactions),
           onTap: () => context.push(transactionsUri),
         ),
-        _MenuItem(
+        MenuItemWidget(
           bottomRounded: true,
           leading: SvgPicture.asset(R.resourcesHiddenSvg),
           title: Text(context.l10n.hiddenAssets),
           onTap: () => context.push(hiddenAssetsUri),
         ),
         const SizedBox(height: 11),
-        _MenuItem(
+        MenuItemWidget(
           topRounded: true,
           bottomRounded: true,
           title: Text(context.l10n.hideSmallAssets),
@@ -387,71 +387,4 @@ class _MenuBottomSheet extends HookWidget {
       ],
     );
   }
-}
-
-class _MenuItem extends StatelessWidget {
-  const _MenuItem({
-    Key? key,
-    required this.title,
-    required this.leading,
-    this.topRounded = false,
-    this.bottomRounded = false,
-    this.trailing,
-    this.onTap,
-  }) : super(key: key);
-
-  final Widget title;
-  final Widget leading;
-  final Widget? trailing;
-
-  final VoidCallback? onTap;
-
-  final bool topRounded;
-  final bool bottomRounded;
-
-  @override
-  Widget build(BuildContext context) => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(
-            top: topRounded ? const Radius.circular(12) : Radius.zero,
-            bottom: bottomRounded ? const Radius.circular(12) : Radius.zero,
-          ),
-          color: const Color(0xfff8f8f8),
-        ),
-        padding: EdgeInsets.only(
-          top: topRounded ? 10 : 0,
-          bottom: bottomRounded ? 10 : 0,
-        ),
-        child: Material(
-          child: InkWell(
-            onTap: onTap,
-            child: SizedBox(
-              height: 64,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(width: 20),
-                  SizedBox.square(dimension: 24, child: leading),
-                  const SizedBox(width: 10),
-                  DefaultTextStyle(
-                    style: TextStyle(
-                      fontSize: 16,
-                      height: 1.5,
-                      color: context.theme.text,
-                    ),
-                    child: title,
-                  ),
-                  const Spacer(),
-                  if (trailing != null)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: trailing,
-                    ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
 }

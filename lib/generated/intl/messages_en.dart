@@ -84,6 +84,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "balanceOfBtc": m5,
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
+        "contact": MessageLookupByLibrary.simpleMessage("Contact"),
+        "contactSearchHint": MessageLookupByLibrary.simpleMessage("Name, ID"),
         "contract": MessageLookupByLibrary.simpleMessage("Asset Key"),
         "copyToClipboard":
             MessageLookupByLibrary.simpleMessage("Copy to clipboard"),
@@ -139,9 +141,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "selectFromAddressBook":
             MessageLookupByLibrary.simpleMessage("Select from Address Book"),
+        "selectFromContacts":
+            MessageLookupByLibrary.simpleMessage("Select from contacts"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
+        "sendTo": MessageLookupByLibrary.simpleMessage("Send to"),
         "sendToAddress":
             MessageLookupByLibrary.simpleMessage("Send to Address"),
+        "sendToAddressDescription": MessageLookupByLibrary.simpleMessage(
+            "Withdraw to an exchange or wallet."),
+        "sendToContact":
+            MessageLookupByLibrary.simpleMessage("Send to contact"),
+        "sendToContactDescription": MessageLookupByLibrary.simpleMessage(
+            "Transfer to Mixin Messenger contact."),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "sure": MessageLookupByLibrary.simpleMessage("Sure"),

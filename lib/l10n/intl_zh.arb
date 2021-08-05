@@ -83,5 +83,12 @@
   "undo": "撤销",
   "emptyAmount": "金额不能为空",
   "noAddressSelected": "需要选择一个地址",
-  "emptyLabelOrAddress": "地址和标题不能为空"
+  "emptyLabelOrAddress": "地址和标题不能为空",
+  "sendTo": "转出至",
+  "sendToAddressDescription": "提现到交易所或钱包",
+  "sendToContactDescription": "转账至 Mixin 联系人",
+  "contact": "联系人",
+  "selectFromContacts": "从通讯录选择",
+  "sendToContact": "转账至联系人",
+  "contactSearchHint": "名称, ID"
 }

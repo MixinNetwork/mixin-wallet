@@ -17,6 +17,7 @@ import '../widget/over_scroller.dart';
 import '../widget/symbol.dart';
 import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
+import '../widget/transfer.dart';
 
 class AssetDetail extends StatelessWidget {
   const AssetDetail({Key? key}) : super(key: key);
@@ -307,8 +308,10 @@ class _BottomBar extends StatelessWidget {
               fixedSize: const Size(140, 44),
               primary: context.theme.accent,
               child: Text(context.l10n.send),
-              onTap: () =>
-                  context.push(withdrawalPath.toUri({'id': asset.assetId})),
+              onTap: () => showTransferRouterBottomSheet(
+                context: context,
+                assetId: asset.assetId,
+              ),
             ),
             const SizedBox(width: 20),
             MixinElevatedButton(
