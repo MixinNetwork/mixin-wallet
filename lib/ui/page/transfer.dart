@@ -126,7 +126,7 @@ class _TransferToContactBody extends HookWidget {
                   },
                 );
               }),
-              const SizedBox(height: 70),
+              const SizedBox(height: 30),
             ],
           ),
         ),
@@ -146,25 +146,23 @@ class _SendButton extends StatelessWidget {
   final bool enable;
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        child: Container(
-          width: 160,
-          height: 44,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: enable ? context.theme.accent : const Color(0xffB2B3C7),
-          ),
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(
-            vertical: 11,
-            horizontal: 22,
-          ),
-          child: Text(
-            context.l10n.send,
-            style: TextStyle(
-              fontSize: 16,
-              color: context.theme.background,
+  Widget build(BuildContext context) => Material(
+        borderRadius: BorderRadius.circular(12),
+        color: enable ? context.theme.accent : const Color(0xffB2B3C7),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: SizedBox(
+            width: 160,
+            height: 44,
+            child: Center(
+              child: Text(
+                context.l10n.send,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: context.theme.background,
+                ),
+              ),
             ),
           ),
         ),
