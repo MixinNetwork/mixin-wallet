@@ -47,6 +47,7 @@ class AddressAddWidget extends HookWidget {
 
     final content = Container(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+        color: context.theme.background,
         child: Column(
           children: [
             MixinBottomSheetTitle(
