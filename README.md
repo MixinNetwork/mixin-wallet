@@ -1,6 +1,6 @@
-# mixin_wallet
+# Mixin Wallet
 
-A new Flutter project.
+Mixin cryptocurrency wallet based on Flutter
 
 ## Getting Started
 
