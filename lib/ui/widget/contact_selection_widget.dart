@@ -67,7 +67,7 @@ class _ContactSelectionBottomSheet extends HookWidget {
                   },
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 8),
             ],
           ),
           const SizedBox(height: 10),
