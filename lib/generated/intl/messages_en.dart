@@ -179,6 +179,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
         "walletTransactionThatTimeValue": m11,
-        "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal")
+        "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
+        "withdrawalMemoHint":
+            MessageLookupByLibrary.simpleMessage("Memo (Optional)")
       };
 }

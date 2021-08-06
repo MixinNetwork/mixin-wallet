@@ -148,6 +148,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),
         "walletTransactionThatTimeValue": m11,
-        "withdrawal": MessageLookupByLibrary.simpleMessage("提现")
+        "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),
+        "withdrawalMemoHint": MessageLookupByLibrary.simpleMessage("备注 (可选)")
       };
 }

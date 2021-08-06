@@ -43,6 +43,7 @@ class _TransferToContactBody extends HookWidget {
     final asset = useState(initialAsset);
     final user = useState<User?>(null);
     final amount = useValueNotifier('');
+    final memo = useValueNotifier('');
     return Scaffold(
       backgroundColor: context.theme.accent,
       appBar: MixinAppBar(
@@ -69,6 +70,8 @@ class _TransferToContactBody extends HookWidget {
               ),
               const SizedBox(height: 8),
               TransferAmountWidget(amount: amount, asset: asset.value),
+              const SizedBox(height: 8),
+              TransferMemoWidget(onMemoInput: (value) => memo.value = value),
               const Spacer(),
               HookBuilder(builder: (context) {
                 useListenable(amount);
@@ -97,6 +100,7 @@ class _TransferToContactBody extends HookWidget {
                       'trace': traceId,
                       'asset': assetId,
                       'recipient': user.value!.userId,
+                      'memo': memo.value,
                     });
 
                     if (!await canLaunch(uri.toString())) {

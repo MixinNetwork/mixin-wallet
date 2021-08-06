@@ -1039,6 +1039,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Memo (Optional)`
+  String get withdrawalMemoHint {
+    return Intl.message(
+      'Memo (Optional)',
+      name: 'withdrawalMemoHint',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

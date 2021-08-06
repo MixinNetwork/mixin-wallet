@@ -447,3 +447,51 @@ class TransferAmountWidget extends HookWidget {
     );
   }
 }
+
+class TransferMemoWidget extends HookWidget {
+  const TransferMemoWidget({
+    Key? key,
+    required this.onMemoInput,
+  }) : super(key: key);
+
+  final void Function(String) onMemoInput;
+
+  @override
+  Widget build(BuildContext context) {
+    final inputController = useTextEditingController();
+    useEffect(() {
+      void onTextChanged() {
+        onMemoInput(inputController.text.trim());
+      }
+
+      inputController.addListener(onTextChanged);
+      return () {
+        inputController.removeListener(onTextChanged);
+      };
+    }, [inputController]);
+    return Material(
+      color: const Color(0xFFF8F8F8),
+      borderRadius: BorderRadius.circular(12),
+      child: SizedBox(
+        height: 56,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Center(
+            child: TextField(
+              controller: inputController,
+              style: TextStyle(
+                color: context.theme.text,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+              decoration: InputDecoration(
+                  hintText: context.l10n.withdrawalMemoHint,
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

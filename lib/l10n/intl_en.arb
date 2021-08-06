@@ -97,5 +97,6 @@
   "selectFromContacts": "Select from contacts",
   "sendToContact": "Send to contact",
   "contactSearchHint": "Name, Mixin ID",
-  "noContactSelected": "No contact selected"
+  "noContactSelected": "No contact selected",
+  "withdrawalMemoHint": "Memo (Optional)"
 }

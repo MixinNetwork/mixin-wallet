@@ -44,6 +44,7 @@ class _WithdrawalPage extends HookWidget {
     final asset = useState(initialAsset);
     final address = useState<Addresse?>(null);
     final amount = useValueNotifier('');
+    final memo = useValueNotifier('');
 
     useEffect(() {
       final addressId = address.value?.addressId;
@@ -94,6 +95,8 @@ class _WithdrawalPage extends HookWidget {
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: _FeeText(asset: asset.value, address: address.value),
           ),
+          const SizedBox(height: 8),
+          TransferMemoWidget(onMemoInput: (value) => memo.value = value),
           const Spacer(),
           HookBuilder(builder: (context) {
             useListenable(amount);
@@ -120,6 +123,7 @@ class _WithdrawalPage extends HookWidget {
                   'address': address.value!.addressId,
                   'amount': amount.value,
                   'trace': traceId,
+                  'memo': memo.value,
                 });
 
                 if (!await canLaunch(uri.toString())) {
