@@ -338,6 +338,7 @@ class TransferAmountWidget extends HookWidget {
 
     final String equivalent;
     if (fiatInputMode.value) {
+      assert(!asset.priceUsd.isZero);
       equivalent =
           '${(input.asDecimalOrZero / asset.usdUnitPrice).currencyFormatCoin}'
           ' ${asset.symbol}';
@@ -353,6 +354,7 @@ class TransferAmountWidget extends HookWidget {
           if (controller.text.isEmpty) {
             amount.value = '';
           } else {
+            assert(!asset.priceUsd.isZero);
             amount.value =
                 (controller.text.asDecimalOrZero / asset.usdUnitPrice)
                     .currencyFormatCoin;
@@ -428,16 +430,17 @@ class TransferAmountWidget extends HookWidget {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: InkResponse(
-                radius: 24,
-                onTap: () {
-                  fiatInputMode.value = !fiatInputMode.value;
-                },
-                child: SvgPicture.asset(R.resourcesIcSwitchSvg),
+            if (!asset.priceUsd.isZero)
+              Align(
+                alignment: Alignment.centerRight,
+                child: InkResponse(
+                  radius: 24,
+                  onTap: () {
+                    fiatInputMode.value = !fiatInputMode.value;
+                  },
+                  child: SvgPicture.asset(R.resourcesIcSwitchSvg),
+                ),
               ),
-            ),
           ],
         ),
       ),
