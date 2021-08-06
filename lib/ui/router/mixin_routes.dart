@@ -12,6 +12,7 @@ import '../page/hidden_assets.dart';
 import '../page/home.dart';
 import '../page/not_found.dart';
 import '../page/snapshot_detail.dart';
+import '../page/transfer.dart';
 import '../page/withdrawal.dart';
 import '../page/withdrawal_addresses.dart';
 
@@ -25,6 +26,7 @@ const assetDepositPath = '/tokens/:id/deposit';
 const snapshotDetailPath = '/snapshots/:id';
 final transactionsUri = Uri(path: '/transactions');
 final hiddenAssetsUri = Uri(path: '/hiddenAssets');
+const transferPath = '/transfer/:id';
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VGuard(
@@ -67,6 +69,11 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                           widget: const WithdrawalAddresses(),
                         ),
                       ]),
+                  VWidget(
+                    key: const ValueKey('Transfer'),
+                    path: transferPath,
+                    widget: const Transfer(),
+                  ),
                   VWidget(
                     key: const ValueKey('AssetDetail'),
                     path: assetDetailPath,

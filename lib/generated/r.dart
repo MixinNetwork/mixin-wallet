@@ -4,12 +4,16 @@
 // **************************************************************************
 class R {
   const R._();
+  static const String resourcesAddressSvg = 'resources/address.svg';
+
   static const String resourcesAlertSvg = 'resources/alert.svg';
 
   static const String resourcesAllTransactionsSvg =
       'resources/all_transactions.svg';
 
   static const String resourcesAuthBgSvg = 'resources/auth_bg.svg';
+
+  static const String resourcesContactSvg = 'resources/contact.svg';
 
   static const String resourcesEmptyTransactionSvg =
       'resources/empty_transaction.svg';
