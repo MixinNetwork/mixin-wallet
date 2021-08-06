@@ -39,6 +39,17 @@ class Home extends HookWidget {
       initialData: <AssetResult>[],
     ).requireData;
 
+    final hideSmallAssets = useState(false);
+
+    final assetList = useMemoized(() {
+      if (!hideSmallAssets.value) {
+        return assetResults;
+      }
+      return assetResults
+          .where((element) => element.amountOfUsd >= Decimal.one)
+          .toList();
+    }, [hideSmallAssets.value, assetResults]);
+
     return Scaffold(
       backgroundColor: context.theme.background,
       appBar: MixinAppBar(
@@ -55,15 +66,15 @@ class Home extends HookWidget {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: _Header(data: assetResults),
+              child: _Header(data: assetList),
             ),
-            const SliverToBoxAdapter(
-              child: _AssetHeader(),
+            SliverToBoxAdapter(
+              child: _AssetHeader(hideSmallAssets: hideSmallAssets),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  final item = assetResults[index];
+                  final item = assetList[index];
                   return _SwipeToHide(
                     key: ValueKey(item.assetId),
                     child: AssetWidget(data: item),
@@ -83,7 +94,7 @@ class Home extends HookWidget {
                     },
                   );
                 },
-                childCount: assetResults.length,
+                childCount: assetList.length,
               ),
             ),
           ],
@@ -96,7 +107,10 @@ class Home extends HookWidget {
 class _AssetHeader extends StatelessWidget {
   const _AssetHeader({
     Key? key,
+    required this.hideSmallAssets,
   }) : super(key: key);
+
+  final ValueNotifier<bool> hideSmallAssets;
 
   @override
   Widget build(BuildContext context) => ListRoundedHeaderContainer(
@@ -143,7 +157,9 @@ class _AssetHeader extends StatelessWidget {
                     onTap: () {
                       showMixinBottomSheet(
                         context: context,
-                        builder: (context) => const _MenuBottomSheet(),
+                        builder: (context) => _MenuBottomSheet(
+                          hideSmallAssets: hideSmallAssets,
+                        ),
                       );
                     },
                     child: Padding(
@@ -351,11 +367,16 @@ class _SwipeToHide extends StatelessWidget {
 }
 
 class _MenuBottomSheet extends HookWidget {
-  const _MenuBottomSheet({Key? key}) : super(key: key);
+  const _MenuBottomSheet({
+    Key? key,
+    required this.hideSmallAssets,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> hideSmallAssets;
 
   @override
   Widget build(BuildContext context) {
-    final hideSmallAssets = useState(false);
+    useListenable(hideSmallAssets);
     return Column(
       children: [
         MixinBottomSheetTitle(title: Text(context.l10n.assets)),
