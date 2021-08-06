@@ -9,9 +9,9 @@ class DepositEntryConverter extends TypeConverter<List<DepositEntry>, String> {
   @override
   List<DepositEntry>? mapToDart(String? fromDb) {
     if (fromDb == null) return null;
-    final data = json.decode(fromDb);
-    return (data as List)
-        .map((e) => DepositEntry.fromJson(e as Map<String, dynamic>))
+    final data = json.decode(fromDb) as List<dynamic>;
+    return data
+        .map((dynamic e) => DepositEntry.fromJson(e as Map<String, dynamic>))
         .toList();
   }
 

@@ -187,28 +187,32 @@ class _FeeText extends StatelessWidget {
                 color: context.theme.text,
                 fontWeight: FontWeight.bold,
               )),
-          showDust
-              ? TextSpan(text: '\n${context.l10n.minimumWithdrawal} ')
-              : const TextSpan(),
-          showDust
-              ? TextSpan(
-                  text: '${address!.dust} ${asset.symbol}',
-                  style: TextStyle(
-                    color: context.theme.text,
-                    fontWeight: FontWeight.bold,
-                  ))
-              : const TextSpan(),
-          showReserve
-              ? TextSpan(text: '\n${context.l10n.minimumReserve} ')
-              : const TextSpan(),
-          showReserve
-              ? TextSpan(
-                  text: '${address!.reserve} ${asset.symbol}',
-                  style: TextStyle(
-                    color: context.theme.text,
-                    fontWeight: FontWeight.bold,
-                  ))
-              : const TextSpan(),
+          if (showDust)
+            TextSpan(text: '\n${context.l10n.minimumWithdrawal} ')
+          else
+            const TextSpan(),
+          if (showDust)
+            TextSpan(
+                text: '${address!.dust} ${asset.symbol}',
+                style: TextStyle(
+                  color: context.theme.text,
+                  fontWeight: FontWeight.bold,
+                ))
+          else
+            const TextSpan(),
+          if (showReserve)
+            TextSpan(text: '\n${context.l10n.minimumReserve} ')
+          else
+            const TextSpan(),
+          if (showReserve)
+            TextSpan(
+                text: '${address!.reserve} ${asset.symbol}',
+                style: TextStyle(
+                  color: context.theme.text,
+                  fontWeight: FontWeight.bold,
+                ))
+          else
+            const TextSpan(),
         ]));
   }
 }

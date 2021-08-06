@@ -139,7 +139,7 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
           .map((e) => e.snapshotId);
 }
 
-class _AmountSqlExpression<D> extends Expression<D> {
+class _AmountSqlExpression extends Expression<dynamic> {
   _AmountSqlExpression(this.s);
 
   final Snapshots s;

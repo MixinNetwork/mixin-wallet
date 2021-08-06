@@ -87,26 +87,25 @@ class AddressAddWidget extends HookWidget {
               )),
             ),
             const SizedBox(height: 10),
-            memoEnable.value
-                ? Column(children: [
-                    RoundContainer(
-                        child: Center(
-                      child: TextField(
-                        style: TextStyle(
-                          color: context.theme.text,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: memoHint,
-                          border: InputBorder.none,
-                        ),
-                        controller: memoController,
-                      ),
-                    )),
-                    const SizedBox(height: 10),
-                  ])
-                : const SizedBox(),
+            if (memoEnable.value)
+              Column(children: [
+                RoundContainer(
+                    child: Center(
+                  child: TextField(
+                    style: TextStyle(
+                      color: context.theme.text,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: memoHint,
+                      border: InputBorder.none,
+                    ),
+                    controller: memoController,
+                  ),
+                )),
+                const SizedBox(height: 10),
+              ]),
             Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(

@@ -51,7 +51,7 @@ class MixinDatabase extends _$MixinDatabase {
         },
         onUpgrade: (m, from, to) async {
           // delete all tables and restart
-          for (var table in allTables) {
+          for (final table in allTables) {
             await m.deleteTable(table.actualTableName);
             await m.createTable(table);
           }

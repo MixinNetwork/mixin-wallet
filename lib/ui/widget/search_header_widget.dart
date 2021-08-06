@@ -38,25 +38,24 @@ class SearchHeaderWidget extends HookWidget {
               ),
             ),
           ),
-          cancelVisible
-              ? Row(children: [
-                  const SizedBox(width: 8),
-                  InkWell(
-                      customBorder: const CircleBorder(),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(context.l10n.cancel,
-                            style: TextStyle(
-                              color: context.theme.text,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            )),
-                      )),
-                ])
-              : const SizedBox(),
+          if (cancelVisible)
+            Row(children: [
+              const SizedBox(width: 8),
+              InkWell(
+                  customBorder: const CircleBorder(),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(context.l10n.cancel,
+                        style: TextStyle(
+                          color: context.theme.text,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        )),
+                  )),
+            ]),
         ],
       ));
 }

@@ -131,12 +131,11 @@ class _Item extends StatelessWidget {
                   ],
                 ),
               ),
-              selectedAssetId == asset.assetId
-                  ? Align(
-                      alignment: Alignment.centerRight,
-                      child: SvgPicture.asset(R.resourcesIcCheckSvg),
-                    )
-                  : const SizedBox(),
+              if (selectedAssetId == asset.assetId)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: SvgPicture.asset(R.resourcesIcCheckSvg),
+                ),
             ])),
       ));
 }

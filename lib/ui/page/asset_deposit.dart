@@ -168,89 +168,90 @@ class _AssetDepositPage extends HookWidget {
             ),
           ),
           const SizedBox(height: 10),
-          (depositEntries != null && depositEntries.length > 1)
-              ? Column(
-                  children: [
-                    InkWell(
-                        onTap: () {
-                          showMixinBottomSheet(
-                              context: context,
-                              builder: (context) => _AddressTypeBottomSheet(
-                                    depositEntries: depositEntries,
-                                    destination: asset.destination ?? '',
-                                    checkedDestination:
-                                        checkedDestination.value,
-                                    onTap: (depositEntry) {
-                                      checkedDestination.value =
-                                          depositEntry.destination;
-                                      checkedTag.value = depositEntry.tag;
-                                      Navigator.pop(context);
-                                    },
-                                  ));
-                        },
-                        child: RoundContainer(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  _getDestinationType(checkedDestination.value,
-                                      asset.destination),
-                                  style: TextStyle(
-                                    color: context.theme.text,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
+          if (depositEntries != null && depositEntries.length > 1)
+            Column(
+              children: [
+                InkWell(
+                    onTap: () {
+                      showMixinBottomSheet(
+                          context: context,
+                          builder: (context) => _AddressTypeBottomSheet(
+                                depositEntries: depositEntries,
+                                destination: asset.destination ?? '',
+                                checkedDestination: checkedDestination.value,
+                                onTap: (depositEntry) {
+                                  checkedDestination.value =
+                                      depositEntry.destination;
+                                  checkedTag.value = depositEntry.tag;
+                                  Navigator.pop(context);
+                                },
+                              ));
+                    },
+                    child: RoundContainer(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              _getDestinationType(
+                                  checkedDestination.value, asset.destination),
+                              style: TextStyle(
+                                color: context.theme.text,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
                               ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child:
-                                    SvgPicture.asset(R.resourcesIcArrowDownSvg),
-                              )
-                            ],
+                            ),
                           ),
-                        )),
-                    const SizedBox(height: 10),
-                  ],
-                )
-              : const SizedBox(),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: SvgPicture.asset(R.resourcesIcArrowDownSvg),
+                          )
+                        ],
+                      ),
+                    )),
+                const SizedBox(height: 10),
+              ],
+            )
+          else
+            const SizedBox(),
           _Item(
             asset: asset,
             title: context.l10n.address,
             desc: checkedDestination.value,
           ),
           const SizedBox(height: 10),
-          asset.needShowMemo
-              ? _Item(
-                  asset: asset,
-                  title: context.l10n.memo,
-                  desc: checkedTag.value ?? '',
-                )
-              : const SizedBox(),
+          if (asset.needShowMemo)
+            _Item(
+              asset: asset,
+              title: context.l10n.memo,
+              desc: checkedTag.value ?? '',
+            )
+          else
+            const SizedBox(),
           const SizedBox(height: 10),
-          asset.needShowMemo
-              ? Column(
-                  children: [
-                    RoundContainer(
-                        height: null,
-                        radius: 8,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 13, horizontal: 16),
-                        color: const Color(0xfffcf1f2),
-                        child: Text(
-                          context.l10n.depositNotice(asset.symbol),
-                          style: TextStyle(
-                            color: context.theme.red,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )),
-                    const SizedBox(height: 10)
-                  ],
-                )
-              : const SizedBox(),
+          if (asset.needShowMemo)
+            Column(
+              children: [
+                RoundContainer(
+                    height: null,
+                    radius: 8,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 13, horizontal: 16),
+                    color: const Color(0xfffcf1f2),
+                    child: Text(
+                      context.l10n.depositNotice(asset.symbol),
+                      style: TextStyle(
+                        color: context.theme.red,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )),
+                const SizedBox(height: 10)
+              ],
+            )
+          else
+            const SizedBox(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: Align(
@@ -531,12 +532,11 @@ class _AddressTypeItem extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           )),
                       const Spacer(),
-                      depositEntry.destination == checkedDestination
-                          ? Align(
-                              alignment: Alignment.centerRight,
-                              child: SvgPicture.asset(R.resourcesIcCheckSvg),
-                            )
-                          : const SizedBox(),
+                      if (depositEntry.destination == checkedDestination)
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: SvgPicture.asset(R.resourcesIcCheckSvg),
+                        ),
                     ],
                   ))),
         ));

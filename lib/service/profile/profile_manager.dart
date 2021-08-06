@@ -44,7 +44,7 @@ class _AuthAdapter extends TypeAdapter<Auth> {
   @override
   Auth read(BinaryReader reader) => Auth.fromJson(reader
       .readMap()
-      .map((key, value) => MapEntry<String, dynamic>(key, value)));
+      .map((key, value) => MapEntry<String, dynamic>(key as String, value)));
 
   @override
   int get typeId => 0;
