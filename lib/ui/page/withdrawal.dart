@@ -1,15 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/transfer.dart';
 
@@ -126,30 +124,17 @@ class _WithdrawalPage extends HookWidget {
                   'memo': memo.value,
                 });
 
-                if (!await canLaunch(uri.toString())) {
-                  return;
+                final succeed = await showAndWaitingExternalAction(
+                  context: context,
+                  uri: uri,
+                  action: () => context.appServices.updateSnapshotByTraceId(
+                    traceId: traceId,
+                  ),
+                  hint: Text(context.l10n.waitingActionDone),
+                );
+                if (succeed) {
+                  context.pop();
                 }
-                await launch(uri.toString());
-                await showDialog<bool>(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) => AlertDialog(
-                          content: Text(context.l10n.finishVerifyPIN),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(context.l10n.cancel)),
-                            TextButton(
-                                onPressed: () async {
-                                  unawaited(
-                                      context.appServices.updateAsset(assetId));
-                                  context.pop();
-                                },
-                                child: Text(context.l10n.sure)),
-                          ],
-                        ));
               },
             );
           }),

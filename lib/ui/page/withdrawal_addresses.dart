@@ -1,18 +1,15 @@
-import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/logger.dart';
 import '../widget/address_add_widget.dart';
+import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/search_header_widget.dart';
@@ -133,23 +130,33 @@ class _WithdrawalAddressList extends StatelessWidget {
             onDismiss: () {
               context.appServices.mixinDatabase.addressDao.deleteAddress(item);
             },
-            confirmDismiss: (direction) async {
+            confirmDismiss: (direction) {
               // https: //mixin.one/address?action=delete&asset=xxx&address=xxx
               final uri = Uri.https('mixin.one', 'address', {
                 'action': 'delete',
                 'asset': item.assetId,
                 'address': item.addressId,
               });
-              if (!await canLaunch(uri.toString())) {
-                return false;
-              }
-              await launch(uri.toString());
-              final ret = await showDialog<bool>(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => _DeleteConfirmDialog(address: item),
-              );
-              return ret == true;
+
+              return showAndWaitingExternalAction(
+                  context: context,
+                  uri: uri,
+                  hint: Text(context.l10n.delete),
+                  action: () async {
+                    try {
+                      await context.appServices.client.addressApi
+                          .getAddressById(item.addressId);
+                      return false;
+                    } catch (error) {
+                      if (error is DioError) {
+                        final mixinError = error.error as MixinError;
+                        if (mixinError.code == 404) {
+                          return true;
+                        }
+                      }
+                      rethrow;
+                    }
+                  });
             },
           );
         },
@@ -262,101 +269,6 @@ class _SwipeToDismiss extends StatelessWidget {
         ),
       ),
       child: child,
-    );
-  }
-}
-
-class _DeleteConfirmDialog extends HookWidget {
-  const _DeleteConfirmDialog({
-    Key? key,
-    required this.address,
-  }) : super(key: key);
-
-  final Addresse address;
-
-  @override
-  Widget build(BuildContext context) {
-    useEffect(() {
-      var canceled = false;
-      scheduleMicrotask(() async {
-        while (!canceled) {
-          try {
-            final result = await context.appServices.client.addressApi
-                .getAddressById(address.addressId);
-            i('result: ${result.data}');
-          } catch (error, stack) {
-            if (error is DioError) {
-              final mixinError = error.error as MixinError;
-              if (mixinError.code == 404) {}
-            }
-            i('failed: $error, $stack');
-            if (!canceled) {
-              Navigator.of(context).pop(true);
-            }
-            break;
-          }
-          await Future.delayed(const Duration(milliseconds: 2000));
-        }
-      });
-      return () => canceled = true;
-    }, [address.addressId]);
-
-    return Center(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: context.theme.background,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: SizedBox(
-          width: 200,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 24),
-              CircularProgressIndicator(
-                color: context.theme.text,
-                strokeWidth: 2,
-              ),
-              const SizedBox(height: 14),
-              Text(context.l10n.delete,
-                  style: TextStyle(
-                    color: context.theme.text,
-                    fontSize: 16,
-                    height: 1.4,
-                  )),
-              const SizedBox(height: 14),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: InkWell(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: context.theme.accent,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.only(
-                        top: 12, bottom: 14, left: 54, right: 55),
-                    child: Center(
-                      child: Text(
-                        context.l10n.cancel,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-              const SizedBox(height: 18),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

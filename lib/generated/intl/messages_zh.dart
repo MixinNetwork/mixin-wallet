@@ -96,7 +96,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterApply": MessageLookupByLibrary.simpleMessage("应用"),
         "filterBy": MessageLookupByLibrary.simpleMessage("筛选"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("筛选"),
-        "finishVerifyPIN": MessageLookupByLibrary.simpleMessage("完成验证 PIN 了？"),
         "from": MessageLookupByLibrary.simpleMessage("来自"),
         "hiddenAssets": MessageLookupByLibrary.simpleMessage("隐藏的资产"),
         "hide": MessageLookupByLibrary.simpleMessage("隐藏"),
@@ -130,7 +129,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("转账至 Mixin 联系人"),
         "show": MessageLookupByLibrary.simpleMessage("显示"),
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
-        "sure": MessageLookupByLibrary.simpleMessage("确定"),
         "symbol": MessageLookupByLibrary.simpleMessage("符号"),
         "tagHint": MessageLookupByLibrary.simpleMessage("标签（Tag）"),
         "time": MessageLookupByLibrary.simpleMessage("时间"),
@@ -144,6 +142,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsType": MessageLookupByLibrary.simpleMessage("交易类型"),
         "transfer": MessageLookupByLibrary.simpleMessage("转账"),
         "undo": MessageLookupByLibrary.simpleMessage("撤销"),
+        "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),
         "walletTransactionCurrentValue": m10,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),

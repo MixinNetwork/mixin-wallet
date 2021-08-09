@@ -56,8 +56,6 @@
   "recentSearches": "最近搜索",
   "copyToClipboard": "已复制到剪切板",
   "transactions": "转账记录",
-  "finishVerifyPIN": "完成验证 PIN 了？",
-  "sure": "确定",
   "addAddressMemo": "地址标签、数字 ID 或备注。如果没有，",
   "addAddressNoMemo": "如果你需要填写地址标签、数字 ID 或备注，",
   "addAddressTagAction": "点击不使用标签（Tag）",
@@ -92,5 +90,6 @@
   "sendToContact": "转账至联系人",
   "contactSearchHint": "名称, Mixin ID",
   "noContactSelected": "需要选择一个联系人",
-  "withdrawalMemoHint": "备注 (可选)"
+  "withdrawalMemoHint": "备注 (可选)",
+  "waitingActionDone": "等待操作完成..."
 }

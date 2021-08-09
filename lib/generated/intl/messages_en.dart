@@ -112,8 +112,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterApply": MessageLookupByLibrary.simpleMessage("Apply"),
         "filterBy": MessageLookupByLibrary.simpleMessage("FILTER BY"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("Filter"),
-        "finishVerifyPIN":
-            MessageLookupByLibrary.simpleMessage("Finished verifying PIN ?"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
         "hiddenAssets": MessageLookupByLibrary.simpleMessage("Hidden Assets"),
         "hide": MessageLookupByLibrary.simpleMessage("Hide"),
@@ -158,7 +156,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Transfer to Mixin Messenger contact."),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
-        "sure": MessageLookupByLibrary.simpleMessage("Sure"),
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
         "tagHint": MessageLookupByLibrary.simpleMessage("Tag"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
@@ -175,6 +172,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Transaction Type"),
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
         "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
+        "waitingActionDone":
+            MessageLookupByLibrary.simpleMessage("Waiting action done..."),
         "walletTransactionCurrentValue": m10,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),

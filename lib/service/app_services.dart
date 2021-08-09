@@ -228,7 +228,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final data = await client.snapshotApi.getSnapshotById(snapshotId);
 
     final closures = await Future.wait([
-      _checkUsersExistWithReturnInsert([data.data.opponentId!]),
+      _checkUsersExistWithReturnInsert(
+        [data.data.opponentId].whereNotNull().toList(),
+      ),
       _checkAssetExistWithReturnInsert(data.data.assetId),
     ]);
 
@@ -238,6 +240,27 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         ...closures.map((e) => e?.call()),
       ].where((element) => element != null).cast<Future>());
     });
+  }
+
+  Future<bool> updateSnapshotByTraceId({required String traceId}) async {
+    try {
+      final data = await client.snapshotApi.getSnapshotByTraceId(traceId);
+      final closures = await Future.wait([
+        _checkUsersExistWithReturnInsert(
+          [data.data.opponentId].whereNotNull().toList(),
+        ),
+        _checkAssetExistWithReturnInsert(data.data.assetId),
+      ]);
+      await mixinDatabase.transaction(() async {
+        await Future.wait([
+          mixinDatabase.snapshotDao.insertAll([data.data]),
+          ...closures.map((e) => e?.call()),
+        ].whereNotNull().cast<Future>());
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<void> refreshPendingDeposits(AssetResult asset) =>
@@ -286,10 +309,11 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     return mixinDatabase.addressDao.addressesByAssetId(assetId);
   }
 
-  Future<void> updateAddresses(String assetId) async {
+  Future<List<sdk.Address>> updateAddresses(String assetId) async {
     final addresses =
         (await client.addressApi.getAddressesByAssetId(assetId)).data;
     await mixinDatabase.addressDao.insertAllOnConflictUpdate(addresses);
+    return addresses;
   }
 
   Selectable<User> friends() => mixinDatabase.findFriendsNotBot();

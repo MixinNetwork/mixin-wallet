@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:very_good_analysis/very_good_analysis.dart';
 
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/l10n.dart';
 import '../router/mixin_routes.dart';
 import 'brightness_observer.dart';
+import 'external_action_confirm.dart';
 import 'mixin_bottom_sheet.dart';
 import 'round_container.dart';
 
@@ -146,38 +145,31 @@ class AddressAddWidget extends HookWidget {
                           content: Text(context.l10n.emptyLabelOrAddress)));
                       return;
                     }
+                    final tag = memoController.text.trim();
                     final uri = Uri.https('mixin.one', 'address', {
                       'action': 'add',
                       'asset': assetId,
                       'destination': address,
-                      'tag': memoController.text.trim(),
+                      'tag': tag,
                       'label': label,
                     });
-                    if (!await canLaunch(uri.toString())) {
-                      return;
+
+                    final succeed = await showAndWaitingExternalAction(
+                      context: context,
+                      uri: uri,
+                      action: () async {
+                        final addressList =
+                            await context.appServices.updateAddresses(assetId);
+                        final index = addressList.indexWhere(
+                            (e) => e.destination == address && e.tag == tag);
+                        return index != -1;
+                      },
+                      hint: Text(context.l10n.waitingActionDone),
+                    );
+                    if (succeed) {
+                      context.replace(
+                          withdrawalAddressesPath.toUri({'id': assetId}));
                     }
-                    await launch(uri.toString());
-                    await showDialog<bool>(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (context) => AlertDialog(
-                              content: Text(context.l10n.finishVerifyPIN),
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(context.l10n.cancel)),
-                                TextButton(
-                                    onPressed: () async {
-                                      unawaited(context.appServices
-                                          .updateAddresses(assetId));
-                                      context.replace(withdrawalAddressesPath
-                                          .toUri({'id': assetId}));
-                                    },
-                                    child: Text(context.l10n.sure)),
-                              ],
-                            ));
                   },
                   child: Container(
                       width: 160,

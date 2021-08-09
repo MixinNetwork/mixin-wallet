@@ -62,8 +62,6 @@
   "assetTrending": "Trending",
   "recentSearches": "Recent searches",
   "copyToClipboard": "Copy to clipboard",
-  "finishVerifyPIN": "Finished verifying PIN ?",
-  "sure": "Sure",
   "addAddressMemo": "Destination Tag or ID Number or notes. If not, you can set it ",
   "addAddressNoMemo": "If you are required to fill in Destination Tag or ID Number or notes, you can ",
   "addAddressTagAction": "No Tag",
@@ -98,5 +96,6 @@
   "sendToContact": "Send to contact",
   "contactSearchHint": "Name, Mixin ID",
   "noContactSelected": "No contact selected",
-  "withdrawalMemoHint": "Memo (Optional)"
+  "withdrawalMemoHint": "Memo (Optional)",
+  "waitingActionDone": "Waiting action done..."
 }

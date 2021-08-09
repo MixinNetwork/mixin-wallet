@@ -680,26 +680,6 @@ class L10n {
     );
   }
 
-  /// `Finished verifying PIN ?`
-  String get finishVerifyPIN {
-    return Intl.message(
-      'Finished verifying PIN ?',
-      name: 'finishVerifyPIN',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sure`
-  String get sure {
-    return Intl.message(
-      'Sure',
-      name: 'sure',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Destination Tag or ID Number or notes. If not, you can set it `
   String get addAddressMemo {
     return Intl.message(
@@ -1045,6 +1025,16 @@ class L10n {
     return Intl.message(
       'Memo (Optional)',
       name: 'withdrawalMemoHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Waiting action done...`
+  String get waitingActionDone {
+    return Intl.message(
+      'Waiting action done...',
+      name: 'waitingActionDone',
       desc: '',
       args: [],
     );
