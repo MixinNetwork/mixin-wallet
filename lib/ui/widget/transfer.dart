@@ -331,6 +331,12 @@ class TransferAmountWidget extends HookWidget {
   Widget build(BuildContext context) {
     final fiatInputMode = useState(false);
 
+    useEffect(() {
+      if (asset.priceUsd.isZero) {
+        fiatInputMode.value = false;
+      }
+    }, [asset.priceUsd.isZero]);
+
     final controller = useTextEditingController();
     final input = useValueListenable(controller).text;
 
