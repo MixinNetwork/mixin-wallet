@@ -1039,6 +1039,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Failed to read contact list`
+  String get contactReadFailed {
+    return Intl.message(
+      'Failed to read contact list',
+      name: 'contactReadFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reauthorize`
+  String get reauthorize {
+    return Intl.message(
+      'Reauthorize',
+      name: 'reauthorize',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

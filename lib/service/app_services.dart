@@ -324,6 +324,11 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       final friends = await client.accountApi.getFriends();
       await mixinDatabase.userDao
           .insertAll(friends.data.map((e) => e.toDbUser()).toList());
+    } on DioError catch (e) {
+      if (e.optionMixinError?.isForbidden == true) {
+        rethrow;
+      }
+      d('update friends failed: $e');
     } catch (e) {
       d('update friends failed: $e');
     }

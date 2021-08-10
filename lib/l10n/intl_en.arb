@@ -97,5 +97,7 @@
   "contactSearchHint": "Name, Mixin ID",
   "noContactSelected": "No contact selected",
   "withdrawalMemoHint": "Memo (Optional)",
-  "waitingActionDone": "Waiting action done..."
+  "waitingActionDone": "Waiting action done...",
+  "contactReadFailed": "Failed to read contact list",
+  "reauthorize": "Reauthorize"
 }

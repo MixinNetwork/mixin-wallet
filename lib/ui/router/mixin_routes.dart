@@ -29,19 +29,10 @@ final hiddenAssetsUri = Uri(path: '/hiddenAssets');
 const transferPath = '/transfer/:id';
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
-      VGuard(
-        beforeEnter: (redirector) async {
-          i('check is login: $isLogin');
-          if (!isLogin) return;
-          redirector.to('/');
-        },
-        stackedRoutes: [
-          VWidget(
-            key: const ValueKey('Auth'),
-            path: '/auth',
-            widget: const AuthPage(),
-          ),
-        ],
+      VWidget(
+        key: const ValueKey('Auth'),
+        path: '/auth',
+        widget: const AuthPage(),
       ),
       VGuard(
           beforeEnter: (redirector) async {

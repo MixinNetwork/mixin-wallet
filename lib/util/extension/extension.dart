@@ -20,6 +20,7 @@ export 'package:provider/provider.dart' show ReadContext, WatchContext;
 
 export '../../ui/widget/brightness_observer.dart';
 export '../l10n.dart';
+export 'src/errors.dart';
 
 part 'src/iterable.dart';
 

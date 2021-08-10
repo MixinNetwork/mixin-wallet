@@ -91,5 +91,7 @@
   "contactSearchHint": "名称, Mixin ID",
   "noContactSelected": "需要选择一个联系人",
   "withdrawalMemoHint": "备注 (可选)",
-  "waitingActionDone": "等待操作完成..."
+  "waitingActionDone": "等待操作完成...",
+  "contactReadFailed": "读取联系人列表失败",
+  "reauthorize": "重新授权"
 }

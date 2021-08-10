@@ -74,4 +74,7 @@ class R {
 
   static const String resourcesTransactionWithdrawalSvg =
       'resources/transaction_withdrawal.svg';
+
+  static const String resourcesUnauthorizedContactSvg =
+      'resources/unauthorized_contact.svg';
 }

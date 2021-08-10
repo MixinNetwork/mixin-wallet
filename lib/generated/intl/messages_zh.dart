@@ -70,6 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
         "contact": MessageLookupByLibrary.simpleMessage("联系人"),
+        "contactReadFailed": MessageLookupByLibrary.simpleMessage("读取联系人列表失败"),
         "contactSearchHint":
             MessageLookupByLibrary.simpleMessage("名称, Mixin ID"),
         "contract": MessageLookupByLibrary.simpleMessage("资产标识"),
@@ -112,6 +113,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "pendingConfirmations": m9,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
+        "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),
         "rebate": MessageLookupByLibrary.simpleMessage("退款"),
         "receive": MessageLookupByLibrary.simpleMessage("转入"),
         "recentSearches": MessageLookupByLibrary.simpleMessage("最近搜索"),

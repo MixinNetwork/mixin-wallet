@@ -85,6 +85,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
         "contact": MessageLookupByLibrary.simpleMessage("Contact"),
+        "contactReadFailed":
+            MessageLookupByLibrary.simpleMessage("Failed to read contact list"),
         "contactSearchHint":
             MessageLookupByLibrary.simpleMessage("Name, Mixin ID"),
         "contract": MessageLookupByLibrary.simpleMessage("Asset Key"),
@@ -134,6 +136,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "pendingConfirmations": m9,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
+        "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "recentSearches":
