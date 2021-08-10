@@ -112,21 +112,37 @@ class _SearchClearIcon extends HookWidget {
     } else {
       return Material(
         color: Colors.transparent,
-        child: MouseRegion(
-          cursor: SystemMouseCursors.basic,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 4),
-            child: InkResponse(
-              onTap: () {
-                controller.text = '';
-              },
-              radius: 16,
-              child: Icon(
-                Icons.close,
-                color: BrightnessData.themeOf(context).secondaryText,
-                size: 20,
+        child: SizedBox(
+          width: 48,
+          height: 48,
+          child: Stack(
+            children: [
+              Center(
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.basic,
+                  child: Opacity(
+                    opacity: 0.4,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: InkResponse(
+                        onTap: () {
+                          controller.text = '';
+                        },
+                        radius: 20,
+                        child: SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: SvgPicture.asset(
+                            R.resourcesIcCircleCloseSvg,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       );
