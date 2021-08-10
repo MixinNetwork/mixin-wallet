@@ -336,6 +336,8 @@ class TransferAmountWidget extends HookWidget {
 
     final currency = auth!.account.fiatCurrency;
 
+    final inputFocusNode = useFocusNode(debugLabel: 'amount input');
+
     final String equivalent;
     if (fiatInputMode.value) {
       assert(!asset.priceUsd.isZero);
@@ -380,54 +382,59 @@ class TransferAmountWidget extends HookWidget {
         child: Row(
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(children: [
-                    IntrinsicWidth(
-                        child: TextField(
-                      style: TextStyle(
-                        color: context.theme.text,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
+              child: GestureDetector(
+                onTap: inputFocusNode.requestFocus,
+                behavior: HitTestBehavior.translucent,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(children: [
+                      IntrinsicWidth(
+                          child: TextField(
+                        focusNode: inputFocusNode,
+                        style: TextStyle(
+                          color: context.theme.text,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        maxLines: 1,
+                        decoration: InputDecoration(
+                          hintText: input.isNotEmpty
+                              ? ''
+                              : '0.00 ${fiatInputMode.value ? currency : asset.symbol}',
+                          border: InputBorder.none,
+                        ),
+                        controller: controller,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(RegExp(
+                              fiatInputMode.value
+                                  ? r'^\d*\.?\d{0,2}'
+                                  : r'^\d*\.?\d{0,8}')),
+                        ],
+                      )),
+                      Text(
+                        input.isNotEmpty
+                            ? (fiatInputMode.value ? currency : asset.symbol)
+                            : '',
+                        style: TextStyle(
+                          color: context.theme.text,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                        hintText: input.isNotEmpty
-                            ? ''
-                            : '0.00 ${fiatInputMode.value ? currency : asset.symbol}',
-                        border: InputBorder.none,
-                      ),
-                      controller: controller,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(RegExp(
-                            fiatInputMode.value
-                                ? r'^\d*\.?\d{0,2}'
-                                : r'^\d*\.?\d{0,8}')),
-                      ],
-                    )),
+                    ]),
                     Text(
-                      input.isNotEmpty
-                          ? (fiatInputMode.value ? currency : asset.symbol)
-                          : '',
+                      equivalent,
                       style: TextStyle(
-                        color: context.theme.text,
-                        fontSize: 16,
+                        color: context.theme.secondaryText,
+                        fontSize: 13,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                  ]),
-                  Text(
-                    equivalent,
-                    style: TextStyle(
-                      color: context.theme.secondaryText,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                ],
+                    const SizedBox(height: 10),
+                  ],
+                ),
               ),
             ),
             if (!asset.priceUsd.isZero)
