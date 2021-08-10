@@ -418,6 +418,8 @@ class TransferAmountWidget extends HookWidget {
                                   ? r'^\d*\.?\d{0,2}'
                                   : r'^\d*\.?\d{0,8}')),
                         ],
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
                       )),
                       Text(
                         input.isNotEmpty
