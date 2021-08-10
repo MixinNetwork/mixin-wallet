@@ -64,9 +64,11 @@ class SearchTextFieldWidget extends HookWidget {
         color: BrightnessData.themeOf(context).text,
         fontSize: fontSize,
       ),
+      cursorHeight: 20,
       scrollPadding: EdgeInsets.zero,
+      textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
-        isDense: true,
+        isDense: false,
         border: outlineInputBorder,
         focusedBorder: outlineInputBorder,
         enabledBorder: outlineInputBorder,
@@ -75,12 +77,14 @@ class SearchTextFieldWidget extends HookWidget {
         hoverColor: Colors.transparent,
         focusColor: Colors.transparent,
         prefixIconConstraints:
-            const BoxConstraints.expand(width: 40, height: 32),
+            const BoxConstraints.expand(width: 44, height: 44),
         prefixIcon: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 8),
+          padding: const EdgeInsets.only(left: 16, right: 12),
           child: SvgPicture.asset(
             R.resourcesIcSearchSmallSvg,
             color: hintColor,
+            width: 16,
+            height: 16,
           ),
         ),
         suffixIcon: _SearchClearIcon(controller),
@@ -106,17 +110,22 @@ class _SearchClearIcon extends HookWidget {
     if (editingText.text.isEmpty) {
       return const SizedBox();
     } else {
-      return MouseRegion(
-        cursor: SystemMouseCursors.basic,
-        child: InkWell(
-          onTap: () {
-            controller.text = '';
-          },
+      return Material(
+        color: Colors.transparent,
+        child: MouseRegion(
+          cursor: SystemMouseCursors.basic,
           child: Padding(
             padding: const EdgeInsets.only(right: 4),
-            child: Icon(
-              Icons.close,
-              color: BrightnessData.themeOf(context).secondaryText,
+            child: InkResponse(
+              onTap: () {
+                controller.text = '';
+              },
+              radius: 16,
+              child: Icon(
+                Icons.close,
+                color: BrightnessData.themeOf(context).secondaryText,
+                size: 20,
+              ),
             ),
           ),
         ),

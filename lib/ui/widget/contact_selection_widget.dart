@@ -69,7 +69,7 @@ class _ContactSelectionBottomSheet extends HookWidget {
       height: MediaQuery.of(context).size.height - 100,
       child: Column(
         children: [
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           Row(
             children: [
               const SizedBox(width: 20),

@@ -40,7 +40,7 @@ class AssetSelectionListWidget extends HookWidget {
       height: MediaQuery.of(context).size.height - 100,
       child: Column(
         children: [
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
               child: SearchHeaderWidget(

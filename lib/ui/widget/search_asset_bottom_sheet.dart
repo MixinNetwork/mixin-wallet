@@ -31,15 +31,15 @@ class SearchAssetBottomSheet extends HookWidget {
       height: MediaQuery.of(context).size.height - 100,
       child: Column(
         children: [
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.only(left: 20, right: 8),
             child: SearchHeaderWidget(
               hintText: context.l10n.search,
               onChanged: keywordStreamController.add,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           Expanded(
             child: IndexedStack(
               index: hasKeyword ? 1 : 0,
