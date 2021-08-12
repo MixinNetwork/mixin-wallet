@@ -423,8 +423,7 @@ class _QRBottomSheetContent extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 5),
-            Text(data,
-                softWrap: true,
+            SelectableText(data,
                 style: TextStyle(
                   color: context.theme.secondaryText,
                   fontSize: 14,
