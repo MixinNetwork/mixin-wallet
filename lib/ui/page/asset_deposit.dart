@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,6 +11,8 @@ import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
+import '../../util/web/web_utils_dummy.dart'
+    if (dart.library.html) '../../util/web/web_utils.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset_selection_list_widget.dart';
@@ -336,7 +337,7 @@ class _Item extends StatelessWidget {
                       name: R.resourcesIcCopySvg,
                       padding: const EdgeInsets.all(12),
                       onTap: () {
-                        Clipboard.setData(ClipboardData(text: desc));
+                        setClipboardText(desc);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             behavior: SnackBarBehavior.floating,
                             content: Text(context.l10n.copyToClipboard)));
