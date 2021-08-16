@@ -11,7 +11,7 @@
   "deposit": "Deposit",
   "address": "Address",
   "memo": "MEMO",
-  "depositNotice": "Notice: Both an Account Memo and an Account Name are required to successfully deposit your {value} to Mixin.",
+  "depositNotice": "Notice: Both a Memo and an Address are required to successfully deposit your {value} to Mixin.",
   "depositTip": "This address only supports {value}.",
   "depositTipBtc": "This address only supports BTC and Omni USDT.",
   "depositTipEth": "This address supports all ERC-20 tokens, such as ETH, XIN, TUSD, HT, LOOM, LEO, etc.",

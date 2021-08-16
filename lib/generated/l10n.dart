@@ -170,10 +170,10 @@ class L10n {
     );
   }
 
-  /// `Notice: Both an Account Memo and an Account Name are required to successfully deposit your {value} to Mixin.`
+  /// `Notice: Both a Memo and an Address are required to successfully deposit your {value} to Mixin.`
   String depositNotice(Object value) {
     return Intl.message(
-      'Notice: Both an Account Memo and an Account Name are required to successfully deposit your $value to Mixin.',
+      'Notice: Both a Memo and an Address are required to successfully deposit your $value to Mixin.',
       name: 'depositNotice',
       desc: '',
       args: [value],

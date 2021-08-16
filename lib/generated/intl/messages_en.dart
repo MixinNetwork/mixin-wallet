@@ -35,7 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Deposit will arrive after at least ${value} block confirmations";
 
   static String m7(value) =>
-      "Notice: Both an Account Memo and an Account Name are required to successfully deposit your ${value} to Mixin.";
+      "Notice: Both a Memo and an Address are required to successfully deposit your ${value} to Mixin.";
 
   static String m8(value) => "This address only supports ${value}.";
 
