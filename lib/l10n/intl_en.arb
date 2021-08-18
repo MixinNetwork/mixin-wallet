@@ -68,6 +68,8 @@
   "addAddressNoTagAction": "Add Tag",
   "addAddressMemoAction": "No Memo",
   "addAddressNoMemoAction": "Add Memo",
+  "addAddressNotSupportTip": "Mixin does not support withdrawal to the",
+  "eosContractAddress": "EOS contract address",
   "memoHint": "Memo",
   "tagHint": "Tag",
   "networkFee": "Network fee:",

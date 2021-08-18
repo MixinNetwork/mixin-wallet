@@ -740,6 +740,26 @@ class L10n {
     );
   }
 
+  /// `Mixin does not support withdrawal to the`
+  String get addAddressNotSupportTip {
+    return Intl.message(
+      'Mixin does not support withdrawal to the',
+      name: 'addAddressNotSupportTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `EOS contract address`
+  String get eosContractAddress {
+    return Intl.message(
+      'EOS contract address',
+      name: 'eosContractAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Memo`
   String get memoHint {
     return Intl.message(

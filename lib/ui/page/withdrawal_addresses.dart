@@ -25,6 +25,12 @@ class WithdrawalAddresses extends HookWidget {
       () => context.appServices.updateAddresses(assetId),
       keys: [assetId],
     );
+
+    final asset = useMemoizedStream(
+      () => context.appServices.assetResult(assetId).watchSingleOrNull(),
+      keys: [assetId],
+    ).data;
+
     final addresses = useMemoizedStream(
           () => context.appServices.addresses(assetId).watch(),
           keys: [assetId],
@@ -94,8 +100,8 @@ class WithdrawalAddresses extends HookWidget {
                       onPressed: () {
                         showMixinBottomSheet(
                           context: context,
-                          builder: (context) =>
-                              AddressAddWidget(assetId: assetId),
+                          builder: (context) => AddressAddWidget(
+                              assetId: assetId, chainId: asset?.chainId),
                           isScrollControlled: true,
                         );
                       },

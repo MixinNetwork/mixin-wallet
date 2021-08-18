@@ -50,6 +50,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("点击添加标签（Memo）"),
         "addAddressNoTagAction":
             MessageLookupByLibrary.simpleMessage("点击添加标签（Tag）"),
+        "addAddressNotSupportTip":
+            MessageLookupByLibrary.simpleMessage("Mixin 不支持提现到"),
         "addAddressTagAction":
             MessageLookupByLibrary.simpleMessage("点击不使用标签（Tag）"),
         "address": MessageLookupByLibrary.simpleMessage("地址"),
@@ -92,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "emptyAmount": MessageLookupByLibrary.simpleMessage("金额不能为空"),
         "emptyLabelOrAddress":
             MessageLookupByLibrary.simpleMessage("地址和标题不能为空"),
+        "eosContractAddress": MessageLookupByLibrary.simpleMessage("EOS 合约地址"),
         "fee": MessageLookupByLibrary.simpleMessage("手续费"),
         "filterAll": MessageLookupByLibrary.simpleMessage("全部"),
         "filterApply": MessageLookupByLibrary.simpleMessage("应用"),
