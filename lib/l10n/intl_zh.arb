@@ -93,5 +93,6 @@
   "withdrawalMemoHint": "备注 (可选)",
   "waitingActionDone": "等待操作完成...",
   "contactReadFailed": "读取联系人列表失败",
-  "reauthorize": "重新授权"
+  "reauthorize": "重新授权",
+  "transactionHash": "交易哈希"
 }

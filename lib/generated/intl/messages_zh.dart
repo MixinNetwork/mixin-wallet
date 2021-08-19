@@ -136,6 +136,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "time": MessageLookupByLibrary.simpleMessage("时间"),
         "to": MessageLookupByLibrary.simpleMessage("至"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额"),
+        "transactionHash": MessageLookupByLibrary.simpleMessage("交易哈希"),
         "transactions": MessageLookupByLibrary.simpleMessage("转账记录"),
         "transactionsAssetKeyWarning":
             MessageLookupByLibrary.simpleMessage("资产标识不是充值地址！"),

@@ -1059,6 +1059,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Transaction Hash`
+  String get transactionHash {
+    return Intl.message(
+      'Transaction Hash',
+      name: 'transactionHash',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

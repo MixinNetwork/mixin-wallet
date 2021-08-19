@@ -165,6 +165,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "to": MessageLookupByLibrary.simpleMessage("To"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
         "trace": MessageLookupByLibrary.simpleMessage("Trace"),
+        "transactionHash":
+            MessageLookupByLibrary.simpleMessage("Transaction Hash"),
         "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
         "transactionsAssetKeyWarning": MessageLookupByLibrary.simpleMessage(
             "Asset key is NOT a deposit address!"),
