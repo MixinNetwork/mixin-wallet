@@ -142,7 +142,8 @@ class _UnauthorizedWidget extends StatelessWidget {
             const SizedBox(height: 6),
             TextButton(
               onPressed: () {
-                final uri = Uri.https('mixin.one', 'oauth/authorize', {
+                final uri =
+                    Uri.https('mixin-www.zeromesh.net', 'oauth/authorize', {
                   'client_id': Env.clientId,
                   'scope':
                       'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ',
