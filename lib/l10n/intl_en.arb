@@ -101,5 +101,6 @@
   "withdrawalMemoHint": "Memo (Optional)",
   "waitingActionDone": "Waiting action done...",
   "contactReadFailed": "Failed to read contact list",
-  "reauthorize": "Reauthorize"
+  "reauthorize": "Reauthorize",
+  "transactionHash": "Transaction Hash"
 }

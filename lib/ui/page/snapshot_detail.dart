@@ -238,14 +238,8 @@ class _TransactionDetailInfo extends StatelessWidget {
                   title: Text(context.l10n.assetType.toUpperCase()),
                   subtitle: SelectableText(asset.name),
                 ),
-                _TransactionInfoTile(
-                  title: Text(context.l10n.from.toUpperCase()),
-                  subtitle: _From(snapshot: snapshot),
-                ),
-                _TransactionInfoTile(
-                  title: Text(context.l10n.to.toUpperCase()),
-                  subtitle: _To(snapshot: snapshot),
-                ),
+                _From(snapshot: snapshot),
+                _To(snapshot: snapshot, asset: asset),
                 _TransactionInfoTile(
                   title: Text(context.l10n.memo.toUpperCase()),
                   subtitle: SelectableText(snapshot.memo ?? ''),
@@ -256,10 +250,11 @@ class _TransactionDetailInfo extends StatelessWidget {
                       '${DateFormat.yMMMMd().format(snapshot.createdAt)} '
                       '${DateFormat.Hms().format(snapshot.createdAt)}'),
                 ),
-                _TransactionInfoTile(
-                  title: Text(context.l10n.trace.toUpperCase()),
-                  subtitle: SelectableText(snapshot.traceId ?? ''),
-                ),
+                if (snapshot.traceId != null && snapshot.traceId!.isNotEmpty)
+                  _TransactionInfoTile(
+                    title: Text(context.l10n.trace.toUpperCase()),
+                    subtitle: SelectableText(snapshot.traceId ?? ''),
+                  ),
               ],
             ),
           ),
@@ -278,6 +273,7 @@ class _From extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String sender;
+    String? title;
 
     switch (snapshot.type) {
       case SnapshotType.deposit:
@@ -293,26 +289,37 @@ class _From extends StatelessWidget {
         break;
       default:
         sender = snapshot.transactionHash ?? '';
+        title = context.l10n.transactionHash.toUpperCase();
         break;
     }
-
-    return SelectableText(sender);
+    return _TransactionInfoTile(
+      title: Text(title ?? context.l10n.from.toUpperCase()),
+      subtitle: SelectableText(sender),
+    );
   }
 }
 
 class _To extends StatelessWidget {
-  const _To({Key? key, required this.snapshot}) : super(key: key);
+  const _To({
+    Key? key,
+    required this.snapshot,
+    required this.asset,
+  }) : super(key: key);
 
   final SnapshotItem snapshot;
+
+  final AssetResult asset;
 
   @override
   Widget build(BuildContext context) {
     final String receiver;
+    String? title;
 
     switch (snapshot.type) {
       case SnapshotType.deposit:
       case SnapshotType.pending:
         receiver = snapshot.transactionHash ?? '';
+        title = context.l10n.transactionHash.toUpperCase();
         break;
       case SnapshotType.transfer:
         if (!snapshot.isPositive) {
@@ -323,9 +330,15 @@ class _To extends StatelessWidget {
         break;
       default:
         receiver = snapshot.receiver ?? '';
+        if (asset.tag != null && asset.tag!.isNotEmpty) {
+          title = context.l10n.address.toUpperCase();
+        }
         break;
     }
-    return SelectableText(receiver);
+    return _TransactionInfoTile(
+      title: Text(title ?? context.l10n.to.toUpperCase()),
+      subtitle: SelectableText(receiver),
+    );
   }
 }
 
