@@ -150,9 +150,7 @@ class AddressAddWidget extends HookWidget {
                           color: context.theme.text,
                           fontWeight: FontWeight.bold,
                         ))
-                  ]))
-            else
-              const SizedBox(),
+                  ])),
             const Spacer(),
             Align(
               alignment: Alignment.bottomCenter,
