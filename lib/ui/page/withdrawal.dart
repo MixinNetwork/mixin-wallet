@@ -61,6 +61,10 @@ class _WithdrawalPage extends HookWidget {
       return subscription.cancel;
     }, [address.value?.addressId]);
 
+    useEffect(() {
+      address.value = null;
+    }, [asset.value.assetId]);
+
     return Scaffold(
       backgroundColor: context.theme.accent,
       appBar: MixinAppBar(
@@ -93,8 +97,6 @@ class _WithdrawalPage extends HookWidget {
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: _FeeText(asset: asset.value, address: address.value),
           ),
-          const SizedBox(height: 8),
-          TransferMemoWidget(onMemoInput: (value) => memo.value = value),
           const Spacer(),
           HookBuilder(builder: (context) {
             useListenable(amount);
