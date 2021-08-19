@@ -298,7 +298,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
             .get())
         .toSet();
     final snapshots = pendingDeposits
-        .where(existHashSets.contains)
+        .where((e) => !existHashSets.contains(e.transactionHash))
         .map((e) => e.toSnapshot(assetId))
         .toList();
     await mixinDatabase.snapshotDao.insertPendingDeposit(snapshots);
