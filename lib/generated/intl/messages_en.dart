@@ -59,6 +59,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Add Memo"),
         "addAddressNoTagAction":
             MessageLookupByLibrary.simpleMessage("Add Tag"),
+        "addAddressNotSupportTip": MessageLookupByLibrary.simpleMessage(
+            "Mixin does not support withdrawal to the"),
         "addAddressTagAction": MessageLookupByLibrary.simpleMessage("No Tag"),
         "address": MessageLookupByLibrary.simpleMessage("Address"),
         "addressSearchHint":
@@ -109,6 +111,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "emptyAmount": MessageLookupByLibrary.simpleMessage("Empty amount"),
         "emptyLabelOrAddress":
             MessageLookupByLibrary.simpleMessage("Empty address or label"),
+        "eosContractAddress":
+            MessageLookupByLibrary.simpleMessage("EOS contract address"),
         "fee": MessageLookupByLibrary.simpleMessage("Fee"),
         "filterAll": MessageLookupByLibrary.simpleMessage("All"),
         "filterApply": MessageLookupByLibrary.simpleMessage("Apply"),

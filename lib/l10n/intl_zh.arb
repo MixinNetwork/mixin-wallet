@@ -62,6 +62,8 @@
   "addAddressNoTagAction": "点击添加标签（Tag）",
   "addAddressMemoAction": "点击不使用标签（Memo）",
   "addAddressNoMemoAction": "点击添加标签（Memo）",
+  "addAddressNotSupportTip": "Mixin 不支持提现到",
+  "eosContractAddress": "EOS 合约地址",
   "memoHint": "标签（Memo）",
   "tagHint": "标签（Tag）",
   "networkFee": "网络手续费：",

@@ -12,9 +12,11 @@ import 'mixin_bottom_sheet.dart';
 import 'round_container.dart';
 
 class AddressAddWidget extends HookWidget {
-  const AddressAddWidget({Key? key, required this.assetId}) : super(key: key);
+  const AddressAddWidget({Key? key, required this.assetId, this.chainId})
+      : super(key: key);
 
   final String assetId;
+  final String? chainId;
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +134,23 @@ class AddressAddWidget extends HookWidget {
                                 color: Color.fromRGBO(75, 124, 211, 1)),
                           )
                         ]))))),
+            const SizedBox(height: 16),
+            if (chainId == eos)
+              Text.rich(TextSpan(
+                  style: TextStyle(
+                    color: context.theme.secondaryText,
+                    fontSize: 13,
+                    height: 2,
+                  ),
+                  children: [
+                    TextSpan(text: '${context.l10n.addAddressNotSupportTip} '),
+                    TextSpan(
+                        text: context.l10n.eosContractAddress,
+                        style: TextStyle(
+                          color: context.theme.text,
+                          fontWeight: FontWeight.bold,
+                        ))
+                  ])),
             const Spacer(),
             Align(
               alignment: Alignment.bottomCenter,
