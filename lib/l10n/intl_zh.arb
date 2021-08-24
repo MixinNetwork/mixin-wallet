@@ -99,5 +99,6 @@
   "transactionHash": "交易哈希",
   "buy": "购买",
   "swap": "Swap",
-  "none": "暂无价格"
+  "none": "暂无价格",
+  "other": "其他"
 }

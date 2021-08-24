@@ -116,6 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noContactSelected": MessageLookupByLibrary.simpleMessage("需要选择一个联系人"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "none": MessageLookupByLibrary.simpleMessage("暂无价格"),
+        "other": MessageLookupByLibrary.simpleMessage("其他"),
         "pendingConfirmations": m9,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),

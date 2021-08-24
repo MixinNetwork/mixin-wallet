@@ -139,6 +139,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No contact selected"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
+        "other": MessageLookupByLibrary.simpleMessage("Other"),
         "pendingConfirmations": m9,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),

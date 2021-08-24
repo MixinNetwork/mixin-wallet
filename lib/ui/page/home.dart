@@ -15,6 +15,7 @@ import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset.dart';
+import '../widget/chart_assets.dart';
 import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
@@ -226,7 +227,10 @@ class _Header extends HookWidget {
           ),
         ),
         const SizedBox(height: 24),
-        const _AssetsChart(),
+        if (data.isEmpty)
+          const SizedBox(height: 64)
+        else
+          AssetsAnalysisChartLayout(assets: data),
         const SizedBox(height: 32),
         const _ButtonBar(),
         const SizedBox(height: 24),
@@ -235,15 +239,7 @@ class _Header extends HookWidget {
   }
 }
 
-class _AssetsChart extends StatelessWidget {
-  const _AssetsChart({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) => const SizedBox(
-        height: 64,
-        child: Text('TODO'),
-      );
-}
 
 class _ButtonBar extends StatelessWidget {
   const _ButtonBar({Key? key}) : super(key: key);

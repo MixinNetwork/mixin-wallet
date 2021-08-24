@@ -1109,6 +1109,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Other`
+  String get other {
+    return Intl.message(
+      'Other',
+      name: 'other',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

@@ -107,3 +107,10 @@ final nameColors = [
   const Color(0xFF2887C4),
   const Color(0xFF52A98B)
 ];
+
+const assetColors = [
+  Color(0xFFFC9E1F),
+  Color(0xFFFFCA3E),
+  Color(0xFF5278FF),
+  Color(0xFFDFE1E5),
+];

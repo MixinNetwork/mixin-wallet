@@ -104,5 +104,6 @@
   "reauthorize": "Reauthorize",
   "transactionHash": "Transaction Hash",
   "buy": "Buy",
-  "swap": "Swap"
+  "swap": "Swap",
+  "other": "Other"
 }
