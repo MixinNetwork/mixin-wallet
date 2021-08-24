@@ -30,3 +30,20 @@ class MixinBackButton extends StatelessWidget {
         ),
       );
 }
+
+class MixinBackButton2 extends StatelessWidget {
+  const MixinBackButton2({Key? key, this.onTap}) : super(key: key);
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) => ActionButton(
+        name: R.resourcesBackBlackSvg,
+        color: context.colorScheme.primaryText,
+        padding: const EdgeInsets.all(6),
+        size: 24,
+        onTap: () {
+          if (onTap != null) return onTap?.call();
+          context.pop();
+        },
+      );
+}

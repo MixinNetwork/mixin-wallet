@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -44,6 +45,20 @@ List<String> get topAssetIds =>
 
 void replaceTopAssetIds(List<String> topAssetIds) =>
     profileBox.put('topAssetIds', topAssetIds);
+
+bool get _isSmallAssetsHidden =>
+    profileBox.get('isSmallAssetsHidden') as bool? ?? false;
+
+set _isSmallAssetsHidden(bool value) =>
+    profileBox.put(isSmallAssetsHidden, value);
+
+late final ValueNotifier<bool> isSmallAssetsHidden = () {
+  final notifier = ValueNotifier(_isSmallAssetsHidden);
+  notifier.addListener(() {
+    _isSmallAssetsHidden = notifier.value;
+  });
+  return notifier;
+}();
 
 class _AuthAdapter extends TypeAdapter<Auth> {
   @override

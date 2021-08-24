@@ -105,5 +105,6 @@
   "transactionHash": "Transaction Hash",
   "buy": "Buy",
   "swap": "Swap",
-  "other": "Other"
+  "other": "Other",
+  "settings": "Settings"
 }

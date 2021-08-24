@@ -8,6 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../db/mixin_database.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
@@ -16,7 +17,6 @@ import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset.dart';
 import '../widget/chart_assets.dart';
-import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/search_asset_bottom_sheet.dart';
@@ -39,16 +39,16 @@ class Home extends HookWidget {
       initialData: <AssetResult>[],
     ).requireData;
 
-    final hideSmallAssets = useState(false);
+    final hideSmallAssets = useValueListenable(isSmallAssetsHidden);
 
     final assetList = useMemoized(() {
-      if (!hideSmallAssets.value) {
+      if (!hideSmallAssets) {
         return assetResults;
       }
       return assetResults
           .where((element) => element.amountOfUsd >= Decimal.one)
           .toList();
-    }, [hideSmallAssets.value, assetResults]);
+    }, [hideSmallAssets, assetResults]);
 
     return Scaffold(
       backgroundColor: context.theme.background,
@@ -72,9 +72,7 @@ class Home extends HookWidget {
           ActionButton(
             name: R.resourcesSettingSvg,
             size: 24,
-            onTap: () async {
-              // TODO to setting page.
-            },
+            onTap: () => context.push(settingPath),
           )
         ],
         backgroundColor: context.colorScheme.background,
@@ -239,8 +237,6 @@ class _Header extends HookWidget {
   }
 }
 
-
-
 class _ButtonBar extends StatelessWidget {
   const _ButtonBar({Key? key}) : super(key: key);
 
@@ -249,7 +245,6 @@ class _ButtonBar extends StatelessWidget {
         height: 24,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(1),
-          color: context.colorScheme.background,
         ),
       );
 
@@ -378,50 +373,6 @@ class _SwipeToHide extends StatelessWidget {
         ),
       ),
       child: child,
-    );
-  }
-}
-
-class MenuBottomSheet extends HookWidget {
-  const MenuBottomSheet({
-    Key? key,
-    required this.hideSmallAssets,
-  }) : super(key: key);
-
-  final ValueNotifier<bool> hideSmallAssets;
-
-  @override
-  Widget build(BuildContext context) {
-    useListenable(hideSmallAssets);
-    return Column(
-      children: [
-        MixinBottomSheetTitle(title: Text(context.l10n.assets)),
-        const SizedBox(height: 9),
-        MenuItemWidget(
-          topRounded: true,
-          leading: SvgPicture.asset(R.resourcesAllTransactionsSvg),
-          title: Text(context.l10n.allTransactions),
-          onTap: () => context.push(transactionsUri),
-        ),
-        MenuItemWidget(
-          bottomRounded: true,
-          leading: SvgPicture.asset(R.resourcesHiddenSvg),
-          title: Text(context.l10n.hiddenAssets),
-          onTap: () => context.push(hiddenAssetsUri),
-        ),
-        const SizedBox(height: 11),
-        MenuItemWidget(
-          topRounded: true,
-          bottomRounded: true,
-          title: Text(context.l10n.hideSmallAssets),
-          leading: SvgPicture.asset(R.resourcesHideAssetsSvg),
-          trailing: Switch(
-            value: hideSmallAssets.value,
-            activeColor: const Color(0xff333333),
-            onChanged: (bool value) => hideSmallAssets.value = value,
-          ),
-        )
-      ],
     );
   }
 }

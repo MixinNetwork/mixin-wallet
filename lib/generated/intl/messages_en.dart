@@ -163,6 +163,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Send to contact"),
         "sendToContactDescription": MessageLookupByLibrary.simpleMessage(
             "Transfer to Mixin Messenger contact."),
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "swap": MessageLookupByLibrary.simpleMessage("Swap"),

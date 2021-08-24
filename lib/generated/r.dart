@@ -13,6 +13,8 @@ class R {
 
   static const String resourcesAuthBgSvg = 'resources/auth_bg.svg';
 
+  static const String resourcesBackBlackSvg = 'resources/back_black.svg';
+
   static const String resourcesContactSvg = 'resources/contact.svg';
 
   static const String resourcesDownRedSvg = 'resources/down_red.svg';

@@ -135,6 +135,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendToContact": MessageLookupByLibrary.simpleMessage("转账至联系人"),
         "sendToContactDescription":
             MessageLookupByLibrary.simpleMessage("转账至 Mixin 联系人"),
+        "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "show": MessageLookupByLibrary.simpleMessage("显示"),
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
         "swap": MessageLookupByLibrary.simpleMessage("Swap"),

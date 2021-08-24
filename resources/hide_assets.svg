@@ -1,1 +1,8 @@
-<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 6a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V6zm3-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2h-6a4 4 0 0 1 0-8h6V6a1 1 0 0 0-1-1H5zm9 5h6v4h-6a2 2 0 1 1 0-4zm1 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill="#C4C4C4"/></svg>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9 20H8.44C6.16204 20 5.02306 20 4.1561 19.5497C3.42553 19.1702 2.82985 18.5745 2.45035 17.8439C2 16.9769 2 15.838 2 13.56V10.44C2 8.16204 2 7.02306 2.45035 6.1561C2.82985 5.42553 3.42553 4.82985 4.1561 4.45035C5.02306 4 6.16204 4 8.44 4H15.56C17.838 4 18.9769 4 19.8439 4.45035C20.5745 4.82985 21.1702 5.42553 21.5497 6.1561C22 7.02306 22 8.16204 22 10.44V12" stroke="#333333" stroke-width="2" stroke-linecap="round"/>
+    <rect x="2" y="9" width="20" height="2" fill="#333333"/>
+    <path d="M11.9487 16C13.2227 17.3275 15.0148 18.1538 17 18.1538C18.9851 18.1538 20.7773 17.3275 22.0512 16" stroke="#333333" stroke-width="2" stroke-linecap="round"/>
+    <rect x="16" y="18" width="2" height="4" rx="1" fill="#333333"/>
+    <rect x="13" y="16.1538" width="2" height="4" rx="1" transform="rotate(30 13 16.1538)" fill="#333333"/>
+    <rect width="2" height="4" rx="1" transform="matrix(-0.866025 0.5 0.5 0.866025 20.7321 16.1538)" fill="#333333"/>
+</svg>
