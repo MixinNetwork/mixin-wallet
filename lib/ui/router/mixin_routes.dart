@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:mixin_wallet/ui/page/setting.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../../service/profile/profile_manager.dart';
@@ -12,6 +11,7 @@ import '../page/auth.dart';
 import '../page/hidden_assets.dart';
 import '../page/home.dart';
 import '../page/not_found.dart';
+import '../page/setting.dart';
 import '../page/snapshot_detail.dart';
 import '../page/transfer.dart';
 import '../page/withdrawal.dart';
