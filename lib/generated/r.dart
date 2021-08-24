@@ -15,6 +15,8 @@ class R {
 
   static const String resourcesContactSvg = 'resources/contact.svg';
 
+  static const String resourcesDownRedSvg = 'resources/down_red.svg';
+
   static const String resourcesEmptyTransactionSvg =
       'resources/empty_transaction.svg';
 
@@ -59,9 +61,13 @@ class R {
 
   static const String resourcesIcSwitchSvg = 'resources/ic_switch.svg';
 
+  static const String resourcesMixinLogoPng = 'resources/mixin_logo.png';
+
   static const String resourcesReceiveSvg = 'resources/receive.svg';
 
   static const String resourcesSendSvg = 'resources/send.svg';
+
+  static const String resourcesSettingSvg = 'resources/setting.svg';
 
   static const String resourcesTransactionDepositSvg =
       'resources/transaction_deposit.svg';
@@ -77,4 +83,6 @@ class R {
 
   static const String resourcesUnauthorizedContactSvg =
       'resources/unauthorized_contact.svg';
+
+  static const String resourcesUpGreenSvg = 'resources/up_green.svg';
 }

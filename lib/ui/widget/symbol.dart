@@ -1,7 +1,9 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../generated/r.dart';
 import '../../util/extension/extension.dart';
 
 class SymbolIconWithBorder extends StatelessWidget {
@@ -39,7 +41,7 @@ class SymbolIconWithBorder extends StatelessWidget {
                     ),
                     child: Image.network(symbolUrl))),
             Positioned(
-              left: 0,
+              right: 0,
               bottom: 0,
               child: Container(
                 decoration: BoxDecoration(
@@ -64,34 +66,39 @@ class SymbolIconWithBorder extends StatelessWidget {
 class PercentageChange extends StatelessWidget {
   const PercentageChange({
     Key? key,
-    required this.valid,
     required this.changeUsd,
   }) : super(key: key);
 
-  final bool valid;
   final String changeUsd;
 
   @override
   Widget build(BuildContext context) {
-    late String text;
-    var color = context.theme.secondaryText;
-    if (valid) {
-      final decimal = Decimal.parse(changeUsd);
-      color = decimal.isNegative ? context.theme.red : context.theme.green;
-      final change = (decimal * Decimal.fromInt(100))
-          .toDouble()
-          .currencyFormatWithoutSymbol;
-      text = '$change%';
-    } else {
-      text = context.l10n.none;
-    }
-    return Text(
-      text,
+    final decimal = Decimal.tryParse(changeUsd) ?? Decimal.zero;
+    final negative = decimal.isNegative;
+    final change = (decimal.abs() * Decimal.fromInt(100))
+        .toDouble()
+        .currencyFormatWithoutSymbol;
+
+    final text = Text(
+      '$change%',
       textAlign: TextAlign.right,
       style: TextStyle(
-        color: color,
+        color: negative ? context.colorScheme.red : context.colorScheme.green,
         fontSize: 14,
       ),
+    );
+    if (decimal == Decimal.zero) {
+      return text;
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SvgPicture.asset(
+          negative ? R.resourcesDownRedSvg : R.resourcesUpGreenSvg,
+        ),
+        const SizedBox(width: 4),
+        text,
+      ],
     );
   }
 }

@@ -18,15 +18,19 @@ class AssetWidget extends StatelessWidget {
   Widget build(BuildContext context) => InkWell(
         onTap: () => context.push(assetDetailPath.toUri({'id': data.assetId})),
         child: Container(
-          height: 70,
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          height: 72,
+          padding: const EdgeInsets.all(16),
           child: Row(
             children: [
               SymbolIconWithBorder(
                 symbolUrl: data.iconUrl,
                 chainUrl: data.chainIconUrl,
-                size: 44,
-                chainSize: 10,
+                size: 40,
+                chainSize: 14,
+                chainBorder: BorderSide(
+                  color: context.colorScheme.background,
+                  width: 1.5,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -37,15 +41,16 @@ class AssetWidget extends StatelessWidget {
                     Text(
                       '${data.balance} ${data.symbol}'.overflow,
                       style: TextStyle(
-                        color: context.theme.text,
+                        color: context.colorScheme.primaryText,
                         fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
                       context.l10n.approxOf(
                           data.amountOfCurrentCurrency.currencyFormat),
                       style: TextStyle(
-                        color: context.theme.secondaryText,
+                        color: context.colorScheme.thirdText,
                         fontSize: 14,
                       ),
                     ),
@@ -68,22 +73,34 @@ class AssetPrice extends StatelessWidget {
   final AssetResult data;
 
   @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          PercentageChange(
-            valid: !data.priceUsd.isZero,
-            changeUsd: data.changeUsd,
-          ),
-          Text(
-            data.usdUnitPrice.currencyFormat,
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              color: context.theme.secondaryText,
-              fontSize: 14,
-            ),
-          ),
-        ],
+  Widget build(BuildContext context) {
+    final valid = !data.priceUsd.isZero;
+    if (!valid) {
+      return Text(
+        context.l10n.none,
+        textAlign: TextAlign.right,
+        style: TextStyle(
+          color: context.colorScheme.thirdText,
+          fontSize: 14,
+        ),
       );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        PercentageChange(
+          changeUsd: data.changeUsd,
+        ),
+        Text(
+          data.usdUnitPrice.currencyFormat,
+          textAlign: TextAlign.right,
+          style: TextStyle(
+            color: context.colorScheme.thirdText,
+            fontSize: 14,
+          ),
+        ),
+      ],
+    );
+  }
 }

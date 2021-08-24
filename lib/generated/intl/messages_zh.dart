@@ -69,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "authTips":
             MessageLookupByLibrary.simpleMessage("你知道吗？Mixin 是一个开源的加密钱包"),
         "authorize": MessageLookupByLibrary.simpleMessage("授权使用"),
+        "buy": MessageLookupByLibrary.simpleMessage("购买"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
         "contact": MessageLookupByLibrary.simpleMessage("联系人"),
@@ -114,6 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noAddressSelected": MessageLookupByLibrary.simpleMessage("需要选择一个地址"),
         "noContactSelected": MessageLookupByLibrary.simpleMessage("需要选择一个联系人"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
+        "none": MessageLookupByLibrary.simpleMessage("暂无价格"),
         "pendingConfirmations": m9,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),
@@ -134,6 +136,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("转账至 Mixin 联系人"),
         "show": MessageLookupByLibrary.simpleMessage("显示"),
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
+        "swap": MessageLookupByLibrary.simpleMessage("Swap"),
         "symbol": MessageLookupByLibrary.simpleMessage("符号"),
         "tagHint": MessageLookupByLibrary.simpleMessage("标签（Tag）"),
         "time": MessageLookupByLibrary.simpleMessage("时间"),

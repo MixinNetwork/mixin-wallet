@@ -54,7 +54,7 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
       );
 
   @override
-  Size get preferredSize => const Size.fromHeight(44);
+  Size get preferredSize => const Size.fromHeight(48);
 }
 
 class ListRoundedHeaderContainer extends StatelessWidget {

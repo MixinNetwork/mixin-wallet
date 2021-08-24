@@ -1089,6 +1089,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Buy`
+  String get buy {
+    return Intl.message(
+      'Buy',
+      name: 'buy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swap`
+  String get swap {
+    return Intl.message(
+      'Swap',
+      name: 'swap',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

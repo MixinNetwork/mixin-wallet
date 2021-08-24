@@ -101,8 +101,10 @@ class BrightnessThemeData extends Equatable {
     required this.green,
     required this.warning,
     required this.background,
+    required this.colorScheme,
   });
 
+  // old wallet color scheme.
   final Color accent;
   final Color text;
   final Color icon;
@@ -111,6 +113,8 @@ class BrightnessThemeData extends Equatable {
   final Color green;
   final Color warning;
   final Color background;
+
+  final MixinColorScheme colorScheme;
 
   static BrightnessThemeData lerp(
           BrightnessThemeData begin, BrightnessThemeData end, double t) =>
@@ -123,6 +127,8 @@ class BrightnessThemeData extends Equatable {
         green: Color.lerp(begin.green, end.green, t)!,
         warning: Color.lerp(begin.warning, end.warning, t)!,
         background: Color.lerp(begin.background, end.background, t)!,
+        colorScheme:
+            MixinColorScheme.lerp(begin.colorScheme, end.colorScheme, t),
       );
 
   @override
@@ -134,9 +140,74 @@ class BrightnessThemeData extends Equatable {
         green,
         warning,
         background,
+        colorScheme,
+      ];
+}
+
+@immutable
+class MixinColorScheme extends Equatable {
+  const MixinColorScheme({
+    required this.primaryText,
+    required this.secondaryText,
+    required this.thirdText,
+    required this.captionIcon,
+    required this.surface,
+    required this.green,
+    required this.red,
+    required this.background,
+  });
+
+  /// primary color, title, button
+  final Color primaryText;
+
+  /// top asset, label unselect text
+  final Color secondaryText;
+
+  /// subtitle, empty text.
+  final Color thirdText;
+
+  /// empty image tint color
+  final Color captionIcon;
+
+  /// list item/ text field background.
+  final Color surface;
+
+  /// prise rise.
+  final Color green;
+
+  /// warning/ slide hidden/ fall
+  final Color red;
+
+  final Color background;
+
+  static MixinColorScheme lerp(
+          MixinColorScheme a, MixinColorScheme b, double t) =>
+      MixinColorScheme(
+        primaryText: Color.lerp(a.primaryText, b.primaryText, t)!,
+        secondaryText: Color.lerp(a.secondaryText, b.secondaryText, t)!,
+        thirdText: Color.lerp(a.thirdText, b.thirdText, t)!,
+        captionIcon: Color.lerp(a.captionIcon, b.captionIcon, t)!,
+        surface: Color.lerp(a.surface, b.surface, t)!,
+        green: Color.lerp(a.green, b.green, t)!,
+        red: Color.lerp(a.red, b.red, t)!,
+        background: Color.lerp(a.background, b.background, t)!,
+      );
+
+  @override
+  List<Object?> get props => [
+        primaryText,
+        secondaryText,
+        thirdText,
+        captionIcon,
+        surface,
+        green,
+        red,
+        background,
       ];
 }
 
 extension Theme on BuildContext {
   BrightnessThemeData get theme => BrightnessData.themeOf(this);
+
+  MixinColorScheme get colorScheme => theme.colorScheme;
 }
