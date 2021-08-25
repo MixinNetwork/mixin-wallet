@@ -102,4 +102,15 @@ class R {
       'resources/unauthorized_contact.svg';
 
   static const String resourcesUpGreenSvg = 'resources/up_green.svg';
+
+  static const String resourcesIcFlagAud = 'resources/ic_flag_aud.png';
+  static const String resourcesIcFlagEur = 'resources/ic_flag_eur.png';
+  static const String resourcesIcFlagGbp = 'resources/ic_flag_gbp.png';
+  static const String resourcesIcFlagHkd = 'resources/ic_flag_hkd.png';
+  static const String resourcesIcFlagJpy = 'resources/ic_flag_jpy.png';
+  static const String resourcesIcFlagKrw = 'resources/ic_flag_krw.png';
+  static const String resourcesIcFlagMyr = 'resources/ic_flag_myr.png';
+  static const String resourcesIcFlagPhp = 'resources/ic_flag_php.png';
+  static const String resourcesIcFlagSgd = 'resources/ic_flag_sgd.png';
+  static const String resourcesIcFlagUsd = 'resources/ic_flag_usd.png';
 }

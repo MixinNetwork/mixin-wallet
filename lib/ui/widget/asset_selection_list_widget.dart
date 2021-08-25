@@ -32,14 +32,16 @@ class AssetSelectionListWidget extends HookWidget {
     Key? key,
     required this.onTap,
     this.selectedAssetId,
+    this.assetResultList,
   }) : super(key: key);
 
   final String? selectedAssetId;
+  final List<AssetResult>? assetResultList;
   final AssetSelectCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final assetResults = useMemoizedStream(
+    final assetResults = assetResultList ?? useMemoizedStream(
           () => context.appServices.assetResults().watch().map((event) => event
             ..sort(
               (a, b) => b.amountOfUsd.compareTo(a.amountOfUsd),

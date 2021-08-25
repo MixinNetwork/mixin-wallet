@@ -4,6 +4,10 @@ const eos = '6cfe566e-4aad-470b-8c9a-2fd35b49c68d';
 const ripple = '23dfb5a5-5d7b-48b6-905f-3970e3176e27';
 const tron = '25dabac5-056a-48ff-b9f9-f67395dc407c';
 
+const erc20USDT = '4d8c508b-91c5-375b-92b0-ee702ed2dac5';
+const erc20USDC = '9b180ab6-6abe-3dc0-a13f-04169eb34bfa';
+const dai = '94319320-eb5d-3e84-a07e-e24c21b8b934';
+
 const topRadius = 20.0;
 
 const depositHelpLink =

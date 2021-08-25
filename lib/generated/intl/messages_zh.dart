@@ -96,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币，例如 TRX、BTT、USDT-TRON 等。"),
         "depositing": MessageLookupByLibrary.simpleMessage("充值中"),
+        "dontShowAgain": MessageLookupByLibrary.simpleMessage("不再提醒"),
         "emptyAmount": MessageLookupByLibrary.simpleMessage("金额不能为空"),
         "emptyLabelOrAddress":
             MessageLookupByLibrary.simpleMessage("地址和标题不能为空"),
@@ -106,6 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterBy": MessageLookupByLibrary.simpleMessage("筛选"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("筛选"),
         "from": MessageLookupByLibrary.simpleMessage("来自"),
+        "gotIt": MessageLookupByLibrary.simpleMessage("知道了"),
         "hiddenAssets": MessageLookupByLibrary.simpleMessage("隐藏的资产"),
         "hide": MessageLookupByLibrary.simpleMessage("隐藏"),
         "hideSmallAssets": MessageLookupByLibrary.simpleMessage("隐藏小额资产"),
@@ -116,6 +118,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumWithdrawal": MessageLookupByLibrary.simpleMessage("最小提现数量："),
         "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin 钱包"),
         "networkFee": MessageLookupByLibrary.simpleMessage("网络手续费："),
+        "networkFeeTip": MessageLookupByLibrary.simpleMessage(
+            "由第三方服务商收取。直接支付给以太坊矿工以保证以太坊上交易完成。网络费根据即时市场状况变动。"),
         "networkType": MessageLookupByLibrary.simpleMessage("网络类型"),
         "noAddressSelected": MessageLookupByLibrary.simpleMessage("需要选择一个地址"),
         "noAsset": MessageLookupByLibrary.simpleMessage("暂无资产"),
@@ -149,6 +153,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "to": MessageLookupByLibrary.simpleMessage("至"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额"),
         "transaction": MessageLookupByLibrary.simpleMessage("转账记录"),
+        "transactionFee": MessageLookupByLibrary.simpleMessage("交易费"),
+        "transactionFeeTip": MessageLookupByLibrary.simpleMessage(
+            "由第三方服务商收取。美国用户按交易金额的2.9% + 30c收取，最低收费为\$5；国际用户按交易金额的3.9% + 30c收取，最低收费为\$5。"),
         "transactionHash": MessageLookupByLibrary.simpleMessage("交易哈希"),
         "transactions": MessageLookupByLibrary.simpleMessage("转账记录"),
         "transactionsAssetKeyWarning":
@@ -163,7 +170,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),
         "walletTransactionThatTimeValue": m10,
+        "wireServiceTip": MessageLookupByLibrary.simpleMessage(
+            "本服务由 Wyre 提供。我们仅作为渠道，不额外收取手续费。"),
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),
-        "withdrawalMemoHint": MessageLookupByLibrary.simpleMessage("备注 (可选)")
+        "withdrawalMemoHint": MessageLookupByLibrary.simpleMessage("备注 (可选)"),
+        "wyreServiceStatement": MessageLookupByLibrary.simpleMessage("服务声明")
       };
 }
