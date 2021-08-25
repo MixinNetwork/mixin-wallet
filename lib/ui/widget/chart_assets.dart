@@ -100,8 +100,8 @@ class AssetsAnalysisChartLayout extends HookWidget {
         }
       } else if (remainPercent < 0) {
         for (var i = assetChartItems.length - 1; i >= 0; i--) {
-          if (percents[i] > remainPercent) {
-            percents[i] -= remainPercent;
+          if (percents[i] > remainPercent.abs()) {
+            percents[i] -= remainPercent.abs();
           }
         }
       }
