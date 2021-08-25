@@ -60,7 +60,6 @@ dependencies:
   uuid: ^3.0.4
   envify: ^2.0.1
   path_to_regexp: ^0.4.0
-  fl_chart: ^0.36.4
 
 dependency_overrides:
   analyzer: ^2.0.0
