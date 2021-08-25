@@ -96,15 +96,15 @@ class Home extends HookWidget {
                     key: ValueKey(item.assetId),
                     child: AssetWidget(data: item),
                     onDismiss: () {
-                      context.appServices
-                          .updateAssetHidden(item.assetId, hidden: true);
+                      final appServices = context.appServices
+                        ..updateAssetHidden(item.assetId, hidden: true);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(context.l10n.alreadyHidden(item.name)),
                         action: SnackBarAction(
                           label: context.l10n.undo,
                           onPressed: () {
-                            context.appServices
-                                .updateAssetHidden(item.assetId, hidden: false);
+                            appServices.updateAssetHidden(item.assetId,
+                                hidden: false);
                           },
                         ),
                       ));
