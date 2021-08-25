@@ -106,5 +106,6 @@
   "buy": "Buy",
   "swap": "Swap",
   "other": "Other",
-  "settings": "Settings"
+  "settings": "Settings",
+  "noAsset": "NO ASSET"
 }

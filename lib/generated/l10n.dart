@@ -1129,6 +1129,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `NO ASSET`
+  String get noAsset {
+    return Intl.message(
+      'NO ASSET',
+      name: 'noAsset',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

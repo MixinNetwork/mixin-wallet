@@ -113,6 +113,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin 钱包"),
         "networkFee": MessageLookupByLibrary.simpleMessage("网络手续费："),
         "noAddressSelected": MessageLookupByLibrary.simpleMessage("需要选择一个地址"),
+        "noAsset": MessageLookupByLibrary.simpleMessage("暂无资产"),
         "noContactSelected": MessageLookupByLibrary.simpleMessage("需要选择一个联系人"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "none": MessageLookupByLibrary.simpleMessage("暂无价格"),

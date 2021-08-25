@@ -101,5 +101,6 @@
   "swap": "Swap",
   "none": "暂无价格",
   "other": "其他",
-  "settings": "设置"
+  "settings": "设置",
+  "noAsset": "暂无资产"
 }

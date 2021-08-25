@@ -86,7 +86,7 @@ class Home extends HookWidget {
             child: _AssetHeader(),
           ),
           if (assetList.isEmpty)
-            const SliverToBoxAdapter(child: SizedBox())
+            const SliverFillRemaining(child: _AssetsEmptyLayout())
           else
             SliverList(
               delegate: SliverChildBuilderDelegate(
@@ -380,4 +380,31 @@ class _SwipeToHide extends StatelessWidget {
       child: child,
     );
   }
+}
+
+class _AssetsEmptyLayout extends StatelessWidget {
+  const _AssetsEmptyLayout({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Spacer(flex: 100),
+          SvgPicture.asset(
+            R.resourcesEmptyTransactionGreySvg,
+            width: 80,
+            height: 80,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            context.l10n.noAsset,
+            style: TextStyle(
+              color: context.colorScheme.thirdText,
+              fontSize: 14,
+            ),
+          ),
+          const Spacer(flex: 164),
+        ],
+      );
 }

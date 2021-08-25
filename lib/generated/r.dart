@@ -22,6 +22,9 @@ class R {
   static const String resourcesEmptyTransactionSvg =
       'resources/empty_transaction.svg';
 
+  static const String resourcesEmptyTransactionGreySvg =
+      'resources/empty_transaction_grey.svg';
+
   static const String resourcesFilterSvg = 'resources/filter.svg';
 
   static const String resourcesFilterWhiteSvg = 'resources/filter_white.svg';
