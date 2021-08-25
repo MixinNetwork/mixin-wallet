@@ -201,9 +201,7 @@ class _AssetHeader extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              context.l10n.approxOf(
-                asset.amountOfCurrentCurrency.currencyFormat,
-              ),
+              asset.amountOfCurrentCurrency.currencyFormat,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.white.withOpacity(0.5),

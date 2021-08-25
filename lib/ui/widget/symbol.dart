@@ -95,6 +95,9 @@ class PercentageChange extends StatelessWidget {
       children: [
         SvgPicture.asset(
           negative ? R.resourcesDownRedSvg : R.resourcesUpGreenSvg,
+          width: 6,
+          height: 11,
+          allowDrawingOutsideViewBox: true,
         ),
         const SizedBox(width: 4),
         text,
