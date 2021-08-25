@@ -256,6 +256,9 @@ class _AssetsPieChartRender extends RenderBox {
   Color _centerCircleColor = Colors.white;
 
   set dividerColor(Color color) {
+    if (_dividerPainter.color == color) {
+      return;
+    }
     _dividerPainter.color = color;
     markNeedsPaint();
   }
@@ -270,6 +273,9 @@ class _AssetsPieChartRender extends RenderBox {
     ..isAntiAlias = true;
 
   set centerCircleColor(Color color) {
+    if (_centerCircleColor == color) {
+      return;
+    }
     _centerCircleColor = color;
     markNeedsPaint();
   }
