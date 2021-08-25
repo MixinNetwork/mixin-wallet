@@ -32,7 +32,7 @@ class MenuItemWidget extends StatelessWidget {
             top: topRounded ? const Radius.circular(12) : Radius.zero,
             bottom: bottomRounded ? const Radius.circular(12) : Radius.zero,
           ),
-          color: const Color(0xfff8f8f8),
+          color: context.colorScheme.surface,
         ),
         padding: EdgeInsets.only(
           top: topRounded ? 10 : 0,
@@ -48,7 +48,7 @@ class MenuItemWidget extends StatelessWidget {
                 children: [
                   const SizedBox(width: 20),
                   SizedBox.square(dimension: 24, child: leading),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -57,7 +57,7 @@ class MenuItemWidget extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           height: 1.5,
-                          color: context.theme.text,
+                          color: context.colorScheme.primaryText,
                         ),
                         child: title,
                       ),
@@ -67,7 +67,7 @@ class MenuItemWidget extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14,
                             height: 1,
-                            color: context.theme.text.withOpacity(0.4),
+                            color: context.colorScheme.thirdText,
                           ),
                           child: subtitle!,
                         ),
@@ -78,7 +78,7 @@ class MenuItemWidget extends StatelessWidget {
                   const Spacer(),
                   if (trailing != null)
                     Padding(
-                      padding: const EdgeInsets.only(right: 20),
+                      padding: const EdgeInsets.only(right: 16),
                       child: trailing,
                     ),
                 ],

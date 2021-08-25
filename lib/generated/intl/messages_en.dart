@@ -84,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "authorize": MessageLookupByLibrary.simpleMessage("Authorize"),
         "averageArrival": m4,
         "balanceOfBtc": m5,
+        "buy": MessageLookupByLibrary.simpleMessage("Buy"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
         "contact": MessageLookupByLibrary.simpleMessage("Contact"),
@@ -134,10 +135,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkFee": MessageLookupByLibrary.simpleMessage("Network fee:"),
         "noAddressSelected":
             MessageLookupByLibrary.simpleMessage("No address selected"),
+        "noAsset": MessageLookupByLibrary.simpleMessage("NO ASSET"),
         "noContactSelected":
             MessageLookupByLibrary.simpleMessage("No contact selected"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
+        "other": MessageLookupByLibrary.simpleMessage("Other"),
         "pendingConfirmations": m9,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
@@ -161,8 +164,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Send to contact"),
         "sendToContactDescription": MessageLookupByLibrary.simpleMessage(
             "Transfer to Mixin Messenger contact."),
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
+        "swap": MessageLookupByLibrary.simpleMessage("Swap"),
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
         "tagHint": MessageLookupByLibrary.simpleMessage("Tag"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),

@@ -3,15 +3,24 @@ import 'package:flutter/material.dart';
 import 'widget/brightness_observer.dart';
 
 const lightBrightnessThemeData = BrightnessThemeData(
-  accent: Color.fromRGBO(44, 46, 94, 1),
-  text: Color(0xff222222),
-  icon: Color.fromRGBO(47, 48, 50, 1),
-  secondaryText: Color(0x66222222),
-  red: Color.fromRGBO(229, 120, 116, 1),
-  green: Color.fromRGBO(80, 189, 92, 1),
-  warning: Color.fromRGBO(244, 171, 45, 1),
-  background: Color.fromRGBO(255, 255, 255, 1),
-);
+    accent: Color.fromRGBO(44, 46, 94, 1),
+    text: Color(0xff222222),
+    icon: Color.fromRGBO(47, 48, 50, 1),
+    secondaryText: Color(0x66222222),
+    red: Color.fromRGBO(229, 120, 116, 1),
+    green: Color.fromRGBO(80, 189, 92, 1),
+    warning: Color.fromRGBO(244, 171, 45, 1),
+    background: Color.fromRGBO(255, 255, 255, 1),
+    colorScheme: MixinColorScheme(
+      primaryText: Color(0xFF333333),
+      secondaryText: Color(0xFF828282),
+      thirdText: Color(0xFFBDBDBD),
+      captionIcon: Color(0xFFE0E0E0),
+      surface: Color(0xFFF7F8F9),
+      green: Color(0xFF2CD73D),
+      red: Color(0xFFFF6550),
+      background: Colors.white,
+    ));
 
 final avatarColors = [
   const Color(0xFFFFD659),
@@ -97,4 +106,11 @@ final nameColors = [
   const Color(0xFF3E9CCB),
   const Color(0xFF2887C4),
   const Color(0xFF52A98B)
+];
+
+const assetColors = [
+  Color(0xFFFC9E1F),
+  Color(0xFFFFCA3E),
+  Color(0xFF5278FF),
+  Color(0xFFDFE1E5),
 ];

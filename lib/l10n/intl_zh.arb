@@ -96,5 +96,11 @@
   "waitingActionDone": "等待操作完成...",
   "contactReadFailed": "读取联系人列表失败",
   "reauthorize": "重新授权",
-  "transactionHash": "交易哈希"
+  "transactionHash": "交易哈希",
+  "buy": "购买",
+  "swap": "Swap",
+  "none": "暂无价格",
+  "other": "其他",
+  "settings": "设置",
+  "noAsset": "暂无资产"
 }

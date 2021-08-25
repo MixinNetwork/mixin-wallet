@@ -42,14 +42,14 @@ class _HiddenAssetsList extends HookWidget {
         return _SwipeToUnHide(
           key: ValueKey(item.assetId),
           onDismiss: () {
-            context.appServices.updateAssetHidden(item.assetId, hidden: false);
+            final appServices = context.appServices
+              ..updateAssetHidden(item.assetId, hidden: false);
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(context.l10n.alreadyHidden(item.name)),
               action: SnackBarAction(
                 label: context.l10n.undo,
                 onPressed: () {
-                  context.appServices
-                      .updateAssetHidden(item.assetId, hidden: true);
+                  appServices.updateAssetHidden(item.assetId, hidden: true);
                 },
               ),
             ));

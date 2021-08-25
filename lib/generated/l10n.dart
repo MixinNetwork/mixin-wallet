@@ -1089,6 +1089,56 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Buy`
+  String get buy {
+    return Intl.message(
+      'Buy',
+      name: 'buy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swap`
+  String get swap {
+    return Intl.message(
+      'Swap',
+      name: 'swap',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other`
+  String get other {
+    return Intl.message(
+      'Other',
+      name: 'other',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NO ASSET`
+  String get noAsset {
+    return Intl.message(
+      'NO ASSET',
+      name: 'noAsset',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

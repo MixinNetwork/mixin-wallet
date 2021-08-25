@@ -102,5 +102,10 @@
   "waitingActionDone": "Waiting action done...",
   "contactReadFailed": "Failed to read contact list",
   "reauthorize": "Reauthorize",
-  "transactionHash": "Transaction Hash"
+  "transactionHash": "Transaction Hash",
+  "buy": "Buy",
+  "swap": "Swap",
+  "other": "Other",
+  "settings": "Settings",
+  "noAsset": "NO ASSET"
 }

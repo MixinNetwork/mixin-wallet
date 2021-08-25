@@ -11,6 +11,7 @@ import '../page/auth.dart';
 import '../page/hidden_assets.dart';
 import '../page/home.dart';
 import '../page/not_found.dart';
+import '../page/setting.dart';
 import '../page/snapshot_detail.dart';
 import '../page/transfer.dart';
 import '../page/withdrawal.dart';
@@ -27,6 +28,7 @@ const snapshotDetailPath = '/snapshots/:id';
 final transactionsUri = Uri(path: '/transactions');
 final hiddenAssetsUri = Uri(path: '/hiddenAssets');
 const transferPath = '/transfer/:id';
+const settingPath = '/setting';
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VWidget(
@@ -97,6 +99,11 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     path: hiddenAssetsUri.toString(),
                     widget: const HiddenAssets(),
                   ),
+                  VWidget(
+                    key: const ValueKey('Setting'),
+                    path: settingPath,
+                    widget: const Setting(),
+                  )
                 ]),
           ]),
       VRouteRedirector(path: ':_(.+)', redirectTo: '/404'),
