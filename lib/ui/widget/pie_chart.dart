@@ -15,7 +15,7 @@ abstract class PieChartItem extends Equatable {
   Color get color;
 
   @override
-  List<Object?> get props => [amount];
+  List<Object?> get props => [amount, color];
 }
 
 class PieChart extends StatelessWidget {

@@ -29,6 +29,9 @@ class _AssetChartItem extends PieChartItem {
   @override
   final double amount;
   final bool isOther;
+
+  @override
+  List<Object?> get props => [color, name, amount, isOther];
 }
 
 class AssetsAnalysisChartLayout extends HookWidget {
