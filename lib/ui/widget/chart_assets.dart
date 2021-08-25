@@ -38,7 +38,7 @@ class AssetsAnalysisChartLayout extends HookWidget {
   const AssetsAnalysisChartLayout({
     Key? key,
     required this.assets,
-  })  : assert(assets.length >= 4),
+  })  : assert(assets.length > 0),
         super(key: key);
 
   final List<AssetResult> assets;
@@ -46,12 +46,8 @@ class AssetsAnalysisChartLayout extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final assetChartItems = useMemoized(() {
-      if (assets.isEmpty) {
-        return const <_AssetChartItem>[];
-      }
       final sorted = assets.toList()
         ..sort((a, b) => b.amountOfUsd.compareTo(a.amountOfUsd));
-      assert(sorted.length >= 4);
 
       final items = <_AssetChartItem>[];
 
@@ -74,43 +70,7 @@ class AssetsAnalysisChartLayout extends HookWidget {
       return items;
     }, [assets]);
 
-    assert(assetChartItems.length == 4);
-
-    final percents = useMemoized(() {
-      final totalAmount = assetChartItems.fold<double>(
-          0, (previousValue, e) => previousValue + e.amount);
-
-      final percents = List.filled(4, 0);
-
-      var remainPercent = 10000;
-      for (var i = 0; i < assetChartItems.length; i++) {
-        final item = assetChartItems[i];
-        if (item.amount == 0) {
-          percents[i] = 0;
-        } else {
-          final percent = ((item.amount / totalAmount) * 10000).round();
-          remainPercent -= percent;
-          percents[i] = percent;
-        }
-      }
-
-      if (remainPercent > 0) {
-        for (var i = assetChartItems.length - 1; i >= 0; i--) {
-          if (percents[i] != 0) {
-            percents[i] += remainPercent;
-          }
-        }
-      } else if (remainPercent < 0) {
-        for (var i = assetChartItems.length - 1; i >= 0; i--) {
-          if (percents[i] > remainPercent.abs()) {
-            percents[i] -= remainPercent.abs();
-          }
-        }
-      }
-      return percents;
-    }, [assetChartItems]);
-
-    assert(percents.length == 4);
+    assert(assetChartItems.length >= 2);
 
     return SizedBox(
       height: 64,
@@ -121,40 +81,97 @@ class AssetsAnalysisChartLayout extends HookWidget {
           SizedBox(
             width: 64,
             height: 64,
-            child: RepaintBoundary(
-              child: PieChart(items: assetChartItems),
-            ),
+            child: PieChart(items: assetChartItems),
           ),
           const SizedBox(width: 24),
+          _PieChartLegend(chartItems: assetChartItems),
+        ],
+      ),
+    );
+  }
+}
+
+class _PieChartLegend extends HookWidget {
+  const _PieChartLegend({Key? key, required this.chartItems}) : super(key: key);
+
+  final List<_AssetChartItem> chartItems;
+
+  @override
+  Widget build(BuildContext context) {
+    final percents = useMemoized(() {
+      final totalAmount = chartItems.fold<double>(
+          0, (previousValue, e) => previousValue + e.amount);
+
+      final percents = List.filled(chartItems.length, 0);
+
+      var remainPercent = 10000;
+      for (var i = 0; i < chartItems.length; i++) {
+        final item = chartItems[i];
+        if (item.amount == 0) {
+          percents[i] = 0;
+        } else {
+          final percent = ((item.amount / totalAmount) * 10000).round();
+          remainPercent -= percent;
+          percents[i] = percent;
+        }
+      }
+
+      if (remainPercent > 0) {
+        for (var i = chartItems.length - 1; i >= 0; i--) {
+          if (percents[i] != 0) {
+            percents[i] += remainPercent;
+          }
+        }
+      } else if (remainPercent < 0) {
+        for (var i = chartItems.length - 1; i >= 0; i--) {
+          if (percents[i] > remainPercent.abs()) {
+            percents[i] -= remainPercent.abs();
+          }
+        }
+      }
+      return percents;
+    }, [chartItems]);
+
+    assert(percents.length == chartItems.length);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             mainAxisSize: MainAxisSize.max,
             children: [
               _ChartDescriptionTile(
-                item: assetChartItems[0],
+                item: chartItems[0],
                 percent: percents[0],
               ),
+              const Spacer(),
               _ChartDescriptionTile(
-                item: assetChartItems[2],
-                percent: percents[2],
+                item: chartItems[1],
+                percent: percents[1],
               ),
             ],
           ),
           const SizedBox(width: 24),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             mainAxisSize: MainAxisSize.max,
             children: [
-              _ChartDescriptionTile(
-                item: assetChartItems[1],
-                percent: percents[1],
-              ),
-              _ChartDescriptionTile(
-                item: assetChartItems[3],
-                percent: percents[3],
-              ),
+              if (chartItems.length > 2)
+                _ChartDescriptionTile(
+                  item: chartItems[2],
+                  percent: percents[2],
+                ),
+              const Spacer(),
+              if (chartItems.length > 3)
+                _ChartDescriptionTile(
+                  item: chartItems[3],
+                  percent: percents[3],
+                ),
             ],
           )
         ],

@@ -85,32 +85,35 @@ class Home extends HookWidget {
           const SliverToBoxAdapter(
             child: _AssetHeader(),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                final item = assetList[index];
-                return _SwipeToHide(
-                  key: ValueKey(item.assetId),
-                  child: AssetWidget(data: item),
-                  onDismiss: () {
-                    context.appServices
-                        .updateAssetHidden(item.assetId, hidden: true);
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(context.l10n.alreadyHidden(item.name)),
-                      action: SnackBarAction(
-                        label: context.l10n.undo,
-                        onPressed: () {
-                          context.appServices
-                              .updateAssetHidden(item.assetId, hidden: false);
-                        },
-                      ),
-                    ));
-                  },
-                );
-              },
-              childCount: assetList.length,
+          if (assetList.isEmpty)
+            const SliverToBoxAdapter(child: SizedBox())
+          else
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  final item = assetList[index];
+                  return _SwipeToHide(
+                    key: ValueKey(item.assetId),
+                    child: AssetWidget(data: item),
+                    onDismiss: () {
+                      context.appServices
+                          .updateAssetHidden(item.assetId, hidden: true);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(context.l10n.alreadyHidden(item.name)),
+                        action: SnackBarAction(
+                          label: context.l10n.undo,
+                          onPressed: () {
+                            context.appServices
+                                .updateAssetHidden(item.assetId, hidden: false);
+                          },
+                        ),
+                      ));
+                    },
+                  );
+                },
+                childCount: assetList.length,
+              ),
             ),
-          ),
         ],
       ),
     );
@@ -170,12 +173,10 @@ class _Header extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final balance = useMemoized(
-        () => data
-            .fold<Decimal>(
-                0.0.asDecimal,
-                (previousValue, AssetResult element) =>
-                    previousValue + element.amountOfCurrentCurrency)
-            .toString(),
+        () => data.fold<Decimal>(
+            0.0.asDecimal,
+            (previousValue, AssetResult element) =>
+                previousValue + element.amountOfCurrentCurrency),
         [data]);
 
     final balanceOfBtc = useMemoized(
@@ -224,11 +225,15 @@ class _Header extends HookWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(height: 24),
-        if (data.isEmpty)
-          const SizedBox(height: 64)
-        else
-          AssetsAnalysisChartLayout(assets: data),
+        AnimatedSize(
+          duration: const Duration(milliseconds: 300),
+          child: data.length <= 1 || balance == Decimal.zero
+              ? const SizedBox()
+              : Padding(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: AssetsAnalysisChartLayout(assets: data),
+                ),
+        ),
         const SizedBox(height: 32),
         const _ButtonBar(),
         const SizedBox(height: 24),

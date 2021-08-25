@@ -68,7 +68,7 @@ class _RawPieChart extends LeafRenderObjectWidget {
   void updateRenderObject(
       BuildContext context, covariant _AssetsPieChartRender renderObject) {
     renderObject
-      .._items = items
+      ..items = items
       ..dividerColor = dividerColor
       ..centerCircleColor = centerCircleColor;
   }
@@ -151,8 +151,7 @@ class _AssetsPieChartRender extends RenderBox {
     final pieRadius = size.width / 2;
     final centerRadius = centerCircleRadius ?? pieRadius / 2;
 
-    final dividerAngle =
-        items.length == 1 ? 0.0 : itemDivider / (pieRadius + centerRadius) * 2;
+    final dividerAngle = itemDivider / (pieRadius + centerRadius) * 2;
 
     final total = items.fold<double>(
         0.0, (previousValue, element) => previousValue + element.amount);
