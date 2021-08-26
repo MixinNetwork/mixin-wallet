@@ -22,7 +22,7 @@ class R {
   static const String resourcesAmplitudeNoneSvg =
       'resources/amplitude_none.svg';
 
-  static const String resourcesAuthBgSvg = 'resources/auth_bg.svg';
+  static const String resourcesAuthBgWebp = 'resources/auth_bg.webp';
 
   static const String resourcesBackBlackSvg = 'resources/back_black.svg';
 
@@ -76,6 +76,8 @@ class R {
   static const String resourcesIcSetSvg = 'resources/ic_set.svg';
 
   static const String resourcesIcSwitchSvg = 'resources/ic_switch.svg';
+
+  static const String resourcesLogoWebp = 'resources/logo.webp';
 
   static const String resourcesMixinLogoPng = 'resources/mixin_logo.png';
 
