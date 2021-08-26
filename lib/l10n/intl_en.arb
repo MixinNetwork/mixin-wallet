@@ -1,7 +1,5 @@
 {
   "totalBalance": "Total Balance",
-  "approxBalanceOfBtc": "≈ {value} BTC",
-  "approxOf": "≈ {value}",
   "balanceOfBtc": "{value} BTC",
   "none": "N/A",
   "send": "Send",

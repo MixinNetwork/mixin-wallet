@@ -47,8 +47,7 @@ class AssetWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      context.l10n.approxOf(
-                          data.amountOfCurrentCurrency.currencyFormat),
+                      data.amountOfCurrentCurrency.currencyFormat,
                       style: TextStyle(
                         color: context.colorScheme.thirdText,
                         fontSize: 14,
