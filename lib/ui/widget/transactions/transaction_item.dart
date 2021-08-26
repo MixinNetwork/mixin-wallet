@@ -16,7 +16,7 @@ import '../../router/mixin_routes.dart';
 import '../avatar.dart';
 import '../brightness_observer.dart';
 
-const kTransactionItemHeight = 70.0;
+const kTransactionItemHeight = 72.0;
 
 class TransactionItem extends HookWidget {
   const TransactionItem({Key? key, required this.item}) : super(key: key);
@@ -37,76 +37,64 @@ class TransactionItem extends HookWidget {
           context.push(snapshotDetailPath.toUri({'id': item.snapshotId})),
       child: Container(
           height: kTransactionItemHeight,
-          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          padding: const EdgeInsets.only(top: 16, bottom: 16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 20),
+              const SizedBox(width: 16),
               _TransactionIcon(item: item),
-              const SizedBox(width: 10),
+              const SizedBox(width: 12),
               Expanded(
-                  child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  const SizedBox(height: 3),
-                  const Spacer(),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      DefaultTextStyle(
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: context.theme.text,
-                        ),
-                        child: TransactionTypeWidget(item: item),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DefaultTextStyle(
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: context.colorScheme.primaryText,
+                          fontWeight: FontWeight.w600),
+                      child: TransactionTypeWidget(item: item),
+                    ),
+                    const Spacer(),
+                    Text(
+                      item.type == SnapshotType.pending
+                          ? context.l10n.pendingConfirmations(
+                              item.confirmations ?? 0,
+                              item.assetConfirmations ?? 0)
+                          : DateFormat.yMMMMd().format(item.createdAt),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: context.colorScheme.thirdText,
+                        fontWeight: FontWeight.w400,
                       ),
-                      const Spacer(),
-                      Text(
-                        '${isPositive ? '+' : ''}${item.amount.numberFormat()}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: item.type == SnapshotType.pending
-                              ? context.theme.secondaryText
-                              : isPositive
-                                  ? context.theme.green
-                                  : context.theme.red,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        item.type == SnapshotType.pending
-                            ? context.l10n.pendingConfirmations(
-                                item.confirmations ?? 0,
-                                item.assetConfirmations ?? 0)
-                            : DateFormat.yMMMMd().format(item.createdAt),
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: BrightnessData.themeOf(context).secondaryText,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        item.assetSymbol ?? '',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: BrightnessData.themeOf(context).text,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  const SizedBox(height: 1),
-                ],
-              )),
-              const SizedBox(width: 20),
+                    ),
+                  ],
+                ),
+              ),
+              SelectableText(
+                '${isPositive ? '+' : ''}${item.amount.numberFormat()}',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: item.type == SnapshotType.pending
+                      ? context.colorScheme.thirdText
+                      : isPositive
+                          ? context.colorScheme.green
+                          : context.colorScheme.red,
+                  fontWeight: FontWeight.w600,
+                ),
+                enableInteractiveSelection: false,
+              ),
+              const SizedBox(width: 4),
+              SelectableText(
+                item.assetSymbol ?? '',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: context.colorScheme.primaryText,
+                ),
+                enableInteractiveSelection: false,
+              ),
+              const SizedBox(width: 16),
             ],
           )),
     );
@@ -154,10 +142,10 @@ class TransactionTypeWidget extends StatelessWidget {
         break;
     }
 
-    if (!selectable) {
-      return Text(title);
-    }
-    return SelectableText(title);
+    return SelectableText(
+      title,
+      enableInteractiveSelection: selectable,
+    );
   }
 }
 
@@ -180,15 +168,15 @@ class _TransactionIcon extends StatelessWidget {
           avatarUrl: item.avatarUrl,
           userId: item.opponentId ?? '',
           name: item.opponentFulName ?? '',
-          size: 44,
+          size: 40,
           borderWidth: 0,
         ),
       );
     } else if (item.type == SnapshotType.deposit) {
       child = SvgPicture.asset(
         R.resourcesTransactionDepositSvg,
-        height: 55,
-        width: 55,
+        height: 40,
+        width: 40,
         fit: BoxFit.cover,
         allowDrawingOutsideViewBox: true,
       );
@@ -200,8 +188,8 @@ class _TransactionIcon extends StatelessWidget {
         children: [
           SvgPicture.asset(
             R.resourcesTransactionPendingSvg,
-            height: 44,
-            width: 44,
+            height: 40,
+            width: 40,
           ),
           Positioned.fill(
               child: Container(color: Colors.black.withOpacity(0.5))),
@@ -225,20 +213,20 @@ class _TransactionIcon extends StatelessWidget {
     } else if (item.type == SnapshotType.withdrawal) {
       child = SvgPicture.asset(
         R.resourcesTransactionWithdrawalSvg,
-        height: 44,
-        width: 44,
+        height: 40,
+        width: 40,
       );
     } else {
       child = SvgPicture.asset(
         R.resourcesTransactionNetSvg,
-        height: 44,
-        width: 44,
+        height: 40,
+        width: 40,
       );
     }
 
     return SizedBox(
-      width: 44,
-      height: 44,
+      width: 40,
+      height: 40,
       child: ClipOval(child: child),
     );
   }

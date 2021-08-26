@@ -50,9 +50,9 @@ class MixinBottomSheetTitle extends StatelessWidget {
             children: [
               DefaultTextStyle(
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: context.theme.text,
+                    color: context.colorScheme.primaryText,
                   ),
                   child: title),
               const Spacer(),
@@ -68,7 +68,7 @@ class _BottomSheetCloseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ActionButton(
-        name: R.resourcesIcCircleCloseSvg,
+        name: R.resourcesCloseSvg,
         size: 24,
         onTap: () {
           Navigator.pop(context);
