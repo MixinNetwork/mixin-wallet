@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../db/mixin_database.dart';
-import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
+import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
-import '../widget/mixin_elevated_button.dart';
-import '../widget/over_scroller.dart';
 import '../widget/symbol.dart';
 import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
 import '../widget/transfer.dart';
+
+const _kQueryParamSortBy = 'sortBy';
+const _kQueryParamFilterBy = 'filterBy';
 
 class AssetDetail extends StatelessWidget {
   const AssetDetail({Key? key}) : super(key: key);
@@ -55,31 +57,58 @@ class _AssetDetailLoader extends HookWidget {
       }
     }, [data?.assetId]);
 
+    final filter = useMemoized(
+        () => SnapshotFilter(
+              sdk.EnumToString.fromString(SortBy.values,
+                      context.queryParameters[_kQueryParamSortBy]) ??
+                  SortBy.time,
+              sdk.EnumToString.fromString(FilterBy.values,
+                      context.queryParameters[_kQueryParamFilterBy]) ??
+                  FilterBy.all,
+            ),
+        [
+          context.queryParameters[_kQueryParamSortBy],
+          context.queryParameters[_kQueryParamFilterBy],
+        ]);
+
     if (data == null) {
       return const SizedBox();
     }
 
-    return _AssetDetailPage(asset: data);
+    return _AssetDetailPage(asset: data, filter: filter);
   }
 }
 
 class _AssetDetailPage extends StatelessWidget {
-  const _AssetDetailPage({Key? key, required this.asset}) : super(key: key);
+  const _AssetDetailPage({
+    Key? key,
+    required this.asset,
+    required this.filter,
+  }) : super(key: key);
 
   final AssetResult asset;
 
+  final SnapshotFilter filter;
+
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: context.theme.background,
+        backgroundColor: context.colorScheme.background,
         appBar: MixinAppBar(
-          backButtonColor: Colors.white,
-          title: Text(asset.name),
+          backgroundColor: context.colorScheme.background,
+          title: Text(
+            asset.name,
+            style: TextStyle(
+              color: context.colorScheme.primaryText,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          leading: const MixinBackButton2(),
           actions: [
             Center(
               child: ActionButton(
                   name: R.resourcesAlertSvg,
-                  color: Colors.white,
-                  size: 20,
+                  size: 24,
                   onTap: () {
                     showMixinBottomSheet(
                       context: context,
@@ -90,48 +119,37 @@ class _AssetDetailPage extends StatelessWidget {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: _AssetDetailBody(asset: asset),
-            ),
-            _BottomBar(asset: asset),
-          ],
-        ),
+        body: _AssetDetailBody(asset: asset, filter: filter),
       );
 }
 
-class _AssetDetailBody extends HookWidget {
+class _AssetDetailBody extends StatelessWidget {
   const _AssetDetailBody({
     Key? key,
     required this.asset,
+    required this.filter,
   }) : super(key: key);
 
   final AssetResult asset;
 
+  final SnapshotFilter filter;
+
   @override
-  Widget build(BuildContext context) {
-    final filter = useState(const SnapshotFilter(SortBy.time, FilterBy.all));
-    return TransactionListBuilder(
-      key: ValueKey(filter.value),
-      refreshSnapshots: (offset, limit) => context.appServices
-          .updateSnapshots(asset.assetId, offset: offset, limit: limit),
-      loadMoreItemDb: (offset, limit) => context.mixinDatabase.snapshotDao
-          .snapshots(asset.assetId,
-              offset: offset,
-              limit: limit,
-              orderByAmount: filter.value.sortBy == SortBy.amount,
-              types: filter.value.filterBy.snapshotTypes)
-          .get(),
-      builder: (context, snapshots) => ColoredOverScrollTopWidget(
-        background: context.theme.accent,
-        child: CustomScrollView(
+  Widget build(BuildContext context) => TransactionListBuilder(
+        key: ValueKey(filter),
+        refreshSnapshots: (offset, limit) => context.appServices
+            .updateSnapshots(asset.assetId, offset: offset, limit: limit),
+        loadMoreItemDb: (offset, limit) => context.mixinDatabase.snapshotDao
+            .snapshots(asset.assetId,
+                offset: offset,
+                limit: limit,
+                orderByAmount: filter.sortBy == SortBy.amount,
+                types: filter.filterBy.snapshotTypes)
+            .get(),
+        builder: (context, snapshots) => CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: _AssetHeader(asset: asset),
-            ),
-            SliverToBoxAdapter(
-              child: _AssetTransactionsHeader(filter: filter),
+              child: _AssetHeader(asset: asset, filter: filter),
             ),
             if (snapshots.isEmpty)
               const SliverToBoxAdapter(
@@ -149,67 +167,103 @@ class _AssetDetailBody extends HookWidget {
               ),
           ],
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _AssetHeader extends StatelessWidget {
-  const _AssetHeader({Key? key, required this.asset}) : super(key: key);
+  const _AssetHeader({
+    Key? key,
+    required this.asset,
+    required this.filter,
+  }) : super(key: key);
+
+  final AssetResult asset;
+
+  final SnapshotFilter filter;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 20),
+          SymbolIconWithBorder(
+            symbolUrl: asset.iconUrl,
+            chainUrl: asset.chainIconUrl,
+            size: 58,
+            chainSize: 14,
+            chainBorder:
+                BorderSide(color: context.colorScheme.background, width: 2),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 48),
+            child: SelectableText.rich(
+              TextSpan(children: [
+                TextSpan(
+                  text: asset.balance.numberFormat().overflow,
+                  style: TextStyle(
+                    fontSize: 32,
+                    color: context.colorScheme.primaryText,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const TextSpan(text: ' '),
+                TextSpan(
+                  text: asset.symbol.overflow,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: context.colorScheme.thirdText,
+                  ),
+                ),
+              ]),
+              textAlign: TextAlign.center,
+              enableInteractiveSelection: false,
+            ),
+          ),
+          const SizedBox(height: 4),
+          SelectableText(
+            asset.amountOfCurrentCurrency.currencyFormat,
+            style: TextStyle(
+              fontSize: 14,
+              color: context.colorScheme.thirdText,
+            ),
+            enableInteractiveSelection: false,
+          ),
+          const SizedBox(height: 24),
+          _HeaderButtonBar(asset: asset),
+          const SizedBox(height: 24),
+          _AssetTransactionsHeader(filter: filter),
+        ],
+      );
+}
+
+class _HeaderButtonBar extends StatelessWidget {
+  const _HeaderButtonBar({Key? key, required this.asset}) : super(key: key);
 
   final AssetResult asset;
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: context.theme.accent,
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 18),
-            SymbolIconWithBorder(
-              symbolUrl: asset.iconUrl,
-              chainUrl: asset.chainIconUrl,
-              size: 60,
-              chainSize: 18,
-              chainBorder: const BorderSide(color: Colors.white, width: 1.14),
-              symbolBorder: const BorderSide(color: Colors.white, width: 1.67),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 38),
+        child: HeaderButtonBarLayout(buttons: [
+          HeaderButton(
+            child: Text(context.l10n.send),
+            onTap: () => showTransferRouterBottomSheet(
+              context: context,
+              assetId: asset.assetId,
             ),
-            const SizedBox(height: 18),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: SelectableText.rich(
-                TextSpan(children: [
-                  TextSpan(
-                      text: asset.balance.numberFormat().overflow,
-                      style: const TextStyle(
-                        fontSize: 34,
-                        color: Colors.white,
-                      )),
-                  const TextSpan(text: ' '),
-                  TextSpan(
-                      text: asset.symbol.overflow,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white.withOpacity(0.4),
-                      )),
-                ]),
-                textAlign: TextAlign.center,
-                enableInteractiveSelection: false,
-              ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              asset.amountOfCurrentCurrency.currencyFormat,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.white.withOpacity(0.5),
-              ),
-            ),
-            const SizedBox(height: 38),
-          ],
-        ),
+          ),
+          HeaderButton(
+            child: Text(context.l10n.receive),
+            onTap: () =>
+                context.replace(assetDepositPath.toUri({'id': asset.assetId})),
+          ),
+          HeaderButton(
+            child: Text(context.l10n.buy),
+            onTap: () {},
+          ),
+        ]),
       );
 }
 
@@ -219,116 +273,49 @@ class _AssetTransactionsHeader extends StatelessWidget {
     required this.filter,
   }) : super(key: key);
 
-  final ValueNotifier<SnapshotFilter> filter;
+  final SnapshotFilter filter;
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        height: 54,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                color: context.theme.accent,
-                height: 20,
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(topRadius),
-                ),
-                color: context.theme.background,
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const SizedBox(width: 20),
-                      Text(
-                        context.l10n.transactions,
-                        style: TextStyle(
-                          color: BrightnessData.themeOf(context).text,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const Spacer(),
-                      InkResponse(
-                        onTap: () async {
-                          final filter = await showFilterBottomSheetDialog(
-                            context,
-                            initial: this.filter.value,
-                          );
-                          if (filter == null) {
-                            return;
-                          }
-                          this.filter.value = filter;
-                        },
-                        radius: 20,
-                        child: SvgPicture.asset(
-                          R.resourcesFilterSvg,
-                          color: BrightnessData.themeOf(context).text,
-                          height: 24,
-                          width: 24,
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-}
-
-class _BottomBar extends StatelessWidget {
-  const _BottomBar({
-    Key? key,
-    required this.asset,
-  }) : super(key: key);
-
-  final AssetResult asset;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        height: 40,
         child: Row(
-          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Spacer(),
-            MixinElevatedButton(
-              fixedSize: const Size(140, 44),
-              primary: context.theme.accent,
-              child: Text(context.l10n.send),
-              onTap: () => showTransferRouterBottomSheet(
-                context: context,
-                assetId: asset.assetId,
+            const SizedBox(width: 16),
+            Text(
+              context.l10n.transactions,
+              style: TextStyle(
+                color: context.colorScheme.primaryText,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(width: 20),
-            MixinElevatedButton(
-              fixedSize: const Size(140, 44),
-              primary: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                side: BorderSide(color: context.theme.accent),
-              ),
-              child: Text(
-                context.l10n.receive,
-                style: TextStyle(
-                  color: context.theme.accent,
-                ),
-              ),
-              onTap: () =>
-                  context.push(assetDepositPath.toUri({'id': asset.assetId})),
-            ),
             const Spacer(),
+            InkResponse(
+              onTap: () async {
+                final filter = await showFilterBottomSheetDialog(
+                  context,
+                  initial: this.filter,
+                );
+                if (filter == null) {
+                  return;
+                }
+                context.push(Uri.parse(context.url).replace(queryParameters: {
+                  _kQueryParamSortBy:
+                      sdk.EnumToString.convertToString(filter.sortBy),
+                  _kQueryParamFilterBy:
+                      sdk.EnumToString.convertToString(filter.filterBy),
+                }));
+              },
+              radius: 20,
+              child: SvgPicture.asset(
+                R.resourcesFilterSvg,
+                color: context.colorScheme.primaryText,
+                height: 24,
+                width: 24,
+              ),
+            ),
+            const SizedBox(width: 16),
           ],
         ),
       );
@@ -345,14 +332,15 @@ class _AssetDescriptionBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           MixinBottomSheetTitle(
             title: Row(children: [
               SymbolIconWithBorder(
                 symbolUrl: asset.iconUrl,
                 chainUrl: asset.chainIconUrl,
-                size: 20,
-                chainSize: 8,
+                size: 32,
+                chainSize: 14,
               ),
               const SizedBox(width: 10),
               Text(asset.name)
@@ -371,12 +359,14 @@ class _AssetDescriptionBottomSheet extends StatelessWidget {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(asset.assetKey ?? ''),
+                Text(asset.assetKey?.overflow ?? ''),
                 const SizedBox(height: 10),
                 Text(
                   context.l10n.transactionsAssetKeyWarning,
-                  style:
-                      const TextStyle(color: Color(0xFFe86b67), fontSize: 14),
+                  style: TextStyle(
+                    color: context.colorScheme.red,
+                    fontSize: 14,
+                  ),
                 ),
               ],
             ),
@@ -407,7 +397,7 @@ class _AssetBottomSheetTile extends StatelessWidget {
               fit: FlexFit.tight,
               child: DefaultTextStyle(
                 style: TextStyle(
-                  color: context.theme.secondaryText,
+                  color: context.colorScheme.thirdText,
                   fontSize: 16,
                   height: 1.2,
                 ),
@@ -422,7 +412,7 @@ class _AssetBottomSheetTile extends StatelessWidget {
               child: DefaultTextStyle(
                 style: TextStyle(
                   fontSize: 16,
-                  color: context.theme.text,
+                  color: context.colorScheme.primaryText,
                   height: 1.2,
                 ),
                 child: subtitle,

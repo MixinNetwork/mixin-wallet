@@ -26,6 +26,8 @@ class R {
 
   static const String resourcesBackBlackSvg = 'resources/back_black.svg';
 
+  static const String resourcesCloseSvg = 'resources/close.svg';
+
   static const String resourcesContactSvg = 'resources/contact.svg';
 
   static const String resourcesDownRedSvg = 'resources/down_red.svg';

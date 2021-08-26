@@ -17,6 +17,7 @@ import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset.dart';
+import '../widget/buttons.dart';
 import '../widget/chart_assets.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
@@ -287,102 +288,31 @@ class _Header extends HookWidget {
 class _ButtonBar extends StatelessWidget {
   const _ButtonBar({Key? key}) : super(key: key);
 
-  Widget _divider(BuildContext context) => Container(
-        width: 2,
-        height: 24,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(1),
-        ),
-      );
-
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Material(
-          color: context.colorScheme.surface,
-          borderRadius: BorderRadius.circular(8),
-          child: SizedBox(
-            height: 40,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: _Button(
-                    child: Text(context.l10n.send),
-                    onTap: () =>
-                        showTransferRouterBottomSheet(context: context),
-                  ),
-                ),
-                _divider(context),
-                Expanded(
-                  child: _Button(
-                    child: Text(context.l10n.receive),
-                    onTap: () =>
-                        context.push(assetDepositPath.toUri({'id': bitcoin})),
-                  ),
-                ),
-                _divider(context),
-                Expanded(
-                  child: _Button(
-                    child: Text(context.l10n.buy),
-                    onTap: () {},
-                  ),
-                ),
-                _divider(context),
-                Expanded(
-                  child: _Button(
-                    child: Text(context.l10n.swap),
-                    onTap: () {},
-                  ),
-                ),
-              ],
+        child: HeaderButtonBarLayout(
+          buttons: [
+            HeaderButton(
+              child: Text(context.l10n.send),
+              onTap: () => showTransferRouterBottomSheet(context: context),
             ),
-          ),
+            HeaderButton(
+              child: Text(context.l10n.receive),
+              onTap: () =>
+                  context.push(assetDepositPath.toUri({'id': bitcoin})),
+            ),
+            HeaderButton(
+              child: Text(context.l10n.buy),
+              onTap: () {},
+            ),
+            HeaderButton(
+              child: Text(context.l10n.swap),
+              onTap: () {},
+            ),
+          ],
         ),
       );
-}
-
-class _Button extends HookWidget {
-  const _Button({
-    Key? key,
-    required this.child,
-    required this.onTap,
-  }) : super(key: key);
-
-  final Widget child;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final animator = useAnimationController(
-      duration: const Duration(milliseconds: 150),
-      initialValue: 1,
-      lowerBound: 0.3,
-      upperBound: 1,
-    );
-    useAnimation(animator);
-    return GestureDetector(
-      onTap: onTap,
-      onTapDown: (_) => animator.reverse(),
-      onTapUp: (_) => animator.forward(),
-      onTapCancel: animator.forward,
-      behavior: HitTestBehavior.opaque,
-      child: Center(
-        child: DefaultTextStyle(
-          style: TextStyle(
-            color: context.colorScheme.primaryText,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-          child: Opacity(
-            opacity: animator.value,
-            child: child,
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class _SwipeToHide extends StatelessWidget {
