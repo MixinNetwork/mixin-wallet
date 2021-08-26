@@ -8,8 +8,8 @@ import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
-import '../widget/over_scroller.dart';
 import '../widget/symbol.dart';
 import '../widget/transactions/transaction_item.dart';
 
@@ -18,10 +18,19 @@ class SnapshotDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: const MixinAppBar(
-          backButtonColor: Colors.white,
+        appBar: MixinAppBar(
+          backgroundColor: context.colorScheme.background,
+          leading: const MixinBackButton2(),
+          title: Text(
+            context.l10n.transactions,
+            style: TextStyle(
+              color: context.colorScheme.primaryText,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
-        backgroundColor: context.theme.background,
+        backgroundColor: context.colorScheme.background,
         body: _SnapshotDetailPageBody(context.pathParameters['id']!),
       );
 }
@@ -55,26 +64,23 @@ class _SnapshotDetailPageBody extends HookWidget {
     if (snapshotItem == null || asset == null) {
       return const SizedBox();
     }
-    return ColoredOverScrollTopWidget(
-      background: context.theme.accent,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _SnapshotDetailHeader(
-              snapshot: snapshotItem,
-              asset: asset,
-            ),
-            _TransactionDetailInfo(
-              snapshot: snapshotItem,
-              asset: asset,
-            ),
-            Transform.translate(
-              offset: const Offset(0, -1),
-              child: Container(height: 2, color: context.theme.background),
-            )
-          ],
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _SnapshotDetailHeader(
+            snapshot: snapshotItem,
+            asset: asset,
+          ),
+          Container(
+            color: context.colorScheme.surface,
+            height: 10,
+          ),
+          _TransactionDetailInfo(
+            snapshot: snapshotItem,
+            asset: asset,
+          ),
+        ],
       ),
     );
   }
@@ -92,52 +98,49 @@ class _SnapshotDetailHeader extends HookWidget {
   final AssetResult asset;
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: context.theme.accent,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 18),
-            SymbolIconWithBorder(
-              symbolUrl: asset.iconUrl,
-              chainUrl: asset.chainIconUrl,
-              size: 60,
-              chainSize: 18,
-              chainBorder: const BorderSide(color: Colors.white, width: 1.14),
-              symbolBorder: const BorderSide(color: Colors.white, width: 1.67),
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 20),
+          SymbolIconWithBorder(
+            symbolUrl: asset.iconUrl,
+            chainUrl: asset.chainIconUrl,
+            size: 58,
+            chainSize: 14,
+            chainBorder: const BorderSide(color: Colors.white, width: 2),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: SelectableText.rich(
+              TextSpan(children: [
+                TextSpan(
+                    text: snapshot.amount.numberFormat().overflow,
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                      color: snapshot.type == SnapshotType.pending
+                          ? context.colorScheme.primaryText
+                          : snapshot.isPositive
+                              ? context.colorScheme.green
+                              : context.colorScheme.red,
+                    )),
+                const TextSpan(text: ' '),
+                TextSpan(
+                    text: asset.symbol.overflow,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: context.colorScheme.thirdText,
+                    )),
+              ]),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 18),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: SelectableText.rich(
-                TextSpan(children: [
-                  TextSpan(
-                      text: snapshot.amount.numberFormat().overflow,
-                      style: TextStyle(
-                        fontSize: 34,
-                        color: snapshot.type == SnapshotType.pending
-                            ? Colors.white
-                            : snapshot.isPositive
-                                ? context.theme.green
-                                : context.theme.red,
-                      )),
-                  const TextSpan(text: ' '),
-                  TextSpan(
-                      text: asset.symbol.overflow,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white.withOpacity(0.4),
-                      )),
-                ]),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 2),
-            _ValuesDescription(snapshot: snapshot, asset: asset),
-            const SizedBox(height: 28),
-          ],
-        ),
+          ),
+          const SizedBox(height: 4),
+          _ValuesDescription(snapshot: snapshot, asset: asset),
+          const SizedBox(height: 24),
+        ],
       );
 }
 
@@ -183,13 +186,24 @@ class _ValuesDescription extends HookWidget {
     return DefaultTextStyle(
       style: TextStyle(
         fontSize: 14,
-        color: Colors.white.withOpacity(0.5),
+        fontWeight: FontWeight.w600,
+        color: context.colorScheme.primaryText,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(currentValue),
-          if (thatTimeValue != null) Text(thatTimeValue),
+          SelectableText(
+            currentValue,
+            enableInteractiveSelection: false,
+          ),
+          if (thatTimeValue != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: SelectableText(
+                thatTimeValue,
+                enableInteractiveSelection: false,
+              ),
+            ),
         ],
       ),
     );
@@ -208,56 +222,45 @@ class _TransactionDetailInfo extends StatelessWidget {
   final AssetResult asset;
 
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: context.theme.accent,
-        ),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-            color: context.theme.background,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, top: 30),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _TransactionInfoTile(
-                  title: Text(context.l10n.transactionsId.toUpperCase()),
-                  subtitle: SelectableText(snapshot.snapshotId),
-                ),
-                _TransactionInfoTile(
-                  title: Text(context.l10n.transactionsType.toUpperCase()),
-                  subtitle: TransactionTypeWidget(
-                    item: snapshot,
-                    selectable: true,
-                  ),
-                ),
-                _TransactionInfoTile(
-                  title: Text(context.l10n.assetType.toUpperCase()),
-                  subtitle: SelectableText(asset.name),
-                ),
-                _From(snapshot: snapshot),
-                _To(snapshot: snapshot, asset: asset),
-                _TransactionInfoTile(
-                  title: Text(context.l10n.memo.toUpperCase()),
-                  subtitle: SelectableText(snapshot.memo ?? ''),
-                ),
-                _TransactionInfoTile(
-                  title: Text(context.l10n.time.toUpperCase()),
-                  subtitle: SelectableText(
-                      '${DateFormat.yMMMMd().format(snapshot.createdAt)} '
-                      '${DateFormat.Hms().format(snapshot.createdAt)}'),
-                ),
-                if (snapshot.traceId != null && snapshot.traceId!.isNotEmpty)
-                  _TransactionInfoTile(
-                    title: Text(context.l10n.trace.toUpperCase()),
-                    subtitle: SelectableText(snapshot.traceId ?? ''),
-                  ),
-              ],
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _TransactionInfoTile(
+              title: Text(context.l10n.transactionsId.toUpperCase()),
+              subtitle: SelectableText(snapshot.snapshotId),
             ),
-          ),
+            _TransactionInfoTile(
+              title: Text(context.l10n.transactionsType.toUpperCase()),
+              subtitle: TransactionTypeWidget(
+                item: snapshot,
+                selectable: true,
+              ),
+            ),
+            _TransactionInfoTile(
+              title: Text(context.l10n.assetType.toUpperCase()),
+              subtitle: SelectableText(asset.name),
+            ),
+            _From(snapshot: snapshot),
+            _To(snapshot: snapshot, asset: asset),
+            _TransactionInfoTile(
+              title: Text(context.l10n.memo.toUpperCase()),
+              subtitle: SelectableText(snapshot.memo ?? ''),
+            ),
+            _TransactionInfoTile(
+              title: Text(context.l10n.time.toUpperCase()),
+              subtitle: SelectableText(
+                  '${DateFormat.yMMMMd().format(snapshot.createdAt)} '
+                  '${DateFormat.Hms().format(snapshot.createdAt)}'),
+            ),
+            if (snapshot.traceId != null && snapshot.traceId!.isNotEmpty)
+              _TransactionInfoTile(
+                title: Text(context.l10n.trace.toUpperCase()),
+                subtitle: SelectableText(snapshot.traceId ?? ''),
+              ),
+          ],
         ),
       );
 }
@@ -357,19 +360,23 @@ class _TransactionInfoTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 12),
           DefaultTextStyle(
-            style: const TextStyle(
-              fontSize: 12,
-              color: Color(0x4D222222),
+            style: TextStyle(
+              fontSize: 16,
+              color: context.colorScheme.thirdText,
             ),
             child: title,
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           DefaultTextStyle(
-            style: TextStyle(fontSize: 14, color: context.theme.text),
+            style: TextStyle(
+              fontSize: 16,
+              color: context.colorScheme.primaryText,
+            ),
             child: subtitle,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
         ],
       );
 }
