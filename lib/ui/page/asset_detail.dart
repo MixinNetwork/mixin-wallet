@@ -257,7 +257,7 @@ class _HeaderButtonBar extends StatelessWidget {
           HeaderButton(
             child: Text(context.l10n.receive),
             onTap: () =>
-                context.push(assetDepositPath.toUri({'id': asset.assetId})),
+                context.replace(assetDepositPath.toUri({'id': asset.assetId})),
           ),
           HeaderButton(
             child: Text(context.l10n.buy),
