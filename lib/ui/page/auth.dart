@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../service/env.dart';
 import '../../util/extension/extension.dart';
@@ -34,7 +33,7 @@ class AuthPage extends HookWidget {
     }, keys: [oauthCode]);
 
     return Scaffold(
-      backgroundColor: context.theme.background,
+      backgroundColor: context.colorScheme.background,
       body: Center(
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),
@@ -69,40 +68,35 @@ class _AuthBody extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const SizedBox(height: 20),
           Expanded(
-            child: LayoutBuilder(builder: (context, constraints) {
-              final aspect = constraints.maxWidth / constraints.maxHeight;
-              return SizedBox(
-                width: constraints.maxWidth,
-                height: constraints.maxHeight,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: aspect > 1
-                        ? context.theme.background
-                        : context.theme.accent,
-                  ),
-                  child: SvgPicture.asset(
-                    R.resourcesAuthBgSvg,
-                    fit: aspect > 1 ? BoxFit.fitHeight : BoxFit.fitWidth,
-                    height: constraints.maxHeight,
-                    width: constraints.maxWidth,
-                    alignment: Alignment.bottomCenter,
+            child: Stack(
+              children: [
+                Center(
+                  child: Image.asset(
+                    R.resourcesAuthBgWebp,
+                    fit: BoxFit.cover,
+                    height: 360,
+                    width: 360,
                   ),
                 ),
-              );
-            }),
+                Center(
+                  child: Image.asset(
+                    R.resourcesLogoWebp,
+                    width: 96,
+                    height: 96,
+                  ),
+                ),
+              ],
+            ),
           ),
-          // To hide the bottom of picture 1-pixel gap.
-          Transform.translate(
-            offset: const Offset(0, -1),
-            child: Container(height: 2, color: context.theme.background),
-          ),
+          const SizedBox(height: 20),
           Text(
             context.l10n.mixinWallet,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 24,
-              color: context.theme.text,
+              fontSize: 28,
+              color: context.colorScheme.primaryText,
             ),
           ),
           const SizedBox(height: 16),
@@ -114,19 +108,20 @@ class _AuthBody extends StatelessWidget {
                   minWidth: 0,
                   maxWidth: math.min(constraints.maxWidth, 315.0),
                 ),
-                child: Text(
-                  context.l10n.authSlogan.overflow,
+                child: SelectableText(
+                  context.l10n.authSlogan,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,
-                    color: context.theme.text.withOpacity(0.8),
+                    color: context.colorScheme.secondaryText,
                     height: 1.25,
                   ),
+                  enableInteractiveSelection: false,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 46),
+          const SizedBox(height: 56),
           ElevatedButton(
             onPressed: () {
               final uri =
@@ -139,27 +134,38 @@ class _AuthBody extends StatelessWidget {
               context.toExternal(uri);
             },
             style: ElevatedButton.styleFrom(
-              primary: context.theme.accent,
-              padding: const EdgeInsets.symmetric(
-                vertical: 13,
-                horizontal: 47,
+                primary: context.colorScheme.primaryText,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 24,
+                ),
+                minimumSize: const Size(110, 48),
+                onPrimary: context.colorScheme.background,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50))),
+            child: SelectableText(
+              context.l10n.authorize,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
               ),
+              enableInteractiveSelection: false,
             ),
-            child: Text(context.l10n.authorize),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 24),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Text(
-              context.l10n.authHint.overflow,
+            padding: const EdgeInsets.symmetric(horizontal: 46),
+            child: SelectableText(
+              context.l10n.authHint,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
-                color: context.theme.text.withOpacity(0.3),
+                color: context.colorScheme.primaryText.withOpacity(0.3),
               ),
+              enableInteractiveSelection: false,
             ),
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 56),
         ],
       );
 }
