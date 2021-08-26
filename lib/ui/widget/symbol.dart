@@ -23,6 +23,8 @@ class SymbolIconWithBorder extends StatelessWidget {
   final double chainSize;
 
   final BorderSide chainBorder;
+
+  // TODO(bin) Remove symbolBorder.
   final BorderSide symbolBorder;
 
   @override
@@ -31,30 +33,29 @@ class SymbolIconWithBorder extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-                child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.symmetric(
-                        vertical: symbolBorder,
-                        horizontal: symbolBorder,
-                      ),
-                    ),
-                    child: Image.network(symbolUrl))),
+              child: Container(
+                decoration: const BoxDecoration(shape: BoxShape.circle),
+                child: Image.network(symbolUrl),
+              ),
+            ),
             Positioned(
               right: 0,
               bottom: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.symmetric(
-                    vertical: chainBorder,
-                    horizontal: chainBorder,
+              child: Transform.translate(
+                offset: Offset(chainBorder.width, chainBorder.width),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.symmetric(
+                      vertical: chainBorder,
+                      horizontal: chainBorder,
+                    ),
                   ),
-                ),
-                child: Image.network(
-                  chainUrl ?? '',
-                  width: chainSize,
-                  height: chainSize,
+                  child: Image.network(
+                    chainUrl ?? '',
+                    width: chainSize,
+                    height: chainSize,
+                  ),
                 ),
               ),
             ),
