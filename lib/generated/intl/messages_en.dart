@@ -23,27 +23,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(value) => "${value} has been shown";
 
-  static String m2(value) => "≈ ${value} BTC";
+  static String m2(value) => "Average arrival time:${value}";
 
-  static String m3(value) => "≈ ${value}";
+  static String m3(value) => "${value} BTC";
 
-  static String m4(value) => "Average arrival time:${value}";
-
-  static String m5(value) => "${value} BTC";
-
-  static String m6(value) =>
+  static String m4(value) =>
       "Deposit will arrive after at least ${value} block confirmations";
 
-  static String m7(value) =>
+  static String m5(value) =>
       "Notice: Both a Memo and an Address are required to successfully deposit your ${value} to Mixin.";
 
-  static String m8(value) => "This address only supports ${value}.";
+  static String m6(value) => "This address only supports ${value}.";
 
-  static String m9(value, value2) => "${value}/${value2} confirmations";
+  static String m7(value, value2) => "${value}/${value2} confirmations";
 
-  static String m10(value) => "value now ${value}";
+  static String m8(value) => "value now ${value}";
 
-  static String m11(value) => "value then ${value}";
+  static String m9(value) => "value then ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -70,8 +66,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "alreadyHidden": m0,
         "alreadyShown": m1,
         "amount": MessageLookupByLibrary.simpleMessage("Amount"),
-        "approxBalanceOfBtc": m2,
-        "approxOf": m3,
         "assetTrending": MessageLookupByLibrary.simpleMessage("Trending"),
         "assetType": MessageLookupByLibrary.simpleMessage("Asset Type"),
         "assets": MessageLookupByLibrary.simpleMessage("Assets"),
@@ -82,8 +76,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "authTips": MessageLookupByLibrary.simpleMessage(
             "An open source cryptocurrency wallet"),
         "authorize": MessageLookupByLibrary.simpleMessage("Authorize"),
-        "averageArrival": m4,
-        "balanceOfBtc": m5,
+        "averageArrival": m2,
+        "balanceOfBtc": m3,
         "buy": MessageLookupByLibrary.simpleMessage("Buy"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
@@ -97,9 +91,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Copy to clipboard"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
-        "depositConfirmation": m6,
-        "depositNotice": m7,
-        "depositTip": m8,
+        "depositConfirmation": m4,
+        "depositNotice": m5,
+        "depositTip": m6,
         "depositTipBtc": MessageLookupByLibrary.simpleMessage(
             "This address only supports BTC and Omni USDT."),
         "depositTipEos": MessageLookupByLibrary.simpleMessage(
@@ -141,7 +135,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
-        "pendingConfirmations": m9,
+        "pendingConfirmations": m7,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
@@ -188,10 +182,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
-        "walletTransactionCurrentValue": m10,
+        "walletTransactionCurrentValue": m8,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
-        "walletTransactionThatTimeValue": m11,
+        "walletTransactionThatTimeValue": m9,
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
         "withdrawalMemoHint":
             MessageLookupByLibrary.simpleMessage("Memo (Optional)")

@@ -60,26 +60,6 @@ class L10n {
     );
   }
 
-  /// `≈ {value} BTC`
-  String approxBalanceOfBtc(Object value) {
-    return Intl.message(
-      '≈ $value BTC',
-      name: 'approxBalanceOfBtc',
-      desc: '',
-      args: [value],
-    );
-  }
-
-  /// `≈ {value}`
-  String approxOf(Object value) {
-    return Intl.message(
-      '≈ $value',
-      name: 'approxOf',
-      desc: '',
-      args: [value],
-    );
-  }
-
   /// `{value} BTC`
   String balanceOfBtc(Object value) {
     return Intl.message(

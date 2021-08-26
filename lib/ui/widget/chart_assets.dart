@@ -19,7 +19,7 @@ class _AssetChartItem extends PieChartItem {
   factory _AssetChartItem.fromAsset(AssetResult asset, Color color) =>
       _AssetChartItem(
         color: color,
-        name: asset.name,
+        name: asset.symbol,
         amount: asset.amountOfUsd.toDouble(),
       );
 

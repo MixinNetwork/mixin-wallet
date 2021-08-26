@@ -11,6 +11,17 @@ class R {
   static const String resourcesAllTransactionsSvg =
       'resources/all_transactions.svg';
 
+  static const String resourcesAmplitudeSvg = 'resources/amplitude.svg';
+
+  static const String resourcesAmplitudeDecreaseSvg =
+      'resources/amplitude_decrease.svg';
+
+  static const String resourcesAmplitudeIncreaseSvg =
+      'resources/amplitude_increase.svg';
+
+  static const String resourcesAmplitudeNoneSvg =
+      'resources/amplitude_none.svg';
+
   static const String resourcesAuthBgWebp = 'resources/auth_bg.webp';
 
   static const String resourcesBackBlackSvg = 'resources/back_black.svg';

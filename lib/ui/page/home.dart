@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
@@ -22,6 +23,14 @@ import '../widget/mixin_bottom_sheet.dart';
 import '../widget/search_asset_bottom_sheet.dart';
 import '../widget/transfer.dart';
 
+enum _AssetSortType {
+  amount,
+  increase,
+  decrease,
+}
+
+const _kQueryParameterSort = 'sortType';
+
 class Home extends HookWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -31,11 +40,15 @@ class Home extends HookWidget {
 
     useMemoizedFuture(() => context.appServices.updateAssets());
 
+    final sortType = useMemoized(
+        () =>
+            sdk.EnumToString.fromString(_AssetSortType.values,
+                context.queryParameters[_kQueryParameterSort]) ??
+            _AssetSortType.amount,
+        [context.queryParameters[_kQueryParameterSort]]);
+
     final assetResults = useMemoizedStream(
-      () => context.appServices.assetResults().watch().map((event) => event
-        ..sort(
-          (a, b) => b.amountOfUsd.compareTo(a.amountOfUsd),
-        )),
+      () => context.appServices.assetResults().watch(),
       initialData: <AssetResult>[],
     ).requireData;
 
@@ -43,12 +56,13 @@ class Home extends HookWidget {
 
     final assetList = useMemoized(() {
       if (!hideSmallAssets) {
-        return assetResults;
+        return assetResults..sortBy(sortType);
       }
       return assetResults
           .where((element) => element.amountOfUsd >= Decimal.one)
-          .toList();
-    }, [hideSmallAssets, assetResults]);
+          .toList()
+        ..sortBy(sortType);
+    }, [hideSmallAssets, assetResults, sortType]);
 
     return Scaffold(
       backgroundColor: context.theme.background,
@@ -80,10 +94,7 @@ class Home extends HookWidget {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: _Header(data: assetList),
-          ),
-          const SliverToBoxAdapter(
-            child: _AssetHeader(),
+            child: _Header(data: assetList, sortType: sortType),
           ),
           if (assetList.isEmpty)
             const SliverFillRemaining(child: _AssetsEmptyLayout())
@@ -123,7 +134,10 @@ class Home extends HookWidget {
 class _AssetHeader extends StatelessWidget {
   const _AssetHeader({
     Key? key,
+    required this.sortType,
   }) : super(key: key);
+
+  final _AssetSortType sortType;
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -155,7 +169,31 @@ class _AssetHeader extends StatelessWidget {
                 color: context.colorScheme.primaryText,
               ),
             ),
-            // TODO sort
+            const SizedBox(width: 16),
+            InkResponse(
+              radius: 24,
+              onTap: () {
+                context.replace(homeUri.replace(queryParameters: {
+                  _kQueryParameterSort:
+                      sdk.EnumToString.convertToString(sortType.next)
+                }));
+              },
+              child: SvgPicture.asset(
+                R.resourcesAmplitudeSvg,
+                height: 24,
+                width: 24,
+                color: context.colorScheme.primaryText,
+              ),
+            ),
+            const SizedBox(width: 2),
+            SizedBox(
+              width: 6,
+              height: 10,
+              child: SvgPicture.asset(
+                sortType.iconAssetName,
+                color: context.colorScheme.primaryText,
+              ),
+            ),
             const SizedBox(width: 16),
           ],
         ),
@@ -166,9 +204,12 @@ class _Header extends HookWidget {
   const _Header({
     Key? key,
     required this.data,
+    required this.sortType,
   }) : super(key: key);
 
   final List<AssetResult> data;
+
+  final _AssetSortType sortType;
 
   @override
   Widget build(BuildContext context) {
@@ -218,7 +259,7 @@ class _Header extends HookWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          context.l10n.approxBalanceOfBtc(balanceOfBtc),
+          context.l10n.balanceOfBtc(balanceOfBtc),
           style: TextStyle(
             color: context.colorScheme.thirdText,
             fontSize: 14,
@@ -237,6 +278,7 @@ class _Header extends HookWidget {
         const SizedBox(height: 32),
         const _ButtonBar(),
         const SizedBox(height: 24),
+        _AssetHeader(sortType: sortType),
       ],
     );
   }
@@ -407,4 +449,46 @@ class _AssetsEmptyLayout extends StatelessWidget {
           const Spacer(flex: 164),
         ],
       );
+}
+
+extension _SortAssets on List<AssetResult> {
+  void sortBy(_AssetSortType sort) {
+    switch (sort) {
+      case _AssetSortType.amount:
+        this.sort((a, b) => b.amountOfUsd.compareTo(a.amountOfUsd));
+        break;
+      case _AssetSortType.decrease:
+        this.sort((a, b) =>
+            a.changeUsd.asDecimalOrZero.compareTo(b.changeUsd.asDecimalOrZero));
+        break;
+      case _AssetSortType.increase:
+        this.sort((a, b) =>
+            b.changeUsd.asDecimalOrZero.compareTo(a.changeUsd.asDecimalOrZero));
+        break;
+    }
+  }
+}
+
+extension _SortTypeExt on _AssetSortType {
+  String get iconAssetName {
+    switch (this) {
+      case _AssetSortType.amount:
+        return R.resourcesAmplitudeNoneSvg;
+      case _AssetSortType.increase:
+        return R.resourcesAmplitudeIncreaseSvg;
+      case _AssetSortType.decrease:
+        return R.resourcesAmplitudeDecreaseSvg;
+    }
+  }
+
+  _AssetSortType get next {
+    switch (this) {
+      case _AssetSortType.amount:
+        return _AssetSortType.increase;
+      case _AssetSortType.increase:
+        return _AssetSortType.decrease;
+      case _AssetSortType.decrease:
+        return _AssetSortType.amount;
+    }
+  }
 }
