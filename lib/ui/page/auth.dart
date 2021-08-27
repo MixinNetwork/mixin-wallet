@@ -143,13 +143,12 @@ class _AuthBody extends StatelessWidget {
                 onPrimary: context.colorScheme.background,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
-            child: SelectableText(
+            child: Text(
               context.l10n.authorize,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
-              enableInteractiveSelection: false,
             ),
           ),
           const SizedBox(height: 24),

@@ -121,45 +121,45 @@ class _UnauthorizedWidget extends StatelessWidget {
   const _UnauthorizedWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              R.resourcesUnauthorizedContactSvg,
-              width: 58,
-              height: 58,
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Spacer(flex: 100),
+          SvgPicture.asset(
+            R.resourcesUnauthorizedContactSvg,
+            width: 80,
+            height: 80,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            context.l10n.contactReadFailed,
+            style: TextStyle(
+              color: context.colorScheme.thirdText,
+              fontSize: 14,
             ),
-            const SizedBox(height: 26),
-            Text(
-              context.l10n.contactReadFailed,
+          ),
+          const SizedBox(height: 6),
+          TextButton(
+            onPressed: () {
+              final uri =
+                  Uri.https('mixin-www.zeromesh.net', 'oauth/authorize', {
+                'client_id': Env.clientId,
+                'scope':
+                    'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ',
+                'response_type': 'code',
+              });
+              context.toExternal(uri.toString());
+            },
+            child: Text(
+              context.l10n.reauthorize,
               style: TextStyle(
-                color: context.theme.text,
+                color: context.colorScheme.primaryText,
                 fontSize: 14,
               ),
             ),
-            const SizedBox(height: 6),
-            TextButton(
-              onPressed: () {
-                final uri =
-                    Uri.https('mixin-www.zeromesh.net', 'oauth/authorize', {
-                  'client_id': Env.clientId,
-                  'scope':
-                      'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ',
-                  'response_type': 'code',
-                });
-                context.toExternal(uri);
-              },
-              child: Text(
-                context.l10n.reauthorize,
-                style: const TextStyle(
-                  color: Color(0xff3D75E3),
-                  fontSize: 14,
-                ),
-              ),
-            )
-          ],
-        ),
+          ),
+          const Spacer(flex: 164),
+        ],
       );
 }

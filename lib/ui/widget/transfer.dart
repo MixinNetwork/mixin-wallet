@@ -91,68 +91,109 @@ class _SendToRouterBottomSheet extends StatelessWidget {
       );
 }
 
-class TransferAssetItem extends StatelessWidget {
-  const TransferAssetItem({
+class TransferAssetHeader extends StatelessWidget {
+  const TransferAssetHeader({
     Key? key,
     required this.asset,
-    required this.onAssetChange,
   }) : super(key: key);
 
   final AssetResult asset;
-  final AssetSelectCallback onAssetChange;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        children: [
+          SymbolIconWithBorder(
+            symbolUrl: asset.iconUrl,
+            chainUrl: asset.chainIconUrl,
+            size: 58,
+            chainSize: 14,
+            chainBorder:
+                BorderSide(color: context.colorScheme.background, width: 1.5),
+          ),
+          const SizedBox(height: 6),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 48),
+            child: SelectableText.rich(
+              TextSpan(children: [
+                TextSpan(
+                  text: asset.balance.numberFormat().overflow,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: context.colorScheme.primaryText,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const TextSpan(text: ' '),
+                TextSpan(
+                  text: asset.symbol.overflow,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: context.colorScheme.primaryText,
+                  ),
+                ),
+              ]),
+              textAlign: TextAlign.center,
+              enableInteractiveSelection: false,
+            ),
+          ),
+        ],
+      );
+}
+
+class TransferContactWidget extends StatelessWidget {
+  const TransferContactWidget({
+    Key? key,
+    required this.user,
+    required this.onUserChanged,
+  }) : super(key: key);
+
+  final User user;
+  final void Function(User) onUserChanged;
 
   @override
   Widget build(BuildContext context) => Material(
-        borderRadius: BorderRadius.circular(12),
-        color: const Color(0xfff8f8f8),
+        borderRadius: BorderRadius.circular(13),
+        color: context.colorScheme.surface,
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            showMixinBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              builder: (context) => AssetSelectionListWidget(
-                selectedAssetId: asset.assetId,
-                onTap: onAssetChange,
-              ),
-            );
+          borderRadius: BorderRadius.circular(13),
+          onTap: () async {
+            final selected = await showContactSelectionBottomSheet(
+                context: context, selectedUser: user);
+            if (selected != null) {
+              onUserChanged(selected);
+            }
           },
           child: SizedBox(
-            height: 56,
+            height: 64,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(width: 20),
-                SymbolIconWithBorder(
-                  symbolUrl: asset.iconUrl,
-                  chainUrl: asset.chainIconUrl,
-                  size: 32,
-                  chainBorder:
-                      const BorderSide(color: Color(0xfff8f8f8), width: 1),
-                  symbolBorder:
-                      const BorderSide(color: Color(0xfff8f8f8), width: 2),
-                  chainSize: 8,
-                ),
+                Avatar(
+                    size: 40,
+                    avatarUrl: user.avatarUrl,
+                    userId: user.userId,
+                    borderWidth: 0,
+                    name: user.fullName ?? '?'),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       const Spacer(flex: 2),
                       Text(
-                        asset.symbol.overflow,
+                        user.fullName?.overflow ?? '',
                         style: TextStyle(
-                          color: context.theme.text,
+                          color: context.colorScheme.primaryText,
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       const Spacer(flex: 1),
                       Text(
-                        '${asset.balance} ${asset.symbol}',
+                        user.identityNumber,
                         style: TextStyle(
-                          color: context.theme.secondaryText,
+                          color: context.colorScheme.thirdText,
                           fontSize: 13,
                           fontWeight: FontWeight.w400,
                         ),
@@ -168,95 +209,6 @@ class TransferAssetItem extends StatelessWidget {
           ),
         ),
       );
-}
-
-class TransferContactWidget extends StatelessWidget {
-  const TransferContactWidget({
-    Key? key,
-    required this.user,
-    required this.onUserChanged,
-  }) : super(key: key);
-
-  final User? user;
-  final void Function(User) onUserChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final Widget child;
-    if (user != null) {
-      child = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Spacer(flex: 2),
-          Text(
-            user!.fullName?.overflow ?? '',
-            style: TextStyle(
-              color: context.theme.text,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          const Spacer(flex: 1),
-          Text(
-            user!.identityNumber,
-            style: TextStyle(
-              color: context.theme.secondaryText,
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          const Spacer(flex: 2),
-        ],
-      );
-    } else {
-      child = Text(
-        context.l10n.selectFromContacts,
-        style: TextStyle(
-          color: context.theme.secondaryText,
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-        ),
-      );
-    }
-    return Material(
-      borderRadius: BorderRadius.circular(12),
-      color: const Color(0xfff8f8f8),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () async {
-          final selected = await showContactSelectionBottomSheet(
-              context: context, selectedUser: user);
-          if (selected != null) {
-            onUserChanged(selected);
-          }
-        },
-        child: SizedBox(
-          height: 56,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(width: 20),
-              if (user != null)
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Avatar(
-                      size: 32,
-                      avatarUrl: user!.avatarUrl,
-                      userId: user!.userId,
-                      borderWidth: 0,
-                      name: user!.fullName ?? '?'),
-                ),
-              Expanded(
-                child: child,
-              ),
-              SvgPicture.asset(R.resourcesIcArrowDownSvg),
-              const SizedBox(width: 20),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class TransferAddressWidget extends StatelessWidget {
@@ -313,10 +265,10 @@ class TransferAddressWidget extends StatelessWidget {
       );
     }
     return Material(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(13),
       color: context.colorScheme.surface,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(13),
         onTap: () async {
           final selected = await showAddressSelectionBottomSheet(
             context: context,
@@ -411,7 +363,7 @@ class TransferAmountWidget extends HookWidget {
     }, [controller, fiatInputMode]);
 
     return Material(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(13),
       color: context.colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
@@ -520,24 +472,27 @@ class TransferMemoWidget extends HookWidget {
       };
     }, [inputController]);
     return Material(
-      color: const Color(0xFFF8F8F8),
-      borderRadius: BorderRadius.circular(12),
+      color: context.colorScheme.surface,
+      borderRadius: BorderRadius.circular(13),
       child: SizedBox(
-        height: 56,
+        height: 64,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Center(
             child: TextField(
               controller: inputController,
               style: TextStyle(
-                color: context.theme.text,
+                color: context.colorScheme.primaryText,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
               decoration: InputDecoration(
                   hintText: context.l10n.withdrawalMemoHint,
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero),
+                  contentPadding: EdgeInsets.zero,
+                  hintStyle: TextStyle(
+                    color: context.colorScheme.thirdText,
+                  )),
             ),
           ),
         ),

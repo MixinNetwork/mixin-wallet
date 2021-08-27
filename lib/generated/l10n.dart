@@ -960,16 +960,6 @@ class L10n {
     );
   }
 
-  /// `Select from contacts`
-  String get selectFromContacts {
-    return Intl.message(
-      'Select from contacts',
-      name: 'selectFromContacts',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Send to contact`
   String get sendToContact {
     return Intl.message(
@@ -985,16 +975,6 @@ class L10n {
     return Intl.message(
       'Name, Mixin ID',
       name: 'contactSearchHint',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No contact selected`
-  String get noContactSelected {
-    return Intl.message(
-      'No contact selected',
-      name: 'noContactSelected',
       desc: '',
       args: [],
     );

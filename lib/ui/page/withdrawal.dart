@@ -10,7 +10,6 @@ import '../../util/hook.dart';
 import '../widget/buttons.dart';
 import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
-import '../widget/symbol.dart';
 import '../widget/transfer.dart';
 
 class Withdrawal extends HookWidget {
@@ -81,40 +80,7 @@ class _WithdrawalPage extends HookWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(children: [
           const SizedBox(height: 20),
-          SymbolIconWithBorder(
-            symbolUrl: asset.iconUrl,
-            chainUrl: asset.chainIconUrl,
-            size: 58,
-            chainSize: 14,
-            chainBorder:
-                BorderSide(color: context.colorScheme.background, width: 1.5),
-          ),
-          const SizedBox(height: 6),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 48),
-            child: SelectableText.rich(
-              TextSpan(children: [
-                TextSpan(
-                  text: asset.balance.numberFormat().overflow,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: context.colorScheme.primaryText,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const TextSpan(text: ' '),
-                TextSpan(
-                  text: asset.symbol.overflow,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: context.colorScheme.primaryText,
-                  ),
-                ),
-              ]),
-              textAlign: TextAlign.center,
-              enableInteractiveSelection: false,
-            ),
-          ),
+          TransferAssetHeader(asset: asset),
           const SizedBox(height: 16),
           TransferAddressWidget(
             address: address.value,
@@ -274,7 +240,7 @@ class _SendButton extends StatelessWidget {
           context.l10n.send,
           style: TextStyle(
             fontSize: 16,
-            color: context.theme.background,
+            color: context.colorScheme.background,
           ),
           onTap: enable ? onTap : null,
           enableInteractiveSelection: false,

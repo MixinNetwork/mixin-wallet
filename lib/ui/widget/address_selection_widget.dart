@@ -210,12 +210,12 @@ class AddressSelectionItemTile extends StatelessWidget {
   Widget build(BuildContext context) => InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox.square(
-                dimension: 44,
+                dimension: 40,
                 child: ClipOval(
                   child: leading,
                 ),
