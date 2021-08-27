@@ -80,6 +80,7 @@ class _Buy extends HookWidget {
     final fiat = useState(fiatList[0]);
     final type = useState(WyrePayType.applePay);
     final wyreQuote = useState<WyreQuote?>(null);
+    final lastQuoteByFiat = useState(true);
 
     final fiatController = useTextEditingController();
     final cryptoController = useTextEditingController();
@@ -101,6 +102,7 @@ class _Buy extends HookWidget {
                 fiat, asset, type, fiatController, cryptoController, true);
             cryptoController.text = quote.destAmount.toString();
             wyreQuote.value = quote;
+            lastQuoteByFiat.value = true;
           }
         });
       }
@@ -124,8 +126,9 @@ class _Buy extends HookWidget {
           if (cryptoFocusNode.hasFocus) {
             final quote = await queryOrderQuote(
                 fiat, asset, type, fiatController, cryptoController, false);
-            fiatController.text = quote.sourceAmountWithoutFees.toString();
+            fiatController.text = quote.sourceAmount.toString();
             wyreQuote.value = quote;
+            lastQuoteByFiat.value = false;
           }
         });
       }
@@ -337,9 +340,13 @@ class _Buy extends HookWidget {
                           'failureRedirectUrl': redirectUrl,
                           'paymentMethod': type.value.forReservation(),
                           'referrerAccountId': Env.wyreAccount,
-                          'amountIncludeFees': 'false',
-                          'sourceAmount': fiatController.text,
+                          'amountIncludeFees': 'true',
                         };
+                        if (lastQuoteByFiat.value) {
+                          data['sourceAmount'] = fiatController.text;
+                        } else {
+                          data['destAmount'] = cryptoController.text;
+                        }
                         final url = await WyreClient.instance.api
                             .createOrderReservation(data);
                         if (url == null) {
@@ -401,7 +408,7 @@ class _Buy extends HookWidget {
       'country': 'US', // TODO Country code (Alpha-2)
       'accountId': Env.wyreAccount,
       'walletType': type.value.forQuote(),
-      'amountIncludeFees': 'false',
+      'amountIncludeFees': 'true',
     };
     if (byFiat) {
       data['sourceAmount'] = fiatController.text;
