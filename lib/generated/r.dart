@@ -103,6 +103,8 @@ class R {
 
   static const String resourcesUpGreenSvg = 'resources/up_green.svg';
 
+  static const String resourcesIcApplePay = 'resources/ic_apple_pay.svg';
+
   static const String resourcesIcFlagAud = 'resources/ic_flag_aud.png';
   static const String resourcesIcFlagEur = 'resources/ic_flag_eur.png';
   static const String resourcesIcFlagGbp = 'resources/ic_flag_gbp.png';

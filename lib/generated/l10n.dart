@@ -1200,10 +1200,10 @@ class L10n {
     );
   }
 
-  /// `Transaction fee`
+  /// `Transaction fee:`
   String get transactionFee {
     return Intl.message(
-      'Transaction fee',
+      'Transaction fee:',
       name: 'transactionFee',
       desc: '',
       args: [],
@@ -1225,6 +1225,26 @@ class L10n {
     return Intl.message(
       'Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions.',
       name: 'networkFeeTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pay`
+  String get pay {
+    return Intl.message(
+      'Pay',
+      name: 'pay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `BALANCE`
+  String get balance {
+    return Intl.message(
+      'BALANCE',
+      name: 'balance',
       desc: '',
       args: [],
     );

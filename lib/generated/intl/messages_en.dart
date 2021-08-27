@@ -79,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "An open source cryptocurrency wallet"),
         "authorize": MessageLookupByLibrary.simpleMessage("Authorize"),
         "averageArrival": m2,
+        "balance": MessageLookupByLibrary.simpleMessage("BALANCE"),
         "balanceOfBtc": m3,
         "buy": MessageLookupByLibrary.simpleMessage("Buy"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
@@ -146,6 +147,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notice": MessageLookupByLibrary.simpleMessage("Notice"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
+        "pay": MessageLookupByLibrary.simpleMessage("Pay"),
         "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
@@ -176,7 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "trace": MessageLookupByLibrary.simpleMessage("Trace"),
         "transaction": MessageLookupByLibrary.simpleMessage("Transaction"),
         "transactionFee":
-            MessageLookupByLibrary.simpleMessage("Transaction fee"),
+            MessageLookupByLibrary.simpleMessage("Transaction fee:"),
         "transactionFeeTip": MessageLookupByLibrary.simpleMessage(
             "Charged by third party service provider. US users are charged 2.9% + 30c of the transaction amount with a minimum charge of \$5. International users are charged 3.9% + 30c of the transaction amount with a minimum charge of \$5."),
         "transactionHash":

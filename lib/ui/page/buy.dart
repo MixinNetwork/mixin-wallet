@@ -1,4 +1,3 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../db/mixin_database.dart';
 import '../../service/env.dart';
 import '../../util/constants.dart';
+import '../../util/debouncer.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/l10n.dart';
@@ -16,10 +16,12 @@ import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../../wyre/wyre_client.dart';
 import '../../wyre/wyre_constants.dart';
+import '../../wyre/wyre_quote.dart';
 import '../../wyre/wyre_vo.dart';
 import '../router/mixin_routes.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/brightness_observer.dart';
+import '../widget/buttons.dart';
 import '../widget/fiat_selection_list_widget.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
@@ -34,15 +36,6 @@ class Buy extends HookWidget {
     var assetId = context.pathParameters['id'];
     assetId ??= erc20USDT;
 
-    final wyreClient = WyreClient.instance;
-    final wyreRateMap =
-        useMemoizedFuture(() => wyreClient.api.getRate().then(filterWyreRates))
-            .data;
-    if (wyreRateMap == null || wyreRateMap.isEmpty) {
-      w('wyreRates: $wyreRateMap');
-      return const SizedBox();
-    }
-
     final supportedAssets = useMemoizedFuture(
         () => context.appServices.findOrSyncAssets(supportedCryptosId)).data;
     if (supportedAssets == null || supportedAssets.isEmpty) {
@@ -51,10 +44,7 @@ class Buy extends HookWidget {
     }
 
     final fiatList = getWyreFiatList();
-    return _Buy(
-        wyreRateMap: wyreRateMap,
-        supportedAssets: supportedAssets,
-        fiatList: fiatList);
+    return _Buy(supportedAssets: supportedAssets, fiatList: fiatList);
   }
 
   Future<Map<String, double>> filterWyreRates(Map<String, double> data) async {
@@ -73,23 +63,23 @@ class Buy extends HookWidget {
 }
 
 class _Buy extends HookWidget {
-  const _Buy({
+  _Buy({
     Key? key,
-    required this.wyreRateMap,
     required this.supportedAssets,
     required this.fiatList,
   }) : super(key: key);
 
-  final Map<String, double> wyreRateMap;
   final List<AssetResult> supportedAssets;
   final List<WyreFiat> fiatList;
+
+  final _debouncer = Debouncer(const Duration(milliseconds: 500));
 
   @override
   Widget build(BuildContext context) {
     final asset = useState(supportedAssets[0]);
     final fiat = useState(fiatList[0]);
-    final type = useState(WyrePayType.debitCard);
-    final fiatAmount = useValueNotifier('');
+    final type = useState(WyrePayType.applePay);
+    final wyreQuote = useState<WyreQuote?>(null);
 
     final fiatController = useTextEditingController();
     final cryptoController = useTextEditingController();
@@ -98,13 +88,21 @@ class _Buy extends HookWidget {
 
     useEffect(() {
       void updateAmount() {
-        final rate = getRate(fiat, asset);
-        if (fiatFocusNode.hasFocus) {
-          cryptoController.text = (fiatController.text.asDecimalOrZero /
-                  Decimal.parse(rate.toString()))
-              .toString();
-          fiatAmount.value = fiatController.text;
-        }
+        _debouncer.run(() async {
+          final amount = double.tryParse(fiatController.text) ?? 0;
+          if (amount == 0) {
+            cryptoController.text = '';
+            wyreQuote.value = null;
+            return;
+          }
+
+          if (fiatFocusNode.hasFocus) {
+            final quote = await queryOrderQuote(
+                fiat, asset, type, fiatController, cryptoController, true);
+            cryptoController.text = quote.destAmount.toString();
+            wyreQuote.value = quote;
+          }
+        });
       }
 
       fiatController.addListener(updateAmount);
@@ -115,14 +113,21 @@ class _Buy extends HookWidget {
 
     useEffect(() {
       void updateAmount() {
-        final rate = getRate(fiat, asset);
-        if (cryptoFocusNode.hasFocus) {
-          assert(rate != 0);
-          fiatController.text = (cryptoController.text.asDecimalOrZero *
-                  Decimal.parse(rate.toString()))
-              .toString();
-          fiatAmount.value = fiatController.text;
-        }
+        _debouncer.run(() async {
+          final amount = double.tryParse(cryptoController.text) ?? 0;
+          if (amount == 0) {
+            fiatController.text = '';
+            wyreQuote.value = null;
+            return;
+          }
+
+          if (cryptoFocusNode.hasFocus) {
+            final quote = await queryOrderQuote(
+                fiat, asset, type, fiatController, cryptoController, false);
+            fiatController.text = quote.sourceAmountWithoutFees.toString();
+            wyreQuote.value = quote;
+          }
+        });
       }
 
       cryptoController.addListener(updateAmount);
@@ -132,10 +137,18 @@ class _Buy extends HookWidget {
     }, [cryptoController]);
 
     return Scaffold(
-        backgroundColor: context.theme.accent,
+        backgroundColor: context.colorScheme.background,
         appBar: MixinAppBar(
-          title: Text(context.l10n.buy),
-          backButtonColor: Colors.white,
+          backgroundColor: context.colorScheme.background,
+          title: Text(
+            context.l10n.buy,
+            style: TextStyle(
+              color: context.colorScheme.primaryText,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          leading: const MixinBackButton2(),
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
@@ -147,21 +160,12 @@ class _Buy extends HookWidget {
           child: Column(children: [
             const SizedBox(height: 20),
             RoundContainer(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              height: 64,
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
               child: Row(children: [
                 InkWell(
                   onTap: () {
-                    showMixinBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (context) => FiatSelectionListWidget(
-                        fiatList: fiatList,
-                        selectedFiat: fiat.value,
-                        onTap: (WyreFiat wyreFiat) {
-                          fiat.value = wyreFiat;
-                        },
-                      ),
-                    );
+                    showFiatListBottomSheet(context, fiat);
                   },
                   child: ClipOval(
                       child: Image.asset(
@@ -170,6 +174,21 @@ class _Buy extends HookWidget {
                     height: 40,
                   )),
                 ),
+                const SizedBox(width: 12),
+                InkWell(
+                    onTap: () {
+                      showFiatListBottomSheet(context, fiat);
+                    },
+                    child: Text(
+                      fiat.value.name,
+                      style: TextStyle(
+                        color: context.theme.text,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )),
+                const SizedBox(width: 10),
+                SvgPicture.asset(R.resourcesIcArrowDownSvg),
                 const SizedBox(width: 10),
                 Expanded(
                   child: TextField(
@@ -191,41 +210,20 @@ class _Buy extends HookWidget {
                     ],
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
+                    textAlign: TextAlign.end,
                   ),
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  fiat.value.name,
-                  style: TextStyle(
-                    color: context.theme.secondaryText,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                SvgPicture.asset(R.resourcesIcArrowDownSvg),
                 const SizedBox(width: 20),
               ]),
             ),
             const SizedBox(height: 20),
             RoundContainer(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              height: 64,
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
               child: Row(children: [
                 InkWell(
                     onTap: () {
-                      showMixinBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (context) => AssetSelectionListWidget(
-                          onTap: (AssetResult assetResult) {
-                            context.replace(
-                                buyPath.toUri({'id': assetResult.assetId}));
-                            asset.value = assetResult;
-                          },
-                          selectedAssetId: asset.value.assetId,
-                          assetResultList: supportedAssets,
-                        ),
-                      );
+                      showAssetListBottomSheet(context, asset);
                     },
                     child: SymbolIconWithBorder(
                       symbolUrl: asset.value.iconUrl,
@@ -238,72 +236,95 @@ class _Buy extends HookWidget {
                       chainSize: 8,
                     )),
                 const SizedBox(width: 10),
-                Expanded(
-                  child: TextField(
-                    focusNode: cryptoFocusNode,
-                    style: TextStyle(
-                      color: context.theme.text,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    maxLines: 1,
-                    decoration: const InputDecoration(
-                      hintText: '0.000',
-                      border: InputBorder.none,
-                    ),
-                    controller: cryptoController,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d*\.?\d{0,3}'))
-                    ],
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  asset.value.symbol,
-                  style: TextStyle(
-                    color: context.theme.secondaryText,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
+                InkWell(
+                    onTap: () {
+                      showAssetListBottomSheet(context, asset);
+                    },
+                    child: Text(
+                      asset.value.symbol,
+                      style: TextStyle(
+                        color: context.theme.text,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )),
                 const SizedBox(width: 10),
                 SvgPicture.asset(R.resourcesIcArrowDownSvg),
+                const SizedBox(width: 10),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                        height: 38,
+                        child: TextField(
+                          focusNode: cryptoFocusNode,
+                          style: TextStyle(
+                            color: context.theme.text,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          maxLines: 1,
+                          decoration: const InputDecoration(
+                            hintText: '0.000',
+                            border: InputBorder.none,
+                          ),
+                          controller: cryptoController,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d*\.?\d{0,3}'))
+                          ],
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
+                          textAlign: TextAlign.end,
+                        )),
+                    const SizedBox(height: 7),
+                    Text(
+                      '${asset.value.balance} ${context.l10n.balance}',
+                      style: TextStyle(
+                        color: context.theme.secondaryText,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.end,
+                    ),
+                  ],
+                )),
                 const SizedBox(width: 20),
               ]),
             ),
             const SizedBox(height: 20),
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Text.rich(TextSpan(
-                    style: TextStyle(
-                      color: context.theme.secondaryText,
-                      fontSize: 13,
-                      height: 2,
-                    ),
-                    children: [
-                      TextSpan(text: '${context.l10n.transactionFee} '),
-                      TextSpan(
-                          text:
-                              '${calcTransactionFee(double.tryParse(fiatAmount.value) ?? 0, fiat.value.area)} ${fiat.value.name}',
-                          style: TextStyle(
-                            color: context.theme.text,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      TextSpan(text: '\n${context.l10n.networkFee} '),
-                      TextSpan(
-                          text: 'TODO',
-                          style: TextStyle(
-                            color: context.theme.text,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ]))),
+            if (wyreQuote.value != null)
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text.rich(TextSpan(
+                      style: TextStyle(
+                        color: context.theme.secondaryText,
+                        fontSize: 13,
+                        height: 2,
+                      ),
+                      children: [
+                        TextSpan(text: '${context.l10n.transactionFee} '),
+                        TextSpan(
+                            text:
+                                '${(wyreQuote.value?.fees[fiat.value.name] ?? 0).toString()} ${fiat.value.name}',
+                            style: TextStyle(
+                              color: context.theme.text,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        TextSpan(text: '\n${context.l10n.networkFee} '),
+                        TextSpan(
+                            text:
+                                '${(wyreQuote.value?.fees[asset.value.symbol] ?? 0).toString()} ${fiat.value.name}',
+                            style: TextStyle(
+                              color: context.theme.text,
+                              fontWeight: FontWeight.bold,
+                            )),
+                      ]))),
             const Spacer(),
             HookBuilder(
                 builder: (context) => _PayButton(
-                      enable: fiatAmount.value.isNotEmpty,
+                      enable: wyreQuote.value != null,
                       onTap: () async {
                         final redirectUrl =
                             'http://localhost:8001/#/tokens/${asset.value.assetId}';
@@ -314,7 +335,7 @@ class _Buy extends HookWidget {
                           'country': 'US', // TODO Country code (Alpha-2)
                           'redirectUrl': redirectUrl,
                           'failureRedirectUrl': redirectUrl,
-                          'paymentMethod': type.value.inString(),
+                          'paymentMethod': type.value.forReservation(),
                           'referrerAccountId': Env.wyreAccount,
                           'amountIncludeFees': 'false',
                           'sourceAmount': fiatController.text,
@@ -335,12 +356,60 @@ class _Buy extends HookWidget {
         ));
   }
 
-  double getRate(
-      ValueNotifier<WyreFiat> fiat, ValueNotifier<AssetResult> asset) {
-    final key = '${fiat.value.name}${asset.value.symbol}';
-    final rate = wyreRateMap[key];
-    assert(rate != null);
-    return rate!;
+  void showAssetListBottomSheet(
+      BuildContext context, ValueNotifier<AssetResult> asset) {
+    showMixinBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => AssetSelectionListWidget(
+        onTap: (AssetResult assetResult) {
+          context.replace(buyPath.toUri({'id': assetResult.assetId}));
+          asset.value = assetResult;
+        },
+        selectedAssetId: asset.value.assetId,
+        assetResultList: supportedAssets,
+      ),
+    );
+  }
+
+  void showFiatListBottomSheet(
+      BuildContext context, ValueNotifier<WyreFiat> fiat) {
+    showMixinBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => FiatSelectionListWidget(
+        fiatList: fiatList,
+        selectedFiat: fiat.value,
+        onTap: (WyreFiat wyreFiat) {
+          fiat.value = wyreFiat;
+        },
+      ),
+    );
+  }
+
+  Future<WyreQuote> queryOrderQuote(
+      ValueNotifier<WyreFiat> fiat,
+      ValueNotifier<AssetResult> asset,
+      ValueNotifier<WyrePayType> type,
+      TextEditingController fiatController,
+      TextEditingController cryptoController,
+      bool byFiat) async {
+    final data = {
+      'sourceCurrency': fiat.value.name,
+      'destCurrency': asset.value.symbol,
+      'dest': 'ethereum:${asset.value.destination}',
+      'country': 'US', // TODO Country code (Alpha-2)
+      'accountId': Env.wyreAccount,
+      'walletType': type.value.forQuote(),
+      'amountIncludeFees': 'false',
+    };
+    if (byFiat) {
+      data['sourceAmount'] = fiatController.text;
+    } else {
+      data['destAmount'] = cryptoController.text;
+    }
+    final quote = await WyreClient.instance.api.getOrderReservationQuote(data);
+    return quote;
   }
 }
 
@@ -356,23 +425,30 @@ class _PayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-        borderRadius: BorderRadius.circular(12),
-        color: enable ? context.theme.accent : const Color(0xffB2B3C7),
+        borderRadius: BorderRadius.circular(72),
+        color: enable ? const Color(0xFF333333) : const Color(0x33333333),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(72),
           child: SizedBox(
-            width: 160,
-            height: 44,
+            width: 110,
+            height: 48,
             child: Center(
-              child: Text(
-                context.l10n.buy,
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+              SvgPicture.asset(
+                R.resourcesIcApplePay,
+                width: 12,
+                height: 15,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                context.l10n.pay,
                 style: TextStyle(
                   fontSize: 16,
                   color: context.theme.background,
                 ),
               ),
-            ),
+            ])),
           ),
         ),
       );

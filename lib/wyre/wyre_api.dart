@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'wyre_quote.dart';
 
 class WyreApi {
   WyreApi({required this.dio});
@@ -21,5 +22,11 @@ class WyreApi {
     final response = await dio.post<String>('/v3/orders/reserve', data: data);
     final jsonMap = jsonDecode(response.data!) as Map;
     return jsonMap['url'].toString();
+  }
+
+  Future<WyreQuote> getOrderReservationQuote(Map<String, dynamic> data) async {
+    final response = await dio
+        .post<Map<String, dynamic>>('/v3/orders/quote/partner', data: data);
+    return WyreQuote.fromJson(response.data!);
   }
 }

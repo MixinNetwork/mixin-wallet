@@ -71,6 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "authTips":
             MessageLookupByLibrary.simpleMessage("你知道吗？Mixin 是一个开源的加密钱包"),
         "authorize": MessageLookupByLibrary.simpleMessage("授权使用"),
+        "balance": MessageLookupByLibrary.simpleMessage("余额"),
         "buy": MessageLookupByLibrary.simpleMessage("购买"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
@@ -129,6 +130,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notice": MessageLookupByLibrary.simpleMessage("注意"),
         "ok": MessageLookupByLibrary.simpleMessage("好的"),
         "other": MessageLookupByLibrary.simpleMessage("其他"),
+        "pay": MessageLookupByLibrary.simpleMessage("支付"),
         "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),
@@ -153,7 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "to": MessageLookupByLibrary.simpleMessage("至"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额"),
         "transaction": MessageLookupByLibrary.simpleMessage("转账记录"),
-        "transactionFee": MessageLookupByLibrary.simpleMessage("交易费"),
+        "transactionFee": MessageLookupByLibrary.simpleMessage("交易费："),
         "transactionFeeTip": MessageLookupByLibrary.simpleMessage(
             "由第三方服务商收取。美国用户按交易金额的2.9% + 30c收取，最低收费为\$5；国际用户按交易金额的3.9% + 30c收取，最低收费为\$5。"),
         "transactionHash": MessageLookupByLibrary.simpleMessage("交易哈希"),

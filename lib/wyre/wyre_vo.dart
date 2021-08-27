@@ -60,6 +60,9 @@ String calcTransactionFee(double price, WyreServiceArea wyreServiceArea) {
 enum WyrePayType { debitCard, applePay }
 
 extension WyrePayTypeExtension on WyrePayType {
-  String inString() =>
+  String forReservation() =>
       this == WyrePayType.debitCard ? 'debit-card' : 'apple-pay';
+
+  String forQuote() =>
+      this == WyrePayType.debitCard ? 'DEBIT_CARD' : 'APPLE_PAY';
 }
