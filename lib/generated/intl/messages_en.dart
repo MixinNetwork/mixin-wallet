@@ -130,8 +130,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "noAddressSelected":
             MessageLookupByLibrary.simpleMessage("No address selected"),
         "noAsset": MessageLookupByLibrary.simpleMessage("NO ASSET"),
-        "noContactSelected":
-            MessageLookupByLibrary.simpleMessage("No contact selected"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
@@ -146,18 +144,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "selectFromAddressBook":
             MessageLookupByLibrary.simpleMessage("Select from Address Book"),
-        "selectFromContacts":
-            MessageLookupByLibrary.simpleMessage("Select from contacts"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "sendTo": MessageLookupByLibrary.simpleMessage("Send to"),
         "sendToAddress":
             MessageLookupByLibrary.simpleMessage("Send to Address"),
-        "sendToAddressDescription": MessageLookupByLibrary.simpleMessage(
-            "Withdraw to an exchange or wallet."),
         "sendToContact":
             MessageLookupByLibrary.simpleMessage("Send to contact"),
-        "sendToContactDescription": MessageLookupByLibrary.simpleMessage(
-            "Transfer to Mixin Messenger contact."),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),

@@ -25,66 +25,64 @@ class MenuItemWidget extends StatelessWidget {
   final bool bottomRounded;
 
   @override
-  Widget build(BuildContext context) => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(
-            top: topRounded ? const Radius.circular(12) : Radius.zero,
-            bottom: bottomRounded ? const Radius.circular(12) : Radius.zero,
-          ),
-          color: context.colorScheme.surface,
-        ),
-        padding: EdgeInsets.only(
-          top: topRounded ? 10 : 0,
-          bottom: bottomRounded ? 10 : 0,
-        ),
-        child: Material(
-          child: InkWell(
-            onTap: onTap,
-            child: SizedBox(
-              height: 64,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(width: 20),
-                  SizedBox.square(dimension: 24, child: leading),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Spacer(flex: 2),
+  Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.vertical(
+      top: topRounded ? const Radius.circular(12) : Radius.zero,
+      bottom: bottomRounded ? const Radius.circular(12) : Radius.zero,
+    );
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Material(
+        color: context.colorScheme.surface,
+        borderRadius: borderRadius,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: borderRadius,
+          child: SizedBox(
+            height: 64,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(width: 20),
+                SizedBox.square(dimension: 24, child: leading),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Spacer(flex: 2),
+                    DefaultTextStyle(
+                      style: TextStyle(
+                        fontSize: 16,
+                        height: 1.5,
+                        color: context.colorScheme.primaryText,
+                      ),
+                      child: title,
+                    ),
+                    if (subtitle != null) ...[
+                      const Spacer(flex: 1),
                       DefaultTextStyle(
                         style: TextStyle(
-                          fontSize: 16,
-                          height: 1.5,
-                          color: context.colorScheme.primaryText,
+                          fontSize: 14,
+                          height: 1,
+                          color: context.colorScheme.thirdText,
                         ),
-                        child: title,
+                        child: subtitle!,
                       ),
-                      if (subtitle != null) ...[
-                        const Spacer(flex: 1),
-                        DefaultTextStyle(
-                          style: TextStyle(
-                            fontSize: 14,
-                            height: 1,
-                            color: context.colorScheme.thirdText,
-                          ),
-                          child: subtitle!,
-                        ),
-                      ],
-                      const Spacer(flex: 2),
                     ],
+                    const Spacer(flex: 2),
+                  ],
+                ),
+                const Spacer(),
+                if (trailing != null)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: trailing,
                   ),
-                  const Spacer(),
-                  if (trailing != null)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: trailing,
-                    ),
-                ],
-              ),
+              ],
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
 }

@@ -7,6 +7,7 @@ import '../../db/mixin_database.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../widget/buttons.dart';
 import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/transfer.dart';
@@ -25,21 +26,20 @@ class Withdrawal extends HookWidget {
     if (data == null) {
       return const SizedBox();
     }
-    return _WithdrawalPage(initialAsset: data);
+    return _WithdrawalPage(asset: data);
   }
 }
 
 class _WithdrawalPage extends HookWidget {
   const _WithdrawalPage({
     Key? key,
-    required this.initialAsset,
+    required this.asset,
   }) : super(key: key);
 
-  final AssetResult initialAsset;
+  final AssetResult asset;
 
   @override
   Widget build(BuildContext context) {
-    final asset = useState(initialAsset);
     final address = useState<Addresse?>(null);
     final amount = useValueNotifier('');
     final memo = useValueNotifier('');
@@ -61,41 +61,39 @@ class _WithdrawalPage extends HookWidget {
       return subscription.cancel;
     }, [address.value?.addressId]);
 
-    useEffect(() {
-      address.value = null;
-    }, [asset.value.assetId]);
-
     return Scaffold(
-      backgroundColor: context.theme.accent,
+      backgroundColor: context.colorScheme.background,
       appBar: MixinAppBar(
-        title: Text(context.l10n.sendToAddress),
-        backButtonColor: Colors.white,
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-        decoration: BoxDecoration(
-          borderRadius:
-              const BorderRadius.vertical(top: Radius.circular(topRadius)),
-          color: context.theme.background,
-        ),
-        child: Column(children: [
-          const SizedBox(height: 24),
-          TransferAssetItem(
-            asset: asset.value,
-            onAssetChange: (value) => asset.value = value,
+        leading: const MixinBackButton2(),
+        backgroundColor: context.colorScheme.background,
+        title: Text(
+          context.l10n.sendToAddress,
+          style: TextStyle(
+            color: context.colorScheme.primaryText,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(height: 8),
+        ),
+        // TODO asset transactions action
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(children: [
+          const SizedBox(height: 20),
+          TransferAssetHeader(asset: asset),
+          const SizedBox(height: 16),
           TransferAddressWidget(
             address: address.value,
             onAddressChanged: (value) => address.value = value,
-            asset: asset.value,
+            asset: asset,
           ),
           const SizedBox(height: 8),
-          TransferAmountWidget(amount: amount, asset: asset.value),
+          TransferAmountWidget(amount: amount, asset: asset),
+          const SizedBox(height: 8),
           Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-            child: _FeeText(asset: asset.value, address: address.value),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+            child: _FeeText(asset: asset, address: address.value),
           ),
           const Spacer(),
           HookBuilder(builder: (context) {
@@ -116,10 +114,9 @@ class _WithdrawalPage extends HookWidget {
                   return;
                 }
                 final traceId = const Uuid().v4();
-                final assetId = asset.value.assetId;
 
                 final uri = Uri.https('mixin.one', 'withdrawal', {
-                  'asset': assetId,
+                  'asset': asset.assetId,
                   'address': address.value!.addressId,
                   'amount': amount.value,
                   'trace': traceId,
@@ -140,7 +137,7 @@ class _WithdrawalPage extends HookWidget {
               },
             );
           }),
-          const SizedBox(height: 30),
+          const SizedBox(height: 36),
         ]),
       ),
     );
@@ -166,9 +163,10 @@ class _FeeText extends StatelessWidget {
 
     return Text.rich(TextSpan(
         style: TextStyle(
-          color: context.theme.secondaryText,
-          fontSize: 13,
+          color: context.colorScheme.thirdText,
+          fontSize: 12,
           height: 2,
+          fontWeight: FontWeight.w600,
         ),
         children: [
           TextSpan(text: '${context.l10n.networkFee} '),
@@ -219,25 +217,33 @@ class _SendButton extends StatelessWidget {
   final bool enable;
 
   @override
-  Widget build(BuildContext context) => Material(
-        borderRadius: BorderRadius.circular(12),
-        color: enable ? context.theme.accent : const Color(0xffB2B3C7),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
-          child: SizedBox(
-            width: 160,
-            height: 44,
-            child: Center(
-              child: Text(
-                context.l10n.send,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: context.theme.background,
-                ),
-              ),
-            ),
+  Widget build(BuildContext context) => ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateColor.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) {
+              return context.colorScheme.primaryText.withOpacity(0.2);
+            }
+            return context.colorScheme.primaryText;
+          }),
+          padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 24,
+          )),
+          minimumSize: MaterialStateProperty.all(const Size(110, 48)),
+          foregroundColor:
+              MaterialStateProperty.all(context.colorScheme.background),
+          shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+        ),
+        onPressed: enable ? onTap : null,
+        child: SelectableText(
+          context.l10n.send,
+          style: TextStyle(
+            fontSize: 16,
+            color: context.colorScheme.background,
           ),
+          onTap: enable ? onTap : null,
+          enableInteractiveSelection: false,
         ),
       );
 }

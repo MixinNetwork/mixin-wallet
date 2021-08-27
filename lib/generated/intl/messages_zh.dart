@@ -114,7 +114,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkFee": MessageLookupByLibrary.simpleMessage("网络手续费："),
         "noAddressSelected": MessageLookupByLibrary.simpleMessage("需要选择一个地址"),
         "noAsset": MessageLookupByLibrary.simpleMessage("暂无资产"),
-        "noContactSelected": MessageLookupByLibrary.simpleMessage("需要选择一个联系人"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "none": MessageLookupByLibrary.simpleMessage("暂无价格"),
         "other": MessageLookupByLibrary.simpleMessage("其他"),
@@ -127,15 +126,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
         "selectFromAddressBook": MessageLookupByLibrary.simpleMessage("从地址簿选择"),
-        "selectFromContacts": MessageLookupByLibrary.simpleMessage("从通讯录选择"),
         "send": MessageLookupByLibrary.simpleMessage("转出"),
         "sendTo": MessageLookupByLibrary.simpleMessage("转出至"),
         "sendToAddress": MessageLookupByLibrary.simpleMessage("转出到地址"),
-        "sendToAddressDescription":
-            MessageLookupByLibrary.simpleMessage("提现到交易所或钱包"),
         "sendToContact": MessageLookupByLibrary.simpleMessage("转账至联系人"),
-        "sendToContactDescription":
-            MessageLookupByLibrary.simpleMessage("转账至 Mixin 联系人"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "show": MessageLookupByLibrary.simpleMessage("显示"),
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),

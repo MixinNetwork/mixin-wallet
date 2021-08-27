@@ -32,16 +32,12 @@ class SearchTextFieldWidget extends HookWidget {
         color: Colors.transparent,
       ),
       borderRadius: BorderRadius.all(
-        Radius.circular(12.0),
+        Radius.circular(20),
       ),
       gapPadding: 0,
     );
-    final backgroundColor = BrightnessData.dynamicColor(
-      context,
-      const Color.fromRGBO(248, 248, 248, 1),
-      darkColor: const Color.fromRGBO(255, 255, 255, 0.08),
-    );
-    final hintColor = BrightnessData.themeOf(context).secondaryText;
+    final backgroundColor = context.colorScheme.surface;
+    final hintColor = context.colorScheme.thirdText;
 
     useEffect(() {
       void notifyChanged() {
@@ -61,7 +57,7 @@ class SearchTextFieldWidget extends HookWidget {
       autofocus: autofocus,
       controller: controller,
       style: TextStyle(
-        color: BrightnessData.themeOf(context).text,
+        color: context.colorScheme.primaryText,
         fontSize: fontSize,
       ),
       cursorHeight: 20,

@@ -13,7 +13,7 @@ Future<T?> showMixinBottomSheet<T>({
     showModalBottomSheet(
       context: context,
       builder: (context) => Material(
-        color: context.theme.background,
+        color: context.colorScheme.background,
         borderRadius: const BorderRadius.vertical(
           top: Radius.circular(topRadius),
         ),

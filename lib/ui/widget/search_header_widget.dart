@@ -29,19 +29,19 @@ class SearchHeaderWidget extends HookWidget {
           Expanded(
             child: Material(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                  borderRadius: BorderRadius.circular(20)),
               child: SearchTextFieldWidget(
                 onChanged: (k) => onChanged?.call(k),
-                fontSize: 14,
+                fontSize: 16,
                 controller: controller ?? useTextEditingController(),
                 hintText: hintText,
               ),
             ),
           ),
           if (cancelVisible)
-            Row(children: [
-              const SizedBox(width: 8),
-              InkWell(
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: InkWell(
                   customBorder: const CircleBorder(),
                   onTap: () {
                     Navigator.pop(context);
@@ -50,12 +50,12 @@ class SearchHeaderWidget extends HookWidget {
                     padding: const EdgeInsets.all(12.0),
                     child: Text(context.l10n.cancel,
                         style: TextStyle(
-                          color: context.theme.text,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                          color: context.colorScheme.primaryText,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         )),
                   )),
-            ]),
+            ),
         ],
       ));
 }

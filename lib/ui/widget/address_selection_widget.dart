@@ -5,21 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/l10n.dart';
 import '../../util/r.dart';
-import '../router/mixin_routes.dart';
-import 'action_button.dart';
+import 'address_add_widget.dart';
 import 'brightness_observer.dart';
+import 'external_action_confirm.dart';
 import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 
 Future<Addresse?> showAddressSelectionBottomSheet({
   required BuildContext context,
   required String assetId,
+  required String chainId,
   Addresse? selectedAddress,
 }) =>
     showMixinBottomSheet<Addresse>(
@@ -28,6 +30,7 @@ Future<Addresse?> showAddressSelectionBottomSheet({
       builder: (context) => _AddressSelectionWidget(
         assetId: assetId,
         selectedAddress: selectedAddress,
+        chainId: chainId,
       ),
     );
 
@@ -35,10 +38,12 @@ class _AddressSelectionWidget extends HookWidget {
   const _AddressSelectionWidget({
     Key? key,
     required this.assetId,
+    required this.chainId,
     this.selectedAddress,
   }) : super(key: key);
 
   final String assetId;
+  final String chainId;
   final Addresse? selectedAddress;
 
   @override
@@ -72,30 +77,17 @@ class _AddressSelectionWidget extends HookWidget {
       height: MediaQuery.of(context).size.height - 100,
       child: Column(
         children: [
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              const SizedBox(width: 10),
-              ActionButton(
-                name: R.resourcesIcSetSvg,
-                size: 24,
-                onTap: () {
-                  context.push(withdrawalAddressesPath.toUri({'id': assetId}));
-                },
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: SearchHeaderWidget(
-                  hintText: context.l10n.addressSearchHint,
-                  onChanged: (k) {
-                    filterKeywords.value = k.trim();
-                  },
-                ),
-              ),
-              const SizedBox(width: 8),
-            ],
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 8),
+            child: SearchHeaderWidget(
+              hintText: context.l10n.addressSearchHint,
+              onChanged: (k) {
+                filterKeywords.value = k.trim();
+              },
+            ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Expanded(
             child: ListView.builder(
               itemCount: filterList.length,
@@ -105,6 +97,34 @@ class _AddressSelectionWidget extends HookWidget {
               ),
             ),
           ),
+          const SizedBox(height: 10),
+          TextButton(
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 24,
+              ),
+              minimumSize: const Size(110, 48),
+            ),
+            onPressed: () {
+              debugPrint('click');
+              showMixinBottomSheet(
+                context: context,
+                builder: (context) =>
+                    AddressAddWidget(assetId: assetId, chainId: chainId),
+                isScrollControlled: true,
+              );
+            },
+            child: Text(
+              '+ ${context.l10n.addAddress}',
+              style: TextStyle(
+                fontSize: 16,
+                color: context.colorScheme.primaryText,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          const SizedBox(height: 36),
         ],
       ),
     );
@@ -122,15 +142,49 @@ class _AddressItem extends StatelessWidget {
   final String? selectedAddressId;
 
   @override
-  Widget build(BuildContext context) => AddressSelectionItemTile(
-        onTap: () => Navigator.pop(context, address),
-        title: Text(address.label.overflow),
-        subtitle: Text(address.displayAddress().overflow),
-        selected: address.addressId == selectedAddressId,
-        leading: SvgPicture.asset(
-          R.resourcesTransactionNetSvg,
-          height: 44,
-          width: 44,
+  Widget build(BuildContext context) => _SwipeToDismiss(
+        key: ValueKey(address.addressId),
+        onDismiss: () {
+          context.appServices.mixinDatabase.addressDao.deleteAddress(address);
+        },
+        confirmDismiss: (direction) {
+          // https: //mixin.one/address?action=delete&asset=xxx&address=xxx
+          final uri = Uri.https('mixin.one', 'address', {
+            'action': 'delete',
+            'asset': address.assetId,
+            'address': address.addressId,
+          });
+
+          return showAndWaitingExternalAction(
+              context: context,
+              uri: uri,
+              hint: Text(context.l10n.delete),
+              action: () async {
+                try {
+                  await context.appServices.client.addressApi
+                      .getAddressById(address.addressId);
+                  return false;
+                } catch (error) {
+                  if (error is DioError) {
+                    final mixinError = error.error as MixinError;
+                    if (mixinError.code == 404) {
+                      return true;
+                    }
+                  }
+                  rethrow;
+                }
+              });
+        },
+        child: AddressSelectionItemTile(
+          onTap: () => Navigator.pop(context, address),
+          title: Text(address.label.overflow),
+          subtitle: Text(address.displayAddress().overflow),
+          selected: address.addressId == selectedAddressId,
+          leading: SvgPicture.asset(
+            R.resourcesTransactionNetSvg,
+            height: 44,
+            width: 44,
+          ),
         ),
       );
 }
@@ -153,17 +207,15 @@ class AddressSelectionItemTile extends StatelessWidget {
   final bool selected;
 
   @override
-  Widget build(BuildContext context) => Material(
-      color: context.theme.background,
-      child: InkWell(
+  Widget build(BuildContext context) => InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox.square(
-                dimension: 44,
+                dimension: 40,
                 child: ClipOval(
                   child: leading,
                 ),
@@ -208,5 +260,53 @@ class AddressSelectionItemTile extends StatelessWidget {
             ],
           ),
         ),
-      ));
+      );
+}
+
+class _SwipeToDismiss extends StatelessWidget {
+  const _SwipeToDismiss({
+    required Key key,
+    required this.child,
+    required this.onDismiss,
+    this.confirmDismiss,
+  }) : super(key: key);
+
+  final Widget child;
+  final VoidCallback onDismiss;
+  final ConfirmDismissCallback? confirmDismiss;
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget indicator = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 18),
+      child: Text(
+        context.l10n.delete,
+        style: const TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+          color: Colors.white,
+        ),
+      ),
+    );
+    return Dismissible(
+      key: ValueKey(key),
+      onDismissed: (direction) => onDismiss(),
+      confirmDismiss: confirmDismiss,
+      background: Container(
+        color: context.theme.red,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: indicator,
+        ),
+      ),
+      secondaryBackground: Container(
+        color: context.theme.red,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: indicator,
+        ),
+      ),
+      child: child,
+    );
+  }
 }

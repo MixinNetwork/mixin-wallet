@@ -950,41 +950,11 @@ class L10n {
     );
   }
 
-  /// `Withdraw to an exchange or wallet.`
-  String get sendToAddressDescription {
-    return Intl.message(
-      'Withdraw to an exchange or wallet.',
-      name: 'sendToAddressDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Transfer to Mixin Messenger contact.`
-  String get sendToContactDescription {
-    return Intl.message(
-      'Transfer to Mixin Messenger contact.',
-      name: 'sendToContactDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Contact`
   String get contact {
     return Intl.message(
       'Contact',
       name: 'contact',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select from contacts`
-  String get selectFromContacts {
-    return Intl.message(
-      'Select from contacts',
-      name: 'selectFromContacts',
       desc: '',
       args: [],
     );
@@ -1005,16 +975,6 @@ class L10n {
     return Intl.message(
       'Name, Mixin ID',
       name: 'contactSearchHint',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No contact selected`
-  String get noContactSelected {
-    return Intl.message(
-      'No contact selected',
-      name: 'noContactSelected',
       desc: '',
       args: [],
     );
