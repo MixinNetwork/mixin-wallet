@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mixin_wallet/util/extension/extension.dart';
+
+import '../../util/extension/extension.dart';
 
 class FilterWidget<T> extends StatelessWidget {
   const FilterWidget({
