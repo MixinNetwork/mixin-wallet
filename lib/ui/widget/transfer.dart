@@ -279,39 +279,42 @@ class TransferAddressWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Spacer(flex: 2),
-          Text(
+          SelectableText(
             address!.label.overflow,
             style: TextStyle(
-              color: context.theme.text,
+              color: context.colorScheme.primaryText,
               fontSize: 16,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w600,
             ),
+            enableInteractiveSelection: false,
           ),
           const Spacer(flex: 1),
-          Text(
+          SelectableText(
             address!.displayAddress().formatAddress(),
             style: TextStyle(
-              color: context.theme.secondaryText,
+              color: context.colorScheme.thirdText,
               fontSize: 13,
               fontWeight: FontWeight.w400,
             ),
+            enableInteractiveSelection: false,
           ),
           const Spacer(flex: 2),
         ],
       );
     } else {
-      child = Text(
+      child = SelectableText(
         context.l10n.selectFromAddressBook,
         style: TextStyle(
-          color: context.theme.secondaryText,
+          color: context.colorScheme.thirdText,
           fontSize: 16,
           fontWeight: FontWeight.w400,
         ),
+        enableInteractiveSelection: false,
       );
     }
     return Material(
       borderRadius: BorderRadius.circular(12),
-      color: const Color(0xfff8f8f8),
+      color: context.colorScheme.surface,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () async {
@@ -325,16 +328,16 @@ class TransferAddressWidget extends StatelessWidget {
           }
         },
         child: SizedBox(
-          height: 56,
+          height: 64,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(width: 20),
+              const SizedBox(width: 16),
               Expanded(
                 child: child,
               ),
               SvgPicture.asset(R.resourcesIcArrowDownSvg),
-              const SizedBox(width: 20),
+              const SizedBox(width: 16),
             ],
           ),
         ),
@@ -408,9 +411,9 @@ class TransferAmountWidget extends HookWidget {
 
     return Material(
       borderRadius: BorderRadius.circular(12),
-      color: const Color(0xfff8f8f8),
+      color: context.colorScheme.surface,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
         child: Row(
           children: [
             Expanded(
@@ -426,9 +429,9 @@ class TransferAmountWidget extends HookWidget {
                           child: TextField(
                         focusNode: inputFocusNode,
                         style: TextStyle(
-                          color: context.theme.text,
+                          color: context.colorScheme.primaryText,
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w600,
                         ),
                         maxLines: 1,
                         decoration: InputDecoration(
@@ -436,6 +439,10 @@ class TransferAmountWidget extends HookWidget {
                               ? ''
                               : '0.00 ${fiatInputMode.value ? currency : asset.symbol}',
                           border: InputBorder.none,
+                          hintStyle: TextStyle(
+                            color: context.colorScheme.thirdText,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                         controller: controller,
                         inputFormatters: <TextInputFormatter>[
@@ -447,21 +454,22 @@ class TransferAmountWidget extends HookWidget {
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
                       )),
-                      Text(
+                      SelectableText(
                         input.isNotEmpty
                             ? (fiatInputMode.value ? currency : asset.symbol)
                             : '',
                         style: TextStyle(
-                          color: context.theme.text,
+                          color: context.colorScheme.primaryText,
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w600,
                         ),
+                        enableInteractiveSelection: false,
                       ),
                     ]),
                     Text(
                       equivalent,
                       style: TextStyle(
-                        color: context.theme.secondaryText,
+                        color: context.colorScheme.thirdText,
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                       ),
