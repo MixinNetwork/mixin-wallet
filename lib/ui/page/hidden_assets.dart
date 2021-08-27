@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../widget/asset.dart';
+import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 
 class HiddenAssets extends StatelessWidget {
@@ -12,16 +13,18 @@ class HiddenAssets extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: MixinAppBar(
-          title: Text(context.l10n.hiddenAssets),
-          backButtonColor: Colors.white,
+          leading: const MixinBackButton2(),
+          title: Text(
+            context.l10n.hiddenAssets,
+            style: TextStyle(
+              color: context.colorScheme.primaryText,
+              fontSize: 18,
+            ),
+          ),
+          backgroundColor: context.colorScheme.background,
         ),
-        backgroundColor: context.theme.background,
-        body: Column(
-          children: const [
-            ListRoundedHeaderContainer(height: 16),
-            Expanded(child: _HiddenAssetsList()),
-          ],
-        ),
+        backgroundColor: context.colorScheme.background,
+        body: const _HiddenAssetsList(),
       );
 }
 
@@ -33,7 +36,11 @@ class _HiddenAssetsList extends HookWidget {
     final assets = useMemoizedStream(
         () => context.appServices.hiddenAssetResult().watch());
     if (assets.connectionState == ConnectionState.waiting) {
-      return const Center(child: CircularProgressIndicator());
+      return Center(
+        child: CircularProgressIndicator(
+          color: context.colorScheme.surface,
+        ),
+      );
     }
     final data = assets.data!;
     return ListView.builder(
