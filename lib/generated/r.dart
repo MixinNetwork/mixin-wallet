@@ -40,8 +40,6 @@ class R {
 
   static const String resourcesFilterSvg = 'resources/filter.svg';
 
-  static const String resourcesFilterWhiteSvg = 'resources/filter_white.svg';
-
   static const String resourcesHamburgerMenuSvg =
       'resources/hamburger_menu.svg';
 

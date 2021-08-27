@@ -146,27 +146,29 @@ class _AssetDetailBody extends StatelessWidget {
                 orderByAmount: filter.sortBy == SortBy.amount,
                 types: filter.filterBy.snapshotTypes)
             .get(),
-        builder: (context, snapshots) => CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: _AssetHeader(asset: asset, filter: filter),
-            ),
-            if (snapshots.isEmpty)
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 130),
-                  child: EmptyTransaction(),
-                ),
+        builder: (context, snapshots) {
+          if (snapshots.isEmpty) {
+            return Column(
+              children: [
+                _AssetHeader(asset: asset, filter: filter),
+                const Expanded(child: EmptyTransaction()),
+              ],
+            );
+          }
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: _AssetHeader(asset: asset, filter: filter),
               ),
-            if (snapshots.isNotEmpty)
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) => TransactionItem(item: snapshots[index]),
                   childCount: snapshots.length,
                 ),
               ),
-          ],
-        ),
+            ],
+          );
+        },
       );
 }
 

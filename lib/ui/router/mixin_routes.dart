@@ -82,19 +82,21 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     widget: const NotFound(),
                   ),
                   VWidget(
-                    key: const ValueKey('Transactions'),
-                    path: transactionsUri.toString(),
-                    widget: const AllTransactions(),
-                  ),
-                  VWidget(
-                    key: const ValueKey('HiddenAssets'),
-                    path: hiddenAssetsUri.toString(),
-                    widget: const HiddenAssets(),
-                  ),
-                  VWidget(
                     key: const ValueKey('Setting'),
                     path: settingPath,
                     widget: const Setting(),
+                    stackedRoutes: [
+                      VWidget(
+                        key: const ValueKey('Transactions'),
+                        path: transactionsUri.toString(),
+                        widget: const AllTransactions(),
+                      ),
+                      VWidget(
+                        key: const ValueKey('HiddenAssets'),
+                        path: hiddenAssetsUri.toString(),
+                        widget: const HiddenAssets(),
+                      ),
+                    ],
                   )
                 ]),
           ]),

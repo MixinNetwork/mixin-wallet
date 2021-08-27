@@ -99,10 +99,9 @@ class _FilterBottomSheetDialog extends HookWidget {
                           filterBy.value,
                         ));
                   },
-                  decoration: BoxDecoration(color: context.theme.accent),
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 32),
             ],
           ),
         ),
@@ -135,27 +134,24 @@ class _SortBySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onChanged(SortBy value) => sortValue.value = value;
-    return DefaultTextStyle(
-      style: const TextStyle(fontSize: 16, color: Color(0xFF222222)),
-      child: Wrap(
-        direction: Axis.horizontal,
-        runSpacing: 20,
-        spacing: 20,
-        children: [
-          FilterWidget(
-            value: SortBy.time,
-            groupValue: sortValue.value,
-            onChanged: onChanged,
-            child: Text(context.l10n.time),
-          ),
-          FilterWidget(
-            value: SortBy.amount,
-            groupValue: sortValue.value,
-            onChanged: onChanged,
-            child: Text(context.l10n.amount),
-          ),
-        ],
-      ),
+    return Wrap(
+      direction: Axis.horizontal,
+      runSpacing: 12,
+      spacing: 20,
+      children: [
+        FilterWidget(
+          value: SortBy.time,
+          groupValue: sortValue.value,
+          onChanged: onChanged,
+          child: Text(context.l10n.time),
+        ),
+        FilterWidget(
+          value: SortBy.amount,
+          groupValue: sortValue.value,
+          onChanged: onChanged,
+          child: Text(context.l10n.amount),
+        ),
+      ],
     );
   }
 }
@@ -228,37 +224,31 @@ class _Button extends StatelessWidget {
     Key? key,
     required this.text,
     required this.onTap,
-    required this.decoration,
   }) : super(key: key);
 
   final Widget text;
   final VoidCallback onTap;
 
-  final BoxDecoration decoration;
-
   @override
   Widget build(BuildContext context) => ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: context.theme.accent,
-          fixedSize: const Size(140, 44),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(
-            vertical: 12,
-            horizontal: 32,
-          ),
-        ),
-        onPressed: onTap,
-        child: Center(
-          child: DefaultTextStyle(
-            style: TextStyle(
-              color: context.theme.background,
-              fontSize: 14,
+            primary: context.colorScheme.primaryText,
+            padding: const EdgeInsets.symmetric(
+              vertical: 16,
+              horizontal: 24,
             ),
-            child: text,
+            minimumSize: const Size(110, 48),
+            onPrimary: context.colorScheme.background,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50))),
+        onPressed: onTap,
+        child: DefaultTextStyle(
+          style: TextStyle(
+            color: context.colorScheme.background,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
           ),
+          child: text,
         ),
       );
 }

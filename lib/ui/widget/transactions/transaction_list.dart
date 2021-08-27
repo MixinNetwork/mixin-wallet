@@ -117,23 +117,29 @@ class EmptyTransaction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SvgPicture.asset(
-            R.resourcesEmptyTransactionSvg,
-            width: 52,
-            height: 68,
-          ),
-          const SizedBox(height: 26),
-          Text(
-            context.l10n.noTransaction,
-            style: TextStyle(
-              color: context.theme.secondaryText,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+          const Spacer(flex: 100),
+          Center(
+            child: SvgPicture.asset(
+              R.resourcesEmptyTransactionSvg,
+              width: 52,
+              height: 68,
             ),
           ),
+          const SizedBox(height: 26),
+          Center(
+            child: Text(
+              context.l10n.noTransaction,
+              style: TextStyle(
+                color: context.theme.secondaryText,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          const Spacer(flex: 164),
         ],
       );
 }
