@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
 import '../widget/action_button.dart';
+import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
@@ -15,14 +16,21 @@ class AllTransactions extends HookWidget {
   Widget build(BuildContext context) {
     final filter = useState(const SnapshotFilter(SortBy.time, FilterBy.all));
     return Scaffold(
+      backgroundColor: context.colorScheme.background,
       appBar: MixinAppBar(
+        leading: const MixinBackButton2(),
         title: Text(
           context.l10n.allTransactions,
+          style: TextStyle(
+            color: context.colorScheme.primaryText,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        backButtonColor: Colors.white,
+        backgroundColor: context.colorScheme.background,
         actions: [
           ActionButton(
-            name: R.resourcesFilterWhiteSvg,
+            name: R.resourcesFilterSvg,
             size: 24,
             onTap: () async {
               final selection = await showFilterBottomSheetDialog(
@@ -37,13 +45,7 @@ class AllTransactions extends HookWidget {
           )
         ],
       ),
-      backgroundColor: context.theme.background,
-      body: Column(
-        children: [
-          const ListRoundedHeaderContainer(height: 18),
-          Expanded(child: _AllTransactionsBody(filter: filter.value)),
-        ],
-      ),
+      body: _AllTransactionsBody(filter: filter.value),
     );
   }
 }
@@ -70,15 +72,22 @@ class _AllTransactionsBody extends StatelessWidget {
             .updateAllSnapshots(offset: offset, limit: limit),
         builder: (context, snapshots) {
           if (snapshots.isEmpty) {
-            return const Center(
-              child: EmptyTransaction(),
-            );
+            return const EmptyTransaction();
           }
           return ListView.builder(
             itemCount: snapshots.length,
-            itemBuilder: (context, index) => TransactionItem(
-              item: snapshots[index],
-            ),
+            itemBuilder: (context, index) {
+              final widget = TransactionItem(
+                item: snapshots[index],
+              );
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: widget,
+                );
+              }
+              return widget;
+            },
           );
         },
       );
