@@ -322,6 +322,7 @@ class TransferAddressWidget extends StatelessWidget {
             context: context,
             selectedAddress: address,
             assetId: asset.assetId,
+            chainId: asset.chainId,
           );
           if (selected != null) {
             onAddressChanged(selected);

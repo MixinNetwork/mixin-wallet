@@ -5,7 +5,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/l10n.dart';
-import '../router/mixin_routes.dart';
 import 'brightness_observer.dart';
 import 'external_action_confirm.dart';
 import 'mixin_bottom_sheet.dart';
@@ -46,44 +45,45 @@ class AddressAddWidget extends HookWidget {
     watchTextChange(labelController, checkAddEnable);
     watchTextChange(addressController, checkAddEnable);
 
-    final content = Container(
+    final content = Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-        color: context.theme.background,
         child: Column(
           children: [
-            MixinBottomSheetTitle(
-              padding: EdgeInsets.zero,
-              title: Row(children: [
-                Text(context.l10n.addAddress),
-              ]),
-            ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             RoundContainer(
+                height: 64,
                 alignment: Alignment.center,
                 child: TextField(
                   style: TextStyle(
-                    color: context.theme.text,
+                    color: context.colorScheme.primaryText,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
                   decoration: InputDecoration(
                     hintText: context.l10n.addAddressLabelHint,
                     border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: context.colorScheme.thirdText,
+                    ),
                   ),
                   controller: labelController,
                 )),
             const SizedBox(height: 10),
             RoundContainer(
+              height: 64,
               child: Center(
                   child: TextField(
                 style: TextStyle(
-                  color: context.theme.text,
+                  color: context.colorScheme.primaryText,
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),
                 decoration: InputDecoration(
                   hintText: context.l10n.address,
                   border: InputBorder.none,
+                  hintStyle: TextStyle(
+                    color: context.colorScheme.thirdText,
+                  ),
                 ),
                 controller: addressController,
               )),
@@ -92,20 +92,24 @@ class AddressAddWidget extends HookWidget {
             if (memoEnable.value)
               Column(children: [
                 RoundContainer(
+                    height: 64,
                     child: Center(
-                  child: TextField(
-                    style: TextStyle(
-                      color: context.theme.text,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: memoHint,
-                      border: InputBorder.none,
-                    ),
-                    controller: memoController,
-                  ),
-                )),
+                      child: TextField(
+                        style: TextStyle(
+                          color: context.colorScheme.primaryText,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: memoHint,
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                            color: context.colorScheme.thirdText,
+                          ),
+                        ),
+                        controller: memoController,
+                      ),
+                    )),
                 const SizedBox(height: 10),
               ]),
             Align(
@@ -138,7 +142,7 @@ class AddressAddWidget extends HookWidget {
             if (chainId == eos)
               Text.rich(TextSpan(
                   style: TextStyle(
-                    color: context.theme.secondaryText,
+                    color: context.colorScheme.thirdText,
                     fontSize: 13,
                     height: 2,
                   ),
@@ -152,65 +156,45 @@ class AddressAddWidget extends HookWidget {
                         ))
                   ])),
             const Spacer(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: InkWell(
-                  onTap: () async {
-                    final address = addressController.text.trim();
-                    final label = labelController.text.trim();
-                    if (address.isEmpty || label.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          content: Text(context.l10n.emptyLabelOrAddress)));
-                      return;
-                    }
-                    final tag = memoController.text.trim();
-                    final uri = Uri.https('mixin.one', 'address', {
-                      'action': 'add',
-                      'asset': assetId,
-                      'destination': address,
-                      'tag': tag,
-                      'label': label,
-                    });
+            _SaveButton(
+              enable: addEnable.value,
+              onTap: () async {
+                final address = addressController.text.trim();
+                final label = labelController.text.trim();
+                if (address.isEmpty || label.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text(context.l10n.emptyLabelOrAddress)));
+                  return;
+                }
+                final tag = memoController.text.trim();
+                final uri = Uri.https('mixin.one', 'address', {
+                  'action': 'add',
+                  'asset': assetId,
+                  'destination': address,
+                  'tag': tag,
+                  'label': label,
+                });
 
-                    final succeed = await showAndWaitingExternalAction(
-                      context: context,
-                      uri: uri,
-                      action: () async {
-                        final addressList =
-                            await context.appServices.updateAddresses(assetId);
-                        final index = addressList.indexWhere(
-                            (e) => e.destination == address && e.tag == tag);
-                        return index != -1;
-                      },
-                      hint: Text(context.l10n.waitingActionDone),
-                    );
-                    if (succeed) {
-                      context.replace(
-                          withdrawalAddressesPath.toUri({'id': assetId}));
-                    }
+                final succeed = await showAndWaitingExternalAction(
+                  context: context,
+                  uri: uri,
+                  action: () async {
+                    final addressList =
+                        await context.appServices.updateAddresses(assetId);
+                    final index = addressList.indexWhere(
+                        (e) => e.destination == address && e.tag == tag);
+                    return index != -1;
                   },
-                  child: Container(
-                      width: 160,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: addEnable.value
-                            ? context.theme.accent
-                            : const Color(0xffB2B3C7),
-                      ),
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 11,
-                        horizontal: 22,
-                      ),
-                      child: Text(context.l10n.save,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: context.theme.background,
-                          )))),
+                  hint: Text(context.l10n.waitingActionDone),
+                );
+                if (succeed) {
+                  // context.replace(
+                  //     withdrawalAddressesPath.toUri({'id': assetId}));
+                }
+              },
             ),
-            const SizedBox(height: 70),
+            const SizedBox(height: 36),
           ],
         ));
 
@@ -219,7 +203,12 @@ class AddressAddWidget extends HookWidget {
         height: MediaQuery.of(context).size.height - 100,
         child: ClipRRect(
             borderRadius: BorderRadius.circular(topRadius),
-            child: Scaffold(body: content)));
+            child: Column(
+              children: [
+                MixinBottomSheetTitle(title: Text(context.l10n.addAddress)),
+                Expanded(child: content),
+              ],
+            )));
   }
 
   void watchTextChange(
@@ -231,4 +220,47 @@ class AddressAddWidget extends HookWidget {
       };
     }, [controller]);
   }
+}
+
+class _SaveButton extends StatelessWidget {
+  const _SaveButton({
+    Key? key,
+    required this.onTap,
+    required this.enable,
+  }) : super(key: key);
+
+  final VoidCallback onTap;
+
+  final bool enable;
+
+  @override
+  Widget build(BuildContext context) => ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateColor.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) {
+              return context.colorScheme.primaryText.withOpacity(0.2);
+            }
+            return context.colorScheme.primaryText;
+          }),
+          padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 24,
+          )),
+          minimumSize: MaterialStateProperty.all(const Size(110, 48)),
+          foregroundColor:
+              MaterialStateProperty.all(context.colorScheme.background),
+          shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+        ),
+        onPressed: enable ? onTap : null,
+        child: SelectableText(
+          context.l10n.save,
+          onTap: enable ? onTap : null,
+          style: TextStyle(
+            fontSize: 16,
+            color: context.theme.background,
+          ),
+          enableInteractiveSelection: false,
+        ),
+      );
 }

@@ -276,6 +276,7 @@ class _SendButton extends StatelessWidget {
             fontSize: 16,
             color: context.theme.background,
           ),
+          onTap: enable ? onTap : null,
           enableInteractiveSelection: false,
         ),
       );
