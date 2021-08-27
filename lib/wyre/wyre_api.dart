@@ -29,4 +29,10 @@ class WyreApi {
         .post<Map<String, dynamic>>('/v3/orders/quote/partner', data: data);
     return WyreQuote.fromJson(response.data!);
   }
+
+  Future<List<String>> getSupportedCountries() async {
+    final response = await dio.get<String>('/v3/widget/supportedCountries');
+    final json = jsonDecode(response.data!) as Iterable;
+    return List<String>.from(json);
+  }
 }
