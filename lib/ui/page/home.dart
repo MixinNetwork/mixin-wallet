@@ -383,17 +383,25 @@ class _AssetsEmptyLayout extends StatelessWidget {
 
 extension _SortAssets on List<AssetResult> {
   void sortBy(_AssetSortType sort) {
+    double _assetAmplitude(AssetResult asset) {
+      final invalid = sort == _AssetSortType.increase
+          ? double.negativeInfinity
+          : double.infinity;
+      if (asset.priceUsd.isZero) {
+        return invalid;
+      }
+      return double.tryParse(asset.changeUsd) ?? invalid;
+    }
+
     switch (sort) {
       case _AssetSortType.amount:
         this.sort((a, b) => b.amountOfUsd.compareTo(a.amountOfUsd));
         break;
       case _AssetSortType.decrease:
-        this.sort((a, b) =>
-            a.changeUsd.asDecimalOrZero.compareTo(b.changeUsd.asDecimalOrZero));
+        this.sort((a, b) => _assetAmplitude(a).compareTo(_assetAmplitude(b)));
         break;
       case _AssetSortType.increase:
-        this.sort((a, b) =>
-            b.changeUsd.asDecimalOrZero.compareTo(a.changeUsd.asDecimalOrZero));
+        this.sort((a, b) => _assetAmplitude(b).compareTo(_assetAmplitude(a)));
         break;
     }
   }
