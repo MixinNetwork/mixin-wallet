@@ -9,9 +9,24 @@ import '../../util/hook.dart';
 import '../../util/l10n.dart';
 import '../../util/r.dart';
 import 'brightness_observer.dart';
+import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 import 'symbol.dart';
 
+Future<AssetResult?> showAssetSelectionBottomSheet({
+  required BuildContext context,
+  String? initialSelected,
+}) =>
+    showMixinBottomSheet<AssetResult>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => AssetSelectionListWidget(
+        selectedAssetId: initialSelected,
+        onTap: (_) {},
+      ),
+    );
+
+// TODO Refactor use navigator pop to receive assets, instead of onTap callback.
 class AssetSelectionListWidget extends HookWidget {
   const AssetSelectionListWidget({
     Key? key,
@@ -25,16 +40,35 @@ class AssetSelectionListWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final assetResults = useMemoizedStream(
-      () => context.appServices.assetResults().watch().map((event) => event
-        ..sort(
-          (a, b) => b.amountOfUsd.compareTo(a.amountOfUsd),
-        )),
-    ).requireData;
+          () => context.appServices.assetResults().watch().map((event) => event
+            ..sort(
+              (a, b) => b.amountOfUsd.compareTo(a.amountOfUsd),
+            )),
+        ).data ??
+        const [];
 
     var selectedAssetId = this.selectedAssetId;
-    selectedAssetId ??= assetResults[0].assetId;
+    selectedAssetId ??= assetResults.firstOrNull?.assetId;
 
-    final filterList = useState<List<AssetResult>>(assetResults);
+    final filterKeyword = useState('');
+
+    final filterList = useMemoized(
+      () {
+        final k = filterKeyword.value;
+        if (k.isEmpty) {
+          return assetResults;
+        }
+        return assetResults
+            .where(
+              (e) =>
+                  e.symbol.containsIgnoreCase(k) ||
+                  e.name.containsIgnoreCase(k) ||
+                  (e.chainName?.containsIgnoreCase(k) ?? false),
+            )
+            .toList();
+      },
+      [filterKeyword.value, assetResults],
+    );
 
     return SizedBox(
       height: MediaQuery.of(context).size.height - 100,
@@ -46,23 +80,15 @@ class AssetSelectionListWidget extends HookWidget {
               child: SearchHeaderWidget(
                 hintText: context.l10n.search,
                 onChanged: (k) {
-                  if (k.isNotEmpty) {
-                    filterList.value = assetResults
-                        .where((e) =>
-                            e.symbol.containsIgnoreCase(k) ||
-                            e.name.containsIgnoreCase(k))
-                        .toList();
-                  } else {
-                    filterList.value = assetResults;
-                  }
+                  filterKeyword.value = k.trim();
                 },
               )),
           const SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
-              itemCount: filterList.value.length,
+              itemCount: filterList.length,
               itemBuilder: (BuildContext context, int index) => _Item(
-                asset: filterList.value[index],
+                asset: filterList[index],
                 selectedAssetId: selectedAssetId,
                 onTap: onTap,
               ),
@@ -92,7 +118,7 @@ class _Item extends StatelessWidget {
       child: InkWell(
         onTap: () {
           onTap(asset);
-          Navigator.pop(context);
+          Navigator.pop(context, asset);
         },
         child: Container(
             height: 80,

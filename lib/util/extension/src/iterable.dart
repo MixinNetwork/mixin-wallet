@@ -4,6 +4,8 @@ extension IterableExtension<T> on Iterable<T> {
   T? firstWhereOrNull(bool Function(T? element) test) =>
       cast<T?>().firstWhere(test, orElse: () => null);
 
+  T? get firstOrNull => isEmpty ? null : first;
+
   Iterable<T> separated(T toInsert) sync* {
     var i = 0;
     for (final item in this) {

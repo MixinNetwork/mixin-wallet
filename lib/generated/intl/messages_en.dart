@@ -152,12 +152,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendTo": MessageLookupByLibrary.simpleMessage("Send to"),
         "sendToAddress":
             MessageLookupByLibrary.simpleMessage("Send to Address"),
-        "sendToAddressDescription": MessageLookupByLibrary.simpleMessage(
-            "Withdraw to an exchange or wallet."),
         "sendToContact":
             MessageLookupByLibrary.simpleMessage("Send to contact"),
-        "sendToContactDescription": MessageLookupByLibrary.simpleMessage(
-            "Transfer to Mixin Messenger contact."),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),

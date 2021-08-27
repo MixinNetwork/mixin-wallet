@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
-import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
@@ -19,20 +18,48 @@ import 'symbol.dart';
 
 Future<void> showTransferRouterBottomSheet({
   required BuildContext context,
-  String assetId = bitcoin,
-}) =>
-    showMixinBottomSheet(
+  String? assetId,
+}) async {
+  final type = await showMixinBottomSheet<_SendRouter>(
+    context: context,
+    builder: (context) => const _SendToRouterBottomSheet(),
+  );
+  if (type == null) {
+    return;
+  }
+
+  var destAssetId = assetId;
+  if (destAssetId == null) {
+    final asset = await showAssetSelectionBottomSheet(
       context: context,
-      builder: (context) => _SendToRouterBottomSheet(assetId: assetId),
+      initialSelected: lastSelectedAddress,
     );
+    destAssetId = asset?.assetId;
+  }
+
+  if (destAssetId == null) {
+    return;
+  }
+
+  lastSelectedAddress = destAssetId;
+
+  switch (type) {
+    case _SendRouter.address:
+      context.push(withdrawalPath.toUri({'id': destAssetId}));
+      break;
+    case _SendRouter.contact:
+      context.push(transferPath.toUri({'id': destAssetId}));
+      break;
+  }
+}
+
+enum _SendRouter {
+  address,
+  contact,
+}
 
 class _SendToRouterBottomSheet extends StatelessWidget {
-  const _SendToRouterBottomSheet({
-    Key? key,
-    required this.assetId,
-  }) : super(key: key);
-
-  final String assetId;
+  const _SendToRouterBottomSheet({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(
@@ -42,25 +69,24 @@ class _SendToRouterBottomSheet extends StatelessWidget {
           const SizedBox(height: 8),
           MenuItemWidget(
             topRounded: true,
+            bottomRounded: true,
             title: Text(context.l10n.address),
             leading: SvgPicture.asset(R.resourcesAddressSvg),
-            subtitle: Text(context.l10n.sendToAddressDescription),
             onTap: () {
-              Navigator.pop(context);
-              context.push(withdrawalPath.toUri({'id': assetId}));
+              Navigator.pop(context, _SendRouter.address);
             },
           ),
+          const SizedBox(height: 10),
           MenuItemWidget(
             bottomRounded: true,
+            topRounded: true,
             title: Text(context.l10n.contact),
-            subtitle: Text(context.l10n.sendToContactDescription),
             leading: SvgPicture.asset(R.resourcesContactSvg),
             onTap: () {
-              Navigator.pop(context);
-              context.push(transferPath.toUri({'id': assetId}));
+              Navigator.pop(context, _SendRouter.contact);
             },
           ),
-          const SizedBox(height: 44),
+          const SizedBox(height: 106),
         ],
       );
 }

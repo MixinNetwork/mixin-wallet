@@ -46,19 +46,25 @@ List<String> get topAssetIds =>
 void replaceTopAssetIds(List<String> topAssetIds) =>
     profileBox.put('topAssetIds', topAssetIds);
 
-bool get _isSmallAssetsHidden =>
-    profileBox.get('isSmallAssetsHidden') as bool? ?? false;
+int get _isSmallAssetsHidden =>
+    (profileBox.get('isSmallAssetsHidden') as int?) ?? 0;
 
-set _isSmallAssetsHidden(bool value) =>
+set _isSmallAssetsHidden(int value) =>
     profileBox.put(isSmallAssetsHidden, value);
 
 late final ValueNotifier<bool> isSmallAssetsHidden = () {
-  final notifier = ValueNotifier(_isSmallAssetsHidden);
+  final notifier = ValueNotifier(_isSmallAssetsHidden == 1);
   notifier.addListener(() {
-    _isSmallAssetsHidden = notifier.value;
+    _isSmallAssetsHidden = notifier.value ? 1 : 0;
   });
   return notifier;
 }();
+
+String? get lastSelectedAddress =>
+    profileBox.get('lastSelectedAddress') as String?;
+
+set lastSelectedAddress(String? value) =>
+    profileBox.put('lastSelectedAddress', value);
 
 class _AuthAdapter extends TypeAdapter<Auth> {
   @override

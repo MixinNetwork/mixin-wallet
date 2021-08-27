@@ -950,26 +950,6 @@ class L10n {
     );
   }
 
-  /// `Withdraw to an exchange or wallet.`
-  String get sendToAddressDescription {
-    return Intl.message(
-      'Withdraw to an exchange or wallet.',
-      name: 'sendToAddressDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Transfer to Mixin Messenger contact.`
-  String get sendToContactDescription {
-    return Intl.message(
-      'Transfer to Mixin Messenger contact.',
-      name: 'sendToContactDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Contact`
   String get contact {
     return Intl.message(
