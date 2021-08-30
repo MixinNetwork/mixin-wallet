@@ -10,13 +10,13 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
-import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset.dart';
+import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
 import '../widget/chart_assets.dart';
 import '../widget/mixin_appbar.dart';
@@ -299,8 +299,17 @@ class _ButtonBar extends StatelessWidget {
             ),
             HeaderButton(
               child: Text(context.l10n.receive),
-              onTap: () =>
-                  context.push(assetDepositPath.toUri({'id': bitcoin})),
+              onTap: () async {
+                final asset = await showAssetSelectionBottomSheet(
+                  context: context,
+                  initialSelected: lastSelectedAddress,
+                );
+                if (asset == null) {
+                  return;
+                }
+                lastSelectedAddress = asset.assetId;
+                context.push(assetDepositPath.toUri({'id': asset.assetId}));
+              },
             ),
             HeaderButton(
               child: Text(context.l10n.buy),

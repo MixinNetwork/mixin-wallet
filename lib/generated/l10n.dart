@@ -1079,6 +1079,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Network type`
+  String get networkType {
+    return Intl.message(
+      'Network type',
+      name: 'networkType',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

@@ -101,5 +101,6 @@
   "swap": "Swap",
   "other": "Other",
   "settings": "Settings",
-  "noAsset": "NO ASSET"
+  "noAsset": "NO ASSET",
+  "networkType": "Network type"
 }
