@@ -68,7 +68,13 @@ class _AssetDepositLoader extends HookWidget {
     ).data;
 
     if (data == null) {
-      return const SizedBox();
+      return Center(
+        child: SizedBox(
+          width: 18,
+          height: 18,
+          child: CircularProgressIndicator(color: context.colorScheme.surface),
+        ),
+      );
     }
     return _AssetDepositBody(asset: data);
   }
@@ -87,8 +93,11 @@ class _AssetDepositBody extends HookWidget {
       depositEntry.value = null;
     }, [asset.assetId]);
 
-    final tag = depositEntry.value?.tag ?? asset.tag;
-    final address = depositEntry.value?.destination ?? asset.destination;
+    final tag =
+        depositEntry.value != null ? depositEntry.value?.tag : asset.tag;
+    final address = depositEntry.value != null
+        ? depositEntry.value?.destination
+        : asset.destination;
 
     final depositEntries = useMemoized(
       () =>
@@ -96,8 +105,6 @@ class _AssetDepositBody extends HookWidget {
           const [],
       [asset.depositEntries],
     );
-
-    assert(address != null);
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -112,7 +119,10 @@ class _AssetDepositBody extends HookWidget {
             selectedAddress: address!,
           ),
         if (tag != null && tag.isNotEmpty) _MemoLayout(asset: asset, tag: tag),
-        _AddressLayout(asset: asset, address: address!),
+        if (address != null && address.isNotEmpty)
+          _AddressLayout(asset: asset, address: address)
+        else
+          const _AddressLoadingWidget(),
         if (tag != null && tag.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
@@ -179,6 +189,31 @@ class _AddressLayout extends StatelessWidget {
           const SizedBox(height: 27),
           _QrcodeImage(data: address, asset: asset),
           const SizedBox(height: 11),
+        ],
+      );
+}
+
+class _AddressLoadingWidget extends StatelessWidget {
+  const _AddressLoadingWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 32),
+          _HeaderText(context.l10n.address),
+          SizedBox(
+            height: 284,
+            child: Center(
+              child: SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                  color: context.colorScheme.surface,
+                ),
+              ),
+            ),
+          ),
         ],
       );
 }
