@@ -13,6 +13,7 @@ import '../../util/hook.dart';
 import '../../util/r.dart';
 import '../../util/web/web_utils_dummy.dart'
     if (dart.library.html) '../../util/web/web_utils.dart';
+import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
@@ -101,6 +102,8 @@ class _AssetDepositBody extends HookWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       children: [
+        if (usdtAssets.containsKey(asset.assetId))
+          _UsdtChooseLayout(asset: asset),
         if (depositEntries.length > 1)
           _DepositEntryChooseLayout(
             asset: asset,
@@ -122,6 +125,7 @@ class _AssetDepositBody extends HookWidget {
         _DepositDescriptionTile(
           text: context.l10n.depositConfirmation(asset.confirmations),
         ),
+        const SizedBox(height: 32),
       ],
     );
   }
@@ -305,6 +309,39 @@ class _DepositDescriptionTile extends StatelessWidget {
       );
 }
 
+class _UsdtChooseLayout extends StatelessWidget {
+  const _UsdtChooseLayout({Key? key, required this.asset}) : super(key: key);
+
+  final AssetResult asset;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 32),
+          _HeaderText(context.l10n.networkType),
+          const SizedBox(height: 16),
+          Wrap(
+            direction: Axis.horizontal,
+            spacing: 12,
+            runSpacing: 16,
+            children: [
+              for (final assetId in usdtAssets.keys)
+                _NetworkTypeItem(
+                  selected: assetId == asset.assetId,
+                  onTap: () {
+                    context.replace(
+                      assetDepositPath.toUri({'id': assetId}),
+                    );
+                  },
+                  name: usdtAssets[assetId]!,
+                ),
+            ],
+          ),
+        ],
+      );
+}
+
 class _DepositEntryChooseLayout extends StatelessWidget {
   const _DepositEntryChooseLayout({
     Key? key,
@@ -333,11 +370,13 @@ class _DepositEntryChooseLayout extends StatelessWidget {
             runSpacing: 16,
             children: [
               for (final entry in entries)
-                _DepositEntryItem(
-                  entry: entry,
+                _NetworkTypeItem(
                   selected: selectedAddress == entry.destination,
                   onTap: () => onSelected(entry),
-                  asset: asset,
+                  name: _getDestinationType(
+                    entry.destination,
+                    asset.destination,
+                  ),
                 ),
             ],
           ),
@@ -345,19 +384,17 @@ class _DepositEntryChooseLayout extends StatelessWidget {
       );
 }
 
-class _DepositEntryItem extends StatelessWidget {
-  const _DepositEntryItem({
+class _NetworkTypeItem extends StatelessWidget {
+  const _NetworkTypeItem({
     Key? key,
     required this.selected,
-    required this.entry,
     required this.onTap,
-    required this.asset,
+    required this.name,
   }) : super(key: key);
 
   final bool selected;
-  final DepositEntry entry;
-  final AssetResult asset;
   final VoidCallback onTap;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -375,7 +412,7 @@ class _DepositEntryItem extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: Text(
-              _getDestinationType(entry.destination, asset.destination),
+              name,
               style: TextStyle(
                 fontSize: 14,
                 color: selected
