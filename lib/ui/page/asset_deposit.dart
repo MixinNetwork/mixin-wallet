@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -59,8 +61,22 @@ class _AssetDepositLoader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    useMemoizedFuture(() => context.appServices.updateAsset(assetId),
-        keys: [assetId]);
+    useEffect(() {
+      var cancel = false;
+      scheduleMicrotask(() async {
+        var asset = await context.appServices.updateAsset(assetId);
+        while (!cancel &&
+            (asset.destination == null || asset.destination!.isEmpty)) {
+          // delay 2 seconds to request again if we didn't get the address.
+          // https://developers.mixin.one/document/wallet/api/asset
+          await Future.delayed(const Duration(milliseconds: 2000));
+          asset = await context.appServices.updateAsset(assetId);
+        }
+      });
+      return () {
+        cancel = true;
+      };
+    }, [assetId]);
 
     final data = useMemoizedStream(
       () => context.appServices.assetResult(assetId).watchSingleOrNull(),
