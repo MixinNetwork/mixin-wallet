@@ -127,6 +127,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Minimum withdrawal:"),
         "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin Wallet"),
         "networkFee": MessageLookupByLibrary.simpleMessage("Network fee:"),
+        "networkType": MessageLookupByLibrary.simpleMessage("Network type"),
         "noAddressSelected":
             MessageLookupByLibrary.simpleMessage("No address selected"),
         "noAsset": MessageLookupByLibrary.simpleMessage("NO ASSET"),

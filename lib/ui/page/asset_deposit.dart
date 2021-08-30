@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,48 +17,464 @@ import '../../util/web/web_utils_dummy.dart'
     if (dart.library.html) '../../util/web/web_utils.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
-import '../widget/asset_selection_list_widget.dart';
+import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
-import '../widget/mixin_bottom_sheet.dart';
-import '../widget/round_container.dart';
 import '../widget/symbol.dart';
 
 class AssetDeposit extends StatelessWidget {
   const AssetDeposit({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => _AssetDepositLoader(key: key);
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: context.colorScheme.background,
+        appBar: MixinAppBar(
+          leading: const MixinBackButton2(),
+          backgroundColor: context.colorScheme.background,
+          title: Text(
+            context.l10n.deposit,
+            style: TextStyle(
+              color: context.colorScheme.primaryText,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          actions: <Widget>[
+            ActionButton(
+                name: R.resourcesIcQuestionSvg,
+                color: Colors.black,
+                onTap: () {
+                  context.toExternal(depositHelpLink, openNewTab: true);
+                }),
+          ],
+        ),
+        body: _AssetDepositLoader(assetId: context.pathParameters['id']!),
+      );
 }
 
 class _AssetDepositLoader extends HookWidget {
-  const _AssetDepositLoader({Key? key}) : super(key: key);
+  const _AssetDepositLoader({
+    Key? key,
+    required this.assetId,
+  }) : super(key: key);
+
+  final String assetId;
 
   @override
   Widget build(BuildContext context) {
-    // TODO query assets from database
-    // The asset id of CNB is: 965e5c6e-434c-3fa9-b780-c50f43cd955c
-    final assetId = context.pathParameters['id']!;
-
-    useMemoizedFuture(() => context.appServices.updateAsset(assetId),
-        keys: [assetId]);
+    useEffect(() {
+      var cancel = false;
+      scheduleMicrotask(() async {
+        var asset = await context.appServices.updateAsset(assetId);
+        while (!cancel &&
+            (asset.destination == null || asset.destination!.isEmpty)) {
+          // delay 2 seconds to request again if we didn't get the address.
+          // https://developers.mixin.one/document/wallet/api/asset
+          await Future.delayed(const Duration(milliseconds: 2000));
+          asset = await context.appServices.updateAsset(assetId);
+        }
+      });
+      return () {
+        cancel = true;
+      };
+    }, [assetId]);
 
     final data = useMemoizedStream(
       () => context.appServices.assetResult(assetId).watchSingleOrNull(),
       keys: [assetId],
     ).data;
 
-    // useEffect(() {
-    //   if (notFound) {
-    //     context
-    //         .read<MixinRouterDelegate>()
-    //         .pushNewUri(notFoundUri);
-    //   }
-    // }, [notFound]);
-
     if (data == null) {
-      return const SizedBox();
+      return Center(
+        child: SizedBox(
+          width: 18,
+          height: 18,
+          child: CircularProgressIndicator(color: context.colorScheme.surface),
+        ),
+      );
     }
-    return _AssetDepositPage(asset: data);
+    return _AssetDepositBody(asset: data);
+  }
+}
+
+class _AssetDepositBody extends HookWidget {
+  const _AssetDepositBody({Key? key, required this.asset}) : super(key: key);
+
+  final AssetResult asset;
+
+  @override
+  Widget build(BuildContext context) {
+    final depositEntry = useState<DepositEntry?>(null);
+
+    useEffect(() {
+      depositEntry.value = null;
+    }, [asset.assetId]);
+
+    final tag =
+        depositEntry.value != null ? depositEntry.value?.tag : asset.tag;
+    final address = depositEntry.value != null
+        ? depositEntry.value?.destination
+        : asset.destination;
+
+    final depositEntries = useMemoized(
+      () =>
+          const DepositEntryConverter().mapToDart(asset.depositEntries) ??
+          const [],
+      [asset.depositEntries],
+    );
+
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      children: [
+        if (usdtAssets.containsKey(asset.assetId))
+          _UsdtChooseLayout(asset: asset),
+        if (depositEntries.length > 1)
+          _DepositEntryChooseLayout(
+            asset: asset,
+            entries: depositEntries,
+            onSelected: (entry) => depositEntry.value = entry,
+            selectedAddress: address!,
+          ),
+        if (tag != null && tag.isNotEmpty) _MemoLayout(asset: asset, tag: tag),
+        if (address != null && address.isNotEmpty)
+          _AddressLayout(asset: asset, address: address)
+        else
+          const _AddressLoadingWidget(),
+        if (tag != null && tag.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: _DepositDescriptionTile(
+              text: context.l10n.depositNotice(asset.symbol),
+            ),
+          ),
+        _DepositDescriptionTile(text: asset.getTip(context)),
+        const SizedBox(height: 8),
+        _DepositDescriptionTile(
+          text: context.l10n.depositConfirmation(asset.confirmations),
+        ),
+        const SizedBox(height: 32),
+      ],
+    );
+  }
+}
+
+class _MemoLayout extends StatelessWidget {
+  _MemoLayout({
+    Key? key,
+    required this.asset,
+    required this.tag,
+  })  : assert(asset.needShowMemo),
+        super(key: key);
+
+  final AssetResult asset;
+
+  final String tag;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 32),
+          _HeaderText(context.l10n.memo),
+          const SizedBox(height: 16),
+          _CopyableText(tag),
+          const SizedBox(height: 27),
+          _QrcodeImage(data: tag, asset: asset),
+          const SizedBox(height: 11),
+        ],
+      );
+}
+
+class _AddressLayout extends StatelessWidget {
+  const _AddressLayout({
+    Key? key,
+    required this.asset,
+    required this.address,
+  }) : super(key: key);
+
+  final AssetResult asset;
+  final String address;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 32),
+          _HeaderText(context.l10n.address),
+          const SizedBox(height: 16),
+          _CopyableText(address),
+          const SizedBox(height: 27),
+          _QrcodeImage(data: address, asset: asset),
+          const SizedBox(height: 11),
+        ],
+      );
+}
+
+class _AddressLoadingWidget extends StatelessWidget {
+  const _AddressLoadingWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 32),
+          _HeaderText(context.l10n.address),
+          SizedBox(
+            height: 284,
+            child: Center(
+              child: SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                  color: context.colorScheme.surface,
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+}
+
+class _HeaderText extends StatelessWidget {
+  const _HeaderText(this.text, {Key? key}) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Align(
+        alignment: AlignmentDirectional.centerStart,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: context.colorScheme.primaryText,
+          ),
+        ),
+      );
+}
+
+class _CopyableText extends StatelessWidget {
+  const _CopyableText(this.text, {Key? key}) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(
+            child: SelectableText(
+              text,
+              style: TextStyle(
+                color: context.colorScheme.primaryText,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          InkResponse(
+            radius: 24,
+            child: SvgPicture.asset(
+              R.resourcesIcCopySvg,
+              width: 24,
+              height: 24,
+            ),
+            onTap: () {
+              setClipboardText(text);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  content: Text(context.l10n.copyToClipboard)));
+            },
+          )
+        ],
+      );
+}
+
+class _QrcodeImage extends StatelessWidget {
+  const _QrcodeImage({
+    Key? key,
+    required this.data,
+    required this.asset,
+  }) : super(key: key);
+
+  final String data;
+
+  final AssetResult asset;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+        width: 230,
+        height: 230,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            QrImage(
+              data: data,
+              size: 230,
+            ),
+            SymbolIconWithBorder(
+              symbolUrl: asset.iconUrl,
+              chainUrl: asset.chainIconUrl,
+              size: 44,
+              chainSize: 10,
+            ),
+          ],
+        ),
+      );
+}
+
+class _DepositDescriptionTile extends StatelessWidget {
+  const _DepositDescriptionTile({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 5),
+            width: 4,
+            height: 4,
+            decoration: BoxDecoration(
+              color: context.colorScheme.thirdText,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Expanded(
+            child: SelectableText(
+              text,
+              enableInteractiveSelection: false,
+              style: TextStyle(
+                color: context.colorScheme.thirdText,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      );
+}
+
+class _UsdtChooseLayout extends StatelessWidget {
+  const _UsdtChooseLayout({Key? key, required this.asset}) : super(key: key);
+
+  final AssetResult asset;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 32),
+          _HeaderText(context.l10n.networkType),
+          const SizedBox(height: 16),
+          Wrap(
+            direction: Axis.horizontal,
+            spacing: 12,
+            runSpacing: 16,
+            children: [
+              for (final assetId in usdtAssets.keys)
+                _NetworkTypeItem(
+                  selected: assetId == asset.assetId,
+                  onTap: () {
+                    context.replace(
+                      assetDepositPath.toUri({'id': assetId}),
+                    );
+                  },
+                  name: usdtAssets[assetId]!,
+                ),
+            ],
+          ),
+        ],
+      );
+}
+
+class _DepositEntryChooseLayout extends StatelessWidget {
+  const _DepositEntryChooseLayout({
+    Key? key,
+    required this.entries,
+    required this.onSelected,
+    required this.asset,
+    required this.selectedAddress,
+  }) : super(key: key);
+
+  final List<DepositEntry> entries;
+
+  final _AddressTypeCallback onSelected;
+  final AssetResult asset;
+  final String selectedAddress;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 32),
+          _HeaderText(context.l10n.networkType),
+          const SizedBox(height: 16),
+          Wrap(
+            direction: Axis.horizontal,
+            spacing: 12,
+            runSpacing: 16,
+            children: [
+              for (final entry in entries)
+                _NetworkTypeItem(
+                  selected: selectedAddress == entry.destination,
+                  onTap: () => onSelected(entry),
+                  name: _getDestinationType(
+                    entry.destination,
+                    asset.destination,
+                  ),
+                ),
+            ],
+          ),
+        ],
+      );
+}
+
+class _NetworkTypeItem extends StatelessWidget {
+  const _NetworkTypeItem({
+    Key? key,
+    required this.selected,
+    required this.onTap,
+    required this.name,
+  }) : super(key: key);
+
+  final bool selected;
+  final VoidCallback onTap;
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    final boardRadius = BorderRadius.circular(36);
+    return Material(
+      color: selected
+          ? context.colorScheme.primaryText
+          : context.colorScheme.surface,
+      borderRadius: boardRadius,
+      child: InkWell(
+        borderRadius: boardRadius,
+        onTap: onTap,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: 64),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: Text(
+              name,
+              style: TextStyle(
+                fontSize: 14,
+                color: selected
+                    ? context.colorScheme.background
+                    : context.colorScheme.secondaryText,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -65,481 +483,6 @@ String _getDestinationType(String? checkedDestination, String? destination) {
     return 'Bitcoin';
   } else {
     return 'Bitcoin (Segwit)';
-  }
-}
-
-class _AssetDepositPage extends HookWidget {
-  const _AssetDepositPage({
-    Key? key,
-    required this.asset,
-  }) : super(key: key);
-
-  final AssetResult asset;
-
-  @override
-  Widget build(BuildContext context) {
-    final assetState = useState(this.asset);
-    final asset = assetState.value;
-
-    final depositEntries =
-        const DepositEntryConverter().mapToDart(asset.depositEntries);
-    final checkedDestination = useState<String>(asset.destination!);
-    final checkedTag = useState<String?>(asset.tag);
-    return Scaffold(
-      backgroundColor: context.theme.accent,
-      appBar: MixinAppBar(
-        title: Text(context.l10n.deposit),
-        backButtonColor: Colors.white,
-        actions: <Widget>[
-          ActionButton(
-              name: R.resourcesIcQuestionSvg,
-              color: Colors.white,
-              onTap: () {
-                context.toExternal(depositHelpLink, openNewTab: true);
-              }),
-        ],
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-        decoration: BoxDecoration(
-          borderRadius:
-              const BorderRadius.vertical(top: Radius.circular(topRadius)),
-          color: context.theme.background,
-        ),
-        child: Column(children: [
-          const SizedBox(height: 20),
-          InkWell(
-            onTap: () {
-              showMixinBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (context) => AssetSelectionListWidget(
-                  onTap: (AssetResult assetResult) {
-                    context.replace(
-                        assetDepositPath.toUri({'id': assetResult.assetId}));
-                    assetState.value = assetResult;
-                    checkedDestination.value = assetResult.destination!;
-                    checkedTag.value = assetResult.tag;
-                  },
-                  selectedAssetId: asset.assetId,
-                ),
-              );
-            },
-            child: RoundContainer(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Row(
-                children: [
-                  SymbolIconWithBorder(
-                    symbolUrl: asset.iconUrl,
-                    chainUrl: asset.chainIconUrl,
-                    size: 32,
-                    chainSize: 8,
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          asset.symbol.overflow,
-                          style: TextStyle(
-                            color: context.theme.text,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          '${asset.balance}${asset.symbol}',
-                          style: TextStyle(
-                            color: context.theme.secondaryText,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: SvgPicture.asset(R.resourcesIcArrowDownSvg),
-                  )
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          if (depositEntries != null && depositEntries.length > 1)
-            Column(
-              children: [
-                InkWell(
-                    onTap: () {
-                      showMixinBottomSheet(
-                          context: context,
-                          builder: (context) => _AddressTypeBottomSheet(
-                                depositEntries: depositEntries,
-                                destination: asset.destination ?? '',
-                                checkedDestination: checkedDestination.value,
-                                onTap: (depositEntry) {
-                                  checkedDestination.value =
-                                      depositEntry.destination;
-                                  checkedTag.value = depositEntry.tag;
-                                  Navigator.pop(context);
-                                },
-                              ));
-                    },
-                    child: RoundContainer(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              _getDestinationType(
-                                  checkedDestination.value, asset.destination),
-                              style: TextStyle(
-                                color: context.theme.text,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: SvgPicture.asset(R.resourcesIcArrowDownSvg),
-                          )
-                        ],
-                      ),
-                    )),
-                const SizedBox(height: 10),
-              ],
-            )
-          else
-            const SizedBox(),
-          _Item(
-            asset: asset,
-            title: context.l10n.address,
-            desc: checkedDestination.value,
-          ),
-          const SizedBox(height: 10),
-          if (asset.needShowMemo)
-            _Item(
-              asset: asset,
-              title: context.l10n.memo,
-              desc: checkedTag.value ?? '',
-            )
-          else
-            const SizedBox(),
-          const SizedBox(height: 10),
-          if (asset.needShowMemo)
-            Column(
-              children: [
-                RoundContainer(
-                    height: null,
-                    radius: 8,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 13, horizontal: 16),
-                    color: const Color(0xfffcf1f2),
-                    child: Text(
-                      context.l10n.depositNotice(asset.symbol),
-                      style: TextStyle(
-                        color: context.theme.red,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )),
-                const SizedBox(height: 10)
-              ],
-            )
-          else
-            const SizedBox(),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(asset.getTip(context),
-                  style: TextStyle(
-                    color: context.theme.text,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  )),
-            ),
-          ),
-          const Spacer(),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Text(context.l10n.depositConfirmation(asset.confirmations),
-                style: TextStyle(
-                  color: context.theme.secondaryText,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                )),
-          ),
-          const SizedBox(height: 50),
-        ]),
-      ),
-    );
-  }
-}
-
-class _Item extends StatelessWidget {
-  const _Item({
-    Key? key,
-    required this.asset,
-    required this.title,
-    required this.desc,
-  }) : super(key: key);
-
-  final AssetResult asset;
-  final String title;
-  final String desc;
-
-  @override
-  Widget build(BuildContext context) => ConstrainedBox(
-      constraints: const BoxConstraints(
-        minHeight: 56,
-      ),
-      child: RoundContainer(
-        height: null,
-        padding: EdgeInsets.zero,
-        child: Row(
-          children: [
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.only(left: 20, top: 12, bottom: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title,
-                      style: TextStyle(
-                        color: context.theme.secondaryText,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                      )),
-                  const SizedBox(height: 4),
-                  Text(desc,
-                      softWrap: true,
-                      style: TextStyle(
-                        color: context.theme.text,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      )),
-                ],
-              ),
-            )),
-            Row(
-              children: [
-                SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: Material(
-                        child: ActionButton(
-                      name: R.resourcesIcCopySvg,
-                      padding: const EdgeInsets.all(12),
-                      onTap: () {
-                        setClipboardText(desc);
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            behavior: SnackBarBehavior.floating,
-                            content: Text(context.l10n.copyToClipboard)));
-                      },
-                    ))),
-                SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: Material(
-                        child: ActionButton(
-                      name: R.resourcesIcQrCodeSvg,
-                      padding: const EdgeInsets.all(12),
-                      onTap: () {
-                        showMixinBottomSheet(
-                          context: context,
-                          builder: (context) => _QRBottomSheetContent(
-                            data: desc,
-                            asset: asset,
-                          ),
-                          isScrollControlled: true,
-                        );
-                      },
-                    ))),
-                const SizedBox(width: 12)
-              ],
-            ),
-          ],
-        ),
-      ));
-}
-
-class _QRBottomSheetContent extends StatelessWidget {
-  const _QRBottomSheetContent({
-    Key? key,
-    required this.data,
-    required this.asset,
-  }) : super(key: key);
-
-  final String data;
-  final AssetResult asset;
-
-  @override
-  Widget build(BuildContext context) => Container(
-        height: 480,
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-        child: Column(
-          children: [
-            SizedBox(
-                height: 70,
-                child: Row(
-                  children: [
-                    Text(context.l10n.address,
-                        style: TextStyle(
-                          color: context.theme.text,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        )),
-                    const Spacer(),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: ActionButton(
-                          name: R.resourcesIcCircleCloseSvg,
-                          onTap: () {
-                            Navigator.pop(context);
-                          }),
-                    ),
-                  ],
-                )),
-            const SizedBox(height: 55),
-            Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                QrImage(
-                  data: data,
-                  size: 230,
-                ),
-                SymbolIconWithBorder(
-                  symbolUrl: asset.iconUrl,
-                  chainUrl: asset.chainIconUrl,
-                  size: 44,
-                  chainSize: 10,
-                ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            SelectableText(data,
-                style: TextStyle(
-                  color: context.theme.secondaryText,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                )),
-            const SizedBox(height: 64),
-          ],
-        ),
-      );
-}
-
-class _AddressTypeBottomSheet extends StatelessWidget {
-  const _AddressTypeBottomSheet({
-    Key? key,
-    required this.depositEntries,
-    required this.destination,
-    required this.checkedDestination,
-    required this.onTap,
-  }) : super(key: key);
-
-  final List<DepositEntry> depositEntries;
-  final String destination;
-  final String checkedDestination;
-  final _AddressTypeCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => Container(
-        height: 310,
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-        child: Column(
-          children: [
-            MixinBottomSheetTitle(
-              padding: EdgeInsets.zero,
-              title: Row(children: [
-                Text(context.l10n.address),
-              ]),
-            ),
-            const SizedBox(height: 20),
-            Column(
-              children: [
-                _AddressTypeItem(
-                    depositEntry: depositEntries[0],
-                    destination: destination,
-                    checkedDestination: checkedDestination,
-                    onTap: onTap,
-                    isTop: true),
-                _AddressTypeItem(
-                    depositEntry: depositEntries[1],
-                    destination: destination,
-                    checkedDestination: checkedDestination,
-                    onTap: onTap,
-                    isTop: false),
-              ],
-            ),
-          ],
-        ),
-      );
-}
-
-class _AddressTypeItem extends StatelessWidget {
-  const _AddressTypeItem({
-    Key? key,
-    required this.depositEntry,
-    required this.destination,
-    required this.checkedDestination,
-    required this.onTap,
-    required this.isTop,
-  }) : super(key: key);
-
-  final DepositEntry depositEntry;
-  final String destination;
-  final String checkedDestination;
-  final _AddressTypeCallback onTap;
-  final bool isTop;
-
-  @override
-  Widget build(BuildContext context) {
-    const radius = Radius.circular(12);
-    final borderRadius = isTop
-        ? const BorderRadius.vertical(top: radius)
-        : const BorderRadius.vertical(bottom: radius);
-    return SizedBox(
-        height: 74,
-        child: Material(
-          shape: RoundedRectangleBorder(borderRadius: borderRadius),
-          child: InkWell(
-              customBorder: RoundedRectangleBorder(
-                borderRadius: borderRadius,
-              ),
-              onTap: () {
-                if (checkedDestination != depositEntry.destination) {
-                  onTap(depositEntry);
-                }
-              },
-              child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  child: Row(
-                    children: [
-                      Text(
-                          _getDestinationType(
-                              destination, depositEntry.destination),
-                          style: TextStyle(
-                            color: context.theme.text,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          )),
-                      const Spacer(),
-                      if (depositEntry.destination == checkedDestination)
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: SvgPicture.asset(R.resourcesIcCheckSvg),
-                        ),
-                    ],
-                  ))),
-        ));
   }
 }
 

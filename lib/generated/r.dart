@@ -60,8 +60,6 @@ class R {
 
   static const String resourcesIcFileSvg = 'resources/ic_file.svg';
 
-  static const String resourcesIcQrCodeSvg = 'resources/ic_qr_code.svg';
-
   static const String resourcesIcQuestionSvg = 'resources/ic_question.svg';
 
   static const String resourcesIcSaveAlbumSvg = 'resources/ic_save_album.svg';

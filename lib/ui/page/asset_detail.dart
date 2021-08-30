@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../db/mixin_database.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -258,8 +259,10 @@ class _HeaderButtonBar extends StatelessWidget {
           ),
           HeaderButton(
             child: Text(context.l10n.receive),
-            onTap: () =>
-                context.replace(assetDepositPath.toUri({'id': asset.assetId})),
+            onTap: () {
+              lastSelectedAddress = asset.assetId;
+              context.push(assetDepositPath.toUri({'id': asset.assetId}));
+            },
           ),
           HeaderButton(
             child: Text(context.l10n.buy),

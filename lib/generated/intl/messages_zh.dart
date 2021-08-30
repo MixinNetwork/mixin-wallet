@@ -112,6 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumWithdrawal": MessageLookupByLibrary.simpleMessage("最小提现数量："),
         "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin 钱包"),
         "networkFee": MessageLookupByLibrary.simpleMessage("网络手续费："),
+        "networkType": MessageLookupByLibrary.simpleMessage("网络类型"),
         "noAddressSelected": MessageLookupByLibrary.simpleMessage("需要选择一个地址"),
         "noAsset": MessageLookupByLibrary.simpleMessage("暂无资产"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
