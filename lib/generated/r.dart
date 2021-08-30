@@ -105,14 +105,33 @@ class R {
 
   static const String resourcesIcApplePay = 'resources/ic_apple_pay.svg';
 
+  static const String resourcesIcFlagArs = 'resources/ic_flag_ars.png';
   static const String resourcesIcFlagAud = 'resources/ic_flag_aud.png';
+  static const String resourcesIcFlagBrl = 'resources/ic_flag_brl.png';
+  static const String resourcesIcFlagCad = 'resources/ic_flag_cad.png';
+  static const String resourcesIcFlagChf = 'resources/ic_flag_chf.png';
+  static const String resourcesIcFlagClp = 'resources/ic_flag_clp.png';
+  static const String resourcesIcFlagCop = 'resources/ic_flag_cop.png';
+  static const String resourcesIcFlagCzk = 'resources/ic_flag_czk.png';
+  static const String resourcesIcFlagDkk = 'resources/ic_flag_dkk.png';
   static const String resourcesIcFlagEur = 'resources/ic_flag_eur.png';
   static const String resourcesIcFlagGbp = 'resources/ic_flag_gbp.png';
   static const String resourcesIcFlagHkd = 'resources/ic_flag_hkd.png';
+  static const String resourcesIcFlagIls = 'resources/ic_flag_ils.png';
+  static const String resourcesIcFlagInr = 'resources/ic_flag_inr.png';
+  static const String resourcesIcFlagIsk = 'resources/ic_flag_isk.png';
   static const String resourcesIcFlagJpy = 'resources/ic_flag_jpy.png';
   static const String resourcesIcFlagKrw = 'resources/ic_flag_krw.png';
+  static const String resourcesIcFlagMxn = 'resources/ic_flag_mxn.png';
   static const String resourcesIcFlagMyr = 'resources/ic_flag_myr.png';
+  static const String resourcesIcFlagNok = 'resources/ic_flag_nok.png';
+  static const String resourcesIcFlagNzd = 'resources/ic_flag_nzd.png';
   static const String resourcesIcFlagPhp = 'resources/ic_flag_php.png';
+  static const String resourcesIcFlagPln = 'resources/ic_flag_pln.png';
+  static const String resourcesIcFlagSek = 'resources/ic_flag_sek.png';
   static const String resourcesIcFlagSgd = 'resources/ic_flag_sgd.png';
+  static const String resourcesIcFlagThb = 'resources/ic_flag_thb.png';
   static const String resourcesIcFlagUsd = 'resources/ic_flag_usd.png';
+  static const String resourcesIcFlagVnd = 'resources/ic_flag_vnd.png';
+  static const String resourcesIcFlagZar = 'resources/ic_flag_zar.png';
 }

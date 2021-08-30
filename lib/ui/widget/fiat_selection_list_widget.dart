@@ -77,7 +77,7 @@ class _Item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-      color: context.theme.background,
+      color: context.colorScheme.background,
       child: InkWell(
         onTap: () {
           onTap(fiat);
@@ -95,14 +95,26 @@ class _Item extends StatelessWidget {
               )),
               const SizedBox(width: 12),
               Expanded(
-                  child: Text(
-                '${fiat.name} (${fiat.symbol})',
-                style: TextStyle(
-                  color: context.theme.text,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              )),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                    Text(
+                      fiat.name,
+                      style: TextStyle(
+                        color: context.colorScheme.primaryText,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(fiat.desc,
+                        style: TextStyle(
+                          color: context.colorScheme.secondaryText,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ])),
               if (selectedFiat.name == fiat.name)
                 Align(
                   alignment: Alignment.centerRight,

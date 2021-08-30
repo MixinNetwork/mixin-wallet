@@ -2,31 +2,15 @@ import 'dart:math';
 
 import 'wyre_constants.dart';
 
-class WyreRate {
-  WyreRate(
-    this.name,
-    this.value,
-  );
-
-  final String name;
-  final double value;
-
-  @override
-  String toString() => '{$name: $value}';
-}
-
 class WyreFiat {
-  WyreFiat(this.name, this.flag, this.symbol);
+  WyreFiat(this.name, this.flag, this.desc);
 
   final String name;
   final String flag;
-  final String symbol;
+  final String desc;
 
   WyreServiceArea get area =>
       name == 'USD' ? WyreServiceArea.us : WyreServiceArea.international;
-
-  @override
-  String toString() => '{$name $symbol}';
 }
 
 List<WyreFiat> getWyreFiatList() {
@@ -35,7 +19,7 @@ List<WyreFiat> getWyreFiatList() {
     fiatList.add(WyreFiat(
       supportedFiats[i],
       supportedFiatsFlag[i],
-      supportedFiatsSymbol[i],
+      supportedFiatNames[i],
     ));
   }
   return fiatList;
