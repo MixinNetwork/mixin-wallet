@@ -27,6 +27,14 @@ List<WyreFiat> getWyreFiatList() {
   return fiatList;
 }
 
+WyreFiat? getWyreFiatByName(String name) {
+  final index = supportedFiats.indexOf(name);
+  if (index == -1) {
+    return null;
+  }
+  return WyreFiat(name, supportedFiatsFlag[index], supportedFiatNames[index]);
+}
+
 enum WyreServiceArea {
   us,
   international,

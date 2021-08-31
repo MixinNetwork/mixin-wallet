@@ -105,6 +105,8 @@ class R {
 
   static const String resourcesIcApplePay = 'resources/ic_apple_pay.svg';
 
+  static const String resourcesIcDoubleArrow = 'resources/ic_double_arrow.svg';
+
   static const String resourcesIcFlagArs = 'resources/ic_flag_ars.png';
   static const String resourcesIcFlagAud = 'resources/ic_flag_aud.png';
   static const String resourcesIcFlagBrl = 'resources/ic_flag_brl.png';

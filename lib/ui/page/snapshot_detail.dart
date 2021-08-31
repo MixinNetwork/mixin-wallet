@@ -11,6 +11,7 @@ import '../../util/hook.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/symbol.dart';
+import '../widget/transaction_info_tile.dart';
 import '../widget/transactions/transaction_item.dart';
 
 class SnapshotDetail extends StatelessWidget {
@@ -229,24 +230,24 @@ class _TransactionDetailInfo extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _TransactionInfoTile(
+            TransactionInfoTile(
               title: Text(context.l10n.transactionsId),
               subtitle: SelectableText(snapshot.snapshotId),
             ),
-            _TransactionInfoTile(
+            TransactionInfoTile(
               title: Text(context.l10n.transactionsType),
               subtitle: TransactionTypeWidget(
                 item: snapshot,
                 selectable: true,
               ),
             ),
-            _TransactionInfoTile(
+            TransactionInfoTile(
               title: Text(context.l10n.assetType),
               subtitle: SelectableText(asset.name),
             ),
             _From(snapshot: snapshot),
             _To(snapshot: snapshot, asset: asset),
-            _TransactionInfoTile(
+            TransactionInfoTile(
               title: Text(context.l10n.memo),
               subtitle: Builder(builder: (context) {
                 final emptyMemo = snapshot.memo?.isEmpty != false;
@@ -259,14 +260,14 @@ class _TransactionDetailInfo extends StatelessWidget {
                 );
               }),
             ),
-            _TransactionInfoTile(
+            TransactionInfoTile(
               title: Text(context.l10n.time),
               subtitle: SelectableText(
                   '${DateFormat.yMMMMd().format(snapshot.createdAt)} '
                   '${DateFormat.Hms().format(snapshot.createdAt)}'),
             ),
             if (snapshot.traceId != null && snapshot.traceId!.isNotEmpty)
-              _TransactionInfoTile(
+              TransactionInfoTile(
                 title: Text(context.l10n.trace),
                 subtitle: SelectableText(snapshot.traceId ?? ''),
               ),
@@ -305,7 +306,7 @@ class _From extends StatelessWidget {
         title = context.l10n.transactionHash;
         break;
     }
-    return _TransactionInfoTile(
+    return TransactionInfoTile(
       title: Text(title ?? context.l10n.from),
       subtitle: SelectableText(sender),
     );
@@ -348,47 +349,9 @@ class _To extends StatelessWidget {
         }
         break;
     }
-    return _TransactionInfoTile(
+    return TransactionInfoTile(
       title: Text(title ?? context.l10n.to),
       subtitle: SelectableText(receiver),
     );
   }
-}
-
-class _TransactionInfoTile extends StatelessWidget {
-  const _TransactionInfoTile({
-    Key? key,
-    required this.title,
-    required this.subtitle,
-  }) : super(key: key);
-
-  final Widget title;
-  final Widget subtitle;
-
-  @override
-  Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 12),
-          DefaultTextStyle(
-            style: TextStyle(
-              fontSize: 16,
-              height: 1,
-              color: context.colorScheme.thirdText,
-            ),
-            child: title,
-          ),
-          const SizedBox(height: 8),
-          DefaultTextStyle(
-            style: TextStyle(
-              fontSize: 16,
-              height: 1,
-              color: context.colorScheme.primaryText,
-            ),
-            child: subtitle,
-          ),
-          const SizedBox(height: 12),
-        ],
-      );
 }
