@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
@@ -62,19 +61,21 @@ class HeaderButtonBarLayout extends StatelessWidget {
   final List<HeaderButton> buttons;
 
   @override
-  Widget build(BuildContext context) => Material(
-        color: context.colorScheme.surface,
+  Widget build(BuildContext context) => ClipRRect(
         borderRadius: BorderRadius.circular(8),
-        child: SizedBox(
-          height: 40,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ...buttons
-                  .map<Widget>((e) => Expanded(child: e))
-                  .separated(_divider(context))
-            ],
+        child: Material(
+          color: context.colorScheme.surface,
+          child: SizedBox(
+            height: 40,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ...buttons
+                    .map<Widget>((e) => Expanded(child: e))
+                    .separated(_divider(context))
+              ],
+            ),
           ),
         ),
       );
@@ -89,7 +90,7 @@ class HeaderButtonBarLayout extends StatelessWidget {
       );
 }
 
-class HeaderButton extends HookWidget {
+class HeaderButton extends StatelessWidget {
   const HeaderButton({
     Key? key,
     required this.child,
@@ -100,33 +101,17 @@ class HeaderButton extends HookWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) {
-    final animator = useAnimationController(
-      duration: const Duration(milliseconds: 150),
-      initialValue: 1,
-      lowerBound: 0.3,
-      upperBound: 1,
-    );
-    useAnimation(animator);
-    return GestureDetector(
-      onTap: onTap,
-      onTapDown: (_) => animator.reverse(),
-      onTapUp: (_) => animator.forward(),
-      onTapCancel: animator.forward,
-      behavior: HitTestBehavior.opaque,
-      child: Center(
-        child: DefaultTextStyle(
-          style: TextStyle(
-            color: context.colorScheme.primaryText,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-          child: Opacity(
-            opacity: animator.value,
+  Widget build(BuildContext context) => InkWell(
+        onTap: onTap,
+        child: Center(
+          child: DefaultTextStyle(
+            style: TextStyle(
+              color: context.colorScheme.primaryText,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
             child: child,
           ),
         ),
-      ),
-    );
-  }
+      );
 }
