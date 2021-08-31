@@ -19,8 +19,8 @@ import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
 import '../widget/transfer.dart';
 
-const _kQueryParamSortBy = 'sortBy';
-const _kQueryParamFilterBy = 'filterBy';
+const _kQueryParamSortBy = 'sort';
+const _kQueryParamFilterBy = 'filter';
 
 class AssetDetail extends StatelessWidget {
   const AssetDetail({Key? key}) : super(key: key);
@@ -266,7 +266,23 @@ class _HeaderButtonBar extends StatelessWidget {
           ),
           HeaderButton(
             child: Text(context.l10n.buy),
-            onTap: () {},
+            onTap: () {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(content: Text(context.l10n.comingSoon)),
+                );
+            },
+          ),
+          HeaderButton(
+            child: Text(context.l10n.swap),
+            onTap: () {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(content: Text(context.l10n.comingSoon)),
+                );
+            },
           ),
         ]),
       );

@@ -81,6 +81,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "buy": MessageLookupByLibrary.simpleMessage("Buy"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
+        "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
         "contact": MessageLookupByLibrary.simpleMessage("Contact"),
         "contactReadFailed":
             MessageLookupByLibrary.simpleMessage("Failed to read contact list"),

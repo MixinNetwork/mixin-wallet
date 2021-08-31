@@ -102,5 +102,6 @@
   "other": "Other",
   "settings": "Settings",
   "noAsset": "NO ASSET",
-  "networkType": "Network type"
+  "networkType": "Network type",
+  "comingSoon": "Coming soon"
 }
