@@ -190,10 +190,7 @@ class _AssetHeader extends StatelessWidget {
             SizedBox(
               width: 6,
               height: 10,
-              child: SvgPicture.asset(
-                sortType.iconAssetName,
-                color: context.colorScheme.primaryText,
-              ),
+              child: SvgPicture.asset(sortType.iconAssetName),
             ),
             const SizedBox(width: 16),
           ],
