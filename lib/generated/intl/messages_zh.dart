@@ -72,6 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "buy": MessageLookupByLibrary.simpleMessage("购买"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
+        "comingSoon": MessageLookupByLibrary.simpleMessage("即将推出"),
         "contact": MessageLookupByLibrary.simpleMessage("联系人"),
         "contactReadFailed": MessageLookupByLibrary.simpleMessage("读取联系人列表失败"),
         "contactSearchHint":

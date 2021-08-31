@@ -266,7 +266,23 @@ class _HeaderButtonBar extends StatelessWidget {
           ),
           HeaderButton(
             child: Text(context.l10n.buy),
-            onTap: () {},
+            onTap: () {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(content: Text(context.l10n.comingSoon)),
+                );
+            },
+          ),
+          HeaderButton(
+            child: Text(context.l10n.swap),
+            onTap: () {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(content: Text(context.l10n.comingSoon)),
+                );
+            },
           ),
         ]),
       );
