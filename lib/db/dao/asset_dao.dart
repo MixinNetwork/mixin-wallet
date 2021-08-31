@@ -77,9 +77,29 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
           if (keyword.isEmpty) {
             return ignoreWhere;
           }
-          return asset.symbol.like('%$keyword%');
+          final regex = '%$keyword%';
+          return asset.symbol.like(regex) | asset.name.like(regex);
         },
-        (asset, _, __, f) => OrderBy([OrderingTerm.asc(asset.symbol.length)]),
+        (asset, _, __, f) {
+          final symbol = '${asset.symbol.tableName}.${asset.symbol.$name}';
+          final name = '${asset.symbol.tableName}.${asset.name.$name}';
+          return OrderBy([
+          OrderingTerm.asc(CustomExpression('''
+(
+CASE
+WHEN $symbol = '$keyword' THEN 1
+WHEN $name = '$keyword' THEN 1
+WHEN $symbol LIKE '$keyword%' THEN 100 + LENGTH($symbol)
+WHEN $name LIKE '$keyword%' THEN 100 + LENGTH($name)
+WHEN $symbol LIKE '%$keyword%' THEN 200 + LENGTH($symbol)
+WHEN $name LIKE '%$keyword%' THEN 200 + LENGTH($name)
+WHEN $symbol LIKE '%$keyword' THEN 300 + LENGTH($symbol)
+WHEN $name LIKE '%$keyword' THEN 300 + LENGTH($name)
+ELSE 1000 END
+)
+          ''')),
+        ]);
+        },
         (_, __, ___, f) => maxLimit,
       );
 
