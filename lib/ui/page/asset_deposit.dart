@@ -348,11 +348,9 @@ class _DepositDescriptionTile extends StatelessWidget {
           Expanded(
             child: SelectableText(
               text,
-              enableInteractiveSelection: false,
               style: TextStyle(
                 color: context.colorScheme.thirdText,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
+                fontSize: 14,
               ),
             ),
           ),
