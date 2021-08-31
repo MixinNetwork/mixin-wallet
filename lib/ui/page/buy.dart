@@ -43,7 +43,7 @@ class Buy extends HookWidget {
       return const SizedBox();
     }
 
-    final fiatList = getWyreFiatList();
+    final fiatList = useMemoized<List<WyreFiat>>(getWyreFiatList);
     return _Buy(supportedAssets: supportedAssets, fiatList: fiatList);
   }
 }
@@ -73,11 +73,7 @@ class _Buy extends HookWidget {
     final fiatFocusNode = useFocusNode(debugLabel: 'fiat input');
     final cryptoFocusNode = useFocusNode(debugLabel: 'crypto input');
 
-    const country = 'US';
-    // final country = getCountry();
-    // final countries = useMemoizedFuture(() =>
-    //   WyreClient.instance.api.getSupportedCountries()
-    // ).data;
+    final country = useMemoized(getCountry);
 
     void showAssetListBottomSheet() {
       showMixinBottomSheet(
@@ -361,14 +357,16 @@ class _Buy extends HookWidget {
                       enable: wyreQuote.value != null,
                       onTap: () async {
                         final redirectUrl =
-                            'http://localhost:8001/#/tokens/${asset.value.assetId}';
+                            'http://localhost:8001/#/buySuccess?asset=${asset.value.assetId}&fiat=${fiat.value.name}&sourceAmount=${fiatController.text}&destAmount=${cryptoController.text}';
+                        final failureRedirectUrl =
+                            'http://localhost:8001/#/buy/${asset.value.assetId}';
                         final data = {
                           'sourceCurrency': fiat.value.name,
                           'destCurrency': asset.value.symbol,
                           'dest': 'ethereum:${asset.value.destination}',
                           'country': country,
                           'redirectUrl': redirectUrl,
-                          'failureRedirectUrl': redirectUrl,
+                          'failureRedirectUrl': failureRedirectUrl,
                           'paymentMethod': type.value.forReservation(),
                           'referrerAccountId': Env.wyreAccount,
                           'amountIncludeFees': 'true',
@@ -381,11 +379,13 @@ class _Buy extends HookWidget {
                         final url = await WyreClient.instance.api
                             .createOrderReservation(data);
                         if (url == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              behavior: SnackBarBehavior.floating,
-                              content: Text('empty $url')));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  content: Text('Wyre serve empty url')));
                           return;
                         }
+                        i('url: $url');
                         context.toExternal(url);
                       },
                     )),

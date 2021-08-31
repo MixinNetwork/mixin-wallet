@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import '../util/mixin_context.dart';
+
 import 'wyre_constants.dart';
 
 class WyreFiat {
@@ -49,4 +51,19 @@ extension WyrePayTypeExtension on WyrePayType {
 
   String forQuote() =>
       this == WyrePayType.debitCard ? 'DEBIT_CARD' : 'APPLE_PAY';
+}
+
+String getCountry() {
+  try {
+    final ctx = getMixinContext();
+    final locale = ctx['locale'].toString();
+    final country = locale.substring(locale.length - 2, locale.length);
+    if (supportedContries.contains(country.toUpperCase())) {
+      return country;
+    } else {
+      return 'US';
+    }
+  } catch (_) {
+    return 'US';
+  }
 }

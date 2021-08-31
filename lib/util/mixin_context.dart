@@ -8,13 +8,3 @@ Map<String, dynamic> getMixinContext() {
   return jsonDecode(mixinContext.callMethod('getContext').toString())
       as Map<String, dynamic>;
 }
-
-String getCountry() {
-  try {
-    final ctx = getMixinContext();
-    final locale = ctx['locale'].toString();
-    return locale.substring(locale.length - 2, locale.length);
-  } catch (_) {
-    return 'US';
-  }
-}
