@@ -52,7 +52,7 @@ class AssetWidget extends StatelessWidget {
                         child: LayoutBuilder(
                           builder: (context, constraints) =>
                               _SingleLineEllipsisText(
-                            data.balance.overflow,
+                            data.balance.numberFormat().overflow,
                             constraints: constraints,
                             onTap: onTap,
                             style: TextStyle(
