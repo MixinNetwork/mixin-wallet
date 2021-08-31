@@ -145,14 +145,18 @@ class _SearchAssetList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    useMemoizedStream(
-      () => keywordStream
-          .where((event) => event.isNotEmpty)
-          .debounceTime(const Duration(milliseconds: 200))
-          .map(
-            (String keyword) =>
-                unawaited(context.appServices.searchAndUpdateAsset(keyword)),
-          ),
+    useEffect(
+      () {
+        final listen = keywordStream
+            .where((event) => event.isNotEmpty)
+            .debounceTime(const Duration(milliseconds: 200))
+            .map(
+              (String keyword) =>
+                  unawaited(context.appServices.searchAndUpdateAsset(keyword)),
+            )
+            .listen((_) {});
+        return listen.cancel;
+      },
     );
 
     final keyword = useMemoizedStream(() => keywordStream.throttleTime(
