@@ -30,7 +30,7 @@ enum _AssetSortType {
   decrease,
 }
 
-const _kQueryParameterSort = 'sortType';
+const _kQueryParameterSort = 'sort';
 
 class Home extends HookWidget {
   const Home({Key? key}) : super(key: key);
