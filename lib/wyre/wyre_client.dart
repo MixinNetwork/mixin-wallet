@@ -10,15 +10,7 @@ class WyreClient {
     _dio = Dio();
     _dio.options.baseUrl = 'https://$wyreDomain';
     _dio.options.responseType = ResponseType.json;
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (
-        RequestOptions options,
-        RequestInterceptorHandler handler,
-      ) async {
-        options.headers['Authorization'] = 'Bearer ${Env.wyreSecret}';
-        handler.next(options);
-      },
-    ));
+    _dio.options.headers['Authorization'] = 'Bearer ${Env.wyreSecret}';
     _dio.interceptors.add(MixinLogInterceptor(HttpLogLevel.none));
 
     _api = WyreApi(dio: dio);
