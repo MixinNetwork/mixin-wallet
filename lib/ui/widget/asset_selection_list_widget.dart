@@ -41,13 +41,15 @@ class AssetSelectionListWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final assetResults = assetResultList ??
-        useMemoizedStream(
-          () => context.appServices.assetResults().watch().map((event) => event
+    final assetResults = useMemoizedStream(() {
+          if (assetResultList != null && assetResultList!.isNotEmpty) {
+            return Stream.value(assetResultList);
+          }
+          return context.appServices.assetResults().watch().map((event) => event
             ..sort(
               (a, b) => b.amountOfUsd.compareTo(a.amountOfUsd),
-            )),
-        ).data ??
+            ));
+        }).data ??
         const [];
 
     var selectedAssetId = this.selectedAssetId;

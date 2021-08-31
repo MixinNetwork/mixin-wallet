@@ -40,12 +40,13 @@ class Buy extends HookWidget {
 
     final supportedAssets = useMemoizedFuture(
         () => context.appServices.findOrSyncAssets(supportedCryptosId)).data;
+    final fiatList = useMemoized<List<WyreFiat>>(getWyreFiatList);
+
     if (supportedAssets == null || supportedAssets.isEmpty) {
       w('supportedAssets: $supportedAssets');
       return const SizedBox();
     }
 
-    final fiatList = useMemoized<List<WyreFiat>>(getWyreFiatList);
     return Scaffold(
         backgroundColor: context.colorScheme.background,
         appBar: MixinAppBar(
