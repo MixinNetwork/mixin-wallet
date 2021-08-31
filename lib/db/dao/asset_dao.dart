@@ -84,7 +84,7 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
           final symbol = '${asset.symbol.tableName}.${asset.symbol.$name}';
           final name = '${asset.symbol.tableName}.${asset.name.$name}';
           return OrderBy([
-          OrderingTerm.asc(CustomExpression('''
+            OrderingTerm.asc(CustomExpression('''
 (
 CASE
 WHEN $symbol = '$keyword' THEN 1
@@ -98,7 +98,7 @@ WHEN $name LIKE '%$keyword' THEN 300 + LENGTH($name)
 ELSE 1000 END
 )
           ''')),
-        ]);
+          ]);
         },
         (_, __, ___, f) => maxLimit,
       );
