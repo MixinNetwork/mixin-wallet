@@ -148,22 +148,23 @@ class _SearchAssetList extends HookWidget {
     useMemoizedStream(
       () => keywordStream
           .where((event) => event.isNotEmpty)
-          .debounceTime(const Duration(milliseconds: 100))
+          .debounceTime(const Duration(milliseconds: 200))
           .map(
             (String keyword) =>
                 unawaited(context.appServices.searchAndUpdateAsset(keyword)),
           ),
     );
 
-    final keyword = useStream(keywordStream).data ?? '';
-
-    final searchList = useMemoizedStream(
-          () {
-            if (keyword.isEmpty) return Stream.value(<AssetResult>[]);
-            return context.appServices.searchAssetResults(keyword).watch();
-          },
-          keys: [keyword],
-        ).data ??
+    final searchList = useMemoizedStream(() => keywordStream
+                .throttleTime(
+              const Duration(milliseconds: 200),
+              trailing: true,
+              leading: false,
+            )
+                .flatMap((keyword) {
+              if (keyword.isEmpty) return Stream.value(<AssetResult>[]);
+              return context.appServices.searchAssetResults(keyword).watch();
+            })).data ??
         [];
 
     return ListView.builder(
