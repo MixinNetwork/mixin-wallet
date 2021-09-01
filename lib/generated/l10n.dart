@@ -1119,6 +1119,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `NO RESULT`
+  String get noResult {
+    return Intl.message(
+      'NO RESULT',
+      name: 'noResult',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

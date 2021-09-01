@@ -105,5 +105,6 @@
   "noAsset": "NO ASSET",
   "networkType": "Network type",
   "comingSoon": "Coming soon",
-  "removeAuthorize": "Deauthorize"
+  "removeAuthorize": "Deauthorize",
+  "noResult": "NO RESULT"
 }
