@@ -331,18 +331,26 @@ class _QrcodeImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        width: 230,
-        height: 230,
+        width: 200,
+        height: 200,
         child: Stack(
           alignment: Alignment.center,
           children: [
             QrImage(
               data: data,
-              size: 230,
+              size: 200,
             ),
             SymbolIconWithBorder(
               symbolUrl: asset.iconUrl,
               chainUrl: asset.chainIconUrl,
+              symbolBorder: BorderSide(
+                color: context.colorScheme.background,
+                width: 2,
+              ),
+              chainBorder: BorderSide(
+                color: context.colorScheme.background,
+                width: 1.5,
+              ),
               size: 44,
               chainSize: 10,
             ),
