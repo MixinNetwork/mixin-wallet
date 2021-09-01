@@ -128,6 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rebate": MessageLookupByLibrary.simpleMessage("退款"),
         "receive": MessageLookupByLibrary.simpleMessage("转入"),
         "recentSearches": MessageLookupByLibrary.simpleMessage("最近搜索"),
+        "removeAuthorize": MessageLookupByLibrary.simpleMessage("取消授权"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
         "selectFromAddressBook": MessageLookupByLibrary.simpleMessage("从地址簿选择"),

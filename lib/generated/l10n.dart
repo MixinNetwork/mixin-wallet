@@ -1109,6 +1109,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Deauthorize`
+  String get removeAuthorize {
+    return Intl.message(
+      'Deauthorize',
+      name: 'removeAuthorize',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

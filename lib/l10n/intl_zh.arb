@@ -101,5 +101,6 @@
   "settings": "设置",
   "noAsset": "暂无资产",
   "networkType": "网络类型",
-  "comingSoon": "即将推出"
+  "comingSoon": "即将推出",
+  "removeAuthorize": "取消授权"
 }

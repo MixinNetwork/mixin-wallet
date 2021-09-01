@@ -17,8 +17,10 @@ import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset.dart';
 import '../widget/asset_selection_list_widget.dart';
+import '../widget/avatar.dart';
 import '../widget/buttons.dart';
 import '../widget/chart_assets.dart';
+import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/search_asset_bottom_sheet.dart';
@@ -65,22 +67,24 @@ class Home extends HookWidget {
         ..sortBy(sortType);
     }, [hideSmallAssets, assetResults, sortType]);
 
+    final account = auth!.account;
+
     return Scaffold(
       backgroundColor: context.theme.background,
       appBar: MixinAppBar(
         leading: Center(
-          child: Image.asset(
-            R.resourcesMixinLogoPng,
-            width: 32,
-            height: 32,
-          ),
-        ),
-        title: Text(
-          context.l10n.mixinWallet,
-          style: TextStyle(
-            color: context.colorScheme.primaryText,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+          child: InkResponse(
+            radius: 24,
+            onTap: () => showMixinBottomSheet(
+              context: context,
+              builder: (context) => const _AccountBottomSheet(),
+            ),
+            child: Avatar(
+              avatarUrl: account.avatarUrl,
+              userId: account.userId,
+              name: account.fullName ?? '',
+              size: 32,
+            ),
           ),
         ),
         actions: [
@@ -446,5 +450,47 @@ extension _SortTypeExt on _AssetSortType {
       case _AssetSortType.decrease:
         return _AssetSortType.amount;
     }
+  }
+}
+
+class _AccountBottomSheet extends StatelessWidget {
+  const _AccountBottomSheet({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final account = auth?.account;
+    // might be null when use clicked DeAuthorize button.
+    if (account == null) {
+      return const SizedBox();
+    }
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        MixinBottomSheetTitle(
+          title: Avatar(
+            avatarUrl: account.avatarUrl,
+            userId: account.userId,
+            name: account.fullName ?? '',
+            size: 32,
+          ),
+        ),
+        const SizedBox(height: 8),
+        MenuItemWidget(
+          topRounded: true,
+          bottomRounded: true,
+          title: Text(
+            context.l10n.removeAuthorize,
+            style: TextStyle(
+              color: context.colorScheme.red,
+            ),
+          ),
+          onTap: () async {
+            await profileBox.clear();
+            context.replace(authUri.path);
+          },
+        ),
+        const SizedBox(height: 120),
+      ],
+    );
   }
 }
