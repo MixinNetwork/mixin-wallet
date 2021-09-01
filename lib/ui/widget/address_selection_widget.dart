@@ -107,7 +107,6 @@ class _AddressSelectionWidget extends HookWidget {
               minimumSize: const Size(110, 48),
             ),
             onPressed: () {
-              debugPrint('click');
               showMixinBottomSheet(
                 context: context,
                 builder: (context) =>
