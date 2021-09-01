@@ -365,19 +365,20 @@ class TransferAmountWidget extends HookWidget {
     return Material(
       borderRadius: BorderRadius.circular(13),
       color: context.colorScheme.surface,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-        child: Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: inputFocusNode.requestFocus,
-                behavior: HitTestBehavior.translucent,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(children: [
+      child: SizedBox(
+        height: 72,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+          child: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: inputFocusNode.requestFocus,
+                  behavior: HitTestBehavior.translucent,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Spacer(flex: 3),
                       IntrinsicWidth(
                           child: TextField(
                         focusNode: inputFocusNode,
@@ -388,6 +389,7 @@ class TransferAmountWidget extends HookWidget {
                         ),
                         maxLines: 1,
                         decoration: InputDecoration(
+                          isDense: true,
                           hintText: input.isNotEmpty
                               ? ''
                               : '0.00 ${fiatInputMode.value ? currency : asset.symbol}',
@@ -395,6 +397,14 @@ class TransferAmountWidget extends HookWidget {
                           hintStyle: TextStyle(
                             color: context.colorScheme.thirdText,
                             fontWeight: FontWeight.w400,
+                          ),
+                          suffixText: input.isNotEmpty
+                              ? (fiatInputMode.value ? currency : asset.symbol)
+                              : '',
+                          suffixStyle: TextStyle(
+                            color: context.colorScheme.primaryText,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         controller: controller,
@@ -407,43 +417,33 @@ class TransferAmountWidget extends HookWidget {
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
                       )),
-                      SelectableText(
-                        input.isNotEmpty
-                            ? (fiatInputMode.value ? currency : asset.symbol)
-                            : '',
+                      const Spacer(flex: 1),
+                      Text(
+                        equivalent,
                         style: TextStyle(
-                          color: context.colorScheme.primaryText,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          color: context.colorScheme.thirdText,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
                         ),
-                        enableInteractiveSelection: false,
                       ),
-                    ]),
-                    Text(
-                      equivalent,
-                      style: TextStyle(
-                        color: context.colorScheme.thirdText,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                  ],
+                      const Spacer(flex: 3),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            if (!asset.priceUsd.isZero)
-              Align(
-                alignment: Alignment.centerRight,
-                child: InkResponse(
-                  radius: 24,
-                  onTap: () {
-                    fiatInputMode.value = !fiatInputMode.value;
-                  },
-                  child: SvgPicture.asset(R.resourcesIcSwitchSvg),
+              if (!asset.priceUsd.isZero)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: InkResponse(
+                    radius: 24,
+                    onTap: () {
+                      fiatInputMode.value = !fiatInputMode.value;
+                    },
+                    child: SvgPicture.asset(R.resourcesIcSwitchSvg),
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
