@@ -225,6 +225,18 @@ class TransferAddressWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> onTap() async {
+      final selected = await showAddressSelectionBottomSheet(
+        context: context,
+        selectedAddress: address,
+        assetId: asset.assetId,
+        chainId: asset.chainId,
+      );
+      if (selected != null) {
+        onAddressChanged(selected);
+      }
+    }
+
     final Widget child;
     if (address != null) {
       child = Column(
@@ -239,6 +251,7 @@ class TransferAddressWidget extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
             enableInteractiveSelection: false,
+            onTap: onTap,
           ),
           const Spacer(flex: 1),
           SelectableText(
@@ -249,6 +262,7 @@ class TransferAddressWidget extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
             enableInteractiveSelection: false,
+            onTap: onTap,
           ),
           const Spacer(flex: 2),
         ],
@@ -262,6 +276,7 @@ class TransferAddressWidget extends StatelessWidget {
           fontWeight: FontWeight.w400,
         ),
         enableInteractiveSelection: false,
+        onTap: onTap,
       );
     }
     return Material(
@@ -269,17 +284,7 @@ class TransferAddressWidget extends StatelessWidget {
       color: context.colorScheme.surface,
       child: InkWell(
         borderRadius: BorderRadius.circular(13),
-        onTap: () async {
-          final selected = await showAddressSelectionBottomSheet(
-            context: context,
-            selectedAddress: address,
-            assetId: asset.assetId,
-            chainId: asset.chainId,
-          );
-          if (selected != null) {
-            onAddressChanged(selected);
-          }
-        },
+        onTap: onTap,
         child: SizedBox(
           height: 64,
           child: Row(
