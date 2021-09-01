@@ -6,7 +6,7 @@ class MenuItemWidget extends StatelessWidget {
   const MenuItemWidget({
     Key? key,
     required this.title,
-    required this.leading,
+    this.leading,
     this.topRounded = false,
     this.bottomRounded = false,
     this.trailing,
@@ -15,7 +15,7 @@ class MenuItemWidget extends StatelessWidget {
   }) : super(key: key);
 
   final Widget title;
-  final Widget leading;
+  final Widget? leading;
   final Widget? trailing;
   final Widget? subtitle;
 
@@ -44,8 +44,11 @@ class MenuItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(width: 20),
-                SizedBox.square(dimension: 24, child: leading),
-                const SizedBox(width: 16),
+                if (leading != null)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: SizedBox.square(dimension: 24, child: leading),
+                  ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

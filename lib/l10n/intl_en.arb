@@ -104,5 +104,6 @@
   "settings": "Settings",
   "noAsset": "NO ASSET",
   "networkType": "Network type",
-  "comingSoon": "Coming soon"
+  "comingSoon": "Coming soon",
+  "removeAuthorize": "Deauthorize"
 }

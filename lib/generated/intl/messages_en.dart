@@ -145,6 +145,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "recentSearches":
             MessageLookupByLibrary.simpleMessage("Recent searches"),
+        "removeAuthorize": MessageLookupByLibrary.simpleMessage("Deauthorize"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "selectFromAddressBook":
