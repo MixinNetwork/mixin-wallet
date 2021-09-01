@@ -27,13 +27,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(value) => "注意：地址和 Memo(标签)同时使用才能充值 ${value} 到 Mixin。";
 
-  static String m6(value) => "该充值地址仅支持 ${value}.";
+  static String m6(value) => "首次充值至少 ${value}";
 
-  static String m7(value, value2) => "${value}/${value2} 区块确认数";
+  static String m7(value) => "该充值地址仅支持 ${value}.";
 
-  static String m8(value) => "价值 ${value}";
+  static String m8(value, value2) => "${value}/${value2} 区块确认数";
 
-  static String m9(value) => "当时价值 ${value}";
+  static String m9(value) => "价值 ${value}";
+
+  static String m10(value) => "当时价值 ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -83,7 +85,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
         "depositConfirmation": m4,
         "depositNotice": m5,
-        "depositTip": m6,
+        "depositReserve": m6,
+        "depositTip": m7,
         "depositTipBtc":
             MessageLookupByLibrary.simpleMessage("该充值地址仅支持 BTC 和 Omni USDT。"),
         "depositTipEos": MessageLookupByLibrary.simpleMessage(
@@ -119,7 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "none": MessageLookupByLibrary.simpleMessage("暂无价格"),
         "other": MessageLookupByLibrary.simpleMessage("其他"),
-        "pendingConfirmations": m7,
+        "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),
         "rebate": MessageLookupByLibrary.simpleMessage("退款"),
@@ -151,10 +154,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "transfer": MessageLookupByLibrary.simpleMessage("转账"),
         "undo": MessageLookupByLibrary.simpleMessage("撤销"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),
-        "walletTransactionCurrentValue": m8,
+        "walletTransactionCurrentValue": m9,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),
-        "walletTransactionThatTimeValue": m9,
+        "walletTransactionThatTimeValue": m10,
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),
         "withdrawalMemoHint": MessageLookupByLibrary.simpleMessage("备注 (可选)")
       };

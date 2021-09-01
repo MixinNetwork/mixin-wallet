@@ -16,6 +16,7 @@
   "depositTipEos": "This address supports all base on EOS tokens, such as EOS, IQ, BLACK, OCT, KARMA, etc.",
   "depositTipTron": "This address supports all TRC-10 and TRC-20 tokens, such as TRX, BTT, USDT-TRON, etc.",
   "depositConfirmation": "Deposit will arrive after at least {value} block confirmations",
+  "depositReserve": "Deposit at least {value} for the first time",
   "averageArrival": "Average arrival time:{value}",
   "noTransaction": "NO TRANSACTION",
   "withdrawal": "Withdrawal",

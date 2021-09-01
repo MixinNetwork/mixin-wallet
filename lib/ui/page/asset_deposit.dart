@@ -151,6 +151,11 @@ class _AssetDepositBody extends HookWidget {
         _DepositDescriptionTile(
           text: context.l10n.depositConfirmation(asset.confirmations),
         ),
+        const SizedBox(height: 8),
+        if (asset.needShowReserve)
+          _DepositDescriptionTile(
+              text: context.l10n
+                  .depositReserve('${asset.reserve} ${asset.symbol}')),
         const SizedBox(height: 32),
       ],
     );
