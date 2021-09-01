@@ -234,7 +234,7 @@ class _Header extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 12),
+              padding: const EdgeInsets.only(top: 4),
               child: Text(
                 currentCurrencyNumberFormat.currencySymbol,
                 style: TextStyle(
