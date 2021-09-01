@@ -31,7 +31,7 @@ class SearchAssetBottomSheet extends HookWidget {
       height: MediaQuery.of(context).size.height - 100,
       child: Column(
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 8),
             child: SearchHeaderWidget(
@@ -39,7 +39,7 @@ class SearchAssetBottomSheet extends HookWidget {
               onChanged: keywordStreamController.add,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 8),
           Expanded(
             child: IndexedStack(
               index: hasKeyword ? 1 : 0,
@@ -125,7 +125,7 @@ class _SubTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 22),
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 8),
         child: Text(
           title,
           style: const TextStyle(
@@ -192,58 +192,71 @@ class _Item extends StatelessWidget {
   final bool replaceHistory;
 
   @override
-  Widget build(BuildContext context) => Material(
-      color: context.theme.background,
-      child: InkWell(
-        onTap: () {
-          if (replaceHistory) {
-            putSearchAssetHistory(data.assetId);
-          }
-          context.push(assetDetailPath.toUri({'id': data.assetId}));
-        },
-        child: Container(
-          height: 70,
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            children: [
-              const SizedBox(width: 20),
-              SymbolIconWithBorder(
-                symbolUrl: data.iconUrl,
-                chainUrl: data.chainIconUrl,
-                size: 44,
-                chainSize: 10,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      data.symbol.overflow,
-                      style: TextStyle(
-                        color: context.theme.text,
-                        fontSize: 16,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      data.name.overflow,
-                      style: TextStyle(
-                        color: context.theme.secondaryText,
-                        fontSize: 14,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+  Widget build(BuildContext context) {
+    void onTap() {
+      if (replaceHistory) {
+        putSearchAssetHistory(data.assetId);
+      }
+      context.push(assetDetailPath.toUri({'id': data.assetId}));
+    }
+
+    return Material(
+        color: context.theme.background,
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            height: 72,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              children: [
+                const SizedBox(width: 20),
+                SymbolIconWithBorder(
+                  symbolUrl: data.iconUrl,
+                  chainUrl: data.chainIconUrl,
+                  size: 40,
+                  chainSize: 14,
+                  chainBorder: BorderSide(
+                    color: context.colorScheme.background,
+                    width: 1.5,
+                  ),
                 ),
-              ),
-              AssetPrice(data: data),
-              const SizedBox(width: 20),
-            ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SelectableText(
+                        data.symbol.overflow,
+                        style: TextStyle(
+                          color: context.theme.text,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        maxLines: 1,
+                        onTap: onTap,
+                        enableInteractiveSelection: false,
+                      ),
+                      SelectableText(
+                        data.name.overflow,
+                        style: TextStyle(
+                          color: context.theme.secondaryText,
+                          fontSize: 14,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        maxLines: 1,
+                        onTap: onTap,
+                        enableInteractiveSelection: false,
+                      ),
+                    ],
+                  ),
+                ),
+                AssetPrice(data: data),
+                const SizedBox(width: 20),
+              ],
+            ),
           ),
-        ),
-      ));
+        ));
+  }
 }
