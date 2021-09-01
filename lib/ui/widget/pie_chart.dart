@@ -28,6 +28,7 @@ class PieChart extends StatelessWidget {
 
   final List<PieChartItem> items;
 
+  /// Do not support Transparent color yet.
   final Color? dividerColor;
 
   /// Do not support Transparent color yet.
@@ -37,7 +38,7 @@ class PieChart extends StatelessWidget {
   Widget build(BuildContext context) => RepaintBoundary(
         child: _RawPieChart(
           items: items,
-          dividerColor: dividerColor ?? Colors.transparent,
+          dividerColor: dividerColor ?? context.colorScheme.background,
           centerCircleColor:
               centerCircleColor ?? context.colorScheme.background,
         ),
@@ -151,7 +152,7 @@ class _AssetsPieChartRender extends RenderBox {
     final pieRadius = size.width / 2;
     final centerRadius = centerCircleRadius ?? pieRadius / 2;
 
-    final dividerAngle = itemDivider / (pieRadius + centerRadius) * 2;
+    final dividerAngle = itemDivider / centerRadius * 2;
 
     final total = items.fold<double>(
         0.0, (previousValue, element) => previousValue + element.amount);
@@ -160,14 +161,19 @@ class _AssetsPieChartRender extends RenderBox {
 
     var startAngle = -1 / 2 * math.pi;
     final rect = Offset.zero & size;
+    final dividerAngles = List.filled(items.length, 0.0);
     for (var i = 0; i < items.length; i++) {
       final item = items[i];
       final sweepAngle = (item.amount / total) * dataTotalAngel;
       _dataPainter.color = item.color;
-      canvas
-        ..drawArc(rect, startAngle, sweepAngle, true, _dataPainter)
-        ..drawArc(
-            rect, startAngle + sweepAngle, dividerAngle, true, _dividerPainter);
+      canvas.drawArc(
+        rect,
+        startAngle,
+        sweepAngle + dividerAngle,
+        true,
+        _dataPainter,
+      );
+      dividerAngles[i] = startAngle + sweepAngle + dividerAngle;
       startAngle += sweepAngle + dividerAngle;
     }
 
@@ -177,6 +183,15 @@ class _AssetsPieChartRender extends RenderBox {
         ..style = PaintingStyle.fill;
       canvas.drawCircle(
           Offset(pieRadius, pieRadius), centerRadius, centerPaint);
+    }
+
+    final center = rect.center;
+    _dividerPainter.strokeWidth = itemDivider;
+
+    for (final angle in dividerAngles) {
+      final x = center.dx + pieRadius * math.cos(angle);
+      final y = center.dy + pieRadius * math.sin(angle);
+      canvas.drawLine(center, Offset(x, y), _dividerPainter);
     }
   }
 }
