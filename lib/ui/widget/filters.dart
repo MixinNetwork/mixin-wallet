@@ -29,7 +29,7 @@ class FilterWidget<T> extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         border: selected
             ? Border.all(color: context.colorScheme.background)
-            : Border.all(color: context.colorScheme.surface),
+            : Border.all(color: context.colorScheme.captionIcon),
       ),
       constraints: const BoxConstraints(minWidth: 70),
       child: Material(
