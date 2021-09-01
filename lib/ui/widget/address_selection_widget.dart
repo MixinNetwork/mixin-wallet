@@ -228,10 +228,10 @@ class AddressSelectionItemTile extends StatelessWidget {
                 children: [
                   DefaultTextStyle(
                     style: TextStyle(
-                        color: context.theme.text,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        height: 1.4),
+                      color: context.theme.text,
+                      fontSize: 16,
+                      height: 1.4,
+                    ),
                     child: title,
                   ),
                   const SizedBox(height: 4),
