@@ -137,7 +137,7 @@ class _Item extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      asset.symbol.overflow,
+                      asset.name.overflow,
                       style: TextStyle(
                         color: context.theme.text,
                         fontSize: 16,

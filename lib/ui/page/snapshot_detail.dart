@@ -187,7 +187,7 @@ class _ValuesDescription extends HookWidget {
       style: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w600,
-        color: context.colorScheme.primaryText,
+        color: context.colorScheme.thirdText,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

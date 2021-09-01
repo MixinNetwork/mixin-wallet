@@ -210,6 +210,7 @@ class _ChartDescriptionTile extends StatelessWidget {
             style: TextStyle(
               fontSize: 12,
               color: context.colorScheme.primaryText,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(width: 8),

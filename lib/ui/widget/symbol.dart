@@ -14,7 +14,7 @@ class SymbolIconWithBorder extends StatelessWidget {
     required this.size,
     required this.chainSize,
     this.chainBorder = const BorderSide(color: Colors.white, width: 1),
-    this.symbolBorder = const BorderSide(color: Colors.white, width: 2),
+    this.symbolBorder = BorderSide.none,
   }) : super(key: key);
 
   final String symbolUrl;
@@ -24,7 +24,6 @@ class SymbolIconWithBorder extends StatelessWidget {
 
   final BorderSide chainBorder;
 
-  // TODO(bin) Remove symbolBorder.
   final BorderSide symbolBorder;
 
   @override
@@ -34,12 +33,18 @@ class SymbolIconWithBorder extends StatelessWidget {
           children: [
             Positioned.fill(
               child: Container(
-                decoration: const BoxDecoration(shape: BoxShape.circle),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.symmetric(
+                    vertical: symbolBorder,
+                    horizontal: symbolBorder,
+                  ),
+                ),
                 child: Image.network(symbolUrl),
               ),
             ),
             Positioned(
-              right: 0,
+              left: 0,
               bottom: 0,
               child: Transform.translate(
                 offset: Offset(chainBorder.width, chainBorder.width),

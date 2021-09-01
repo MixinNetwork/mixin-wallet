@@ -25,13 +25,30 @@ class AssetDeposit extends StatelessWidget {
   const AssetDeposit({Key? key}) : super(key: key);
 
   @override
+  Widget build(BuildContext context) =>
+      _AssetDepositLoader(assetId: context.pathParameters['id']!);
+}
+
+class _DepositScaffold extends StatelessWidget {
+  const _DepositScaffold({
+    Key? key,
+    this.asset,
+    required this.body,
+  }) : super(key: key);
+
+  final AssetResult? asset;
+  final Widget body;
+
+  @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: context.colorScheme.background,
         appBar: MixinAppBar(
           leading: const MixinBackButton2(),
           backgroundColor: context.colorScheme.background,
           title: Text(
-            context.l10n.deposit,
+            asset == null
+                ? context.l10n.deposit
+                : '${context.l10n.deposit} ${asset!.symbol}',
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 18,
@@ -47,7 +64,7 @@ class AssetDeposit extends StatelessWidget {
                 }),
           ],
         ),
-        body: _AssetDepositLoader(assetId: context.pathParameters['id']!),
+        body: body,
       );
 }
 
@@ -84,15 +101,21 @@ class _AssetDepositLoader extends HookWidget {
     ).data;
 
     if (data == null) {
-      return Center(
-        child: SizedBox(
-          width: 18,
-          height: 18,
-          child: CircularProgressIndicator(color: context.colorScheme.surface),
+      return _DepositScaffold(
+        body: Center(
+          child: SizedBox(
+            width: 18,
+            height: 18,
+            child:
+                CircularProgressIndicator(color: context.colorScheme.surface),
+          ),
         ),
       );
     }
-    return _AssetDepositBody(asset: data);
+    return _DepositScaffold(
+      asset: data,
+      body: _AssetDepositBody(asset: data),
+    );
   }
 }
 
@@ -308,18 +331,26 @@ class _QrcodeImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        width: 230,
-        height: 230,
+        width: 200,
+        height: 200,
         child: Stack(
           alignment: Alignment.center,
           children: [
             QrImage(
               data: data,
-              size: 230,
+              size: 200,
             ),
             SymbolIconWithBorder(
               symbolUrl: asset.iconUrl,
               chainUrl: asset.chainIconUrl,
+              symbolBorder: BorderSide(
+                color: context.colorScheme.background,
+                width: 2,
+              ),
+              chainBorder: BorderSide(
+                color: context.colorScheme.background,
+                width: 1.5,
+              ),
               size: 44,
               chainSize: 10,
             ),
