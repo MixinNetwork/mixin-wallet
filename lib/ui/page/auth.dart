@@ -73,11 +73,14 @@ class _AuthBody extends StatelessWidget {
             child: Stack(
               children: [
                 Center(
-                  child: Image.asset(
-                    R.resourcesAuthBgWebp,
-                    fit: BoxFit.cover,
-                    height: 360,
-                    width: 360,
+                  child: Opacity(
+                    opacity: 0.9,
+                    child: Image.asset(
+                      R.resourcesAuthBgWebp,
+                      fit: BoxFit.cover,
+                      height: 360,
+                      width: 360,
+                    ),
                   ),
                 ),
                 Center(

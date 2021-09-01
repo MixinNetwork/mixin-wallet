@@ -371,7 +371,7 @@ class TransferAmountWidget extends HookWidget {
       borderRadius: BorderRadius.circular(13),
       color: context.colorScheme.surface,
       child: SizedBox(
-        height: 72,
+        height: 64,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
           child: Row(
@@ -395,6 +395,7 @@ class TransferAmountWidget extends HookWidget {
                         maxLines: 1,
                         decoration: InputDecoration(
                           isDense: true,
+                          isCollapsed: true,
                           hintText: input.isNotEmpty
                               ? ''
                               : '0.00 ${fiatInputMode.value ? currency : asset.symbol}',

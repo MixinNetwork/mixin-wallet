@@ -189,8 +189,7 @@ class AddressAddWidget extends HookWidget {
                   hint: Text(context.l10n.waitingActionDone),
                 );
                 if (succeed) {
-                  // context.replace(
-                  //     withdrawalAddressesPath.toUri({'id': assetId}));
+                  Navigator.pop(context);
                 }
               },
             ),
