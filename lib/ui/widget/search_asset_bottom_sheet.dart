@@ -170,7 +170,10 @@ class _SearchAssetList extends HookWidget {
               isNetworkSearching.value = false;
             });
           });
-      return listen.cancel;
+      return () {
+        listen.cancel();
+        lastRequest?.cancel();
+      };
     }, [keywordStream]);
 
     final keyword = useMemoizedStream(() => keywordStream.throttleTime(
