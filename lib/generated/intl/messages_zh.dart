@@ -119,6 +119,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkType": MessageLookupByLibrary.simpleMessage("网络类型"),
         "noAddressSelected": MessageLookupByLibrary.simpleMessage("需要选择一个地址"),
         "noAsset": MessageLookupByLibrary.simpleMessage("暂无资产"),
+        "noResult": MessageLookupByLibrary.simpleMessage("无结果"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "none": MessageLookupByLibrary.simpleMessage("暂无价格"),
         "other": MessageLookupByLibrary.simpleMessage("其他"),

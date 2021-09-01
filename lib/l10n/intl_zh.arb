@@ -102,5 +102,6 @@
   "noAsset": "暂无资产",
   "networkType": "网络类型",
   "comingSoon": "即将推出",
-  "removeAuthorize": "取消授权"
+  "removeAuthorize": "取消授权",
+  "noResult": "无结果"
 }

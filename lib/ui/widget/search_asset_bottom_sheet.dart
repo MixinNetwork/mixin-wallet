@@ -1,14 +1,17 @@
 import 'dart:async';
 
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import 'asset.dart';
 import 'search_header_widget.dart';
@@ -145,19 +148,33 @@ class _SearchAssetList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    useEffect(
-      () {
-        final listen = keywordStream
-            .where((event) => event.isNotEmpty)
-            .debounceTime(const Duration(milliseconds: 200))
-            .map(
-              (String keyword) =>
-                  unawaited(context.appServices.searchAndUpdateAsset(keyword)),
-            )
-            .listen((_) {});
-        return listen.cancel;
-      },
-    );
+    final isNetworkSearching = useState(false);
+    useEffect(() {
+      CancelableOperation? lastRequest;
+      final listen = keywordStream
+          .where((event) => event.isNotEmpty)
+          .map((event) {
+            isNetworkSearching.value = true;
+            return event;
+          })
+          .debounceTime(const Duration(milliseconds: 500))
+          .map(
+            (String keyword) => CancelableOperation.fromFuture(
+              context.appServices.searchAndUpdateAsset(keyword),
+            ),
+          )
+          .listen((event) {
+            lastRequest?.cancel();
+            lastRequest = event;
+            event.value.then((_) {
+              isNetworkSearching.value = false;
+            });
+          });
+      return () {
+        listen.cancel();
+        lastRequest?.cancel();
+      };
+    }, [keywordStream]);
 
     final keyword = useMemoizedStream(() => keywordStream.throttleTime(
           const Duration(milliseconds: 100),
@@ -165,11 +182,22 @@ class _SearchAssetList extends HookWidget {
           leading: false,
         )).data;
 
-    final searchList = useMemoizedStream(() {
-          if (keyword?.isEmpty ?? true) return Stream.value(<AssetResult>[]);
-          return context.appServices.searchAssetResults(keyword!).watch();
-        }, keys: [keyword]).data ??
-        [];
+    final searchResult = useMemoizedStream(() {
+      if (keyword?.isEmpty ?? true) return Stream.value(<AssetResult>[]);
+      return context.appServices.searchAssetResults(keyword!).watch();
+    }, keys: [keyword]);
+
+    final searchList = searchResult.data ?? const [];
+
+    if ((searchResult.connectionState != ConnectionState.done &&
+            searchResult.connectionState != ConnectionState.active) ||
+        (searchList.isEmpty && isNetworkSearching.value)) {
+      return const _SearchLoadingLayout();
+    }
+
+    if (searchList.isEmpty) {
+      return const _SearchEmptyLayout();
+    }
 
     return ListView.builder(
       itemCount: searchList.length,
@@ -258,4 +286,58 @@ class _Item extends StatelessWidget {
           ),
         ));
   }
+}
+
+class _SearchEmptyLayout extends StatelessWidget {
+  const _SearchEmptyLayout({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Spacer(flex: 100),
+          Center(
+            child: SvgPicture.asset(
+              R.resourcesEmptyTransactionGreySvg,
+              width: 80,
+              height: 80,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Center(
+            child: Text(
+              context.l10n.noResult,
+              style: TextStyle(
+                color: context.colorScheme.thirdText,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          const Spacer(flex: 164),
+        ],
+      );
+}
+
+class _SearchLoadingLayout extends StatelessWidget {
+  const _SearchLoadingLayout({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Spacer(flex: 100),
+          Center(
+            child: SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(
+                color: context.colorScheme.captionIcon,
+              ),
+            ),
+          ),
+          const Spacer(flex: 164),
+        ],
+      );
 }
