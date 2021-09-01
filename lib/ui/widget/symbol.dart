@@ -28,7 +28,7 @@ class SymbolIconWithBorder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox.square(
-        dimension: size,
+        dimension: size + symbolBorder.width,
         child: Stack(
           children: [
             Positioned.fill(
@@ -47,7 +47,10 @@ class SymbolIconWithBorder extends StatelessWidget {
               left: 0,
               bottom: 0,
               child: Transform.translate(
-                offset: Offset(chainBorder.width, chainBorder.width),
+                offset: Offset(
+                  symbolBorder.width - chainBorder.width,
+                  chainBorder.width - symbolBorder.width,
+                ),
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
