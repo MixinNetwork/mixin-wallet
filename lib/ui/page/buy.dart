@@ -83,12 +83,8 @@ class _BuyBody extends HookWidget {
     final wyreQuote = useState<WyreQuote?>(null);
     final lastQuoteByFiat = useState(true);
 
-    final fiatController = useStreamController<String>();
-    final cryptoController = useStreamController<String>();
     final fiatTextController = useTextEditingController();
     final cryptoTextController = useTextEditingController();
-    final fiatStream = useMemoized(() => fiatController.stream.distinct());
-    final cryptoStream = useMemoized(() => cryptoController.stream.distinct());
     final fiatFocusNode = useFocusNode(debugLabel: 'fiat input');
     final cryptoFocusNode = useFocusNode(debugLabel: 'crypto input');
 
@@ -164,16 +160,24 @@ class _BuyBody extends HookWidget {
       }
     }
 
+    final fiatTextStream = useValueNotifierConvertSteam(fiatTextController);
     useEffect(() {
-      final listen = fiatStream
+      final listen = fiatTextStream
+          .map((event) => event.text)
+          .distinct()
           .debounceTime(const Duration(milliseconds: 500))
           .map((String text) =>
               updateAmount(text, fiatFocusNode, cryptoTextController))
           .listen((_) {});
+
       return listen.cancel;
     });
+
+    final cryptoTextStream = useValueNotifierConvertSteam(cryptoTextController);
     useEffect(() {
-      final listen = cryptoStream
+      final listen = cryptoTextStream
+          .map((event) => event.text)
+          .distinct()
           .debounceTime(const Duration(milliseconds: 500))
           .map((String text) =>
               updateAmount(text, cryptoFocusNode, fiatTextController))
@@ -219,9 +223,9 @@ class _BuyBody extends HookWidget {
             const SizedBox(width: 10),
             Expanded(
                 child: _AmountTextField(
-                    focusNode: fiatFocusNode,
-                    controller: fiatTextController,
-                    onChanged: fiatController.add)),
+              focusNode: fiatFocusNode,
+              controller: fiatTextController,
+            )),
             const SizedBox(width: 20),
           ]),
         ),
@@ -263,9 +267,9 @@ class _BuyBody extends HookWidget {
                 SizedBox(
                     height: 38,
                     child: _AmountTextField(
-                        focusNode: cryptoFocusNode,
-                        controller: cryptoTextController,
-                        onChanged: cryptoController.add)),
+                      focusNode: cryptoFocusNode,
+                      controller: cryptoTextController,
+                    )),
                 const SizedBox(height: 7),
                 Text(
                   '${asset.value.balance} ${context.l10n.balance}',
@@ -314,8 +318,8 @@ class _BuyBody extends HookWidget {
             builder: (context) => _PayButton(
                   enable: wyreQuote.value != null,
                   onTap: () async {
-                    final fiatAmount = await fiatStream.last;
-                    final cryptoAmount = await cryptoStream.last;
+                    final fiatAmount = (await fiatTextStream.last).text;
+                    final cryptoAmount = (await cryptoTextStream.last).text;
                     final redirectUrl =
                         'http://localhost:8001/#/buySuccess?asset=${asset.value.assetId}&fiat=${fiat.value.name}&sourceAmount=$fiatAmount&destAmount=$cryptoAmount';
                     final failureRedirectUrl =
@@ -353,50 +357,36 @@ class _BuyBody extends HookWidget {
   }
 }
 
-class _AmountTextField extends HookWidget {
+class _AmountTextField extends StatelessWidget {
   const _AmountTextField({
     Key? key,
     required this.focusNode,
     required this.controller,
-    required this.onChanged,
   }) : super(key: key);
 
   final FocusNode focusNode;
   final TextEditingController controller;
-  final ValueChanged<String> onChanged;
 
   @override
-  Widget build(BuildContext context) {
-    useEffect(() {
-      void notifyChanged() {
-        onChanged.call(controller.text);
-      }
-
-      controller.addListener(notifyChanged);
-      return () {
-        controller.removeListener(notifyChanged);
-      };
-    }, [controller, onChanged]);
-    return TextField(
-      focusNode: focusNode,
-      style: TextStyle(
-        color: context.colorScheme.primaryText,
-        fontSize: 16,
-        fontWeight: FontWeight.w400,
-      ),
-      maxLines: 1,
-      decoration: const InputDecoration(
-        hintText: '0.000',
-        border: InputBorder.none,
-      ),
-      controller: controller,
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,3}'))
-      ],
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      textAlign: TextAlign.end,
-    );
-  }
+  Widget build(BuildContext context) => TextField(
+        focusNode: focusNode,
+        style: TextStyle(
+          color: context.colorScheme.primaryText,
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+        ),
+        maxLines: 1,
+        decoration: const InputDecoration(
+          hintText: '0.000',
+          border: InputBorder.none,
+        ),
+        controller: controller,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,3}'))
+        ],
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        textAlign: TextAlign.end,
+      );
 }
 
 class _PayButton extends StatelessWidget {
