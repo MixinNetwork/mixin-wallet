@@ -141,7 +141,6 @@ class _Item extends StatelessWidget {
                       style: TextStyle(
                         color: context.theme.text,
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 4),

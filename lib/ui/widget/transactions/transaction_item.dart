@@ -51,9 +51,9 @@ class TransactionItem extends HookWidget {
                   children: [
                     DefaultTextStyle(
                       style: TextStyle(
-                          fontSize: 16,
-                          color: context.colorScheme.primaryText,
-                          fontWeight: FontWeight.w600),
+                        fontSize: 16,
+                        color: context.colorScheme.primaryText,
+                      ),
                       child: TransactionTypeWidget(item: item),
                     ),
                     const Spacer(),

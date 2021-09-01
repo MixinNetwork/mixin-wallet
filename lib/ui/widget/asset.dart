@@ -58,7 +58,6 @@ class AssetWidget extends StatelessWidget {
                             style: TextStyle(
                               color: context.colorScheme.primaryText,
                               fontSize: 16,
-                              fontWeight: FontWeight.w600,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
