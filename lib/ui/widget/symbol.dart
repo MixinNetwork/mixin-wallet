@@ -39,7 +39,7 @@ class SymbolIconWithBorder extends StatelessWidget {
               ),
             ),
             Positioned(
-              right: 0,
+              left: 0,
               bottom: 0,
               child: Transform.translate(
                 offset: Offset(chainBorder.width, chainBorder.width),
