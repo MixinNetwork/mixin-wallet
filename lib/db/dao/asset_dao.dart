@@ -23,6 +23,7 @@ extension AssetConverter on sdk.Asset {
         changeUsd: changeUsd,
         changeBtc: changeBtc,
         confirmations: confirmations,
+        reserve: Value(reserve),
         depositEntries:
             Value(const DepositEntryConverter().mapToSql(depositEntries)),
       );

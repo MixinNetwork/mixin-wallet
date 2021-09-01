@@ -76,6 +76,8 @@ extension AssetResultExtension on AssetResult {
 
   bool get needShowMemo => tag?.isNotEmpty == true;
 
+  bool get needShowReserve => (int.tryParse(reserve ?? '0') ?? 0) > 0;
+
   String getTip(BuildContext context) {
     switch (chainId) {
       case bitcoin:

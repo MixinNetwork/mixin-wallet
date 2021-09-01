@@ -37,7 +37,7 @@ class MixinDatabase extends _$MixinDatabase {
   MixinDatabase.connect(DatabaseConnection c) : super.connect(c);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   final eventBus = DataBaseEventBus();
 

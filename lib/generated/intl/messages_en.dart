@@ -33,13 +33,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m5(value) =>
       "Notice: Both a Memo and an Address are required to successfully deposit your ${value} to Mixin.";
 
-  static String m6(value) => "This address only supports ${value}.";
+  static String m6(value) => "Deposit at least ${value} for the first time";
 
-  static String m7(value, value2) => "${value}/${value2} confirmations";
+  static String m7(value) => "This address only supports ${value}.";
 
-  static String m8(value) => "value now ${value}";
+  static String m8(value, value2) => "${value}/${value2} confirmations";
 
-  static String m9(value) => "value then ${value}";
+  static String m9(value) => "value now ${value}";
+
+  static String m10(value) => "value then ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -94,7 +96,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
         "depositConfirmation": m4,
         "depositNotice": m5,
-        "depositTip": m6,
+        "depositReserve": m6,
+        "depositTip": m7,
         "depositTipBtc": MessageLookupByLibrary.simpleMessage(
             "This address only supports BTC and Omni USDT."),
         "depositTipEos": MessageLookupByLibrary.simpleMessage(
@@ -135,7 +138,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
-        "pendingConfirmations": m7,
+        "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
@@ -176,10 +179,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
-        "walletTransactionCurrentValue": m8,
+        "walletTransactionCurrentValue": m9,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
-        "walletTransactionThatTimeValue": m9,
+        "walletTransactionThatTimeValue": m10,
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
         "withdrawalMemoHint":
             MessageLookupByLibrary.simpleMessage("Memo (Optional)")

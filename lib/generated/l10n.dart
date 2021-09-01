@@ -220,6 +220,16 @@ class L10n {
     );
   }
 
+  /// `Deposit at least {value} for the first time`
+  String depositReserve(Object value) {
+    return Intl.message(
+      'Deposit at least $value for the first time',
+      name: 'depositReserve',
+      desc: '',
+      args: [value],
+    );
+  }
+
   /// `Average arrival time:{value}`
   String averageArrival(Object value) {
     return Intl.message(
