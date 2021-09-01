@@ -164,14 +164,22 @@ class _BuyBody extends HookWidget {
       }
     }
 
-    useMemoizedStream(() => fiatStream
-        .debounceTime(const Duration(milliseconds: 500))
-        .map((String text) =>
-            updateAmount(text, fiatFocusNode, cryptoTextController)));
-    useMemoizedStream(() => cryptoStream
-        .debounceTime(const Duration(milliseconds: 500))
-        .map((String text) =>
-            updateAmount(text, cryptoFocusNode, fiatTextController)));
+    useEffect(() {
+      final listen = fiatStream
+          .debounceTime(const Duration(milliseconds: 500))
+          .map((String text) =>
+              updateAmount(text, fiatFocusNode, cryptoTextController))
+          .listen((_) {});
+      return listen.cancel;
+    });
+    useEffect(() {
+      final listen = cryptoStream
+          .debounceTime(const Duration(milliseconds: 500))
+          .map((String text) =>
+              updateAmount(text, cryptoFocusNode, fiatTextController))
+          .listen((_) {});
+      return listen.cancel;
+    });
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
