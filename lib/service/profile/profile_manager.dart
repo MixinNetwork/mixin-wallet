@@ -46,16 +46,18 @@ List<String> get topAssetIds =>
 void replaceTopAssetIds(List<String> topAssetIds) =>
     profileBox.put('topAssetIds', topAssetIds);
 
-int get _isSmallAssetsHidden =>
-    (profileBox.get('isSmallAssetsHidden') as int?) ?? 0;
+bool get _isSmallAssetsHidden {
+  final ret = profileBox.get('isSmallAssetsHidden');
+  return (ret is bool ? ret : null) ?? false;
+}
 
-set _isSmallAssetsHidden(int value) =>
-    profileBox.put(isSmallAssetsHidden, value);
+set _isSmallAssetsHidden(bool value) =>
+    profileBox.put('isSmallAssetsHidden', value);
 
 late final ValueNotifier<bool> isSmallAssetsHidden = () {
-  final notifier = ValueNotifier(_isSmallAssetsHidden == 1);
+  final notifier = ValueNotifier(_isSmallAssetsHidden);
   notifier.addListener(() {
-    _isSmallAssetsHidden = notifier.value ? 1 : 0;
+    _isSmallAssetsHidden = notifier.value;
   });
   return notifier;
 }();
