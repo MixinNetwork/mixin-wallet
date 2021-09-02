@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:mixin_wallet/ui/page/withdrawal_transactions.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../../service/profile/profile_manager.dart';
@@ -17,6 +16,7 @@ import '../page/snapshot_detail.dart';
 import '../page/transfer.dart';
 import '../page/transfer_transactions.dart';
 import '../page/withdrawal.dart';
+import '../page/withdrawal_transactions.dart';
 
 final homeUri = Uri(path: '/');
 final authUri = Uri(path: '/auth');
