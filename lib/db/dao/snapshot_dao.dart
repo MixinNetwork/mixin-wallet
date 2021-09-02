@@ -107,12 +107,16 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
     int limit = 30,
     bool orderByAmount = false,
     List<String> types = const [],
+    String? opponent,
   }) =>
       db.snapshotItems(
         (s, u, a) {
           Expression<bool?> predicate = a.assetId.equals(assetId);
           if (types.isNotEmpty) {
             predicate &= s.type.isIn(types);
+          }
+          if (opponent != null) {
+            predicate &= s.opponentId.equals(opponent);
           }
           return predicate;
         },

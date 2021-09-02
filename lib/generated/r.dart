@@ -85,6 +85,8 @@ class R {
 
   static const String resourcesSettingSvg = 'resources/setting.svg';
 
+  static const String resourcesTransactionSvg = 'resources/transaction.svg';
+
   static const String resourcesTransactionDepositSvg =
       'resources/transaction_deposit.svg';
 

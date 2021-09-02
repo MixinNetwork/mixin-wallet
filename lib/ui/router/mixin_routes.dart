@@ -14,18 +14,21 @@ import '../page/not_found.dart';
 import '../page/setting.dart';
 import '../page/snapshot_detail.dart';
 import '../page/transfer.dart';
+import '../page/transfer_transactions.dart';
 import '../page/withdrawal.dart';
 
 final homeUri = Uri(path: '/');
 final authUri = Uri(path: '/auth');
 final notFoundUri = Uri(path: '/404');
 const withdrawalPath = '/withdrawal/:id';
+const withdrawalTransactionsPath = '/withdrawal/:id/transactions';
 const assetDetailPath = '/tokens/:id';
 const assetDepositPath = '/tokens/:id/deposit';
 const snapshotDetailPath = '/snapshots/:id';
 final transactionsUri = Uri(path: '/transactions');
 final hiddenAssetsUri = Uri(path: '/hiddenAssets');
 const transferPath = '/transfer/:id';
+const transferTransactionsPath = '/transfer/:id/transactions';
 const settingPath = '/setting';
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
@@ -58,6 +61,13 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     key: const ValueKey('Transfer'),
                     path: transferPath,
                     widget: const Transfer(),
+                    stackedRoutes: [
+                      VWidget(
+                        key: const ValueKey('TransferTransactions'),
+                        path: transferTransactionsPath,
+                        widget: const TransferTransactions(),
+                      ),
+                    ],
                   ),
                   VWidget(
                     key: const ValueKey('AssetDetail'),
