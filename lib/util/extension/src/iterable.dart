@@ -6,6 +6,8 @@ extension IterableExtension<T> on Iterable<T> {
 
   T? get firstOrNull => isEmpty ? null : first;
 
+  T? get lastOrNull => isEmpty ? null : last;
+
   Iterable<T> separated(T toInsert) sync* {
     var i = 0;
     for (final item in this) {

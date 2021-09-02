@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:mixin_wallet/ui/page/withdrawal_transactions.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../../service/profile/profile_manager.dart';
@@ -53,10 +54,16 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                 widget: const Home(),
                 stackedRoutes: [
                   VWidget(
-                    key: const ValueKey('Withdrawal'),
-                    path: withdrawalPath,
-                    widget: const Withdrawal(),
-                  ),
+                      key: const ValueKey('Withdrawal'),
+                      path: withdrawalPath,
+                      widget: const Withdrawal(),
+                      stackedRoutes: [
+                        VWidget(
+                          key: const ValueKey('WithdrawalTransactions'),
+                          path: withdrawalTransactionsPath,
+                          widget: const WithdrawalTransactions(),
+                        )
+                      ]),
                   VWidget(
                     key: const ValueKey('Transfer'),
                     path: transferPath,

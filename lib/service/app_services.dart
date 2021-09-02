@@ -200,7 +200,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     });
   }
 
-  Future<void> updateSnapshots({
+  Future<List<SnapshotItem>> getSnapshots({
     required String assetId,
     String? offset,
     int limit = 30,
@@ -224,13 +224,15 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
     final insertUsers = await _checkUsersExistWithReturnInsert(
         response.data.map((e) => e.opponentId).whereNotNull().toList());
-
-    await mixinDatabase.transaction(() async {
+    return mixinDatabase.transaction(() async {
       await Future.wait([
         mixinDatabase.snapshotDao.insertAll(response.data),
         insertUsers?.call(),
         insertAsset?.call(),
       ].where((element) => element != null).cast<Future>());
+      return mixinDatabase.snapshotDao
+          .snapshotsByIds(response.data.map((e) => e.snapshotId).toList())
+          .get();
     });
   }
 
