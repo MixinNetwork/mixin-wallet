@@ -4,9 +4,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
+import '../../generated/r.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../router/mixin_routes.dart';
+import '../widget/action_button.dart';
 import '../widget/buttons.dart';
 import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
@@ -74,7 +77,26 @@ class _WithdrawalPage extends HookWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        // TODO asset transactions action
+        actions: [
+          ActionButton(
+            name: R.resourcesTransactionSvg,
+            size: 24,
+            onTap: () {
+              final addressValue = address.value;
+              if (addressValue == null) {
+                return;
+              }
+              context.push(
+                withdrawalTransactionsPath.toUri({'id': asset.assetId}).replace(
+                  queryParameters: {
+                    'destination': addressValue.destination,
+                    'tag': addressValue.tag
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),

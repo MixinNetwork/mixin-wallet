@@ -172,7 +172,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .insertAll(users.data.map((user) => user.toDbUser()).toList());
   }
 
-  Future<void> updateSnapshots(
+  Future<void> updateAssetSnapshots(
     String assetId, {
     String? offset,
     int limit = 30,
@@ -197,6 +197,42 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         insertUsers?.call(),
         insertAsset?.call(),
       ].where((element) => element != null).cast<Future>());
+    });
+  }
+
+  Future<List<SnapshotItem>> getSnapshots({
+    required String assetId,
+    String? offset,
+    int limit = 30,
+    String? opponent,
+    String? destination,
+    String? tag,
+  }) async {
+    final result = await Future.wait([
+      client.snapshotApi.getSnapshots(
+        assetId: assetId,
+        offset: offset,
+        limit: limit,
+        opponent: opponent,
+        destination: destination,
+        tag: tag,
+      ),
+      _checkAssetExistWithReturnInsert(assetId),
+    ]);
+    final response = result[0]! as sdk.MixinResponse<List<sdk.Snapshot>>;
+    final insertAsset = result[1] as Future<void> Function()?;
+
+    final insertUsers = await _checkUsersExistWithReturnInsert(
+        response.data.map((e) => e.opponentId).whereNotNull().toList());
+    return mixinDatabase.transaction(() async {
+      await Future.wait([
+        mixinDatabase.snapshotDao.insertAll(response.data),
+        insertUsers?.call(),
+        insertAsset?.call(),
+      ].where((element) => element != null).cast<Future>());
+      return mixinDatabase.snapshotDao
+          .snapshotsByIds(response.data.map((e) => e.snapshotId).toList())
+          .get();
     });
   }
 
@@ -332,6 +368,15 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     } catch (e) {
       d('update friends failed: $e');
     }
+  }
+
+  Future<User?> getUserById(String id) async {
+    if (id.isEmpty) {
+      return null;
+    }
+    final cb = await _checkUsersExistWithReturnInsert([id]);
+    await cb?.call();
+    return mixinDatabase.userDao.userById(id).getSingleOrNull();
   }
 
   @override

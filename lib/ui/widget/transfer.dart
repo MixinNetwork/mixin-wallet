@@ -324,7 +324,9 @@ class TransferAmountWidget extends HookWidget {
       }
     }, [asset.priceUsd.isZero]);
 
-    final controller = useTextEditingController();
+    final controller = useTextEditingController.fromValue(
+      TextEditingValue(text: amount.value),
+    );
     final input = useValueListenable(controller).text;
 
     final currency = auth!.account.fiatCurrency;
@@ -460,13 +462,18 @@ class TransferMemoWidget extends HookWidget {
   const TransferMemoWidget({
     Key? key,
     required this.onMemoInput,
+    this.initialValue = '',
   }) : super(key: key);
 
   final void Function(String) onMemoInput;
 
+  final String initialValue;
+
   @override
   Widget build(BuildContext context) {
-    final inputController = useTextEditingController();
+    final inputController = useTextEditingController.fromValue(TextEditingValue(
+      text: initialValue,
+    ));
     useEffect(() {
       void onTextChanged() {
         onMemoInput(inputController.text.trim());

@@ -139,7 +139,7 @@ class _AssetDetailBody extends StatelessWidget {
   Widget build(BuildContext context) => TransactionListBuilder(
         key: ValueKey(filter),
         refreshSnapshots: (offset, limit) => context.appServices
-            .updateSnapshots(asset.assetId, offset: offset, limit: limit),
+            .updateAssetSnapshots(asset.assetId, offset: offset, limit: limit),
         loadMoreItemDb: (offset, limit) => context.mixinDatabase.snapshotDao
             .snapshots(asset.assetId,
                 offset: offset,
