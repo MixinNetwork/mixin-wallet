@@ -83,7 +83,7 @@ class AssetsAnalysisChartLayout extends HookWidget {
             height: 64,
             child: PieChart(items: assetChartItems),
           ),
-          const SizedBox(width: 24),
+          const SizedBox(width: 20),
           _PieChartLegend(chartItems: assetChartItems),
         ],
       ),
@@ -104,13 +104,13 @@ class _PieChartLegend extends HookWidget {
 
       final percents = List.filled(chartItems.length, 0);
 
-      var remainPercent = 10000;
+      var remainPercent = 1000;
       for (var i = 0; i < chartItems.length; i++) {
         final item = chartItems[i];
         if (item.amount == 0) {
           percents[i] = 0;
         } else {
-          final percent = ((item.amount / totalAmount) * 10000).round();
+          final percent = ((item.amount / totalAmount) * 1000).round();
           remainPercent -= percent;
           percents[i] = percent;
         }
@@ -155,7 +155,7 @@ class _PieChartLegend extends HookWidget {
               ),
             ],
           ),
-          const SizedBox(width: 24),
+          const SizedBox(width: 20),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -215,7 +215,7 @@ class _ChartDescriptionTile extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            '${percent / 100}%',
+            '${percent / 10}%',
             style: TextStyle(
               fontSize: 12,
               color: context.colorScheme.thirdText,
