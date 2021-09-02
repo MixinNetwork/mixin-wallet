@@ -48,9 +48,12 @@ class _Body extends StatelessWidget {
       loadMoreItemDb: (offset, limit) => context.mixinDatabase.snapshotDao
           .snapshots(assetId, offset: offset, limit: limit, opponent: opponent)
           .get(),
-      refreshSnapshots: (offset, limit) => context
-          .appServices.client.snapshotApi
-          .getSnapshots(assetId: assetId, opponent: opponent, offset: offset),
+      refreshSnapshots: (offset, limit) => context.appServices.getSnapshots(
+        assetId: assetId,
+        opponent: opponent,
+        offset: offset,
+        limit: limit,
+      ),
       builder: (context, snapshots) {
         if (snapshots.isEmpty) {
           return const EmptyTransaction();
