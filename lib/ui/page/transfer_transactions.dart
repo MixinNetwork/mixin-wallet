@@ -15,7 +15,7 @@ class TransferTransactions extends StatelessWidget {
         appBar: MixinAppBar(
           leading: const MixinBackButton2(),
           title: Text(
-            context.l10n.allTransactions,
+            context.l10n.transactions,
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 18,
