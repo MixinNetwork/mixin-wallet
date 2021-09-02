@@ -125,11 +125,14 @@ class _Item extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: Row(children: [
               SymbolIconWithBorder(
-                symbolUrl: asset.iconUrl,
-                chainUrl: asset.chainIconUrl,
-                size: 44,
-                chainSize: 10,
-              ),
+                  symbolUrl: asset.iconUrl,
+                  chainUrl: asset.chainIconUrl,
+                  size: 40,
+                  chainSize: 14,
+                  chainBorder: BorderSide(
+                    color: context.colorScheme.background,
+                    width: 1,
+                  )),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
