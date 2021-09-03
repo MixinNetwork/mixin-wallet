@@ -127,7 +127,6 @@ class _AssetDepositBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final depositEntry = useState<DepositEntry?>(null);
-    final dialogShown = useState(false);
     final showWarning = useState(false);
 
     useEffect(() {
@@ -147,7 +146,10 @@ class _AssetDepositBody extends HookWidget {
       [asset.depositEntries],
     );
 
-    if (!dialogShown.value && tag != null && tag.isNotEmpty) {
+    useMemoized(() {
+      if (tag == null || tag.isEmpty) {
+        return;
+      }
       Future.delayed(
           Duration.zero,
           () => showDialog(
@@ -161,8 +163,7 @@ class _AssetDepositBody extends HookWidget {
                       showWarning.value = true;
                     });
                   })));
-      dialogShown.value = true;
-    }
+    });
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
