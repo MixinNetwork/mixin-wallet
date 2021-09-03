@@ -69,18 +69,20 @@ class _WithdrawalPage extends HookWidget {
       appBar: MixinAppBar(
         leading: const MixinBackButton2(),
         backgroundColor: context.colorScheme.background,
-        title: Text(
+        title: SelectableText(
           context.l10n.sendToAddress,
           style: TextStyle(
             color: context.colorScheme.primaryText,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
+          enableInteractiveSelection: false,
         ),
         actions: [
           ActionButton(
             name: R.resourcesTransactionSvg,
             size: 24,
+            enable: address.value != null,
             onTap: () {
               final addressValue = address.value;
               if (addressValue == null) {

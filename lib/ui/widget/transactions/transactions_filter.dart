@@ -78,6 +78,7 @@ class _SortBottomSheetDialog extends HookWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           MixinBottomSheetTitle(
             title: Text(context.l10n.filterTitle),
@@ -90,7 +91,6 @@ class _SortBottomSheetDialog extends HookWidget {
           const SizedBox(height: 72),
           Center(
             child: _Button(
-              text: Text(context.l10n.filterApply),
               onTap: () {
                 Navigator.pop(context, sortBy.value);
               },
@@ -139,7 +139,6 @@ class _FilterBottomSheetDialog extends HookWidget {
               const Spacer(),
               Center(
                 child: _Button(
-                  text: Text(context.l10n.filterApply),
                   onTap: () {
                     Navigator.pop(
                         context,
@@ -271,11 +270,9 @@ class _FilterBySection extends StatelessWidget {
 class _Button extends StatelessWidget {
   const _Button({
     Key? key,
-    required this.text,
     required this.onTap,
   }) : super(key: key);
 
-  final Widget text;
   final VoidCallback onTap;
 
   @override
@@ -297,7 +294,11 @@ class _Button extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
-          child: text,
+          child: SelectableText(
+            context.l10n.filterApply,
+            onTap: onTap,
+            enableInteractiveSelection: false,
+          ),
         ),
       );
 }

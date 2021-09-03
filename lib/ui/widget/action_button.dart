@@ -10,6 +10,7 @@ class ActionButton extends StatelessWidget {
     this.padding = const EdgeInsets.all(8),
     this.size = 24,
     this.color,
+    this.enable = true,
     Key? key,
   })  : assert(name != null || child != null),
         super(key: key);
@@ -21,6 +22,8 @@ class ActionButton extends StatelessWidget {
   final double size;
   final Color? color;
 
+  final bool enable;
+
   @override
   Widget build(BuildContext context) {
     var _child = child;
@@ -30,6 +33,15 @@ class ActionButton extends StatelessWidget {
         width: size,
         height: size,
         color: color,
+      );
+    }
+    if (!enable) {
+      return Opacity(
+        opacity: 0.1,
+        child: Padding(
+          padding: padding,
+          child: _child,
+        ),
       );
     }
     return InkResponse(

@@ -83,13 +83,14 @@ class _TransferScaffold extends StatelessWidget {
         appBar: MixinAppBar(
           leading: const MixinBackButton2(),
           backgroundColor: context.colorScheme.background,
-          title: Text(
+          title: SelectableText(
             context.l10n.sendToContact,
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
+            enableInteractiveSelection: false,
           ),
           actions: [
             ActionButton(

@@ -96,13 +96,14 @@ class _AssetDetailPage extends StatelessWidget {
         backgroundColor: context.colorScheme.background,
         appBar: MixinAppBar(
           backgroundColor: context.colorScheme.background,
-          title: Text(
+          title: SelectableText(
             asset.name,
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
+            enableInteractiveSelection: false,
           ),
           leading: const MixinBackButton2(),
           actions: [
@@ -250,22 +251,22 @@ class _HeaderButtonBar extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 38),
         child: HeaderButtonBarLayout(buttons: [
-          HeaderButton(
-            child: Text(context.l10n.send),
+          HeaderButton.text(
+            text: context.l10n.send,
             onTap: () => showTransferRouterBottomSheet(
               context: context,
               assetId: asset.assetId,
             ),
           ),
-          HeaderButton(
-            child: Text(context.l10n.receive),
+          HeaderButton.text(
+            text: context.l10n.receive,
             onTap: () {
               lastSelectedAddress = asset.assetId;
               context.push(assetDepositPath.toUri({'id': asset.assetId}));
             },
           ),
-          HeaderButton(
-            child: Text(context.l10n.buy),
+          HeaderButton.text(
+            text: context.l10n.buy,
             onTap: () {
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
@@ -274,8 +275,8 @@ class _HeaderButtonBar extends StatelessWidget {
                 );
             },
           ),
-          HeaderButton(
-            child: Text(context.l10n.swap),
+          HeaderButton.text(
+            text: context.l10n.swap,
             onTap: () {
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()

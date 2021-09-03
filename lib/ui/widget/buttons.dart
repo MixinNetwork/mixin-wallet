@@ -97,6 +97,19 @@ class HeaderButton extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
+  factory HeaderButton.text({
+    required String text,
+    required VoidCallback onTap,
+  }) =>
+      HeaderButton(
+        onTap: onTap,
+        child: SelectableText(
+          text,
+          onTap: onTap,
+          enableInteractiveSelection: false,
+        ),
+      );
+
   final Widget child;
   final VoidCallback onTap;
 

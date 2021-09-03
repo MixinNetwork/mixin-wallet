@@ -21,13 +21,14 @@ class SnapshotDetail extends StatelessWidget {
         appBar: MixinAppBar(
           backgroundColor: context.colorScheme.background,
           leading: const MixinBackButton2(),
-          title: Text(
+          title: SelectableText(
             context.l10n.transactions,
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
+            enableInteractiveSelection: false,
           ),
         ),
         backgroundColor: context.colorScheme.background,

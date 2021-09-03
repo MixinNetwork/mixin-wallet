@@ -123,7 +123,7 @@ class EmptyTransaction extends StatelessWidget {
           const Spacer(flex: 100),
           Center(
             child: SvgPicture.asset(
-              R.resourcesEmptyTransactionSvg,
+              R.resourcesEmptyTransactionGreySvg,
               width: 52,
               height: 68,
             ),
