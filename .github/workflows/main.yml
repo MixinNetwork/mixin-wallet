@@ -54,7 +54,7 @@ jobs:
         run: sed -i -- "s/BUILD_VERSION/`git rev-parse HEAD`/g" web/index.html || exit
 
       - name: Build APP
-        run: flutter build web --web-renderer html --release
+        run: flutter build web --web-renderer html --release --base-href /mixin-wallet/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
