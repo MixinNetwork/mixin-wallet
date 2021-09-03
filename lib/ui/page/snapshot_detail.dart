@@ -247,7 +247,16 @@ class _TransactionDetailInfo extends StatelessWidget {
             _To(snapshot: snapshot, asset: asset),
             _TransactionInfoTile(
               title: Text(context.l10n.memo.toUpperCase()),
-              subtitle: SelectableText(snapshot.memo ?? ''),
+              subtitle: Builder(builder: (context) {
+                final emptyMemo = snapshot.memo?.isEmpty != false;
+                return SelectableText(
+                  emptyMemo ? '-' : snapshot.memo ?? '-',
+                  enableInteractiveSelection: !emptyMemo,
+                  style: TextStyle(
+                    color: emptyMemo ? context.colorScheme.thirdText : null,
+                  ),
+                );
+              }),
             ),
             _TransactionInfoTile(
               title: Text(context.l10n.time.toUpperCase()),
