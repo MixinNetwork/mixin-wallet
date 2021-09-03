@@ -50,8 +50,11 @@ jobs:
       - name: Run tests
         run: flutter test --no-sound-null-safety
 
+      - name: Version
+        run: sed -i -- "s/BUILD_VERSION/`git rev-parse HEAD`/g" web/index.html || exit
+
       - name: Build APP
-        run: flutter build web
+        run: flutter build web --web-renderer html --release
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
