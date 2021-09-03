@@ -187,12 +187,14 @@ class _AssetDepositBody extends HookWidget {
         const SizedBox(height: 8),
         _DepositDescriptionTile(
           text: context.l10n.depositConfirmation(asset.confirmations),
+          highlight: asset.confirmations.toString(),
         ),
         const SizedBox(height: 8),
         if (asset.needShowReserve)
           _DepositDescriptionTile(
               text: context.l10n
-                  .depositReserve('${asset.reserve} ${asset.symbol}')),
+                  .depositReserve('${asset.reserve} ${asset.symbol}'),
+              highlight: '${asset.reserve} ${asset.symbol}'),
         const SizedBox(height: 32),
       ],
     );
@@ -485,9 +487,11 @@ class _DepositDescriptionTile extends StatelessWidget {
   const _DepositDescriptionTile({
     Key? key,
     required this.text,
+    this.highlight,
   }) : super(key: key);
 
   final String text;
+  final String? highlight;
 
   @override
   Widget build(BuildContext context) => Row(
@@ -504,14 +508,19 @@ class _DepositDescriptionTile extends StatelessWidget {
           ),
           const SizedBox(width: 6),
           Expanded(
-            child: SelectableText(
-              text,
-              style: TextStyle(
+              child: SelectableText.rich(
+            text.highlight(
+              TextStyle(
                 color: context.colorScheme.thirdText,
                 fontSize: 14,
               ),
+              highlight,
+              TextStyle(
+                  color: context.colorScheme.primaryText,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
             ),
-          ),
+          )),
         ],
       );
 }
