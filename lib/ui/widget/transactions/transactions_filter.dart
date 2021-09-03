@@ -20,6 +20,15 @@ Future<SnapshotFilter?> showFilterBottomSheetDialog(
       isScrollControlled: true,
     );
 
+Future<SortBy?> showFilterSortBottomSheetDialog(
+  BuildContext context, {
+  required SortBy initial,
+}) =>
+    showMixinBottomSheet<SortBy>(
+      context: context,
+      builder: (context) => _SortBottomSheetDialog(initial: initial),
+    );
+
 enum SortBy { time, amount }
 enum FilterBy { all, transfer, deposit, withdrawal, fee, rebate, raw }
 
@@ -52,6 +61,46 @@ class SnapshotFilter extends Equatable {
 
   @override
   List<Object?> get props => [sortBy, filterBy];
+}
+
+class _SortBottomSheetDialog extends HookWidget {
+  const _SortBottomSheetDialog({
+    Key? key,
+    required this.initial,
+  }) : super(key: key);
+
+  final SortBy initial;
+
+  @override
+  Widget build(BuildContext context) {
+    final sortBy = useState(initial);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          MixinBottomSheetTitle(
+            title: Text(context.l10n.filterTitle),
+            padding: EdgeInsets.zero,
+          ),
+          const SizedBox(height: 10),
+          _FilterSectionTitle(context.l10n.sortBy),
+          const SizedBox(height: 20),
+          _SortBySection(sortBy),
+          const SizedBox(height: 72),
+          Center(
+            child: _Button(
+              text: Text(context.l10n.filterApply),
+              onTap: () {
+                Navigator.pop(context, sortBy.value);
+              },
+            ),
+          ),
+          const SizedBox(height: 32),
+        ],
+      ),
+    );
+  }
 }
 
 class _FilterBottomSheetDialog extends HookWidget {

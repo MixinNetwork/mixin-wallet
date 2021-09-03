@@ -115,8 +115,8 @@ class _AuthBody extends StatelessWidget {
                   context.l10n.authSlogan,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 14,
-                    color: context.colorScheme.secondaryText,
+                    fontSize: 16,
+                    color: context.colorScheme.primaryText.withOpacity(0.5),
                     height: 1.25,
                   ),
                   enableInteractiveSelection: false,

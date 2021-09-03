@@ -72,18 +72,21 @@ class Home extends HookWidget {
     return Scaffold(
       backgroundColor: context.theme.background,
       appBar: MixinAppBar(
-        leading: Center(
-          child: InkResponse(
-            radius: 24,
-            onTap: () => showMixinBottomSheet(
-              context: context,
-              builder: (context) => const _AccountBottomSheet(),
-            ),
-            child: Avatar(
-              avatarUrl: account.avatarUrl,
-              userId: account.userId,
-              name: account.fullName ?? '',
-              size: 32,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: Center(
+            child: InkResponse(
+              radius: 24,
+              onTap: () => showMixinBottomSheet(
+                context: context,
+                builder: (context) => const _AccountBottomSheet(),
+              ),
+              child: Avatar(
+                avatarUrl: account.avatarUrl,
+                userId: account.userId,
+                name: account.fullName ?? '',
+                size: 32,
+              ),
             ),
           ),
         ),
@@ -489,7 +492,7 @@ class _AccountBottomSheet extends StatelessWidget {
             context.replace(authUri.path);
           },
         ),
-        const SizedBox(height: 120),
+        const SizedBox(height: 100),
       ],
     );
   }
