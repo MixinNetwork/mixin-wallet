@@ -628,8 +628,10 @@ class _NetworkTypeItem extends StatelessWidget {
           constraints: const BoxConstraints(minWidth: 64),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: Text(
+            child: SelectableText(
               name,
+              enableInteractiveSelection: false,
+              onTap: onTap,
               style: TextStyle(
                 fontSize: 14,
                 color: selected

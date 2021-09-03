@@ -297,12 +297,12 @@ class _ButtonBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: HeaderButtonBarLayout(
           buttons: [
-            HeaderButton(
-              child: Text(context.l10n.send),
+            HeaderButton.text(
+              text: context.l10n.send,
               onTap: () => showTransferRouterBottomSheet(context: context),
             ),
-            HeaderButton(
-              child: Text(context.l10n.receive),
+            HeaderButton.text(
+              text: context.l10n.receive,
               onTap: () async {
                 final asset = await showAssetSelectionBottomSheet(
                   context: context,
@@ -315,8 +315,8 @@ class _ButtonBar extends StatelessWidget {
                 context.push(assetDepositPath.toUri({'id': asset.assetId}));
               },
             ),
-            HeaderButton(
-              child: Text(context.l10n.buy),
+            HeaderButton.text(
+              text: context.l10n.buy,
               onTap: () {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
@@ -325,8 +325,8 @@ class _ButtonBar extends StatelessWidget {
                   );
               },
             ),
-            HeaderButton(
-              child: Text(context.l10n.swap),
+            HeaderButton.text(
+              text: context.l10n.swap,
               onTap: () {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()

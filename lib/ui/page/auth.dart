@@ -125,35 +125,7 @@ class _AuthBody extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 56),
-          ElevatedButton(
-            onPressed: () {
-              final uri =
-                  Uri.https('mixin-www.zeromesh.net', 'oauth/authorize', {
-                'client_id': Env.clientId,
-                'scope':
-                    'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ',
-                'response_type': 'code',
-              });
-              context.toExternal(uri);
-            },
-            style: ElevatedButton.styleFrom(
-                primary: context.colorScheme.primaryText,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 24,
-                ),
-                minimumSize: const Size(110, 48),
-                onPrimary: context.colorScheme.background,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50))),
-            child: Text(
-              context.l10n.authorize,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
+          const _AuthorizeButton(),
           const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 46),
@@ -170,4 +142,45 @@ class _AuthBody extends StatelessWidget {
           const SizedBox(height: 56),
         ],
       );
+}
+
+class _AuthorizeButton extends StatelessWidget {
+  const _AuthorizeButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    void onTap() {
+      final uri = Uri.https('mixin-www.zeromesh.net', 'oauth/authorize', {
+        'client_id': Env.clientId,
+        'scope': 'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ',
+        'response_type': 'code',
+      });
+      context.toExternal(uri);
+    }
+
+    return ElevatedButton(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+          primary: context.colorScheme.primaryText,
+          padding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 24,
+          ),
+          minimumSize: const Size(110, 48),
+          onPrimary: context.colorScheme.background,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+      child: SelectableText(
+        context.l10n.authorize,
+        onTap: onTap,
+        enableInteractiveSelection: false,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
 }
