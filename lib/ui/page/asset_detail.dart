@@ -216,7 +216,7 @@ class _AssetHeader extends StatelessWidget {
                   text: asset.symbol.overflow,
                   style: TextStyle(
                     fontSize: 14,
-                    color: context.colorScheme.thirdText,
+                    color: context.colorScheme.primaryText,
                   ),
                 ),
               ]),
