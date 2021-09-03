@@ -36,8 +36,8 @@ jobs:
           CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
           EOF
           tee .production.env &>/dev/null << EOF
-          CLIENT_ID=PRODUCTION_KEY
-          CLIENT_SECRET=PRODUCTION_KEY
+          CLIENT_ID=${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
           EOF
 
       - name: Run Build Runner
