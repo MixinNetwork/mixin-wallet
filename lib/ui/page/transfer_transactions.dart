@@ -20,13 +20,14 @@ class TransferTransactions extends HookWidget {
       backgroundColor: context.colorScheme.background,
       appBar: MixinAppBar(
         leading: const MixinBackButton2(),
-        title: Text(
+        title: SelectableText(
           context.l10n.transactions,
           style: TextStyle(
             color: context.colorScheme.primaryText,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
+          enableInteractiveSelection: false,
         ),
         backgroundColor: context.colorScheme.background,
         actions: [

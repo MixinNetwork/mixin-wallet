@@ -96,13 +96,14 @@ class _AssetDetailPage extends StatelessWidget {
         backgroundColor: context.colorScheme.background,
         appBar: MixinAppBar(
           backgroundColor: context.colorScheme.background,
-          title: Text(
+          title: SelectableText(
             asset.name,
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
+            enableInteractiveSelection: false,
           ),
           leading: const MixinBackButton2(),
           actions: [

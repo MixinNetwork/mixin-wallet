@@ -78,6 +78,7 @@ class _SortBottomSheetDialog extends HookWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           MixinBottomSheetTitle(
             title: Text(context.l10n.filterTitle),

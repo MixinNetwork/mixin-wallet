@@ -14,12 +14,13 @@ class HiddenAssets extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: MixinAppBar(
           leading: const MixinBackButton2(),
-          title: Text(
+          title: SelectableText(
             context.l10n.hiddenAssets,
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 18,
             ),
+            enableInteractiveSelection: false,
           ),
           backgroundColor: context.colorScheme.background,
         ),

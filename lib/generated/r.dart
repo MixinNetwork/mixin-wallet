@@ -32,9 +32,6 @@ class R {
 
   static const String resourcesDownRedSvg = 'resources/down_red.svg';
 
-  static const String resourcesEmptyTransactionSvg =
-      'resources/empty_transaction.svg';
-
   static const String resourcesEmptyTransactionGreySvg =
       'resources/empty_transaction_grey.svg';
 
@@ -75,6 +72,8 @@ class R {
 
   static const String resourcesIcSwitchSvg = 'resources/ic_switch.svg';
 
+  static const String resourcesIcWarningSvg = 'resources/ic_warning.svg';
+
   static const String resourcesLogoWebp = 'resources/logo.webp';
 
   static const String resourcesMixinLogoPng = 'resources/mixin_logo.png';
@@ -103,6 +102,4 @@ class R {
       'resources/unauthorized_contact.svg';
 
   static const String resourcesUpGreenSvg = 'resources/up_green.svg';
-
-  static const String resourcesWarningSvg = 'resources/ic_warning.svg';
 }

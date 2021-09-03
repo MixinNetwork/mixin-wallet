@@ -45,7 +45,7 @@ class _DepositScaffold extends StatelessWidget {
         appBar: MixinAppBar(
           leading: const MixinBackButton2(),
           backgroundColor: context.colorScheme.background,
-          title: Text(
+          title: SelectableText(
             asset == null
                 ? context.l10n.deposit
                 : '${context.l10n.deposit} ${asset!.symbol}',
@@ -54,6 +54,7 @@ class _DepositScaffold extends StatelessWidget {
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
+            enableInteractiveSelection: false,
           ),
           actions: <Widget>[
             ActionButton(
@@ -323,7 +324,7 @@ class _WarningLayout extends StatelessWidget {
             color: const Color(0x33FF6550),
           ),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SvgPicture.asset(R.resourcesWarningSvg, width: 20, height: 20),
+            SvgPicture.asset(R.resourcesIcWarningSvg, width: 20, height: 20),
             const SizedBox(width: 6),
             Expanded(
                 child: Text(context.l10n.depositNotice(symbol),

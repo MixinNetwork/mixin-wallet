@@ -117,7 +117,7 @@ class _AuthBody extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     color: context.colorScheme.primaryText.withOpacity(0.5),
-                    height: 1.25,
+                    height: 1.75,
                   ),
                   enableInteractiveSelection: false,
                 ),
@@ -139,7 +139,7 @@ class _AuthBody extends StatelessWidget {
               enableInteractiveSelection: false,
             ),
           ),
-          const SizedBox(height: 56),
+          const SizedBox(height: 40),
         ],
       );
 }
