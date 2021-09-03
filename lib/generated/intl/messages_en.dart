@@ -31,7 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Deposit will arrive after at least ${value} block confirmations";
 
   static String m5(value) =>
-      "Notice: Both a Memo and an Address are required to successfully deposit your ${value} to Mixin.";
+      "Both Memo and Address are required to deposit ${value} to your account.";
 
   static String m6(value) => "Deposit at least ${value} for the first time";
 
@@ -138,6 +138,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noResult": MessageLookupByLibrary.simpleMessage("NO RESULT"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
+        "notice": MessageLookupByLibrary.simpleMessage("Notice"),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
         "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),

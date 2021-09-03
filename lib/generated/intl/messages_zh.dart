@@ -25,7 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(value) => "充值到账至少需要 ${value} 个区块确认";
 
-  static String m5(value) => "注意：地址和 Memo(标签)同时使用才能充值 ${value} 到 Mixin。";
+  static String m5(value) => "地址和 Memo(标签)同时使用才能充值 ${value} 到你的账户。";
 
   static String m6(value) => "首次充值至少 ${value}";
 
@@ -122,6 +122,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noResult": MessageLookupByLibrary.simpleMessage("无结果"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "none": MessageLookupByLibrary.simpleMessage("暂无价格"),
+        "notice": MessageLookupByLibrary.simpleMessage("注意"),
+        "ok": MessageLookupByLibrary.simpleMessage("好的"),
         "other": MessageLookupByLibrary.simpleMessage("其他"),
         "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),

@@ -103,4 +103,6 @@ class R {
       'resources/unauthorized_contact.svg';
 
   static const String resourcesUpGreenSvg = 'resources/up_green.svg';
+
+  static const String resourcesWarningSvg = 'resources/ic_warning.svg';
 }

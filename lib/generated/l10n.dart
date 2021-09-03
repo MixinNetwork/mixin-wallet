@@ -150,10 +150,30 @@ class L10n {
     );
   }
 
-  /// `Notice: Both a Memo and an Address are required to successfully deposit your {value} to Mixin.`
+  /// `Notice`
+  String get notice {
+    return Intl.message(
+      'Notice',
+      name: 'notice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OK`
+  String get ok {
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Both Memo and Address are required to deposit {value} to your account.`
   String depositNotice(Object value) {
     return Intl.message(
-      'Notice: Both a Memo and an Address are required to successfully deposit your $value to Mixin.',
+      'Both Memo and Address are required to deposit $value to your account.',
       name: 'depositNotice',
       desc: '',
       args: [value],
