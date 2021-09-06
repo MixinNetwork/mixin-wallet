@@ -22,7 +22,7 @@ class SnapshotDetail extends StatelessWidget {
           backgroundColor: context.colorScheme.background,
           leading: const MixinBackButton2(),
           title: SelectableText(
-            context.l10n.transactions,
+            context.l10n.transaction,
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 18,

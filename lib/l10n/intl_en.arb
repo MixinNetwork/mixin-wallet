@@ -108,5 +108,6 @@
   "networkType": "Network type",
   "comingSoon": "Coming soon",
   "removeAuthorize": "Deauthorize",
-  "noResult": "NO RESULT"
+  "noResult": "NO RESULT",
+  "transaction": "Transaction"
 }
