@@ -140,10 +140,10 @@ class L10n {
     );
   }
 
-  /// `MEMO`
+  /// `Memo`
   String get memo {
     return Intl.message(
-      'MEMO',
+      'Memo',
       name: 'memo',
       desc: '',
       args: [],
