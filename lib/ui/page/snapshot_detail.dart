@@ -132,7 +132,7 @@ class _SnapshotDetailHeader extends HookWidget {
                     text: asset.symbol.overflow,
                     style: TextStyle(
                       fontSize: 14,
-                      color: context.colorScheme.thirdText,
+                      color: context.colorScheme.primaryText,
                     )),
               ]),
               textAlign: TextAlign.center,
@@ -187,7 +187,7 @@ class _ValuesDescription extends HookWidget {
     return DefaultTextStyle(
       style: TextStyle(
         fontSize: 14,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w400,
         color: context.colorScheme.thirdText,
       ),
       child: Column(
@@ -230,24 +230,24 @@ class _TransactionDetailInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _TransactionInfoTile(
-              title: Text(context.l10n.transactionsId.toUpperCase()),
+              title: Text(context.l10n.transactionsId),
               subtitle: SelectableText(snapshot.snapshotId),
             ),
             _TransactionInfoTile(
-              title: Text(context.l10n.transactionsType.toUpperCase()),
+              title: Text(context.l10n.transactionsType),
               subtitle: TransactionTypeWidget(
                 item: snapshot,
                 selectable: true,
               ),
             ),
             _TransactionInfoTile(
-              title: Text(context.l10n.assetType.toUpperCase()),
+              title: Text(context.l10n.assetType),
               subtitle: SelectableText(asset.name),
             ),
             _From(snapshot: snapshot),
             _To(snapshot: snapshot, asset: asset),
             _TransactionInfoTile(
-              title: Text(context.l10n.memo.toUpperCase()),
+              title: Text(context.l10n.memo),
               subtitle: Builder(builder: (context) {
                 final emptyMemo = snapshot.memo?.isEmpty != false;
                 return SelectableText(
@@ -260,14 +260,14 @@ class _TransactionDetailInfo extends StatelessWidget {
               }),
             ),
             _TransactionInfoTile(
-              title: Text(context.l10n.time.toUpperCase()),
+              title: Text(context.l10n.time),
               subtitle: SelectableText(
                   '${DateFormat.yMMMMd().format(snapshot.createdAt)} '
                   '${DateFormat.Hms().format(snapshot.createdAt)}'),
             ),
             if (snapshot.traceId != null && snapshot.traceId!.isNotEmpty)
               _TransactionInfoTile(
-                title: Text(context.l10n.trace.toUpperCase()),
+                title: Text(context.l10n.trace),
                 subtitle: SelectableText(snapshot.traceId ?? ''),
               ),
           ],
@@ -302,11 +302,11 @@ class _From extends StatelessWidget {
         break;
       default:
         sender = snapshot.transactionHash ?? '';
-        title = context.l10n.transactionHash.toUpperCase();
+        title = context.l10n.transactionHash;
         break;
     }
     return _TransactionInfoTile(
-      title: Text(title ?? context.l10n.from.toUpperCase()),
+      title: Text(title ?? context.l10n.from),
       subtitle: SelectableText(sender),
     );
   }
@@ -332,7 +332,7 @@ class _To extends StatelessWidget {
       case SnapshotType.deposit:
       case SnapshotType.pending:
         receiver = snapshot.transactionHash ?? '';
-        title = context.l10n.transactionHash.toUpperCase();
+        title = context.l10n.transactionHash;
         break;
       case SnapshotType.transfer:
         if (!snapshot.isPositive) {
@@ -344,12 +344,12 @@ class _To extends StatelessWidget {
       default:
         receiver = snapshot.receiver ?? '';
         if (asset.tag != null && asset.tag!.isNotEmpty) {
-          title = context.l10n.address.toUpperCase();
+          title = context.l10n.address;
         }
         break;
     }
     return _TransactionInfoTile(
-      title: Text(title ?? context.l10n.to.toUpperCase()),
+      title: Text(title ?? context.l10n.to),
       subtitle: SelectableText(receiver),
     );
   }

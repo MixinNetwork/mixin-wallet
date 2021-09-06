@@ -122,7 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hide": MessageLookupByLibrary.simpleMessage("Hide"),
         "hideSmallAssets":
             MessageLookupByLibrary.simpleMessage("Hide small assets"),
-        "memo": MessageLookupByLibrary.simpleMessage("MEMO"),
+        "memo": MessageLookupByLibrary.simpleMessage("Memo"),
         "memoHint": MessageLookupByLibrary.simpleMessage("Memo"),
         "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
         "minimumReserve":

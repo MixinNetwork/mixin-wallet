@@ -8,7 +8,7 @@
   "transactions": "Transactions",
   "deposit": "Deposit",
   "address": "Address",
-  "memo": "MEMO",
+  "memo": "Memo",
   "notice": "Notice",
   "ok": "OK",
   "depositNotice": "Both Memo and Address are required to deposit {value} to your account.",
