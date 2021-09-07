@@ -149,7 +149,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "show": MessageLookupByLibrary.simpleMessage("显示"),
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
-        "swap": MessageLookupByLibrary.simpleMessage("Swap"),
+        "swap": MessageLookupByLibrary.simpleMessage("闪兑"),
         "symbol": MessageLookupByLibrary.simpleMessage("符号"),
         "tagHint": MessageLookupByLibrary.simpleMessage("标签（Tag）"),
         "time": MessageLookupByLibrary.simpleMessage("时间"),

@@ -329,13 +329,7 @@ class _ButtonBar extends StatelessWidget {
             ),
             HeaderButton.text(
               text: context.l10n.swap,
-              onTap: () {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(content: Text(context.l10n.comingSoon)),
-                  );
-              },
+              onTap: () => context.push(swapPath),
             ),
           ],
         ),
