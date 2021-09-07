@@ -105,5 +105,6 @@
   "networkType": "网络类型",
   "comingSoon": "即将推出",
   "removeAuthorize": "取消授权",
-  "noResult": "无结果"
+  "noResult": "无结果",
+  "transaction": "转账记录"
 }

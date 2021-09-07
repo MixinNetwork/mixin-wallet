@@ -22,7 +22,7 @@ class SnapshotDetail extends StatelessWidget {
           backgroundColor: context.colorScheme.background,
           leading: const MixinBackButton2(),
           title: SelectableText(
-            context.l10n.transactions,
+            context.l10n.transaction,
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 18,
@@ -199,7 +199,7 @@ class _ValuesDescription extends HookWidget {
           ),
           if (thatTimeValue != null)
             Padding(
-              padding: const EdgeInsets.only(top: 4),
+              padding: const EdgeInsets.only(top: 2),
               child: SelectableText(
                 thatTimeValue,
                 enableInteractiveSelection: false,
@@ -374,6 +374,7 @@ class _TransactionInfoTile extends StatelessWidget {
           DefaultTextStyle(
             style: TextStyle(
               fontSize: 16,
+              height: 1,
               color: context.colorScheme.thirdText,
             ),
             child: title,
@@ -382,6 +383,7 @@ class _TransactionInfoTile extends StatelessWidget {
           DefaultTextStyle(
             style: TextStyle(
               fontSize: 16,
+              height: 1,
               color: context.colorScheme.primaryText,
             ),
             child: subtitle,

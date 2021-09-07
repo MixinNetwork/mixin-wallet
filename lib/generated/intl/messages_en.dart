@@ -169,6 +169,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "to": MessageLookupByLibrary.simpleMessage("To"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
         "trace": MessageLookupByLibrary.simpleMessage("Trace"),
+        "transaction": MessageLookupByLibrary.simpleMessage("Transaction"),
         "transactionHash":
             MessageLookupByLibrary.simpleMessage("Transaction Hash"),
         "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
