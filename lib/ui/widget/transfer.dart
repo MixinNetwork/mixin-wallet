@@ -392,7 +392,8 @@ class TransferAmountWidget extends HookWidget {
                         style: TextStyle(
                           color: context.colorScheme.primaryText,
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          // TODO change to w600 if https://github.com/flutter/flutter/issues/89568 fixed.
+                          fontWeight: FontWeight.w400,
                         ),
                         maxLines: 1,
                         decoration: InputDecoration(
@@ -412,7 +413,8 @@ class TransferAmountWidget extends HookWidget {
                           suffixStyle: TextStyle(
                             color: context.colorScheme.primaryText,
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            // TODO change to w600 if https://github.com/flutter/flutter/issues/89568 fixed.
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         controller: controller,
