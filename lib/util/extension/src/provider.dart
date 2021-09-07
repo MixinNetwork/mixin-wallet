@@ -11,7 +11,8 @@ extension ProviderExtension on BuildContext {
 
   void replace(Object url) => vRouter.to(url.toString(), isReplacement: true);
 
-  void push(Object url) => vRouter.to(url.toString());
+  void push(Object url, {Map<String, String> queryParameters = const {}}) =>
+      vRouter.to(url.toString(), queryParameters: queryParameters);
 
   String get url => vRouter.url;
 

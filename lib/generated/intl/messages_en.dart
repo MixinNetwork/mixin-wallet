@@ -79,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "An open source cryptocurrency wallet"),
         "authorize": MessageLookupByLibrary.simpleMessage("Authorize"),
         "averageArrival": m2,
+        "balance": MessageLookupByLibrary.simpleMessage("BALANCE"),
         "balanceOfBtc": m3,
         "buy": MessageLookupByLibrary.simpleMessage("Buy"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
@@ -107,6 +108,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "This address supports all TRC-10 and TRC-20 tokens, such as TRX, BTT, USDT-TRON, etc."),
         "depositing": MessageLookupByLibrary.simpleMessage("Depositing"),
+        "dontShowAgain":
+            MessageLookupByLibrary.simpleMessage("Don\'t show again"),
         "emptyAmount": MessageLookupByLibrary.simpleMessage("Empty amount"),
         "emptyLabelOrAddress":
             MessageLookupByLibrary.simpleMessage("Empty address or label"),
@@ -118,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterBy": MessageLookupByLibrary.simpleMessage("FILTER BY"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("Filter"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
+        "gotIt": MessageLookupByLibrary.simpleMessage("Got it"),
         "hiddenAssets": MessageLookupByLibrary.simpleMessage("Hidden Assets"),
         "hide": MessageLookupByLibrary.simpleMessage("Hide"),
         "hideSmallAssets":
@@ -131,6 +135,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Minimum withdrawal:"),
         "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin Wallet"),
         "networkFee": MessageLookupByLibrary.simpleMessage("Network fee:"),
+        "networkFeeTip": MessageLookupByLibrary.simpleMessage(
+            "Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions."),
         "networkType": MessageLookupByLibrary.simpleMessage("Network type"),
         "noAddressSelected":
             MessageLookupByLibrary.simpleMessage("No address selected"),
@@ -141,6 +147,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notice": MessageLookupByLibrary.simpleMessage("Notice"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
+        "pay": MessageLookupByLibrary.simpleMessage("Pay"),
         "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
@@ -170,6 +177,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
         "trace": MessageLookupByLibrary.simpleMessage("Trace"),
         "transaction": MessageLookupByLibrary.simpleMessage("Transaction"),
+        "transactionFee":
+            MessageLookupByLibrary.simpleMessage("Transaction fee:"),
+        "transactionFeeTip": MessageLookupByLibrary.simpleMessage(
+            "Charged by third party service provider. US users are charged 2.9% + 30c of the transaction amount with a minimum charge of \$5. International users are charged 3.9% + 30c of the transaction amount with a minimum charge of \$5."),
         "transactionHash":
             MessageLookupByLibrary.simpleMessage("Transaction Hash"),
         "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
@@ -188,8 +199,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
         "walletTransactionThatTimeValue": m10,
+        "wireServiceTip": MessageLookupByLibrary.simpleMessage(
+            "This service is provided by Wyre. We act as a conduit only and do not charge additional fees."),
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
         "withdrawalMemoHint":
-            MessageLookupByLibrary.simpleMessage("Memo (Optional)")
+            MessageLookupByLibrary.simpleMessage("Memo (Optional)"),
+        "wyreServiceStatement":
+            MessageLookupByLibrary.simpleMessage("Service statement")
       };
 }

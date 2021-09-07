@@ -1159,6 +1159,96 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Service statement`
+  String get wyreServiceStatement {
+    return Intl.message(
+      'Service statement',
+      name: 'wyreServiceStatement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This service is provided by Wyre. We act as a conduit only and do not charge additional fees.`
+  String get wireServiceTip {
+    return Intl.message(
+      'This service is provided by Wyre. We act as a conduit only and do not charge additional fees.',
+      name: 'wireServiceTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't show again`
+  String get dontShowAgain {
+    return Intl.message(
+      'Don\'t show again',
+      name: 'dontShowAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Got it`
+  String get gotIt {
+    return Intl.message(
+      'Got it',
+      name: 'gotIt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction fee:`
+  String get transactionFee {
+    return Intl.message(
+      'Transaction fee:',
+      name: 'transactionFee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Charged by third party service provider. US users are charged 2.9% + 30c of the transaction amount with a minimum charge of $5. International users are charged 3.9% + 30c of the transaction amount with a minimum charge of $5.`
+  String get transactionFeeTip {
+    return Intl.message(
+      'Charged by third party service provider. US users are charged 2.9% + 30c of the transaction amount with a minimum charge of \$5. International users are charged 3.9% + 30c of the transaction amount with a minimum charge of \$5.',
+      name: 'transactionFeeTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions.`
+  String get networkFeeTip {
+    return Intl.message(
+      'Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions.',
+      name: 'networkFeeTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pay`
+  String get pay {
+    return Intl.message(
+      'Pay',
+      name: 'pay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `BALANCE`
+  String get balance {
+    return Intl.message(
+      'BALANCE',
+      name: 'balance',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

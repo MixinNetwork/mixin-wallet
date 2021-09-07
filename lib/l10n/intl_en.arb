@@ -109,5 +109,14 @@
   "comingSoon": "Coming soon",
   "removeAuthorize": "Deauthorize",
   "noResult": "NO RESULT",
-  "transaction": "Transaction"
+  "transaction": "Transaction",
+  "wyreServiceStatement": "Service statement",
+  "wireServiceTip": "This service is provided by Wyre. We act as a conduit only and do not charge additional fees.",
+  "dontShowAgain": "Don't show again",
+  "gotIt": "Got it",
+  "transactionFee": "Transaction fee:",
+  "transactionFeeTip": "Charged by third party service provider. US users are charged 2.9% + 30c of the transaction amount with a minimum charge of $5. International users are charged 3.9% + 30c of the transaction amount with a minimum charge of $5.",
+  "networkFeeTip": "Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions.",
+  "pay": "Pay",
+  "balance": "BALANCE"
 }

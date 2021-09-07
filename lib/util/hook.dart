@@ -59,3 +59,18 @@ String usePathParameter(String key, {required String path}) {
 
   return result.value;
 }
+
+Stream<T> useValueNotifierConvertSteam<T>(ValueNotifier<T> valueNotifier) {
+  final streamController = useStreamController<T>(keys: [valueNotifier]);
+  useEffect(() {
+    void onListen() => streamController.add(valueNotifier.value);
+
+    valueNotifier.addListener(onListen);
+    return () {
+      valueNotifier.removeListener(onListen);
+    };
+  }, [valueNotifier]);
+
+  final stream = useMemoized(() => streamController.stream, [valueNotifier]);
+  return stream;
+}
