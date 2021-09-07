@@ -15,6 +15,8 @@ extension ProviderExtension on BuildContext {
 
   String get url => vRouter.url;
 
+  String get path => vRouter.path;
+
   void toExternal(Object url, {bool openNewTab = false}) =>
       vRouter.toExternal(url.toString(), openNewTab: openNewTab);
 
