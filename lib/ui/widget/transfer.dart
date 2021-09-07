@@ -392,7 +392,7 @@ class TransferAmountWidget extends HookWidget {
                         style: TextStyle(
                           color: context.colorScheme.primaryText,
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                         ),
                         maxLines: 1,
                         decoration: InputDecoration(
@@ -412,7 +412,7 @@ class TransferAmountWidget extends HookWidget {
                           suffixStyle: TextStyle(
                             color: context.colorScheme.primaryText,
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         controller: controller,
