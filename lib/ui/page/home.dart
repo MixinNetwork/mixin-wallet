@@ -43,12 +43,14 @@ class Home extends HookWidget {
 
     useMemoizedFuture(() => context.appServices.updateAssets());
 
+    final sortParam =
+        useQueryParameter(_kQueryParameterSort, path: homeUri.path);
+
     final sortType = useMemoized(
         () =>
-            sdk.EnumToString.fromString(_AssetSortType.values,
-                context.queryParameters[_kQueryParameterSort]) ??
+            sdk.EnumToString.fromString(_AssetSortType.values, sortParam) ??
             _AssetSortType.amount,
-        [context.queryParameters[_kQueryParameterSort]]);
+        [sortParam]);
 
     final assetResults = useMemoizedStream(
       () => context.appServices.assetResults().watch(),

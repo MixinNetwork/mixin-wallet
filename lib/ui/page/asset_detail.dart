@@ -34,7 +34,7 @@ class _AssetDetailLoader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final assetId = context.pathParameters['id']!;
+    final assetId = usePathParameter('id', path: assetDetailPath);
 
     useMemoizedFuture(() => context.appServices.updateAsset(assetId),
         keys: [assetId]);
@@ -58,19 +58,17 @@ class _AssetDetailLoader extends HookWidget {
       }
     }, [data?.assetId]);
 
+    final sortBy = useQueryParameter(_kQueryParamSortBy, path: assetDetailPath);
+    final filterBy =
+        useQueryParameter(_kQueryParamFilterBy, path: assetDetailPath);
+
     final filter = useMemoized(
-        () => SnapshotFilter(
-              sdk.EnumToString.fromString(SortBy.values,
-                      context.queryParameters[_kQueryParamSortBy]) ??
-                  SortBy.time,
-              sdk.EnumToString.fromString(FilterBy.values,
-                      context.queryParameters[_kQueryParamFilterBy]) ??
-                  FilterBy.all,
-            ),
-        [
-          context.queryParameters[_kQueryParamSortBy],
-          context.queryParameters[_kQueryParamFilterBy],
-        ]);
+      () => SnapshotFilter(
+        sdk.EnumToString.fromString(SortBy.values, sortBy) ?? SortBy.time,
+        sdk.EnumToString.fromString(FilterBy.values, filterBy) ?? FilterBy.all,
+      ),
+      [sortBy, filterBy],
+    );
 
     if (data == null) {
       return const SizedBox();
