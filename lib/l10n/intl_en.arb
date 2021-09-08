@@ -119,5 +119,15 @@
   "networkFeeTip": "Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions.",
   "pay": "Pay",
   "balance": "BALANCE",
-  "errorNoCamera": "No camera"
+  "errorNoCamera": "No camera",
+  "swapType": "Swap type",
+  "transferDetail": "Transfer details",
+  "transactionPhase": "Transaction phase",
+  "transactionOngoing": "Transaction ongoing",
+  "transactionDone": "Transaction done",
+  "received": "Received",
+  "refund": "Refund",
+  "paidInMixin": "Have you paid in Mixin?",
+  "paid": "Paid",
+  "unpaid": "Unpaid"
 }

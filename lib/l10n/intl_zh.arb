@@ -116,5 +116,15 @@
   "networkFeeTip": "由第三方服务商收取。直接支付给以太坊矿工以保证以太坊上交易完成。网络费根据即时市场状况变动。",
   "pay": "支付",
   "balance": "余额",
-  "errorNoCamera": "没有相机"
+  "errorNoCamera": "没有相机",
+  "swapType": "兑换币种",
+  "transferDetail": "交易详情",
+  "transactionPhase": "交易进度",
+  "transactionOngoing": "进行中",
+  "transactionDone": "交易完成",
+  "received": "获得",
+  "refund": "退回",
+  "paidInMixin": "您是否已经在 Mixin 中支付？",
+  "paid": "已支付",
+  "unpaid": "未支付"
 }

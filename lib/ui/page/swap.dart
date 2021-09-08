@@ -7,17 +7,19 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mixswap_sdk_dart/mixswap_sdk_dart.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/logger.dart';
 import '../../util/r.dart';
+import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
-import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/round_container.dart';
@@ -29,6 +31,7 @@ class Swap extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO make swapClient singleton or?
     final swapClient = Client(null);
     final supportedAssets = useMemoizedFuture(() async {
       final supportedIds =
@@ -81,7 +84,7 @@ class _Body extends HookWidget {
     assert(supportedAssets.length > 1);
     final sourceAsset = useState(supportedAssets[0]);
     final destAsset = useState(supportedAssets[1]);
-    final bestReceiveAmount = useState('');
+    final routeData = useState<RouteData?>(null);
     final sourceTextController = useTextEditingController();
     final destTextController = useTextEditingController();
     final sourceFocusNode = useFocusNode(debugLabel: 'source input');
@@ -95,16 +98,18 @@ class _Body extends HookWidget {
       final amount = double.tryParse(text) ?? 0;
       if (amount == 0) {
         effectedController.text = '';
-        bestReceiveAmount.value = '';
+        routeData.value = null;
         return;
       }
 
       if (inputFocusNode.hasFocus) {
-        final routeData = (await swapClient.getRoutes(sourceAsset.value.assetId,
-                destAsset.value.assetId, sourceTextController.text))
+        final routeDataResp = (await swapClient.getRoutes(
+                sourceAsset.value.assetId,
+                destAsset.value.assetId,
+                sourceTextController.text))
             .data;
-        effectedController.text = routeData.bestSourceReceiveAmount;
-        bestReceiveAmount.value = routeData.bestSourceReceiveAmount;
+        effectedController.text = routeDataResp.bestSourceReceiveAmount;
+        routeData.value = routeDataResp;
       }
     }
 
@@ -146,7 +151,7 @@ class _Body extends HookWidget {
                   destAsset.value = tmp;
                   sourceTextController.text = '';
                   destTextController.text = '';
-                  bestReceiveAmount.value = '';
+                  routeData.value = null;
                 },
                 child: SizedBox.square(
                     dimension: 40,
@@ -173,9 +178,9 @@ class _Body extends HookWidget {
           const Spacer(),
           HookBuilder(
               builder: (context) => _SwapButton(
-                    enable: bestReceiveAmount.value.isNotEmpty,
+                    enable: routeData.value != null,
                     onTap: () async {
-                      if (bestReceiveAmount.value.isEmpty) {
+                      if (routeData.value == null) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             behavior: SnackBarBehavior.floating,
                             content: Text(context.l10n.emptyAmount)));
@@ -192,20 +197,23 @@ class _Body extends HookWidget {
                         'recipient': '6a4a121d-9673-4a7e-a93e-cb9ca4bb83a2',
                         'memo': memo,
                       });
-
-                      final succeed = await showAndWaitingExternalAction(
-                        context: context,
-                        uri: uri,
-                        action: () =>
-                            context.appServices.updateSnapshotByTraceId(
-                          traceId: traceId,
-                        ),
-                        hint: Text(context.l10n.waitingActionDone),
-                      );
-
-                      if (succeed) {
-                        context.pop();
+                      final uriString = uri.toString();
+                      if (!await canLaunch(uriString)) {
+                        i('can not launch url: $uriString');
+                        return;
                       }
+                      await launch(uri.toString());
+
+                      await showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => _PaidInMixinDialog(
+                              onPaid: () => context.push(
+                                      swapDetailPath.toUri({'id': traceId}),
+                                      queryParameters: {
+                                        'source': sourceAsset.value.assetId,
+                                        'dest': destAsset.value.assetId,
+                                      })));
                     },
                   )),
           const SizedBox(height: 36),
@@ -228,6 +236,77 @@ class _Body extends HookWidget {
     }
     return base64Encode(utf8.encode(memoBuffer.toString()));
   }
+}
+
+class _PaidInMixinDialog extends StatelessWidget {
+  const _PaidInMixinDialog({
+    Key? key,
+    required this.onPaid,
+  }) : super(key: key);
+
+  final VoidCallback onPaid;
+
+  @override
+  Widget build(BuildContext context) => Center(
+      child: Material(
+          color: context.theme.background,
+          borderRadius: BorderRadius.circular(20),
+          child: SizedBox(
+              width: 275,
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 36),
+                    Text(context.l10n.paidInMixin,
+                        style: TextStyle(
+                          color: context.colorScheme.primaryText,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        )),
+                    const SizedBox(height: 37),
+                    Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _Button(
+                              text: context.l10n.unpaid,
+                              color: context.colorScheme.thirdText,
+                              onTap: () => Navigator.of(context).pop()),
+                          const SizedBox(width: 87),
+                          _Button(
+                              text: context.l10n.paid,
+                              color: context.colorScheme.primaryText,
+                              onTap: onPaid)
+                        ]),
+                    const SizedBox(height: 32),
+                  ]))));
+}
+
+class _Button extends StatelessWidget {
+  const _Button({
+    Key? key,
+    required this.text,
+    required this.color,
+    required this.onTap,
+  }) : super(key: key);
+
+  final String text;
+  final Color color;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+        onTap: onTap,
+        child: Center(
+            child: Text(text,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ))),
+      );
 }
 
 class _AssetItem extends HookWidget {

@@ -1259,6 +1259,106 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Swap type`
+  String get swapType {
+    return Intl.message(
+      'Swap type',
+      name: 'swapType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer details`
+  String get transferDetail {
+    return Intl.message(
+      'Transfer details',
+      name: 'transferDetail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction phase`
+  String get transactionPhase {
+    return Intl.message(
+      'Transaction phase',
+      name: 'transactionPhase',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction ongoing`
+  String get transactionOngoing {
+    return Intl.message(
+      'Transaction ongoing',
+      name: 'transactionOngoing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction done`
+  String get transactionDone {
+    return Intl.message(
+      'Transaction done',
+      name: 'transactionDone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Received`
+  String get received {
+    return Intl.message(
+      'Received',
+      name: 'received',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Refund`
+  String get refund {
+    return Intl.message(
+      'Refund',
+      name: 'refund',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Have you paid in Mixin?`
+  String get paidInMixin {
+    return Intl.message(
+      'Have you paid in Mixin?',
+      name: 'paidInMixin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Paid`
+  String get paid {
+    return Intl.message(
+      'Paid',
+      name: 'paid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unpaid`
+  String get unpaid {
+    return Intl.message(
+      'Unpaid',
+      name: 'unpaid',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

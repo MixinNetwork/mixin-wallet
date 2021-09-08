@@ -441,7 +441,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "1d73bac964ece4909ad6c907b1158329614ba290"
+      resolved-ref: be05d06c04a94750ee42a8af5c9964b4a8789a42
       url: "https://github.com/MixinNetwork/mixswap_sdk_dart"
     source: git
     version: "0.0.1"

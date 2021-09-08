@@ -148,14 +148,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "notice": MessageLookupByLibrary.simpleMessage("Notice"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
+        "paid": MessageLookupByLibrary.simpleMessage("Paid"),
+        "paidInMixin":
+            MessageLookupByLibrary.simpleMessage("Have you paid in Mixin?"),
         "pay": MessageLookupByLibrary.simpleMessage("Pay"),
         "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
+        "received": MessageLookupByLibrary.simpleMessage("Received"),
         "recentSearches":
             MessageLookupByLibrary.simpleMessage("Recent searches"),
+        "refund": MessageLookupByLibrary.simpleMessage("Refund"),
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("Deauthorize"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
@@ -171,6 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "swap": MessageLookupByLibrary.simpleMessage("Swap"),
+        "swapType": MessageLookupByLibrary.simpleMessage("Swap type"),
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
         "tagHint": MessageLookupByLibrary.simpleMessage("Tag"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
@@ -178,12 +184,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
         "trace": MessageLookupByLibrary.simpleMessage("Trace"),
         "transaction": MessageLookupByLibrary.simpleMessage("Transaction"),
+        "transactionDone":
+            MessageLookupByLibrary.simpleMessage("Transaction done"),
         "transactionFee":
             MessageLookupByLibrary.simpleMessage("Transaction fee:"),
         "transactionFeeTip": MessageLookupByLibrary.simpleMessage(
             "Charged by third party service provider. US users are charged 2.9% + 30c of the transaction amount with a minimum charge of \$5. International users are charged 3.9% + 30c of the transaction amount with a minimum charge of \$5."),
         "transactionHash":
             MessageLookupByLibrary.simpleMessage("Transaction Hash"),
+        "transactionOngoing":
+            MessageLookupByLibrary.simpleMessage("Transaction ongoing"),
+        "transactionPhase":
+            MessageLookupByLibrary.simpleMessage("Transaction phase"),
         "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
         "transactionsAssetKeyWarning": MessageLookupByLibrary.simpleMessage(
             "Asset key is NOT a deposit address!"),
@@ -193,7 +205,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsType":
             MessageLookupByLibrary.simpleMessage("Transaction Type"),
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
+        "transferDetail":
+            MessageLookupByLibrary.simpleMessage("Transfer details"),
         "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
+        "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
         "walletTransactionCurrentValue": m9,
