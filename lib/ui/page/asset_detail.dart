@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
+import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
@@ -22,22 +23,70 @@ import '../widget/transfer.dart';
 const _kQueryParamSortBy = 'sort';
 const _kQueryParamFilterBy = 'filter';
 
-class AssetDetail extends StatelessWidget {
+class AssetDetail extends HookWidget {
   const AssetDetail({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => const _AssetDetailLoader();
+  Widget build(BuildContext context) {
+    final id = usePathParameter('id', path: assetDetailPath);
+    final isAssetId = Uuid.isValidUUID(
+      fromString: id,
+      validationMode: ValidationMode.nonStrict,
+    );
+    if (isAssetId) {
+      return _AssetDetailLoader(assetId: id);
+    }
+    return _AssetSymbolSearch(symbol: id);
+  }
 }
 
-class _AssetDetailLoader extends HookWidget {
-  const _AssetDetailLoader({Key? key}) : super(key: key);
+class _AssetSymbolSearch extends HookWidget {
+  const _AssetSymbolSearch({
+    Key? key,
+    required this.symbol,
+  }) : super(key: key);
+
+  final String symbol;
 
   @override
   Widget build(BuildContext context) {
-    final assetId = usePathParameter('id', path: assetDetailPath);
+    final matchedAssetId = useMemoizedFuture(() async {
+      final response =
+          await context.appServices.client.assetApi.queryAsset(symbol);
+      await context.mixinDatabase.assetDao
+          .insertAllOnConflictUpdate(response.data);
+      return response.data.firstOrNull?.assetId;
+    }, keys: [symbol]);
 
-    useMemoizedFuture(() => context.appServices.updateAsset(assetId),
-        keys: [assetId]);
+    if (!matchedAssetId.hasData) {
+      return const SizedBox();
+    }
+    return _AssetDetailLoader(
+      assetId: matchedAssetId.data!,
+      needRefresh: false,
+    );
+  }
+}
+
+class _AssetDetailLoader extends HookWidget {
+  const _AssetDetailLoader({
+    Key? key,
+    required this.assetId,
+    this.needRefresh = true,
+  }) : super(key: key);
+
+  final String assetId;
+
+  final bool needRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    useMemoized(() {
+      if (!needRefresh) {
+        return;
+      }
+      context.appServices.updateAsset(assetId);
+    }, [assetId]);
 
     final data = useMemoizedStream(
       () => context.appServices.assetResult(assetId).watchSingleOrNull(),
