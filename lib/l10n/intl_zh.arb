@@ -126,5 +126,7 @@
   "refund": "退回",
   "paidInMixin": "您是否已经在 Mixin 中支付？",
   "paid": "已支付",
-  "unpaid": "未支付"
+  "unpaid": "未支付",
+  "incomplete":"未完成",
+  "completed": "已完成"
 }

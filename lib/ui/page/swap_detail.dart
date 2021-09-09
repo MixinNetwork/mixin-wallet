@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mixswap_sdk_dart/mixswap_sdk_dart.dart';
 
 import '../../db/mixin_database.dart';
+import '../../service/mix_swap.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/l10n.dart';
@@ -33,14 +34,13 @@ class SwapDetail extends HookWidget {
       return const SizedBox();
     }
 
-    final client = Client(null);
     final order = useState<Order?>(null);
     useEffect(() {
       var canceled = false;
       scheduleMicrotask(() async {
         while (!canceled) {
           try {
-            final traceOrder = (await client.getOrder(traceId)).data;
+            final traceOrder = (await MixSwap.client.getOrder(traceId)).data;
             sourceId.value = traceOrder.payAssetUuid;
             destId.value = traceOrder.receiveAssetUuid;
             order.value = traceOrder;
@@ -130,7 +130,7 @@ class _Body extends StatelessWidget {
                   source: source,
                   dest: dest,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 14),
                 Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,15 +142,21 @@ class _Body extends StatelessWidget {
                       TransactionInfoTile(
                           title: Text(context.l10n.paid),
                           subtitle: SelectableText(
-                              '${filterNull(order?.payAmount)} ${source.symbol}')),
+                              subtitle(order?.payAmount, source.symbol)),
+                          subtitleColor:
+                              subtitleColor(order?.payAmount, context)),
                       TransactionInfoTile(
                           title: Text(context.l10n.received),
                           subtitle: SelectableText(
-                              '${filterNull(order?.receiveAmount)} ${dest.symbol}')),
+                              subtitle(order?.receiveAmount, dest.symbol)),
+                          subtitleColor:
+                              subtitleColor(order?.receiveAmount, context)),
                       TransactionInfoTile(
                           title: Text(context.l10n.refund),
                           subtitle: SelectableText(
-                              '${filterNull(order?.refundAmount)} ${source.symbol}')),
+                              subtitle(order?.refundAmount, source.symbol)),
+                          subtitleColor:
+                              subtitleColor(order?.refundAmount, context)),
                     ]),
                 const Spacer(),
                 if (order == null || !_isOrderDone(order!)) const _Bottom(),
@@ -166,8 +172,13 @@ class _Body extends StatelessWidget {
     }
   }
 
-  String filterNull(String? origin) =>
-      (origin == null || origin == 'null') ? '-' : origin;
+  bool isNull(String? origin) => origin == null || origin == 'null';
+
+  String subtitle(String? origin, String symbol) =>
+      isNull(origin) ? '-' : '${origin!} $symbol';
+
+  Color? subtitleColor(String? origin, BuildContext context) =>
+      isNull(origin) ? context.colorScheme.thirdText : null;
 }
 
 class _Bottom extends HookWidget {

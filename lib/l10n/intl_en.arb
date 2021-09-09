@@ -129,5 +129,7 @@
   "refund": "Refund",
   "paidInMixin": "Have you paid in Mixin?",
   "paid": "Paid",
-  "unpaid": "Unpaid"
+  "unpaid": "Unpaid",
+  "incomplete":"Incomplete",
+  "completed": "Completed"
 }

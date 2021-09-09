@@ -1359,6 +1359,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Incomplete`
+  String get incomplete {
+    return Intl.message(
+      'Incomplete',
+      name: 'incomplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Completed`
+  String get completed {
+    return Intl.message(
+      'Completed',
+      name: 'completed',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

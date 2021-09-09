@@ -11,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
+import '../../service/mix_swap.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
@@ -24,15 +25,13 @@ import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/round_container.dart';
 import '../widget/symbol.dart';
-import '../widget/tip_tile.dart';
 
 class Swap extends HookWidget {
   const Swap({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO make swapClient singleton or?
-    final swapClient = Client(null);
+    final swapClient = MixSwap.client;
     final supportedAssets = useMemoizedFuture(() async {
       final supportedIds =
           (await swapClient.getAssets()).data.map((e) => e.uuid).toList();
@@ -136,10 +135,12 @@ class _Body extends HookWidget {
         child: Column(children: [
           const SizedBox(height: 20),
           _AssetItem(
-              asset: sourceAsset,
-              focusNode: sourceFocusNode,
-              textController: sourceTextController,
-              supportedAssets: supportedAssets),
+            asset: sourceAsset,
+            focusNode: sourceFocusNode,
+            textController: sourceTextController,
+            supportedAssets: supportedAssets,
+            readOnly: false,
+          ),
           const SizedBox(height: 12),
           Row(children: [
             const SizedBox(width: 16),
@@ -169,12 +170,12 @@ class _Body extends HookWidget {
           ]),
           const SizedBox(height: 12),
           _AssetItem(
-              asset: destAsset,
-              focusNode: destFocusNode,
-              textController: destTextController,
-              supportedAssets: supportedAssets),
-          const SizedBox(height: 8),
-          TipTile(text: '${context.l10n.networkFee} '),
+            asset: destAsset,
+            focusNode: destFocusNode,
+            textController: destTextController,
+            supportedAssets: supportedAssets,
+            readOnly: true,
+          ),
           const Spacer(),
           HookBuilder(
               builder: (context) => _SwapButton(
@@ -280,7 +281,7 @@ class _PaidInMixinDialog extends StatelessWidget {
                               color: context.colorScheme.primaryText,
                               onTap: onPaid)
                         ]),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 26),
                   ]))));
 }
 
@@ -316,12 +317,14 @@ class _AssetItem extends HookWidget {
     required this.focusNode,
     required this.textController,
     required this.supportedAssets,
+    required this.readOnly,
   }) : super(key: key);
 
   final ValueNotifier<AssetResult> asset;
   final FocusNode focusNode;
   final TextEditingController textController;
   final List<AssetResult> supportedAssets;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -377,6 +380,7 @@ class _AssetItem extends HookWidget {
                 child: _AmountTextField(
                   focusNode: focusNode,
                   controller: textController,
+                  readOnly: readOnly,
                 )),
             const SizedBox(height: 7),
             Text(
@@ -401,13 +405,16 @@ class _AmountTextField extends StatelessWidget {
     Key? key,
     required this.focusNode,
     required this.controller,
+    required this.readOnly,
   }) : super(key: key);
 
   final FocusNode focusNode;
   final TextEditingController controller;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) => TextField(
+        readOnly: readOnly,
         focusNode: focusNode,
         style: TextStyle(
           color: context.colorScheme.primaryText,

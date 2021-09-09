@@ -85,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
+        "completed": MessageLookupByLibrary.simpleMessage("Completed"),
         "contact": MessageLookupByLibrary.simpleMessage("Contact"),
         "contactReadFailed":
             MessageLookupByLibrary.simpleMessage("Failed to read contact list"),
@@ -127,6 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hide": MessageLookupByLibrary.simpleMessage("Hide"),
         "hideSmallAssets":
             MessageLookupByLibrary.simpleMessage("Hide small assets"),
+        "incomplete": MessageLookupByLibrary.simpleMessage("Incomplete"),
         "memo": MessageLookupByLibrary.simpleMessage("Memo"),
         "memoHint": MessageLookupByLibrary.simpleMessage("Memo"),
         "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
