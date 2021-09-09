@@ -39,9 +39,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m8(value, value2) => "${value}/${value2} confirmations";
 
-  static String m9(value) => "value now ${value}";
+  static String m9(value) =>
+      "Swap with slippage greater than ${value} is not currently supported";
 
-  static String m10(value) => "value then ${value}";
+  static String m10(value) => "value now ${value}";
+
+  static String m11(value) => "value then ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -176,6 +179,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Send to contact"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
+        "slippage": MessageLookupByLibrary.simpleMessage("Slippage"),
+        "slippageOver": m9,
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "swap": MessageLookupByLibrary.simpleMessage("Swap"),
         "swapType": MessageLookupByLibrary.simpleMessage("Swap type"),
@@ -213,10 +218,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
-        "walletTransactionCurrentValue": m9,
+        "walletTransactionCurrentValue": m10,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
-        "walletTransactionThatTimeValue": m10,
+        "walletTransactionThatTimeValue": m11,
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "This service is provided by Wyre. We act as a conduit only and do not charge additional fees."),
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),

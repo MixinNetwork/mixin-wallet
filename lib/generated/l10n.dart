@@ -1379,6 +1379,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Slippage`
+  String get slippage {
+    return Intl.message(
+      'Slippage',
+      name: 'slippage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swap with slippage greater than {value} is not currently supported`
+  String slippageOver(Object value) {
+    return Intl.message(
+      'Swap with slippage greater than $value is not currently supported',
+      name: 'slippageOver',
+      desc: '',
+      args: [value],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

@@ -17,6 +17,7 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
+import '../brightness_theme_data.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset_selection_list_widget.dart';
@@ -25,6 +26,7 @@ import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/round_container.dart';
 import '../widget/symbol.dart';
+import '../widget/tip_tile.dart';
 
 class Swap extends HookWidget {
   const Swap({Key? key}) : super(key: key);
@@ -89,6 +91,8 @@ class _Body extends HookWidget {
     final sourceTextController = useTextEditingController();
     final destTextController = useTextEditingController();
     final sourceFocusNode = useFocusNode(debugLabel: 'source input');
+    final slippage = calcSlippage(routeData.value);
+    final slippageDisplay = displaySlippage(slippage);
 
     Future<void> updateAmount(
       String text,
@@ -176,15 +180,30 @@ class _Body extends HookWidget {
             supportedAssets: supportedAssets,
             readOnly: true,
           ),
+          const SizedBox(height: 12),
+          if (routeData.value != null)
+            TipTile(
+              text: '${context.l10n.slippage} $slippageDisplay',
+              highlight: slippageDisplay,
+              highlightColor: colorOfSlippage(context, slippage),
+            ),
           const Spacer(),
           HookBuilder(
               builder: (context) => _SwapButton(
-                    enable: routeData.value != null,
+                    enable: routeData.value != null &&
+                        slippage <= supportMaxSlippage,
                     onTap: () async {
                       if (routeData.value == null) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             behavior: SnackBarBehavior.floating,
                             content: Text(context.l10n.emptyAmount)));
+                        return;
+                      }
+                      if (slippage > supportMaxSlippage) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            behavior: SnackBarBehavior.floating,
+                            content: Text(context.l10n
+                                .slippageOver('$supportMaxSlippage%'))));
                         return;
                       }
 
@@ -237,6 +256,12 @@ class _Body extends HookWidget {
     }
     return base64Encode(utf8.encode(memoBuffer.toString()));
   }
+
+  Color colorOfSlippage(BuildContext context, double slippage) => slippage > 5
+      ? lightBrightnessThemeData.red
+      : slippage > 1
+          ? lightBrightnessThemeData.warning
+          : lightBrightnessThemeData.green;
 }
 
 class _PaidInMixinDialog extends StatelessWidget {

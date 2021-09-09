@@ -128,5 +128,7 @@
   "paid": "已支付",
   "unpaid": "未支付",
   "incomplete":"未完成",
-  "completed": "已完成"
+  "completed": "已完成",
+  "slippage": "滑点",
+  "slippageOver": "暂不支持滑点大于 {value} 的闪兑"
 }
