@@ -37,9 +37,6 @@ class Swap extends HookWidget {
           (await swapClient.getAssets()).data.map((e) => e.uuid).toList();
       return context.appServices.findOrSyncAssets(supportedIds);
     }).data;
-    if (supportedAssets == null || supportedAssets.isEmpty) {
-      return const SizedBox();
-    }
 
     return Scaffold(
       backgroundColor: context.colorScheme.background,
@@ -63,7 +60,12 @@ class Swap extends HookWidget {
           )
         ],
       ),
-      body: _Body(swapClient: swapClient, supportedAssets: supportedAssets),
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 200),
+        child: (supportedAssets == null || supportedAssets.isEmpty)
+            ? const Center(child: CircularProgressIndicator())
+            : _Body(swapClient: swapClient, supportedAssets: supportedAssets),
+      ),
     );
   }
 }
@@ -87,7 +89,6 @@ class _Body extends HookWidget {
     final sourceTextController = useTextEditingController();
     final destTextController = useTextEditingController();
     final sourceFocusNode = useFocusNode(debugLabel: 'source input');
-    final destFocusNode = useFocusNode(debugLabel: 'dest input');
 
     Future<void> updateAmount(
       String text,
@@ -136,10 +137,10 @@ class _Body extends HookWidget {
           const SizedBox(height: 20),
           _AssetItem(
             asset: sourceAsset,
-            focusNode: sourceFocusNode,
             textController: sourceTextController,
             supportedAssets: supportedAssets,
             readOnly: false,
+            focusNode: sourceFocusNode,
           ),
           const SizedBox(height: 12),
           Row(children: [
@@ -171,7 +172,6 @@ class _Body extends HookWidget {
           const SizedBox(height: 12),
           _AssetItem(
             asset: destAsset,
-            focusNode: destFocusNode,
             textController: destTextController,
             supportedAssets: supportedAssets,
             readOnly: true,
@@ -314,17 +314,17 @@ class _AssetItem extends HookWidget {
   const _AssetItem({
     Key? key,
     required this.asset,
-    required this.focusNode,
     required this.textController,
     required this.supportedAssets,
     required this.readOnly,
+    this.focusNode,
   }) : super(key: key);
 
   final ValueNotifier<AssetResult> asset;
-  final FocusNode focusNode;
   final TextEditingController textController;
   final List<AssetResult> supportedAssets;
   final bool readOnly;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -403,12 +403,12 @@ class _AssetItem extends HookWidget {
 class _AmountTextField extends StatelessWidget {
   const _AmountTextField({
     Key? key,
-    required this.focusNode,
     required this.controller,
     required this.readOnly,
+    this.focusNode,
   }) : super(key: key);
 
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final TextEditingController controller;
   final bool readOnly;
 
