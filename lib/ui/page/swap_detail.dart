@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mixswap_sdk_dart/mixswap_sdk_dart.dart';
+import 'package:tuple/tuple.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../db/mixin_database.dart';
@@ -32,44 +33,14 @@ class SwapDetail extends HookWidget {
     final queryParams = context.queryParameters;
     final sourceId = useState(queryParams['source']);
     final destId = useState(queryParams['dest']);
-
     if (traceId == null) {
       return const SizedBox();
     }
 
-    final order = useState<Order?>(null);
-    final swapPhase = useState<SwapPhase>(SwapPhase.checking);
-    useEffect(() {
-      var canceled = false;
-      scheduleMicrotask(() async {
-        while (!canceled) {
-          try {
-            final traceOrder = (await MixSwap.client.getOrder(traceId)).data;
-            sourceId.value = traceOrder.payAssetUuid;
-            destId.value = traceOrder.receiveAssetUuid;
-            order.value = traceOrder;
-            final done = _isOrderDone(traceOrder);
-            if (done) {
-              swapPhase.value = SwapPhase.done;
-              canceled = true;
-              break;
-            } else {
-              swapPhase.value = SwapPhase.trading;
-            }
-          } catch (error, stack) {
-            if (error is DioError &&
-                error.response?.statusCode == mixSwapRetryErrorCode) {
-              swapPhase.value = SwapPhase.checking;
-            } else {
-              i('error: $error $stack');
-              break;
-            }
-          }
-          await Future.delayed(const Duration(milliseconds: 2000));
-        }
-      });
-      return () => canceled = true;
-    }, [traceId]);
+    final tuple = useScheduledCheckOrder(context, traceId, sourceId, destId);
+    final order = tuple.item1;
+    final swapPhase = tuple.item2;
+
     final assets = useMemoizedFuture(() {
       if (sourceId.value == null || destId.value == null) {
         return Future.value(null);
@@ -101,12 +72,56 @@ class SwapDetail extends HookWidget {
           leading: const MixinBackButton2(),
         ),
         body: _Body(
-          swapPhase: swapPhase.value,
-          order: order.value,
+          swapPhase: swapPhase,
+          order: order,
           source: source,
           dest: dest,
           traceId: traceId,
         ));
+  }
+
+  Tuple2<Order?, SwapPhase> useScheduledCheckOrder(
+    BuildContext context,
+    String traceId,
+    ValueNotifier<String?> sourceId,
+    ValueNotifier<String?> destId,
+  ) {
+    final order = useState<Order?>(null);
+    final swapPhase = useState<SwapPhase>(SwapPhase.checking);
+
+    useEffect(() {
+      var canceled = false;
+      scheduleMicrotask(() async {
+        while (!canceled) {
+          try {
+            final traceOrder = (await MixSwap.client.getOrder(traceId)).data;
+            sourceId.value = traceOrder.payAssetUuid;
+            destId.value = traceOrder.receiveAssetUuid;
+            order.value = traceOrder;
+            final done = _isOrderDone(traceOrder);
+            if (done) {
+              swapPhase.value = SwapPhase.done;
+              canceled = true;
+              break;
+            } else {
+              swapPhase.value = SwapPhase.trading;
+            }
+          } catch (error, stack) {
+            if (error is DioError &&
+                error.response?.statusCode == mixSwapRetryErrorCode) {
+              swapPhase.value = SwapPhase.checking;
+            } else {
+              i('error: $error $stack');
+              break;
+            }
+          }
+          await Future.delayed(const Duration(milliseconds: 2000));
+        }
+      });
+      return () => canceled = true;
+    }, [traceId]);
+
+    return Tuple2(order.value, swapPhase.value);
   }
 
   bool _isOrderDone(Order order) => order.orderStatus.toLowerCase() == 'done';

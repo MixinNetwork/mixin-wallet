@@ -90,8 +90,8 @@ class _Body extends HookWidget {
     final sourceTextController = useTextEditingController();
     final destTextController = useTextEditingController();
     final sourceFocusNode = useFocusNode(debugLabel: 'source input');
-    final slippage = calcSlippage(routeData.value);
-    final slippageDisplay = displaySlippage(slippage);
+    final slippage = useMemoized(() => calcSlippage(routeData.value));
+    final slippageDisplay = useMemoized(() => displaySlippage(slippage));
 
     Future<void> updateAmount(
       String text,
