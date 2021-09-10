@@ -30,13 +30,13 @@ class SwapDetail extends HookWidget {
   Widget build(BuildContext context) {
     final pathParameters = context.pathParameters;
     final traceId = pathParameters['id'];
-    final queryParams = context.queryParameters;
-    final sourceId = useState(queryParams['source']);
-    final destId = useState(queryParams['dest']);
     if (traceId == null) {
       return const SizedBox();
     }
 
+    final queryParams = context.queryParameters;
+    final sourceId = useState(queryParams['source']);
+    final destId = useState(queryParams['dest']);
     final tuple = useScheduledCheckOrder(context, traceId, sourceId, destId);
     final order = tuple.item1;
     final swapPhase = tuple.item2;
