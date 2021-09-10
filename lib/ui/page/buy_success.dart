@@ -154,7 +154,7 @@ class _AssetLayout extends StatelessWidget {
         ),
         const SizedBox(width: 16),
         SvgPicture.asset(
-          R.resourcesIcDoubleArrow,
+          R.resourcesIcDoubleArrowSvg,
           width: 12,
           height: 12,
         ),

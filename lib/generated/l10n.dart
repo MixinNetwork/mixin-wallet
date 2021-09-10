@@ -1249,6 +1249,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `No camera`
+  String get errorNoCamera {
+    return Intl.message(
+      'No camera',
+      name: 'errorNoCamera',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

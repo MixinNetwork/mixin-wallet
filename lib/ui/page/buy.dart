@@ -412,7 +412,7 @@ class _PayButton extends StatelessWidget {
             child: Center(
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
               SvgPicture.asset(
-                R.resourcesIcApplePay,
+                R.resourcesIcApplePaySvg,
                 width: 12,
                 height: 15,
               ),

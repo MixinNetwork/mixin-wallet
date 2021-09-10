@@ -5,9 +5,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/l10n.dart';
+import '../../util/r.dart';
+import 'action_button.dart';
 import 'brightness_observer.dart';
 import 'external_action_confirm.dart';
 import 'mixin_bottom_sheet.dart';
+import 'qrcode_scanner.dart';
 import 'round_container.dart';
 
 class AddressAddWidget extends HookWidget {
@@ -71,44 +74,73 @@ class AddressAddWidget extends HookWidget {
             const SizedBox(height: 10),
             RoundContainer(
               height: 64,
-              child: Center(
-                  child: TextField(
-                style: TextStyle(
-                  color: context.colorScheme.primaryText,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-                decoration: InputDecoration(
-                  hintText: context.l10n.address,
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(
-                    color: context.colorScheme.thirdText,
-                  ),
-                ),
-                controller: addressController,
-              )),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: TextField(
+                    style: TextStyle(
+                      color: context.colorScheme.primaryText,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: context.l10n.address,
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        color: context.colorScheme.thirdText,
+                      ),
+                    ),
+                    controller: addressController,
+                  )),
+                  ActionButton(
+                    name: R.resourcesScanningSvg,
+                    onTap: () async {
+                      final text = await scanTextFromQrcode(context: context);
+                      if (text == null) {
+                        return;
+                      }
+                      addressController.text = text;
+                    },
+                  )
+                ],
+              ),
             ),
             const SizedBox(height: 10),
             if (memoEnable.value)
               Column(children: [
                 RoundContainer(
                     height: 64,
-                    child: Center(
-                      child: TextField(
-                        style: TextStyle(
-                          color: context.colorScheme.primaryText,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: memoHint,
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(
-                            color: context.colorScheme.thirdText,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            style: TextStyle(
+                              color: context.colorScheme.primaryText,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: memoHint,
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                color: context.colorScheme.thirdText,
+                              ),
+                            ),
+                            controller: memoController,
                           ),
                         ),
-                        controller: memoController,
-                      ),
+                        ActionButton(
+                          name: R.resourcesScanningSvg,
+                          onTap: () async {
+                            final text =
+                                await scanTextFromQrcode(context: context);
+                            if (text == null) {
+                              return;
+                            }
+                            memoController.text = text;
+                          },
+                        ),
+                      ],
                     )),
                 const SizedBox(height: 10),
               ]),

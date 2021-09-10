@@ -60,6 +60,11 @@ dependencies:
   uuid: ^3.0.4
   envify: ^2.0.1
   path_to_regexp: ^0.4.0
+  web_qrcode:
+    git:
+      url: https://github.com/MixinNetwork/flutter-plugins.git
+      path: packages/web_qrcode
+      ref: 7a0703301c6b9b2950f14bb045e2a660c8530c7a
 
 dependency_overrides:
   analyzer: ^2.0.0

@@ -115,6 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Empty address or label"),
         "eosContractAddress":
             MessageLookupByLibrary.simpleMessage("EOS contract address"),
+        "errorNoCamera": MessageLookupByLibrary.simpleMessage("No camera"),
         "fee": MessageLookupByLibrary.simpleMessage("Fee"),
         "filterAll": MessageLookupByLibrary.simpleMessage("All"),
         "filterApply": MessageLookupByLibrary.simpleMessage("Apply"),
