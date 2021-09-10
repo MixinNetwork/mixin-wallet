@@ -102,6 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "emptyLabelOrAddress":
             MessageLookupByLibrary.simpleMessage("地址和标题不能为空"),
         "eosContractAddress": MessageLookupByLibrary.simpleMessage("EOS 合约地址"),
+        "errorNoCamera": MessageLookupByLibrary.simpleMessage("没有相机"),
         "fee": MessageLookupByLibrary.simpleMessage("手续费"),
         "filterAll": MessageLookupByLibrary.simpleMessage("全部"),
         "filterApply": MessageLookupByLibrary.simpleMessage("应用"),

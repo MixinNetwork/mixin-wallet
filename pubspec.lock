@@ -854,6 +854,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  web_qrcode:
+    dependency: "direct main"
+    description:
+      path: "packages/web_qrcode"
+      ref: "7a0703301c6b9b2950f14bb045e2a660c8530c7a"
+      resolved-ref: "7a0703301c6b9b2950f14bb045e2a660c8530c7a"
+      url: "https://github.com/MixinNetwork/flutter-plugins.git"
+    source: git
+    version: "0.0.1"
   web_socket_channel:
     dependency: transitive
     description:

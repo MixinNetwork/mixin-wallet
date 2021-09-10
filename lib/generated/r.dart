@@ -44,6 +44,8 @@ class R {
 
   static const String resourcesHideAssetsSvg = 'resources/hide_assets.svg';
 
+  static const String resourcesIcApplePaySvg = 'resources/ic_apple_pay.svg';
+
   static const String resourcesIcArrowDownSvg = 'resources/ic_arrow_down.svg';
 
   static const String resourcesIcBackSvg = 'resources/ic_back.svg';
@@ -55,7 +57,68 @@ class R {
 
   static const String resourcesIcCopySvg = 'resources/ic_copy.svg';
 
+  static const String resourcesIcDoubleArrowSvg =
+      'resources/ic_double_arrow.svg';
+
   static const String resourcesIcFileSvg = 'resources/ic_file.svg';
+
+  static const String resourcesIcFlagArsPng = 'resources/ic_flag_ars.png';
+
+  static const String resourcesIcFlagAudPng = 'resources/ic_flag_aud.png';
+
+  static const String resourcesIcFlagBrlPng = 'resources/ic_flag_brl.png';
+
+  static const String resourcesIcFlagCadPng = 'resources/ic_flag_cad.png';
+
+  static const String resourcesIcFlagChfPng = 'resources/ic_flag_chf.png';
+
+  static const String resourcesIcFlagClpPng = 'resources/ic_flag_clp.png';
+
+  static const String resourcesIcFlagCopPng = 'resources/ic_flag_cop.png';
+
+  static const String resourcesIcFlagCzkPng = 'resources/ic_flag_czk.png';
+
+  static const String resourcesIcFlagDkkPng = 'resources/ic_flag_dkk.png';
+
+  static const String resourcesIcFlagEurPng = 'resources/ic_flag_eur.png';
+
+  static const String resourcesIcFlagGbpPng = 'resources/ic_flag_gbp.png';
+
+  static const String resourcesIcFlagHkdPng = 'resources/ic_flag_hkd.png';
+
+  static const String resourcesIcFlagIlsPng = 'resources/ic_flag_ils.png';
+
+  static const String resourcesIcFlagInrPng = 'resources/ic_flag_inr.png';
+
+  static const String resourcesIcFlagIskPng = 'resources/ic_flag_isk.png';
+
+  static const String resourcesIcFlagJpyPng = 'resources/ic_flag_jpy.png';
+
+  static const String resourcesIcFlagKrwPng = 'resources/ic_flag_krw.png';
+
+  static const String resourcesIcFlagMxnPng = 'resources/ic_flag_mxn.png';
+
+  static const String resourcesIcFlagMyrPng = 'resources/ic_flag_myr.png';
+
+  static const String resourcesIcFlagNokPng = 'resources/ic_flag_nok.png';
+
+  static const String resourcesIcFlagNzdPng = 'resources/ic_flag_nzd.png';
+
+  static const String resourcesIcFlagPhpPng = 'resources/ic_flag_php.png';
+
+  static const String resourcesIcFlagPlnPng = 'resources/ic_flag_pln.png';
+
+  static const String resourcesIcFlagSekPng = 'resources/ic_flag_sek.png';
+
+  static const String resourcesIcFlagSgdPng = 'resources/ic_flag_sgd.png';
+
+  static const String resourcesIcFlagThbPng = 'resources/ic_flag_thb.png';
+
+  static const String resourcesIcFlagUsdPng = 'resources/ic_flag_usd.png';
+
+  static const String resourcesIcFlagVndPng = 'resources/ic_flag_vnd.png';
+
+  static const String resourcesIcFlagZarPng = 'resources/ic_flag_zar.png';
 
   static const String resourcesIcQuestionSvg = 'resources/ic_question.svg';
 
@@ -80,6 +143,8 @@ class R {
 
   static const String resourcesReceiveSvg = 'resources/receive.svg';
 
+  static const String resourcesScanningSvg = 'resources/scanning.svg';
+
   static const String resourcesSendSvg = 'resources/send.svg';
 
   static const String resourcesSettingSvg = 'resources/setting.svg';
@@ -102,38 +167,4 @@ class R {
       'resources/unauthorized_contact.svg';
 
   static const String resourcesUpGreenSvg = 'resources/up_green.svg';
-
-  static const String resourcesIcApplePay = 'resources/ic_apple_pay.svg';
-
-  static const String resourcesIcDoubleArrow = 'resources/ic_double_arrow.svg';
-
-  static const String resourcesIcFlagArs = 'resources/ic_flag_ars.png';
-  static const String resourcesIcFlagAud = 'resources/ic_flag_aud.png';
-  static const String resourcesIcFlagBrl = 'resources/ic_flag_brl.png';
-  static const String resourcesIcFlagCad = 'resources/ic_flag_cad.png';
-  static const String resourcesIcFlagChf = 'resources/ic_flag_chf.png';
-  static const String resourcesIcFlagClp = 'resources/ic_flag_clp.png';
-  static const String resourcesIcFlagCop = 'resources/ic_flag_cop.png';
-  static const String resourcesIcFlagCzk = 'resources/ic_flag_czk.png';
-  static const String resourcesIcFlagDkk = 'resources/ic_flag_dkk.png';
-  static const String resourcesIcFlagEur = 'resources/ic_flag_eur.png';
-  static const String resourcesIcFlagGbp = 'resources/ic_flag_gbp.png';
-  static const String resourcesIcFlagHkd = 'resources/ic_flag_hkd.png';
-  static const String resourcesIcFlagIls = 'resources/ic_flag_ils.png';
-  static const String resourcesIcFlagInr = 'resources/ic_flag_inr.png';
-  static const String resourcesIcFlagIsk = 'resources/ic_flag_isk.png';
-  static const String resourcesIcFlagJpy = 'resources/ic_flag_jpy.png';
-  static const String resourcesIcFlagKrw = 'resources/ic_flag_krw.png';
-  static const String resourcesIcFlagMxn = 'resources/ic_flag_mxn.png';
-  static const String resourcesIcFlagMyr = 'resources/ic_flag_myr.png';
-  static const String resourcesIcFlagNok = 'resources/ic_flag_nok.png';
-  static const String resourcesIcFlagNzd = 'resources/ic_flag_nzd.png';
-  static const String resourcesIcFlagPhp = 'resources/ic_flag_php.png';
-  static const String resourcesIcFlagPln = 'resources/ic_flag_pln.png';
-  static const String resourcesIcFlagSek = 'resources/ic_flag_sek.png';
-  static const String resourcesIcFlagSgd = 'resources/ic_flag_sgd.png';
-  static const String resourcesIcFlagThb = 'resources/ic_flag_thb.png';
-  static const String resourcesIcFlagUsd = 'resources/ic_flag_usd.png';
-  static const String resourcesIcFlagVnd = 'resources/ic_flag_vnd.png';
-  static const String resourcesIcFlagZar = 'resources/ic_flag_zar.png';
 }

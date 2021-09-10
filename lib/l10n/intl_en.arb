@@ -118,5 +118,6 @@
   "transactionFeeTip": "Charged by third party service provider. US users are charged 2.9% + 30c of the transaction amount with a minimum charge of $5. International users are charged 3.9% + 30c of the transaction amount with a minimum charge of $5.",
   "networkFeeTip": "Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions.",
   "pay": "Pay",
-  "balance": "BALANCE"
+  "balance": "BALANCE",
+  "errorNoCamera": "No camera"
 }
