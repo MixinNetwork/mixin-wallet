@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:mixswap_sdk_dart/mixswap_sdk_dart.dart';
@@ -15,6 +16,27 @@ class MixSwap {
 }
 
 const supportMaxSlippage = 1;
+const mixSwapRetryErrorCode = 403;
+const mixSwapUserId = '6a4a121d-9673-4a7e-a93e-cb9ca4bb83a2';
+
+enum SwapPhase { checking, trading, done }
+
+String buildMixSwapMemo(
+  String targetUuid, {
+  String routeId = '0',
+  double? atLeastReceive,
+}) {
+  final memoBuffer = StringBuffer('0|')
+    ..write(targetUuid)
+    ..write('|')
+    ..write(routeId);
+  if (atLeastReceive != null) {
+    memoBuffer
+      ..write('|')
+      ..write(atLeastReceive);
+  }
+  return base64Encode(utf8.encode(memoBuffer.toString()));
+}
 
 double calcSlippage(RouteData? routeData) {
   if (routeData == null || routeData.rank.isEmpty) {

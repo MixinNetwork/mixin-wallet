@@ -112,6 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterBy": MessageLookupByLibrary.simpleMessage("筛选"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("筛选"),
         "from": MessageLookupByLibrary.simpleMessage("来自"),
+        "goPay": MessageLookupByLibrary.simpleMessage("去支付"),
         "gotIt": MessageLookupByLibrary.simpleMessage("知道了"),
         "hiddenAssets": MessageLookupByLibrary.simpleMessage("隐藏的资产"),
         "hide": MessageLookupByLibrary.simpleMessage("隐藏"),
@@ -138,6 +139,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paid": MessageLookupByLibrary.simpleMessage("已支付"),
         "paidInMixin":
             MessageLookupByLibrary.simpleMessage("您是否已经在 Mixin 中支付？"),
+        "paidInMixinWarning":
+            MessageLookupByLibrary.simpleMessage("如果您已经支付成功，请耐心等待，无需再次支付"),
         "pay": MessageLookupByLibrary.simpleMessage("支付"),
         "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
@@ -168,13 +171,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "to": MessageLookupByLibrary.simpleMessage("至"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额"),
         "transaction": MessageLookupByLibrary.simpleMessage("转账记录"),
-        "transactionDone": MessageLookupByLibrary.simpleMessage("交易完成"),
+        "transactionChecking": MessageLookupByLibrary.simpleMessage("检查中"),
+        "transactionDone": MessageLookupByLibrary.simpleMessage("完成"),
         "transactionFee": MessageLookupByLibrary.simpleMessage("交易费："),
         "transactionFeeTip": MessageLookupByLibrary.simpleMessage(
             "由第三方服务商收取。美国用户按交易金额的2.9% + 30c收取，最低收费为\$5；国际用户按交易金额的3.9% + 30c收取，最低收费为\$5。"),
         "transactionHash": MessageLookupByLibrary.simpleMessage("交易哈希"),
-        "transactionOngoing": MessageLookupByLibrary.simpleMessage("进行中"),
         "transactionPhase": MessageLookupByLibrary.simpleMessage("交易进度"),
+        "transactionTrading": MessageLookupByLibrary.simpleMessage("交易中"),
         "transactions": MessageLookupByLibrary.simpleMessage("转账记录"),
         "transactionsAssetKeyWarning":
             MessageLookupByLibrary.simpleMessage("资产标识不是充值地址！"),

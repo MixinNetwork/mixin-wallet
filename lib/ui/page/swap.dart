@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -24,6 +22,7 @@ import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
+import '../widget/paid_in_mixin_dialog.dart';
 import '../widget/round_container.dart';
 import '../widget/symbol.dart';
 import '../widget/tip_tile.dart';
@@ -214,12 +213,12 @@ class _Body extends HookWidget {
                         'amount': sourceTextController.text,
                         'trace': traceId,
                         'asset': sourceAsset.value.assetId,
-                        'recipient': '6a4a121d-9673-4a7e-a93e-cb9ca4bb83a2',
+                        'recipient': mixSwapUserId,
                         'memo': memo,
                       });
                       final uriString = uri.toString();
                       if (!await canLaunch(uriString)) {
-                        i('can not launch url: $uriString');
+                        w('can not launch url: $uriString');
                         return;
                       }
                       await launch(uri.toString());
@@ -227,12 +226,13 @@ class _Body extends HookWidget {
                       await showDialog(
                           context: context,
                           barrierDismissible: false,
-                          builder: (context) => _PaidInMixinDialog(
+                          builder: (context) => PaidInMixinDialog(
                               onPaid: () => context.push(
                                       swapDetailPath.toUri({'id': traceId}),
                                       queryParameters: {
                                         'source': sourceAsset.value.assetId,
                                         'dest': destAsset.value.assetId,
+                                        'amount': sourceTextController.text,
                                       })));
                     },
                   )),
@@ -240,99 +240,11 @@ class _Body extends HookWidget {
         ]));
   }
 
-  String buildMixSwapMemo(
-    String targetUuid, {
-    String routeId = '0',
-    double? atLeastReceive,
-  }) {
-    final memoBuffer = StringBuffer('0|')
-      ..write(targetUuid)
-      ..write('|')
-      ..write(routeId);
-    if (atLeastReceive != null) {
-      memoBuffer
-        ..write('|')
-        ..write(atLeastReceive);
-    }
-    return base64Encode(utf8.encode(memoBuffer.toString()));
-  }
-
   Color colorOfSlippage(BuildContext context, double slippage) => slippage > 5
       ? lightBrightnessThemeData.red
       : slippage > 1
           ? lightBrightnessThemeData.warning
           : lightBrightnessThemeData.green;
-}
-
-class _PaidInMixinDialog extends StatelessWidget {
-  const _PaidInMixinDialog({
-    Key? key,
-    required this.onPaid,
-  }) : super(key: key);
-
-  final VoidCallback onPaid;
-
-  @override
-  Widget build(BuildContext context) => Center(
-      child: Material(
-          color: context.theme.background,
-          borderRadius: BorderRadius.circular(20),
-          child: SizedBox(
-              width: 275,
-              child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 36),
-                    Text(context.l10n.paidInMixin,
-                        style: TextStyle(
-                          color: context.colorScheme.primaryText,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        )),
-                    const SizedBox(height: 37),
-                    Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          _Button(
-                              text: context.l10n.unpaid,
-                              color: context.colorScheme.thirdText,
-                              onTap: () => Navigator.of(context).pop()),
-                          const SizedBox(width: 87),
-                          _Button(
-                              text: context.l10n.paid,
-                              color: context.colorScheme.primaryText,
-                              onTap: onPaid)
-                        ]),
-                    const SizedBox(height: 26),
-                  ]))));
-}
-
-class _Button extends StatelessWidget {
-  const _Button({
-    Key? key,
-    required this.text,
-    required this.color,
-    required this.onTap,
-  }) : super(key: key);
-
-  final String text;
-  final Color color;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        child: Center(
-            child: Text(text,
-                style: TextStyle(
-                  color: color,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ))),
-      );
 }
 
 class _AssetItem extends HookWidget {

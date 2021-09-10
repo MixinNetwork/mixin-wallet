@@ -126,6 +126,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterBy": MessageLookupByLibrary.simpleMessage("FILTER BY"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("Filter"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
+        "goPay": MessageLookupByLibrary.simpleMessage("Go pay"),
         "gotIt": MessageLookupByLibrary.simpleMessage("Got it"),
         "hiddenAssets": MessageLookupByLibrary.simpleMessage("Hidden Assets"),
         "hide": MessageLookupByLibrary.simpleMessage("Hide"),
@@ -156,6 +157,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paid": MessageLookupByLibrary.simpleMessage("Paid"),
         "paidInMixin":
             MessageLookupByLibrary.simpleMessage("Have you paid in Mixin?"),
+        "paidInMixinWarning": MessageLookupByLibrary.simpleMessage(
+            "If you have paid via Mixin, please be patient."),
         "pay": MessageLookupByLibrary.simpleMessage("Pay"),
         "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
@@ -191,18 +194,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
         "trace": MessageLookupByLibrary.simpleMessage("Trace"),
         "transaction": MessageLookupByLibrary.simpleMessage("Transaction"),
-        "transactionDone":
-            MessageLookupByLibrary.simpleMessage("Transaction done"),
+        "transactionChecking": MessageLookupByLibrary.simpleMessage("Checking"),
+        "transactionDone": MessageLookupByLibrary.simpleMessage("Done"),
         "transactionFee":
             MessageLookupByLibrary.simpleMessage("Transaction fee:"),
         "transactionFeeTip": MessageLookupByLibrary.simpleMessage(
             "Charged by third party service provider. US users are charged 2.9% + 30c of the transaction amount with a minimum charge of \$5. International users are charged 3.9% + 30c of the transaction amount with a minimum charge of \$5."),
         "transactionHash":
             MessageLookupByLibrary.simpleMessage("Transaction Hash"),
-        "transactionOngoing":
-            MessageLookupByLibrary.simpleMessage("Transaction ongoing"),
         "transactionPhase":
             MessageLookupByLibrary.simpleMessage("Transaction phase"),
+        "transactionTrading": MessageLookupByLibrary.simpleMessage("Trading"),
         "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
         "transactionsAssetKeyWarning": MessageLookupByLibrary.simpleMessage(
             "Asset key is NOT a deposit address!"),

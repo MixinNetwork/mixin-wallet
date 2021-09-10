@@ -1290,20 +1290,30 @@ class L10n {
     );
   }
 
-  /// `Transaction ongoing`
-  String get transactionOngoing {
+  /// `Checking`
+  String get transactionChecking {
     return Intl.message(
-      'Transaction ongoing',
-      name: 'transactionOngoing',
+      'Checking',
+      name: 'transactionChecking',
       desc: '',
       args: [],
     );
   }
 
-  /// `Transaction done`
+  /// `Trading`
+  String get transactionTrading {
+    return Intl.message(
+      'Trading',
+      name: 'transactionTrading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
   String get transactionDone {
     return Intl.message(
-      'Transaction done',
+      'Done',
       name: 'transactionDone',
       desc: '',
       args: [],
@@ -1335,6 +1345,16 @@ class L10n {
     return Intl.message(
       'Have you paid in Mixin?',
       name: 'paidInMixin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If you have paid via Mixin, please be patient.`
+  String get paidInMixinWarning {
+    return Intl.message(
+      'If you have paid via Mixin, please be patient.',
+      name: 'paidInMixinWarning',
       desc: '',
       args: [],
     );
@@ -1397,6 +1417,16 @@ class L10n {
       name: 'slippageOver',
       desc: '',
       args: [value],
+    );
+  }
+
+  /// `Go pay`
+  String get goPay {
+    return Intl.message(
+      'Go pay',
+      name: 'goPay',
+      desc: '',
+      args: [],
     );
   }
 }
