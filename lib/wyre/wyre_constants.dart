@@ -160,5 +160,5 @@ const supportedContries = [
   'VN',
 ];
 
-const supportedCryptos = ['USDT', 'USDC', 'DAI'];
-const supportedCryptosId = [erc20USDT, erc20USDC, dai];
+const supportedCryptos = ['USDT', 'USDC'];
+const supportedCryptosId = [erc20USDT, erc20USDC];
