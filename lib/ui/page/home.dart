@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
+import 'package:mixin_wallet/util/constants.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
@@ -320,11 +321,7 @@ class _ButtonBar extends StatelessWidget {
             HeaderButton.text(
               text: context.l10n.buy,
               onTap: () {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(content: Text(context.l10n.comingSoon)),
-                  );
+                context.push(buyPath.toUri({'id': erc20USDT}));
               },
             ),
             HeaderButton.text(
