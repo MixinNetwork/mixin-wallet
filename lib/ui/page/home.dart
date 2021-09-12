@@ -1,5 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
@@ -321,7 +322,15 @@ class _ButtonBar extends StatelessWidget {
             HeaderButton.text(
               text: context.l10n.buy,
               onTap: () {
-                context.push(buyPath.toUri({'id': erc20USDT}));
+                if (kReleaseMode) {
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(content: Text(context.l10n.comingSoon)),
+                    );
+                } else {
+                  context.push(buyPath.toUri({'id': erc20USDT}));
+                }
               },
             ),
             HeaderButton.text(
