@@ -30,17 +30,26 @@ class SwapDetail extends HookWidget {
   Widget build(BuildContext context) {
     final pathParameters = context.pathParameters;
     final traceId = pathParameters['id'];
-    if (traceId == null) {
-      return const SizedBox();
-    }
+    return traceId == null
+        ? const SizedBox()
+        : _SwapDetailLoader(traceId: traceId);
+  }
+}
 
+class _SwapDetailLoader extends HookWidget {
+  const _SwapDetailLoader({
+    Key? key,
+    required this.traceId,
+  }) : super(key: key);
+
+  final String traceId;
+
+  @override
+  Widget build(BuildContext context) {
     final queryParams = context.queryParameters;
     final sourceId = useState(queryParams['source']);
     final destId = useState(queryParams['dest']);
     final tuple = useScheduledCheckOrder(context, traceId, sourceId, destId);
-    final order = tuple.item1;
-    final swapPhase = tuple.item2;
-
     final assets = useMemoizedFuture(() {
       if (sourceId.value == null || destId.value == null) {
         return Future.value(null);
@@ -52,6 +61,8 @@ class SwapDetail extends HookWidget {
     if (assets == null || assets.isEmpty) {
       return const SizedBox();
     }
+    final order = tuple.item1;
+    final swapPhase = tuple.item2;
     final source =
         assets.firstWhere((e) => e.assetId.equalsIgnoreCase(sourceId.value));
     final dest =
