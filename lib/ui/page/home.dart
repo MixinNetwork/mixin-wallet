@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
-import 'package:mixin_wallet/util/constants.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
