@@ -66,7 +66,8 @@ const supportedFiatNames = [
   'South African Rand',
 ];
 
-const wyreDomain = 'api.testwyre.com';
+const wyreDomain = 'api.sendwyre.com';
+const wyreTestDomain = 'api.testwyre.com';
 
 const supportedFiatsFlag = [
   R.resourcesIcFlagZarPng,

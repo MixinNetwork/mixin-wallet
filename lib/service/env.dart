@@ -7,16 +7,16 @@ part 'env.g.dart';
 abstract class _DevEnv {
   static const clientId = __DevEnv.clientId;
   static const clientSecret = __DevEnv.clientSecret;
-  static const wyreSecret = __DevEnv.wyreSecret;
   static const wyreAccount = __DevEnv.wyreAccount;
+  static const wyreSecret = __DevEnv.wyreSecret;
 }
 
 @Envify(path: '.production.env')
 abstract class _ProdEnv {
   static const clientId = __ProdEnv.clientId;
   static const clientSecret = __ProdEnv.clientSecret;
-  static const wyreSecret = __ProdEnv.wyreSecret;
   static const wyreAccount = __ProdEnv.wyreAccount;
+  static const wyreSecret = __ProdEnv.wyreSecret;
 }
 
 class Env {
