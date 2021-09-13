@@ -155,72 +155,62 @@ class _Body extends StatelessWidget {
   final String traceId;
 
   @override
-  Widget build(BuildContext context) {
-    final amount = context.queryParameters['amount'];
-    return SingleChildScrollView(
-        child: SizedBox(
-            height: MediaQuery.of(context).size.height - 48,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  DefaultTextStyle(
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: context.colorScheme.thirdText,
-                    ),
-                    child: Text(context.l10n.swapType),
+  Widget build(BuildContext context) => SingleChildScrollView(
+      child: SizedBox(
+          height: MediaQuery.of(context).size.height - 48,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                DefaultTextStyle(
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: context.colorScheme.thirdText,
                   ),
-                  const SizedBox(height: 12),
-                  _AssetLayout(
-                    source: source,
-                    dest: dest,
-                  ),
-                  const SizedBox(height: 14),
-                  Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TransactionInfoTile(
-                            title: Text(context.l10n.transactionPhase),
-                            subtitle: SelectableText(
-                                getOrderStatus(swapPhase, context))),
-                        TransactionInfoTile(
-                            title: Text(context.l10n.paid),
-                            subtitle: SelectableText(
-                                subtitle(order?.payAmount, source.symbol)),
-                            subtitleColor:
-                                subtitleColor(order?.payAmount, context)),
-                        TransactionInfoTile(
-                            title: Text(context.l10n.received),
-                            subtitle: SelectableText(
-                                subtitle(order?.receiveAmount, dest.symbol)),
-                            subtitleColor:
-                                subtitleColor(order?.receiveAmount, context)),
-                        TransactionInfoTile(
-                            title: Text(context.l10n.refund),
-                            subtitle: SelectableText(
-                                subtitle(order?.refundAmount, source.symbol)),
-                            subtitleColor:
-                                subtitleColor(order?.refundAmount, context)),
-                      ]),
-                  const Spacer(),
-                  if (swapPhase == SwapPhase.checking && amount != null)
-                    _BottomPayButton(onTap: () async {
-                      await showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) =>
-                              buildPaidInMixinDialog(context, amount));
-                    })
-                  else if (swapPhase == SwapPhase.trading)
-                    const _BottomLoading(),
-                ],
-              ),
-            )));
-  }
+                  child: Text(context.l10n.swapType),
+                ),
+                const SizedBox(height: 12),
+                _AssetLayout(
+                  source: source,
+                  dest: dest,
+                ),
+                const SizedBox(height: 14),
+                Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TransactionInfoTile(
+                          title: Text(context.l10n.transactionPhase),
+                          subtitle: SelectableText(
+                              getOrderStatus(swapPhase, context))),
+                      TransactionInfoTile(
+                          title: Text(context.l10n.paid),
+                          subtitle: SelectableText(
+                              subtitle(order?.payAmount, source.symbol)),
+                          subtitleColor:
+                              subtitleColor(order?.payAmount, context)),
+                      TransactionInfoTile(
+                          title: Text(context.l10n.received),
+                          subtitle: SelectableText(
+                              subtitle(order?.receiveAmount, dest.symbol)),
+                          subtitleColor:
+                              subtitleColor(order?.receiveAmount, context)),
+                      TransactionInfoTile(
+                          title: Text(context.l10n.refund),
+                          subtitle: SelectableText(
+                              subtitle(order?.refundAmount, source.symbol)),
+                          subtitleColor:
+                              subtitleColor(order?.refundAmount, context)),
+                    ]),
+                const Spacer(),
+                if (swapPhase == SwapPhase.checking ||
+                    swapPhase == SwapPhase.trading)
+                  _BottomLoading(swapPhase: swapPhase),
+              ],
+            ),
+          )));
 
   PaidInMixinDialog buildPaidInMixinDialog(
           BuildContext context, String amount) =>
@@ -272,41 +262,13 @@ class _Body extends StatelessWidget {
       isNull(origin) ? context.colorScheme.thirdText : null;
 }
 
-class _BottomPayButton extends HookWidget {
-  const _BottomPayButton({
+class _BottomLoading extends HookWidget {
+  const _BottomLoading({
     Key? key,
-    required this.onTap,
+    required this.swapPhase,
   }) : super(key: key);
 
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => Center(
-          child: Column(children: [
-        Material(
-            borderRadius: BorderRadius.circular(72),
-            color: const Color(0xFF333333),
-            child: InkWell(
-                onTap: onTap,
-                borderRadius: BorderRadius.circular(72),
-                child: SizedBox(
-                    width: 110,
-                    height: 48,
-                    child: Center(
-                      child: Text(
-                        context.l10n.goPay,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: context.colorScheme.background,
-                        ),
-                      ),
-                    )))),
-        const SizedBox(height: 16),
-      ]));
-}
-
-class _BottomLoading extends HookWidget {
-  const _BottomLoading({Key? key}) : super(key: key);
+  final SwapPhase swapPhase;
 
   @override
   Widget build(BuildContext context) => Column(children: [
@@ -323,7 +285,9 @@ class _BottomLoading extends HookWidget {
             height: 1,
             color: context.colorScheme.thirdText,
           ),
-          child: Text(context.l10n.transactionTrading),
+          child: Text(swapPhase == SwapPhase.checking
+              ? context.l10n.transactionChecking
+              : context.l10n.transactionTrading),
         ),
         const SizedBox(height: 32),
       ]);

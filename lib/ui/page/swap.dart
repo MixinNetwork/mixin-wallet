@@ -343,7 +343,7 @@ class _AssetItem extends HookWidget {
 
     return RoundContainer(
       height: 64,
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
       child: Row(children: [
         InkWell(
             onTap: () => showAssetListBottomSheet(asset),
@@ -387,7 +387,6 @@ class _AssetItem extends HookWidget {
                 controller: textController,
                 readOnly: true,
               )),
-        const SizedBox(width: 20),
       ]),
     );
   }
@@ -408,8 +407,8 @@ class _SourceAmountArea extends StatelessWidget {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox(height: 38, child: amountTextField),
-          const SizedBox(height: 7),
+          SizedBox(height: 32, child: amountTextField),
+          const SizedBox(height: 5),
           Text(
             '${asset.value.balance} ${context.l10n.balance}',
             style: TextStyle(
@@ -419,6 +418,7 @@ class _SourceAmountArea extends StatelessWidget {
             ),
             textAlign: TextAlign.end,
           ),
+          const SizedBox(height: 12),
         ],
       ));
 }
