@@ -225,6 +225,7 @@ class _Body extends HookWidget {
                     fontWeight: FontWeight.bold),
               ),
               textAlign: TextAlign.right,
+              enableInteractiveSelection: false,
             )),
             const SizedBox(width: 16),
           ]),
