@@ -23,6 +23,7 @@ Future<bool> showAndWaitingExternalAction({
   await launch(uri.toString());
   final result = await showDialog<bool>(
     context: context,
+    barrierDismissible: false,
     builder: (context) => _ExternalActionConfirmDialog(
       loopAction: action,
       key: ValueKey(uri),
