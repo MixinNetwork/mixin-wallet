@@ -214,8 +214,9 @@ class AddressAddWidget extends HookWidget {
                   action: () async {
                     final addressList =
                         await context.appServices.updateAddresses(assetId);
-                    final index = addressList.indexWhere(
-                        (e) => e.destination == address && e.tag == tag);
+                    final index = addressList.indexWhere((e) =>
+                        e.destination.toLowerCase() == address.toLowerCase() &&
+                        e.tag == tag);
                     return index != -1;
                   },
                   hint: Text(context.l10n.waitingActionDone),
