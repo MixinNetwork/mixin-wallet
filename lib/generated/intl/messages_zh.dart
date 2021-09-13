@@ -94,11 +94,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositTipBtc":
             MessageLookupByLibrary.simpleMessage("该充值地址仅支持 BTC 和 Omni USDT。"),
         "depositTipEos": MessageLookupByLibrary.simpleMessage(
-            "该充值地址支持所有基于 EOS 发行的代币，例如 EOS、IQ、BLACK、OCT、KARMA 等。"),
+            "该充值地址支持所有基于 EOS 发行的代币，例如 EOS、IQ 等。"),
         "depositTipEth": MessageLookupByLibrary.simpleMessage(
-            "该充值地址支持所有符合 ERC-20 标准的代币，例如 ETH、XIN、HT、LOOM、LEO、PRS 等。"),
+            "该充值地址支持所有符合 ERC-20 标准的代币，例如 ETH、XIN 等。"),
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
-            "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币，例如 TRX、BTT、USDT-TRON 等。"),
+            "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币，例如 TRX、USDT-TRON 等。"),
         "depositing": MessageLookupByLibrary.simpleMessage("充值中"),
         "dontShowAgain": MessageLookupByLibrary.simpleMessage("不再提醒"),
         "emptyAmount": MessageLookupByLibrary.simpleMessage("金额不能为空"),
