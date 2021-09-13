@@ -354,7 +354,10 @@ class _AssetLayout extends StatelessWidget {
             fontSize: 16,
             color: context.colorScheme.primaryText,
           ),
-          child: Text(source.symbol),
+          child: SelectableText(
+            source.symbol,
+            enableInteractiveSelection: false,
+          ),
         ),
         const SizedBox(width: 16),
         SvgPicture.asset(
@@ -376,7 +379,10 @@ class _AssetLayout extends StatelessWidget {
             fontSize: 16,
             color: context.colorScheme.primaryText,
           ),
-          child: Text(dest.symbol),
+          child: SelectableText(
+            dest.symbol,
+            enableInteractiveSelection: false,
+          ),
         ),
       ]);
 }
