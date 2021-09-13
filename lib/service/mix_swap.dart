@@ -54,7 +54,7 @@ double calcSlippage(RouteData? routeData) {
 
 String displaySlippage(double slippage) {
   if (slippage < 0.01) {
-    return '<0.01%';
+    return '<1%';
   } else {
     return '${slippage.toStringAsFixed(2)}%';
   }
