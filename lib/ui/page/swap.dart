@@ -17,7 +17,6 @@ import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../brightness_theme_data.dart';
 import '../router/mixin_routes.dart';
-import '../widget/action_button.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
@@ -61,13 +60,6 @@ class Swap extends HookWidget {
           ),
           enableInteractiveSelection: false,
         ),
-        actions: [
-          ActionButton(
-            name: R.resourcesTransactionSvg,
-            size: 24,
-            onTap: () {},
-          )
-        ],
       ),
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
@@ -103,8 +95,16 @@ class _Body extends HookWidget {
     final sourceTextController = useTextEditingController();
     final destTextController = useTextEditingController();
     final sourceFocusNode = useFocusNode(debugLabel: 'source input');
-    final slippage = useMemoized(() => calcSlippage(routeData.value));
-    final slippageDisplay = useMemoized(() => displaySlippage(slippage));
+    final slippageKeys = [
+      sourceAsset.value,
+      destAsset.value,
+      sourceTextController.text,
+      destTextController.text
+    ];
+    final slippage =
+        useMemoized(() => calcSlippage(routeData.value), slippageKeys);
+    final slippageDisplay =
+        useMemoized(() => displaySlippage(slippage), slippageKeys);
 
     Future<void> updateAmount(
       String text,
