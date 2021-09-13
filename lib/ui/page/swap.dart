@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -33,8 +35,14 @@ class Swap extends HookWidget {
   Widget build(BuildContext context) {
     final swapClient = MixSwap.client;
     final supportedAssets = useMemoizedFuture(() async {
-      final supportedIds =
-          (await swapClient.getAssets()).data.map((e) => e.uuid).toList();
+      var supportedIds = supportedAssetIds;
+      i('supportedIds: $supportedIds');
+      if (supportedIds == null) {
+        supportedIds =
+            (await swapClient.getAssets()).data.map((e) => e.uuid).toList();
+      } else {
+        unawaited(updateSupportedAssets(swapClient));
+      }
       return context.appServices.findOrSyncAssets(supportedIds);
     }).data;
 
@@ -43,6 +51,16 @@ class Swap extends HookWidget {
     if (source != null) {
       sourceAsset = supportedAssets
           ?.where((e) => e.assetId.equalsIgnoreCase(source))
+          .firstOrNull;
+    } else if (sourceAssetId != null) {
+      sourceAsset = supportedAssets
+          ?.where((e) => e.assetId.equalsIgnoreCase(sourceAssetId))
+          .firstOrNull;
+    }
+    AssetResult? destAsset;
+    if (destAssetId != null) {
+      destAsset = supportedAssets
+          ?.where((e) => e.assetId.equalsIgnoreCase(destAssetId))
           .firstOrNull;
     }
 
@@ -68,9 +86,16 @@ class Swap extends HookWidget {
             : _Body(
                 swapClient: swapClient,
                 supportedAssets: supportedAssets,
-                initialSource: sourceAsset),
+                initialSource: sourceAsset,
+                initialDest: destAsset),
       ),
     );
+  }
+
+  Future<void> updateSupportedAssets(Client swapClient) async {
+    final assetIds =
+        (await swapClient.getAssets()).data.map((e) => e.uuid).toList();
+    await setSupportedAssetIds(assetIds);
   }
 }
 
@@ -80,17 +105,19 @@ class _Body extends HookWidget {
     required this.swapClient,
     required this.supportedAssets,
     this.initialSource,
+    this.initialDest,
   }) : super(key: key);
 
   final Client swapClient;
   final List<AssetResult> supportedAssets;
   final AssetResult? initialSource;
+  final AssetResult? initialDest;
 
   @override
   Widget build(BuildContext context) {
     assert(supportedAssets.length > 1);
     final sourceAsset = useState(initialSource ?? supportedAssets[0]);
-    final destAsset = useState(getInitialDest());
+    final destAsset = useState(initialDest ?? getInitialDest());
     final routeData = useState<RouteData?>(null);
     final sourceTextController = useTextEditingController();
     final destTextController = useTextEditingController();
@@ -163,13 +190,15 @@ class _Body extends HookWidget {
             const SizedBox(width: 16),
             InkResponse(
                 radius: 40,
-                onTap: () {
+                onTap: () async {
                   final tmp = sourceAsset.value;
                   sourceAsset.value = destAsset.value;
                   destAsset.value = tmp;
                   sourceTextController.text = '';
                   destTextController.text = '';
                   routeData.value = null;
+                  await setSourceAssetId(sourceAsset.value.assetId);
+                  await setDestAssetId(destAsset.value.assetId);
                 },
                 child: SizedBox.square(
                     dimension: 40,
@@ -295,8 +324,13 @@ class _AssetItem extends HookWidget {
         context: context,
         isScrollControlled: true,
         builder: (context) => AssetSelectionListWidget(
-          onTap: (AssetResult assetResult) {
+          onTap: (AssetResult assetResult) async {
             asset.value = assetResult;
+            if (readOnly) {
+              await setDestAssetId(assetResult.assetId);
+            } else {
+              await setSourceAssetId(assetResult.assetId);
+            }
           },
           selectedAssetId: asset.value.assetId,
           assetResultList: supportedAssets,

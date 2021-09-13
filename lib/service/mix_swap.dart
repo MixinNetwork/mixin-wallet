@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:hive/hive.dart';
 import 'package:mixswap_sdk_dart/mixswap_sdk_dart.dart';
 
 class MixSwap {
@@ -18,6 +19,26 @@ class MixSwap {
 const supportMaxSlippage = 1;
 const mixSwapRetryErrorCode = 403;
 const mixSwapUserId = '6a4a121d-9673-4a7e-a93e-cb9ca4bb83a2';
+
+Box<dynamic> get swapBox => Hive.box('swap');
+
+List<String>? get supportedAssetIds =>
+    ((swapBox.get('supportedAssetIds') as List<dynamic>?) ?? [])
+        .map((e) => e as String)
+        .toList();
+
+Future<void> setSupportedAssetIds(List<String> assetIds) =>
+    swapBox.put('supportedAssetIds', assetIds);
+
+String? get sourceAssetId => swapBox.get('sourceAssetId') as String?;
+
+Future<void> setSourceAssetId(String sourceId) =>
+    swapBox.put('sourceAssetId', sourceId);
+
+String? get destAssetId => swapBox.get('destAssetId') as String?;
+
+Future<void> setDestAssetId(String destId) =>
+    swapBox.put('destAssetId', destId);
 
 enum SwapPhase { checking, trading, done }
 
@@ -54,7 +75,7 @@ double calcSlippage(RouteData? routeData) {
 
 String displaySlippage(double slippage) {
   if (slippage < 0.01) {
-    return '<1%';
+    return '<0.01%';
   } else {
     return '${slippage.toStringAsFixed(2)}%';
   }

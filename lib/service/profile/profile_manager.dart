@@ -13,6 +13,7 @@ Future<void> initStorage() async {
   await Hive.initFlutter();
   fixSafariIndexDb();
   await Hive.openBox('profile');
+  await Hive.openBox('swap');
 }
 
 Auth? get auth => profileBox.get('auth') as Auth?;
