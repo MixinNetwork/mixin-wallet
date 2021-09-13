@@ -119,5 +119,22 @@
   "networkFeeTip": "Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions.",
   "pay": "Pay",
   "balance": "BALANCE",
-  "errorNoCamera": "No camera"
+  "errorNoCamera": "No camera",
+  "swapType": "Swap type",
+  "transferDetail": "Transfer details",
+  "transactionPhase": "Transaction phase",
+  "transactionChecking": "Checking",
+  "transactionTrading": "Trading",
+  "transactionDone": "Done",
+  "received": "Received",
+  "refund": "Refund",
+  "paidInMixin": "Have you paid in Mixin?",
+  "paidInMixinWarning": "If you have paid via Mixin, please be patient.",
+  "paid": "Paid",
+  "unpaid": "Unpaid",
+  "incomplete":"Incomplete",
+  "completed": "Completed",
+  "slippage": "Slippage",
+  "slippageOver": "Swap with slippage greater than {value} is not currently supported",
+  "goPay": "Go pay"
 }

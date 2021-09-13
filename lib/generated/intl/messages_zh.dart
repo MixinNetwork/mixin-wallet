@@ -33,9 +33,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m8(value, value2) => "${value}/${value2} 区块确认数";
 
-  static String m9(value) => "价值 ${value}";
+  static String m9(value) => "暂不支持滑点大于 ${value} 的闪兑";
 
-  static String m10(value) => "当时价值 ${value}";
+  static String m10(value) => "价值 ${value}";
+
+  static String m11(value) => "当时价值 ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -76,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("即将推出"),
+        "completed": MessageLookupByLibrary.simpleMessage("已完成"),
         "contact": MessageLookupByLibrary.simpleMessage("联系人"),
         "contactReadFailed": MessageLookupByLibrary.simpleMessage("读取联系人列表失败"),
         "contactSearchHint":
@@ -109,10 +112,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterBy": MessageLookupByLibrary.simpleMessage("筛选"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("筛选"),
         "from": MessageLookupByLibrary.simpleMessage("来自"),
+        "goPay": MessageLookupByLibrary.simpleMessage("去支付"),
         "gotIt": MessageLookupByLibrary.simpleMessage("知道了"),
         "hiddenAssets": MessageLookupByLibrary.simpleMessage("隐藏的资产"),
         "hide": MessageLookupByLibrary.simpleMessage("隐藏"),
         "hideSmallAssets": MessageLookupByLibrary.simpleMessage("隐藏小额资产"),
+        "incomplete": MessageLookupByLibrary.simpleMessage("未完成"),
         "memo": MessageLookupByLibrary.simpleMessage("备注"),
         "memoHint": MessageLookupByLibrary.simpleMessage("标签（Memo）"),
         "minerFee": MessageLookupByLibrary.simpleMessage("挖矿手续费"),
@@ -131,13 +136,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "notice": MessageLookupByLibrary.simpleMessage("注意"),
         "ok": MessageLookupByLibrary.simpleMessage("好的"),
         "other": MessageLookupByLibrary.simpleMessage("其他"),
+        "paid": MessageLookupByLibrary.simpleMessage("已支付"),
+        "paidInMixin":
+            MessageLookupByLibrary.simpleMessage("您是否已经在 Mixin 中支付？"),
+        "paidInMixinWarning":
+            MessageLookupByLibrary.simpleMessage("如果您已经支付成功，请耐心等待，无需再次支付"),
         "pay": MessageLookupByLibrary.simpleMessage("支付"),
         "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),
         "rebate": MessageLookupByLibrary.simpleMessage("退款"),
         "receive": MessageLookupByLibrary.simpleMessage("转入"),
+        "received": MessageLookupByLibrary.simpleMessage("获得"),
         "recentSearches": MessageLookupByLibrary.simpleMessage("最近搜索"),
+        "refund": MessageLookupByLibrary.simpleMessage("退回"),
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("取消授权"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
@@ -148,18 +160,25 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendToContact": MessageLookupByLibrary.simpleMessage("转账至联系人"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "show": MessageLookupByLibrary.simpleMessage("显示"),
+        "slippage": MessageLookupByLibrary.simpleMessage("滑点"),
+        "slippageOver": m9,
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
-        "swap": MessageLookupByLibrary.simpleMessage("Swap"),
+        "swap": MessageLookupByLibrary.simpleMessage("闪兑"),
+        "swapType": MessageLookupByLibrary.simpleMessage("兑换币种"),
         "symbol": MessageLookupByLibrary.simpleMessage("符号"),
         "tagHint": MessageLookupByLibrary.simpleMessage("标签（Tag）"),
         "time": MessageLookupByLibrary.simpleMessage("时间"),
         "to": MessageLookupByLibrary.simpleMessage("至"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额"),
         "transaction": MessageLookupByLibrary.simpleMessage("转账记录"),
+        "transactionChecking": MessageLookupByLibrary.simpleMessage("检查中"),
+        "transactionDone": MessageLookupByLibrary.simpleMessage("完成"),
         "transactionFee": MessageLookupByLibrary.simpleMessage("交易费："),
         "transactionFeeTip": MessageLookupByLibrary.simpleMessage(
             "由第三方服务商收取。美国用户按交易金额的2.9% + 30c收取，最低收费为\$5；国际用户按交易金额的3.9% + 30c收取，最低收费为\$5。"),
         "transactionHash": MessageLookupByLibrary.simpleMessage("交易哈希"),
+        "transactionPhase": MessageLookupByLibrary.simpleMessage("交易进度"),
+        "transactionTrading": MessageLookupByLibrary.simpleMessage("交易中"),
         "transactions": MessageLookupByLibrary.simpleMessage("转账记录"),
         "transactionsAssetKeyWarning":
             MessageLookupByLibrary.simpleMessage("资产标识不是充值地址！"),
@@ -167,12 +186,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsStatus": MessageLookupByLibrary.simpleMessage("交易状态"),
         "transactionsType": MessageLookupByLibrary.simpleMessage("交易类型"),
         "transfer": MessageLookupByLibrary.simpleMessage("转账"),
+        "transferDetail": MessageLookupByLibrary.simpleMessage("交易详情"),
         "undo": MessageLookupByLibrary.simpleMessage("撤销"),
+        "unpaid": MessageLookupByLibrary.simpleMessage("未支付"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),
-        "walletTransactionCurrentValue": m9,
+        "walletTransactionCurrentValue": m10,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),
-        "walletTransactionThatTimeValue": m10,
+        "walletTransactionThatTimeValue": m11,
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "本服务由 Wyre 提供。我们仅作为渠道，不额外收取手续费。"),
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),

@@ -15,6 +15,9 @@ import '../page/home.dart';
 import '../page/not_found.dart';
 import '../page/setting.dart';
 import '../page/snapshot_detail.dart';
+import '../page/swap.dart';
+import '../page/swap_detail.dart';
+import '../page/swap_transactions.dart';
 import '../page/transfer.dart';
 import '../page/transfer_transactions.dart';
 import '../page/withdrawal.dart';
@@ -35,6 +38,9 @@ const transferTransactionsPath = '/transfer/:id/transactions';
 const settingPath = '/setting';
 const buyPath = '/buy/:id';
 const buySuccessPath = '/buySuccess';
+const swapPath = '/swap';
+const swapTransactionsPath = '/swap/transactions';
+const swapDetailPath = '/swap/:id/detail';
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VWidget(
@@ -128,6 +134,21 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     key: const ValueKey('BuySuccess'),
                     path: buySuccessPath,
                     widget: const BuySuccess(),
+                  ),
+                  VWidget(
+                    key: const ValueKey('Swap'),
+                    path: swapPath,
+                    widget: const Swap(),
+                  ),
+                  VWidget(
+                    key: const ValueKey('SwapDetail'),
+                    path: swapDetailPath,
+                    widget: const SwapDetail(),
+                  ),
+                  VWidget(
+                    key: const ValueKey('SwapTransactions'),
+                    path: swapTransactionsPath,
+                    widget: const SwapTransactions(),
                   ),
                 ]),
           ]),

@@ -66,6 +66,10 @@ dependencies:
       path: packages/web_qrcode
       ref: 7a0703301c6b9b2950f14bb045e2a660c8530c7a
 
+  mixswap_sdk_dart:
+    git:
+      url: https://github.com/MixinNetwork/mixswap_sdk_dart
+
 dependency_overrides:
   analyzer: ^2.0.0
 

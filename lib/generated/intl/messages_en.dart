@@ -39,9 +39,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m8(value, value2) => "${value}/${value2} confirmations";
 
-  static String m9(value) => "value now ${value}";
+  static String m9(value) =>
+      "Swap with slippage greater than ${value} is not currently supported";
 
-  static String m10(value) => "value then ${value}";
+  static String m10(value) => "value now ${value}";
+
+  static String m11(value) => "value then ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -85,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
+        "completed": MessageLookupByLibrary.simpleMessage("Completed"),
         "contact": MessageLookupByLibrary.simpleMessage("Contact"),
         "contactReadFailed":
             MessageLookupByLibrary.simpleMessage("Failed to read contact list"),
@@ -122,11 +126,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterBy": MessageLookupByLibrary.simpleMessage("FILTER BY"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("Filter"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
+        "goPay": MessageLookupByLibrary.simpleMessage("Go pay"),
         "gotIt": MessageLookupByLibrary.simpleMessage("Got it"),
         "hiddenAssets": MessageLookupByLibrary.simpleMessage("Hidden Assets"),
         "hide": MessageLookupByLibrary.simpleMessage("Hide"),
         "hideSmallAssets":
             MessageLookupByLibrary.simpleMessage("Hide small assets"),
+        "incomplete": MessageLookupByLibrary.simpleMessage("Incomplete"),
         "memo": MessageLookupByLibrary.simpleMessage("Memo"),
         "memoHint": MessageLookupByLibrary.simpleMessage("Memo"),
         "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
@@ -148,14 +154,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "notice": MessageLookupByLibrary.simpleMessage("Notice"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
+        "paid": MessageLookupByLibrary.simpleMessage("Paid"),
+        "paidInMixin":
+            MessageLookupByLibrary.simpleMessage("Have you paid in Mixin?"),
+        "paidInMixinWarning": MessageLookupByLibrary.simpleMessage(
+            "If you have paid via Mixin, please be patient."),
         "pay": MessageLookupByLibrary.simpleMessage("Pay"),
         "pendingConfirmations": m8,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
+        "received": MessageLookupByLibrary.simpleMessage("Received"),
         "recentSearches":
             MessageLookupByLibrary.simpleMessage("Recent searches"),
+        "refund": MessageLookupByLibrary.simpleMessage("Refund"),
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("Deauthorize"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
@@ -169,8 +182,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Send to contact"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
+        "slippage": MessageLookupByLibrary.simpleMessage("Slippage"),
+        "slippageOver": m9,
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "swap": MessageLookupByLibrary.simpleMessage("Swap"),
+        "swapType": MessageLookupByLibrary.simpleMessage("Swap type"),
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
         "tagHint": MessageLookupByLibrary.simpleMessage("Tag"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
@@ -178,12 +194,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
         "trace": MessageLookupByLibrary.simpleMessage("Trace"),
         "transaction": MessageLookupByLibrary.simpleMessage("Transaction"),
+        "transactionChecking": MessageLookupByLibrary.simpleMessage("Checking"),
+        "transactionDone": MessageLookupByLibrary.simpleMessage("Done"),
         "transactionFee":
             MessageLookupByLibrary.simpleMessage("Transaction fee:"),
         "transactionFeeTip": MessageLookupByLibrary.simpleMessage(
             "Charged by third party service provider. US users are charged 2.9% + 30c of the transaction amount with a minimum charge of \$5. International users are charged 3.9% + 30c of the transaction amount with a minimum charge of \$5."),
         "transactionHash":
             MessageLookupByLibrary.simpleMessage("Transaction Hash"),
+        "transactionPhase":
+            MessageLookupByLibrary.simpleMessage("Transaction phase"),
+        "transactionTrading": MessageLookupByLibrary.simpleMessage("Trading"),
         "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
         "transactionsAssetKeyWarning": MessageLookupByLibrary.simpleMessage(
             "Asset key is NOT a deposit address!"),
@@ -193,13 +214,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsType":
             MessageLookupByLibrary.simpleMessage("Transaction Type"),
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
+        "transferDetail":
+            MessageLookupByLibrary.simpleMessage("Transfer details"),
         "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
+        "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
-        "walletTransactionCurrentValue": m9,
+        "walletTransactionCurrentValue": m10,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
-        "walletTransactionThatTimeValue": m10,
+        "walletTransactionThatTimeValue": m11,
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "This service is provided by Wyre. We act as a conduit only and do not charge additional fees."),
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),

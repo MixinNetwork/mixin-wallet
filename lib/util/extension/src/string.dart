@@ -8,6 +8,9 @@ extension StringExtension on String {
   bool containsIgnoreCase(String secondString) =>
       toLowerCase().contains(secondString.toLowerCase());
 
+  bool equalsIgnoreCase(String? secondString) =>
+      secondString != null && toLowerCase() == secondString.toLowerCase();
+
   String formatAddress() {
     if (length <= 10) {
       return this;

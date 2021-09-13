@@ -6,10 +6,12 @@ class TransactionInfoTile extends StatelessWidget {
     Key? key,
     required this.title,
     required this.subtitle,
+    this.subtitleColor,
   }) : super(key: key);
 
   final Widget title;
   final Widget subtitle;
+  final Color? subtitleColor;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -30,7 +32,7 @@ class TransactionInfoTile extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               height: 1,
-              color: context.colorScheme.primaryText,
+              color: subtitleColor ?? context.colorScheme.primaryText,
             ),
             child: subtitle,
           ),

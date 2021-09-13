@@ -12,6 +12,7 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
     this.backgroundColor,
     this.backButtonColor,
     this.actions,
+    this.bottom,
   }) : super(key: key);
 
   final Widget? leading;
@@ -23,6 +24,8 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
   final List<Widget>? actions;
 
   final Color? backButtonColor;
+
+  final PreferredSizeWidget? bottom;
 
   List<Widget> get validActions {
     final isNotEmpty = actions?.isNotEmpty == true;
@@ -50,8 +53,10 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
           color: Colors.white,
         ),
         backgroundColor: backgroundColor ?? context.theme.accent,
+        bottom: bottom,
       );
 
   @override
-  Size get preferredSize => const Size.fromHeight(48);
+  Size get preferredSize =>
+      Size.fromHeight(48 + (bottom?.preferredSize.height ?? 0));
 }
