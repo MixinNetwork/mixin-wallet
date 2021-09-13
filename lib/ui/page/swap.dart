@@ -14,7 +14,6 @@ import '../../service/mix_swap.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../brightness_theme_data.dart';
 import '../router/mixin_routes.dart';
@@ -35,7 +34,6 @@ class Swap extends HookWidget {
     final swapClient = MixSwap.client;
     final supportedAssets = useMemoizedFuture(() async {
       var supportedIds = supportedAssetIds;
-      i('supportedIds: $supportedIds');
       if (supportedIds == null) {
         supportedIds =
             (await swapClient.getAssets()).data.map((e) => e.uuid).toList();
