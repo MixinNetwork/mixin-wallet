@@ -231,14 +231,8 @@ class _Body extends HookWidget {
                       final ret = await showAndWaitingExternalAction(
                         context: context,
                         uri: uri,
-                        action: () async {
-                          try {
-                            await MixSwap.client.getOrder(traceId);
-                            return true;
-                          } catch (e) {
-                            return false;
-                          }
-                        },
+                        action: () => context.appServices
+                            .updateSnapshotByTraceId(traceId: traceId),
                         hint: Text(context.l10n.waitingActionDone),
                       );
 
