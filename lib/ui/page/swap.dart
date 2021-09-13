@@ -210,6 +210,23 @@ class _Body extends HookWidget {
                     ),
                   ),
                 )),
+            Expanded(
+                child: SelectableText.rich(
+              '${context.l10n.balance} ${sourceAsset.value.balance} ${sourceAsset.value.symbol}'
+                  .highlight(
+                TextStyle(
+                  color: context.colorScheme.thirdText,
+                  fontSize: 12,
+                ),
+                sourceAsset.value.balance,
+                TextStyle(
+                    color: context.colorScheme.primaryText,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold),
+              ),
+              textAlign: TextAlign.right,
+            )),
+            const SizedBox(width: 16),
           ]),
           const SizedBox(height: 12),
           _AssetItem(
@@ -404,22 +421,9 @@ class _SourceAmountArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Expanded(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          SizedBox(height: 32, child: amountTextField),
-          const SizedBox(height: 5),
-          Text(
-            '${asset.value.balance} ${context.l10n.balance}',
-            style: TextStyle(
-              color: context.colorScheme.secondaryText,
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
-            textAlign: TextAlign.end,
-          ),
-          const SizedBox(height: 12),
-        ],
+          child: Align(
+        alignment: Alignment.centerRight,
+        child: amountTextField,
       ));
 }
 
