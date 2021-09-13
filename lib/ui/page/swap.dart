@@ -38,7 +38,7 @@ class Swap extends HookWidget {
         supportedIds =
             (await swapClient.getAssets()).data.map((e) => e.uuid).toList();
       } else {
-        unawaited(updateSupportedAssets(swapClient));
+        unawaited(_updateSupportedAssets(swapClient));
       }
       return context.appServices.findOrSyncAssets(supportedIds);
     }).data;
@@ -89,7 +89,7 @@ class Swap extends HookWidget {
     );
   }
 
-  Future<void> updateSupportedAssets(Client swapClient) async {
+  Future<void> _updateSupportedAssets(Client swapClient) async {
     final assetIds =
         (await swapClient.getAssets()).data.map((e) => e.uuid).toList();
     await setSupportedAssetIds(assetIds);
@@ -114,7 +114,7 @@ class _Body extends HookWidget {
   Widget build(BuildContext context) {
     assert(supportedAssets.length > 1);
     final sourceAsset = useState(initialSource ?? supportedAssets[0]);
-    final destAsset = useState(initialDest ?? getInitialDest());
+    final destAsset = useState(initialDest ?? _getInitialDest());
     final routeData = useState<RouteData?>(null);
     final sourceTextController = useTextEditingController();
     final destTextController = useTextEditingController();
@@ -225,7 +225,7 @@ class _Body extends HookWidget {
             TipTile(
               text: '${context.l10n.slippage} $slippageDisplay',
               highlight: slippageDisplay,
-              highlightColor: colorOfSlippage(context, slippage),
+              highlightColor: _colorOfSlippage(context, slippage),
             ),
           const Spacer(),
           HookBuilder(
@@ -280,7 +280,7 @@ class _Body extends HookWidget {
         ]));
   }
 
-  AssetResult getInitialDest() {
+  AssetResult _getInitialDest() {
     if (initialSource == null) {
       return supportedAssets[1];
     } else {
@@ -292,7 +292,7 @@ class _Body extends HookWidget {
     }
   }
 
-  Color colorOfSlippage(BuildContext context, double slippage) => slippage > 5
+  Color _colorOfSlippage(BuildContext context, double slippage) => slippage > 5
       ? lightBrightnessThemeData.red
       : slippage > 1
           ? lightBrightnessThemeData.warning
@@ -343,7 +343,7 @@ class _AssetItem extends HookWidget {
 
     return RoundContainer(
       height: 64,
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
       child: Row(children: [
         InkWell(
             onTap: () => showAssetListBottomSheet(asset),
@@ -387,7 +387,6 @@ class _AssetItem extends HookWidget {
                 controller: textController,
                 readOnly: true,
               )),
-        const SizedBox(width: 20),
       ]),
     );
   }
@@ -408,8 +407,8 @@ class _SourceAmountArea extends StatelessWidget {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox(height: 38, child: amountTextField),
-          const SizedBox(height: 7),
+          SizedBox(height: 32, child: amountTextField),
+          const SizedBox(height: 5),
           Text(
             '${asset.value.balance} ${context.l10n.balance}',
             style: TextStyle(
@@ -419,6 +418,7 @@ class _SourceAmountArea extends StatelessWidget {
             ),
             textAlign: TextAlign.end,
           ),
+          const SizedBox(height: 12),
         ],
       ));
 }

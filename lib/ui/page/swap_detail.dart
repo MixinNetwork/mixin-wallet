@@ -17,9 +17,7 @@ import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../widget/brightness_observer.dart';
 import '../widget/buttons.dart';
-import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
-import '../widget/paid_in_mixin_dialog.dart';
 import '../widget/symbol.dart';
 import '../widget/transaction_info_tile.dart';
 
@@ -49,7 +47,7 @@ class _SwapDetailLoader extends HookWidget {
     final queryParams = context.queryParameters;
     final sourceId = useState(queryParams['source']);
     final destId = useState(queryParams['dest']);
-    final tuple = useScheduledCheckOrder(context, traceId, sourceId, destId);
+    final tuple = _useScheduledCheckOrder(context, traceId, sourceId, destId);
     final assets = useMemoizedFuture(() {
       if (sourceId.value == null || destId.value == null) {
         return Future.value(null);
@@ -91,7 +89,7 @@ class _SwapDetailLoader extends HookWidget {
         ));
   }
 
-  Tuple2<Order?, SwapPhase> useScheduledCheckOrder(
+  Tuple2<Order?, SwapPhase> _useScheduledCheckOrder(
     BuildContext context,
     String traceId,
     ValueNotifier<String?> sourceId,
@@ -155,105 +153,64 @@ class _Body extends StatelessWidget {
   final String traceId;
 
   @override
-  Widget build(BuildContext context) {
-    final amount = context.queryParameters['amount'];
-    return SingleChildScrollView(
-        child: SizedBox(
-            height: MediaQuery.of(context).size.height - 48,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  DefaultTextStyle(
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: context.colorScheme.thirdText,
-                    ),
-                    child: Text(context.l10n.swapType),
+  Widget build(BuildContext context) => SingleChildScrollView(
+      child: SizedBox(
+          height: MediaQuery.of(context).size.height - 48,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                DefaultTextStyle(
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: context.colorScheme.thirdText,
                   ),
-                  const SizedBox(height: 12),
-                  _AssetLayout(
-                    source: source,
-                    dest: dest,
-                  ),
-                  const SizedBox(height: 14),
-                  Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TransactionInfoTile(
-                            title: Text(context.l10n.transactionPhase),
-                            subtitle: SelectableText(
-                                getOrderStatus(swapPhase, context))),
-                        TransactionInfoTile(
-                            title: Text(context.l10n.paid),
-                            subtitle: SelectableText(
-                                subtitle(order?.payAmount, source.symbol)),
-                            subtitleColor:
-                                subtitleColor(order?.payAmount, context)),
-                        TransactionInfoTile(
-                            title: Text(context.l10n.received),
-                            subtitle: SelectableText(
-                                subtitle(order?.receiveAmount, dest.symbol)),
-                            subtitleColor:
-                                subtitleColor(order?.receiveAmount, context)),
-                        TransactionInfoTile(
-                            title: Text(context.l10n.refund),
-                            subtitle: SelectableText(
-                                subtitle(order?.refundAmount, source.symbol)),
-                            subtitleColor:
-                                subtitleColor(order?.refundAmount, context)),
-                      ]),
-                  const Spacer(),
-                  if (swapPhase == SwapPhase.checking && amount != null)
-                    _BottomPayButton(onTap: () async {
-                      await showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) =>
-                              buildPaidInMixinDialog(context, amount));
-                    })
-                  else if (swapPhase == SwapPhase.trading)
-                    const _BottomLoading(),
-                ],
-              ),
-            )));
-  }
+                  child: Text(context.l10n.swapType),
+                ),
+                const SizedBox(height: 12),
+                _AssetLayout(
+                  source: source,
+                  dest: dest,
+                ),
+                const SizedBox(height: 14),
+                Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TransactionInfoTile(
+                          title: Text(context.l10n.transactionPhase),
+                          subtitle: SelectableText(
+                              _getOrderStatus(swapPhase, context))),
+                      TransactionInfoTile(
+                          title: Text(context.l10n.paid),
+                          subtitle: SelectableText(
+                              _subtitle(order?.payAmount, source.symbol)),
+                          subtitleColor:
+                              _subtitleColor(order?.payAmount, context)),
+                      TransactionInfoTile(
+                          title: Text(context.l10n.received),
+                          subtitle: SelectableText(
+                              _subtitle(order?.receiveAmount, dest.symbol)),
+                          subtitleColor:
+                              _subtitleColor(order?.receiveAmount, context)),
+                      TransactionInfoTile(
+                          title: Text(context.l10n.refund),
+                          subtitle: SelectableText(
+                              _subtitle(order?.refundAmount, source.symbol)),
+                          subtitleColor:
+                              _subtitleColor(order?.refundAmount, context)),
+                    ]),
+                const Spacer(),
+                if (swapPhase == SwapPhase.checking ||
+                    swapPhase == SwapPhase.trading)
+                  _BottomLoading(swapPhase: swapPhase),
+              ],
+            ),
+          )));
 
-  PaidInMixinDialog buildPaidInMixinDialog(
-          BuildContext context, String amount) =>
-      PaidInMixinDialog(
-          title: context.l10n.paidInMixinWarning,
-          positiveText: context.l10n.goPay,
-          negativeText: context.l10n.paid,
-          onPaid: () async {
-            Navigator.of(context).pop();
-
-            final memo = buildMixSwapMemo(dest.assetId);
-            final uri = Uri.https('mixin.one', 'pay', {
-              'amount': amount,
-              'trace': traceId,
-              'asset': source.assetId,
-              'recipient': mixSwapUserId,
-              'memo': memo,
-            });
-
-            final ret = await showAndWaitingExternalAction(
-              context: context,
-              uri: uri,
-              action: () =>
-                  context.appServices.updateSnapshotByTraceId(traceId: traceId),
-              hint: Text(context.l10n.waitingActionDone),
-            );
-
-            if (ret) {
-              Navigator.pop(context);
-            }
-          });
-
-  String getOrderStatus(SwapPhase swapPhase, BuildContext context) {
+  String _getOrderStatus(SwapPhase swapPhase, BuildContext context) {
     if (swapPhase == SwapPhase.checking) {
       return context.l10n.transactionChecking;
     } else if (swapPhase == SwapPhase.trading) {
@@ -263,50 +220,22 @@ class _Body extends StatelessWidget {
     }
   }
 
-  bool isNull(String? origin) => origin == null || origin == 'null';
+  bool _isNull(String? origin) => origin == null || origin == 'null';
 
-  String subtitle(String? origin, String symbol) =>
-      isNull(origin) ? '-' : '${origin!} $symbol';
+  String _subtitle(String? origin, String symbol) =>
+      _isNull(origin) ? '-' : '${origin!} $symbol';
 
-  Color? subtitleColor(String? origin, BuildContext context) =>
-      isNull(origin) ? context.colorScheme.thirdText : null;
-}
-
-class _BottomPayButton extends HookWidget {
-  const _BottomPayButton({
-    Key? key,
-    required this.onTap,
-  }) : super(key: key);
-
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => Center(
-          child: Column(children: [
-        Material(
-            borderRadius: BorderRadius.circular(72),
-            color: const Color(0xFF333333),
-            child: InkWell(
-                onTap: onTap,
-                borderRadius: BorderRadius.circular(72),
-                child: SizedBox(
-                    width: 110,
-                    height: 48,
-                    child: Center(
-                      child: Text(
-                        context.l10n.goPay,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: context.colorScheme.background,
-                        ),
-                      ),
-                    )))),
-        const SizedBox(height: 16),
-      ]));
+  Color? _subtitleColor(String? origin, BuildContext context) =>
+      _isNull(origin) ? context.colorScheme.thirdText : null;
 }
 
 class _BottomLoading extends HookWidget {
-  const _BottomLoading({Key? key}) : super(key: key);
+  const _BottomLoading({
+    Key? key,
+    required this.swapPhase,
+  }) : super(key: key);
+
+  final SwapPhase swapPhase;
 
   @override
   Widget build(BuildContext context) => Column(children: [
@@ -323,7 +252,9 @@ class _BottomLoading extends HookWidget {
             height: 1,
             color: context.colorScheme.thirdText,
           ),
-          child: Text(context.l10n.transactionTrading),
+          child: Text(swapPhase == SwapPhase.checking
+              ? context.l10n.transactionChecking
+              : context.l10n.transactionTrading),
         ),
         const SizedBox(height: 32),
       ]);
