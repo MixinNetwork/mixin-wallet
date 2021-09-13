@@ -7,7 +7,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mixswap_sdk_dart/mixswap_sdk_dart.dart';
 import 'package:tuple/tuple.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/mix_swap.dart';
@@ -18,6 +17,7 @@ import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../widget/brightness_observer.dart';
 import '../widget/buttons.dart';
+import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/paid_in_mixin_dialog.dart';
 import '../widget/symbol.dart';
@@ -239,18 +239,18 @@ class _Body extends StatelessWidget {
               'recipient': mixSwapUserId,
               'memo': memo,
             });
-            final uriString = uri.toString();
-            if (!await canLaunch(uriString)) {
-              w('can not launch url: $uriString');
-              return;
-            }
-            await launch(uri.toString());
 
-            await showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => PaidInMixinDialog(
-                    onPaid: () => Navigator.of(context).pop()));
+            final ret = await showAndWaitingExternalAction(
+              context: context,
+              uri: uri,
+              action: () =>
+                  context.appServices.updateSnapshotByTraceId(traceId: traceId),
+              hint: Text(context.l10n.waitingActionDone),
+            );
+
+            if (ret) {
+              Navigator.pop(context);
+            }
           });
 
   String getOrderStatus(SwapPhase swapPhase, BuildContext context) {
