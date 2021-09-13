@@ -14,6 +14,7 @@ import '../../service/mix_swap.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../brightness_theme_data.dart';
 import '../router/mixin_routes.dart';
@@ -409,6 +410,7 @@ class _AmountTextField extends StatelessWidget {
   Widget build(BuildContext context) => TextField(
         readOnly: readOnly,
         focusNode: focusNode,
+        autofocus: !readOnly,
         style: TextStyle(
           color: context.colorScheme.primaryText,
           fontSize: 16,
