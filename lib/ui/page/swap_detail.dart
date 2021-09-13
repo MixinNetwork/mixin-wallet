@@ -301,7 +301,7 @@ class _BottomPayButton extends HookWidget {
                         ),
                       ),
                     )))),
-        const SizedBox(height: 32),
+        const SizedBox(height: 16),
       ]));
 }
 
@@ -345,9 +345,8 @@ class _AssetLayout extends StatelessWidget {
           symbolUrl: source.iconUrl,
           chainUrl: source.chainIconUrl,
           size: 32,
-          chainBorder: const BorderSide(color: Color(0xfff8f8f8), width: 1),
-          symbolBorder: const BorderSide(color: Color(0xfff8f8f8), width: 2),
-          chainSize: 8,
+          chainBorder: const BorderSide(color: Color(0xfff8f8f8), width: 1.5),
+          chainSize: 14,
         ),
         const SizedBox(width: 10),
         DefaultTextStyle(
@@ -355,7 +354,10 @@ class _AssetLayout extends StatelessWidget {
             fontSize: 16,
             color: context.colorScheme.primaryText,
           ),
-          child: Text(source.symbol),
+          child: SelectableText(
+            source.symbol,
+            enableInteractiveSelection: false,
+          ),
         ),
         const SizedBox(width: 16),
         SvgPicture.asset(
@@ -368,9 +370,8 @@ class _AssetLayout extends StatelessWidget {
           symbolUrl: dest.iconUrl,
           chainUrl: dest.chainIconUrl,
           size: 32,
-          chainBorder: const BorderSide(color: Color(0xfff8f8f8), width: 1),
-          symbolBorder: const BorderSide(color: Color(0xfff8f8f8), width: 2),
-          chainSize: 8,
+          chainBorder: const BorderSide(color: Color(0xfff8f8f8), width: 1.5),
+          chainSize: 14,
         ),
         const SizedBox(width: 10),
         DefaultTextStyle(
@@ -378,7 +379,10 @@ class _AssetLayout extends StatelessWidget {
             fontSize: 16,
             color: context.colorScheme.primaryText,
           ),
-          child: Text(dest.symbol),
+          child: SelectableText(
+            dest.symbol,
+            enableInteractiveSelection: false,
+          ),
         ),
       ]);
 }

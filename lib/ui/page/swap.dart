@@ -201,19 +201,15 @@ class _Body extends HookWidget {
                   await setSourceAssetId(sourceAsset.value.assetId);
                   await setDestAssetId(destAsset.value.assetId);
                 },
-                child: SizedBox.square(
+                child: Center(
+                  child: SizedBox.square(
                     dimension: 40,
-                    child: ClipOval(
-                        child: DecoratedBox(
-                      decoration: const BoxDecoration(
-                        color: Color(0xfff8f8f8),
-                      ),
-                      child: Center(
-                          child: SvgPicture.asset(
-                        R.resourcesIcSwitchSvg,
-                        color: context.colorScheme.primaryText,
-                      )),
-                    )))),
+                    child: SvgPicture.asset(
+                      R.resourcesIcSwitchSvg,
+                      color: context.colorScheme.primaryText,
+                    ),
+                  ),
+                )),
           ]),
           const SizedBox(height: 12),
           _AssetItem(
@@ -280,7 +276,7 @@ class _Body extends HookWidget {
                       }
                     },
                   )),
-          const SizedBox(height: 36),
+          const SizedBox(height: 16),
         ]));
   }
 
@@ -356,11 +352,11 @@ class _AssetItem extends HookWidget {
                 symbolUrl: asset.value.iconUrl,
                 chainUrl: asset.value.chainIconUrl,
                 size: 40,
-                chainBorder:
-                    const BorderSide(color: Color(0xfff8f8f8), width: 1),
-                symbolBorder:
-                    const BorderSide(color: Color(0xfff8f8f8), width: 2),
-                chainSize: 8,
+                chainBorder: const BorderSide(
+                  color: Color(0xfff8f8f8),
+                  width: 1.5,
+                ),
+                chainSize: 14,
               ),
               const SizedBox(width: 10),
               Text(
@@ -469,6 +465,7 @@ class _AmountTextField extends StatelessWidget {
   Widget build(BuildContext context) => TextField(
         readOnly: readOnly,
         focusNode: focusNode,
+        autofocus: !readOnly,
         style: TextStyle(
           color: context.colorScheme.primaryText,
           fontSize: 16,
