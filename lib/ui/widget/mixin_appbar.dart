@@ -57,5 +57,6 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
       );
 
   @override
-  Size get preferredSize => Size.fromHeight(bottom != null ? 96 : 48);
+  Size get preferredSize =>
+      Size.fromHeight(48 + (bottom?.preferredSize.height ?? 0));
 }

@@ -324,7 +324,8 @@ class _HeaderButtonBar extends StatelessWidget {
           ),
           HeaderButton.text(
             text: context.l10n.swap,
-            onTap: () => context.push(swapPath),
+            onTap: () => context
+                .push(swapPath, queryParameters: {'source': asset.assetId}),
           ),
         ]),
       );

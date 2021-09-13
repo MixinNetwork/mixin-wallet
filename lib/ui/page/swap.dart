@@ -39,6 +39,15 @@ class Swap extends HookWidget {
       return context.appServices.findOrSyncAssets(supportedIds);
     }).data;
 
+    final source = context.queryParameters['source'];
+    AssetResult? sourceAsset;
+    if (source != null) {
+      sourceAsset = supportedAssets
+          ?.where((e) => e.assetId.equalsIgnoreCase(source))
+          .toList()
+          .firstOrNull;
+    }
+
     return Scaffold(
       backgroundColor: context.colorScheme.background,
       appBar: MixinAppBar(
@@ -65,7 +74,10 @@ class Swap extends HookWidget {
         duration: const Duration(milliseconds: 200),
         child: (supportedAssets == null || supportedAssets.isEmpty)
             ? const Center(child: CircularProgressIndicator())
-            : _Body(swapClient: swapClient, supportedAssets: supportedAssets),
+            : _Body(
+                swapClient: swapClient,
+                supportedAssets: supportedAssets,
+                initialSource: sourceAsset),
       ),
     );
   }
@@ -76,16 +88,18 @@ class _Body extends HookWidget {
     Key? key,
     required this.swapClient,
     required this.supportedAssets,
+    this.initialSource,
   }) : super(key: key);
 
   final Client swapClient;
   final List<AssetResult> supportedAssets;
+  final AssetResult? initialSource;
 
   @override
   Widget build(BuildContext context) {
     assert(supportedAssets.length > 1);
-    final sourceAsset = useState(supportedAssets[0]);
-    final destAsset = useState(supportedAssets[1]);
+    final sourceAsset = useState(initialSource ?? supportedAssets[0]);
+    final destAsset = useState(getInitialDest());
     final routeData = useState<RouteData?>(null);
     final sourceTextController = useTextEditingController();
     final destTextController = useTextEditingController();
@@ -238,6 +252,18 @@ class _Body extends HookWidget {
                   )),
           const SizedBox(height: 36),
         ]));
+  }
+
+  AssetResult getInitialDest() {
+    if (initialSource == null) {
+      return supportedAssets[1];
+    } else {
+      if (supportedAssets[0].assetId.equalsIgnoreCase(initialSource!.assetId)) {
+        return supportedAssets[1];
+      } else {
+        return supportedAssets[0];
+      }
+    }
   }
 
   Color colorOfSlippage(BuildContext context, double slippage) => slippage > 5
