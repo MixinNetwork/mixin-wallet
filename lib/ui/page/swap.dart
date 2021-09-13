@@ -5,7 +5,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mixswap_sdk_dart/mixswap_sdk_dart.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
@@ -13,15 +12,14 @@ import '../../service/mix_swap.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../brightness_theme_data.dart';
 import '../router/mixin_routes.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
+import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
-import '../widget/paid_in_mixin_dialog.dart';
 import '../widget/round_container.dart';
 import '../widget/symbol.dart';
 import '../widget/tip_tile.dart';
@@ -229,24 +227,29 @@ class _Body extends HookWidget {
                         'recipient': mixSwapUserId,
                         'memo': memo,
                       });
-                      final uriString = uri.toString();
-                      if (!await canLaunch(uriString)) {
-                        w('can not launch url: $uriString');
-                        return;
-                      }
-                      await launch(uri.toString());
 
-                      await showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) => PaidInMixinDialog(
-                              onPaid: () => context.push(
-                                      swapDetailPath.toUri({'id': traceId}),
-                                      queryParameters: {
-                                        'source': sourceAsset.value.assetId,
-                                        'dest': destAsset.value.assetId,
-                                        'amount': sourceTextController.text,
-                                      })));
+                      final ret = await showAndWaitingExternalAction(
+                        context: context,
+                        uri: uri,
+                        action: () async {
+                          try {
+                            await MixSwap.client.getOrder(traceId);
+                            return true;
+                          } catch (e) {
+                            return false;
+                          }
+                        },
+                        hint: Text(context.l10n.waitingActionDone),
+                      );
+
+                      if (ret) {
+                        context.push(swapDetailPath.toUri({'id': traceId}),
+                            queryParameters: {
+                              'source': sourceAsset.value.assetId,
+                              'dest': destAsset.value.assetId,
+                              'amount': sourceTextController.text,
+                            });
+                      }
                     },
                   )),
           const SizedBox(height: 36),
