@@ -218,7 +218,7 @@ class _Body extends HookWidget {
                   color: context.colorScheme.thirdText,
                   fontSize: 12,
                 ),
-                sourceAsset.value.balance,
+                '${sourceAsset.value.balance} ${sourceAsset.value.symbol}',
                 TextStyle(
                     color: context.colorScheme.primaryText,
                     fontSize: 12,
