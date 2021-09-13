@@ -44,7 +44,6 @@ class Swap extends HookWidget {
     if (source != null) {
       sourceAsset = supportedAssets
           ?.where((e) => e.assetId.equalsIgnoreCase(source))
-          .toList()
           .firstOrNull;
     }
 
