@@ -394,13 +394,14 @@ class _HeaderText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Align(
         alignment: AlignmentDirectional.centerStart,
-        child: Text(
+        child: SelectableText(
           text,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: context.colorScheme.primaryText,
           ),
+          enableInteractiveSelection: false,
         ),
       );
 }
