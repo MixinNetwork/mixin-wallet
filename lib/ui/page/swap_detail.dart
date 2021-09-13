@@ -17,9 +17,7 @@ import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../widget/brightness_observer.dart';
 import '../widget/buttons.dart';
-import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
-import '../widget/paid_in_mixin_dialog.dart';
 import '../widget/symbol.dart';
 import '../widget/transaction_info_tile.dart';
 
@@ -49,7 +47,7 @@ class _SwapDetailLoader extends HookWidget {
     final queryParams = context.queryParameters;
     final sourceId = useState(queryParams['source']);
     final destId = useState(queryParams['dest']);
-    final tuple = useScheduledCheckOrder(context, traceId, sourceId, destId);
+    final tuple = _useScheduledCheckOrder(context, traceId, sourceId, destId);
     final assets = useMemoizedFuture(() {
       if (sourceId.value == null || destId.value == null) {
         return Future.value(null);
@@ -91,7 +89,7 @@ class _SwapDetailLoader extends HookWidget {
         ));
   }
 
-  Tuple2<Order?, SwapPhase> useScheduledCheckOrder(
+  Tuple2<Order?, SwapPhase> _useScheduledCheckOrder(
     BuildContext context,
     String traceId,
     ValueNotifier<String?> sourceId,
@@ -184,25 +182,25 @@ class _Body extends StatelessWidget {
                       TransactionInfoTile(
                           title: Text(context.l10n.transactionPhase),
                           subtitle: SelectableText(
-                              getOrderStatus(swapPhase, context))),
+                              _getOrderStatus(swapPhase, context))),
                       TransactionInfoTile(
                           title: Text(context.l10n.paid),
                           subtitle: SelectableText(
-                              subtitle(order?.payAmount, source.symbol)),
+                              _subtitle(order?.payAmount, source.symbol)),
                           subtitleColor:
-                              subtitleColor(order?.payAmount, context)),
+                              _subtitleColor(order?.payAmount, context)),
                       TransactionInfoTile(
                           title: Text(context.l10n.received),
                           subtitle: SelectableText(
-                              subtitle(order?.receiveAmount, dest.symbol)),
+                              _subtitle(order?.receiveAmount, dest.symbol)),
                           subtitleColor:
-                              subtitleColor(order?.receiveAmount, context)),
+                              _subtitleColor(order?.receiveAmount, context)),
                       TransactionInfoTile(
                           title: Text(context.l10n.refund),
                           subtitle: SelectableText(
-                              subtitle(order?.refundAmount, source.symbol)),
+                              _subtitle(order?.refundAmount, source.symbol)),
                           subtitleColor:
-                              subtitleColor(order?.refundAmount, context)),
+                              _subtitleColor(order?.refundAmount, context)),
                     ]),
                 const Spacer(),
                 if (swapPhase == SwapPhase.checking ||
@@ -212,38 +210,7 @@ class _Body extends StatelessWidget {
             ),
           )));
 
-  PaidInMixinDialog buildPaidInMixinDialog(
-          BuildContext context, String amount) =>
-      PaidInMixinDialog(
-          title: context.l10n.paidInMixinWarning,
-          positiveText: context.l10n.goPay,
-          negativeText: context.l10n.paid,
-          onPaid: () async {
-            Navigator.of(context).pop();
-
-            final memo = buildMixSwapMemo(dest.assetId);
-            final uri = Uri.https('mixin.one', 'pay', {
-              'amount': amount,
-              'trace': traceId,
-              'asset': source.assetId,
-              'recipient': mixSwapUserId,
-              'memo': memo,
-            });
-
-            final ret = await showAndWaitingExternalAction(
-              context: context,
-              uri: uri,
-              action: () =>
-                  context.appServices.updateSnapshotByTraceId(traceId: traceId),
-              hint: Text(context.l10n.waitingActionDone),
-            );
-
-            if (ret) {
-              Navigator.pop(context);
-            }
-          });
-
-  String getOrderStatus(SwapPhase swapPhase, BuildContext context) {
+  String _getOrderStatus(SwapPhase swapPhase, BuildContext context) {
     if (swapPhase == SwapPhase.checking) {
       return context.l10n.transactionChecking;
     } else if (swapPhase == SwapPhase.trading) {
@@ -253,13 +220,13 @@ class _Body extends StatelessWidget {
     }
   }
 
-  bool isNull(String? origin) => origin == null || origin == 'null';
+  bool _isNull(String? origin) => origin == null || origin == 'null';
 
-  String subtitle(String? origin, String symbol) =>
-      isNull(origin) ? '-' : '${origin!} $symbol';
+  String _subtitle(String? origin, String symbol) =>
+      _isNull(origin) ? '-' : '${origin!} $symbol';
 
-  Color? subtitleColor(String? origin, BuildContext context) =>
-      isNull(origin) ? context.colorScheme.thirdText : null;
+  Color? _subtitleColor(String? origin, BuildContext context) =>
+      _isNull(origin) ? context.colorScheme.thirdText : null;
 }
 
 class _BottomLoading extends HookWidget {
