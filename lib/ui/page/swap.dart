@@ -347,13 +347,14 @@ class _AssetItem extends HookWidget {
       child: Row(children: [
         InkWell(
             onTap: () => showAssetListBottomSheet(asset),
-            child: Row(children: [SymbolIconWithBorder(
-              symbolUrl: asset.value.iconUrl,
-              chainUrl: asset.value.chainIconUrl,
-              size: 40,
-              chainBorder: const BorderSide(
-                color: Color(0xfff8f8f8),
-                width: 1.5,
+            child: Row(children: [
+              SymbolIconWithBorder(
+                symbolUrl: asset.value.iconUrl,
+                chainUrl: asset.value.chainIconUrl,
+                size: 40,
+                chainBorder: const BorderSide(
+                  color: Color(0xfff8f8f8),
+                  width: 1.5,
                 ),
                 chainSize: 14,
               ),
