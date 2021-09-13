@@ -220,13 +220,12 @@ class _MemoLayout extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 32),
-          _HeaderText(context.l10n.memo),
           const SizedBox(height: 16),
+          _HeaderText(context.l10n.memo),
+          const SizedBox(height: 12),
           _CopyableText(tag),
-          const SizedBox(height: 27),
+          const SizedBox(height: 12),
           _QrcodeImage(data: tag, asset: asset),
-          const SizedBox(height: 11),
         ],
       );
 }
@@ -353,7 +352,7 @@ class _AddressLayout extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 32),
+          const SizedBox(height: 28),
           _HeaderText(context.l10n.address),
           const SizedBox(height: 16),
           _CopyableText(address),
