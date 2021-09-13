@@ -34,7 +34,6 @@ class Swap extends HookWidget {
     final swapClient = MixSwap.client;
     final supportedAssets = useMemoizedFuture(() async {
       var supportedIds = supportedAssetIds;
-      i('supportedIds: $supportedIds');
       if (supportedIds == null) {
         supportedIds =
             (await swapClient.getAssets()).data.map((e) => e.uuid).toList();
@@ -120,6 +119,7 @@ class _Body extends HookWidget {
     final sourceTextController = useTextEditingController();
     final destTextController = useTextEditingController();
     final sourceFocusNode = useFocusNode(debugLabel: 'source input');
+    final showLoading = useState(false);
     final slippageKeys = [
       sourceAsset.value,
       destAsset.value,
@@ -144,11 +144,13 @@ class _Body extends HookWidget {
       }
 
       if (inputFocusNode.hasFocus) {
+        showLoading.value = true;
         final routeDataResp = (await swapClient.getRoutes(
                 sourceAsset.value.assetId,
                 destAsset.value.assetId,
                 sourceTextController.text))
             .data;
+        showLoading.value = false;
         effectedController.text = routeDataResp.bestSourceReceiveAmount;
         routeData.value = routeDataResp;
       }
@@ -182,6 +184,7 @@ class _Body extends HookWidget {
             supportedAssets: supportedAssets,
             readOnly: false,
             focusNode: sourceFocusNode,
+            onSelected: () => sourceTextController.text = '',
           ),
           const SizedBox(height: 12),
           Row(children: [
@@ -218,6 +221,8 @@ class _Body extends HookWidget {
             textController: destTextController,
             supportedAssets: supportedAssets,
             readOnly: true,
+            showLoading: showLoading.value,
+            onSelected: () => sourceTextController.text = '',
           ),
           const SizedBox(height: 12),
           if (routeData.value != null)
@@ -305,13 +310,17 @@ class _AssetItem extends HookWidget {
     required this.textController,
     required this.supportedAssets,
     required this.readOnly,
+    required this.onSelected,
+    this.showLoading = false,
     this.focusNode,
   }) : super(key: key);
 
   final ValueNotifier<AssetResult> asset;
   final TextEditingController textController;
   final List<AssetResult> supportedAssets;
+  final VoidCallback onSelected;
   final bool readOnly;
+  final bool showLoading;
   final FocusNode? focusNode;
 
   @override
@@ -328,6 +337,7 @@ class _AssetItem extends HookWidget {
             } else {
               await setSourceAssetId(assetResult.assetId);
             }
+            onSelected.call();
           },
           selectedAssetId: asset.value.assetId,
           assetResultList: supportedAssets,
@@ -341,56 +351,106 @@ class _AssetItem extends HookWidget {
       child: Row(children: [
         InkWell(
             onTap: () => showAssetListBottomSheet(asset),
-            child: SymbolIconWithBorder(
-              symbolUrl: asset.value.iconUrl,
-              chainUrl: asset.value.chainIconUrl,
-              size: 40,
-              chainBorder: const BorderSide(color: Color(0xfff8f8f8), width: 1),
-              symbolBorder:
-                  const BorderSide(color: Color(0xfff8f8f8), width: 2),
-              chainSize: 8,
-            )),
-        const SizedBox(width: 10),
-        InkWell(
-            onTap: () => showAssetListBottomSheet(asset),
-            child: Text(
-              asset.value.symbol,
-              style: TextStyle(
-                color: context.colorScheme.primaryText,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
+            child: Row(children: [
+              SymbolIconWithBorder(
+                symbolUrl: asset.value.iconUrl,
+                chainUrl: asset.value.chainIconUrl,
+                size: 40,
+                chainBorder:
+                    const BorderSide(color: Color(0xfff8f8f8), width: 1),
+                symbolBorder:
+                    const BorderSide(color: Color(0xfff8f8f8), width: 2),
+                chainSize: 8,
               ),
-            )),
-        const SizedBox(width: 10),
-        SvgPicture.asset(R.resourcesIcArrowDownSvg),
-        const SizedBox(width: 10),
-        Expanded(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            SizedBox(
-                height: 38,
-                child: _AmountTextField(
-                  focusNode: focusNode,
-                  controller: textController,
-                  readOnly: readOnly,
-                )),
-            const SizedBox(height: 7),
-            Text(
-              '${asset.value.balance} ${context.l10n.balance}',
-              style: TextStyle(
-                color: context.colorScheme.secondaryText,
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
+              const SizedBox(width: 10),
+              Text(
+                asset.value.symbol,
+                style: TextStyle(
+                  color: context.colorScheme.primaryText,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-              textAlign: TextAlign.end,
-            ),
-          ],
-        )),
+              const SizedBox(width: 10),
+              SvgPicture.asset(R.resourcesIcArrowDownSvg),
+              const SizedBox(width: 10),
+            ])),
+        if (!readOnly)
+          _SourceAmountArea(
+              amountTextField: _AmountTextField(
+                focusNode: focusNode,
+                controller: textController,
+                readOnly: false,
+              ),
+              asset: asset)
+        else
+          _DestAmountArea(
+              showLoading: showLoading,
+              amountTextField: _AmountTextField(
+                focusNode: focusNode,
+                controller: textController,
+                readOnly: true,
+              )),
         const SizedBox(width: 20),
       ]),
     );
   }
+}
+
+class _SourceAmountArea extends StatelessWidget {
+  const _SourceAmountArea({
+    Key? key,
+    required this.amountTextField,
+    required this.asset,
+  }) : super(key: key);
+
+  final ValueNotifier<AssetResult> asset;
+  final Widget amountTextField;
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          SizedBox(height: 38, child: amountTextField),
+          const SizedBox(height: 7),
+          Text(
+            '${asset.value.balance} ${context.l10n.balance}',
+            style: TextStyle(
+              color: context.colorScheme.secondaryText,
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+            ),
+            textAlign: TextAlign.end,
+          ),
+        ],
+      ));
+}
+
+class _DestAmountArea extends StatelessWidget {
+  const _DestAmountArea({
+    Key? key,
+    required this.showLoading,
+    required this.amountTextField,
+  }) : super(key: key);
+
+  final bool showLoading;
+  final Widget amountTextField;
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+      child: Align(
+          alignment: Alignment.centerRight,
+          child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 100),
+              child: showLoading
+                  ? SizedBox.square(
+                      dimension: 18,
+                      child: CircularProgressIndicator(
+                        color: context.colorScheme.thirdText,
+                        strokeWidth: 2,
+                      ))
+                  : amountTextField)));
 }
 
 class _AmountTextField extends StatelessWidget {
