@@ -348,8 +348,8 @@ class _AssetItem extends HookWidget {
               size: 40,
               chainBorder: const BorderSide(color: Color(0xfff8f8f8), width: 1),
               symbolBorder:
-                  const BorderSide(color: Color(0xfff8f8f8), width: 2),
-              chainSize: 8,
+                  const BorderSide(color: Color(0xfff8f8f8), width: 1.5),
+              chainSize: 14,
             )),
         const SizedBox(width: 10),
         InkWell(
