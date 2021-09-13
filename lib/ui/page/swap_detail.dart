@@ -301,7 +301,7 @@ class _BottomPayButton extends HookWidget {
                         ),
                       ),
                     )))),
-        const SizedBox(height: 32),
+        const SizedBox(height: 16),
       ]));
 }
 

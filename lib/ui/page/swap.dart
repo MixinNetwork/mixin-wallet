@@ -276,7 +276,7 @@ class _Body extends HookWidget {
                       }
                     },
                   )),
-          const SizedBox(height: 36),
+          const SizedBox(height: 16),
         ]));
   }
 
