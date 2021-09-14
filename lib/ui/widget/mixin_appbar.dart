@@ -36,24 +36,27 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 
   @override
-  Widget build(BuildContext context) => AppBar(
-        leading: leading ??
-            (Navigator.canPop(context)
-                ? MixinBackButton(color: backButtonColor)
-                : null),
-        toolbarHeight: preferredSize.height,
-        elevation: 0,
-        titleSpacing: 0,
-        actions: validActions,
-        centerTitle: false,
-        title: title,
-        titleTextStyle: const TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 18,
-          color: Colors.white,
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: 2),
+        child: AppBar(
+          leading: leading ??
+              (Navigator.canPop(context)
+                  ? MixinBackButton(color: backButtonColor)
+                  : null),
+          toolbarHeight: preferredSize.height - 2,
+          elevation: 0,
+          titleSpacing: 0,
+          actions: validActions,
+          centerTitle: false,
+          title: title,
+          titleTextStyle: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+            color: Colors.white,
+          ),
+          backgroundColor: backgroundColor ?? context.theme.accent,
+          bottom: bottom,
         ),
-        backgroundColor: backgroundColor ?? context.theme.accent,
-        bottom: bottom,
       );
 
   @override
