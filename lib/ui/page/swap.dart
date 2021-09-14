@@ -34,7 +34,7 @@ class Swap extends HookWidget {
     final swapClient = MixSwap.client;
     final supportedAssets = useMemoizedFuture(() async {
       var supportedIds = supportedAssetIds;
-      if (supportedIds == null) {
+      if (supportedIds == null || supportedIds.isEmpty) {
         supportedIds =
             (await swapClient.getAssets()).data.map((e) => e.uuid).toList();
       } else {
