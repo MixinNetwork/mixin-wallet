@@ -170,8 +170,7 @@ class _AuthorizeButton extends StatelessWidget {
           ),
           minimumSize: const Size(110, 48),
           onPrimary: context.colorScheme.background,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+          shape: const StadiumBorder()),
       child: SelectableText(
         context.l10n.authorize,
         onTap: onTap,
