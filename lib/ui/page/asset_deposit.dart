@@ -152,6 +152,7 @@ class _AssetDepositBody extends HookWidget {
       if (tag == null || tag.isEmpty) {
         return;
       }
+      showWarning.value = false;
       Future.delayed(
           Duration.zero,
           () => showDialog(
@@ -165,7 +166,7 @@ class _AssetDepositBody extends HookWidget {
                       showWarning.value = true;
                     });
                   })));
-    });
+    }, [tag]);
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -187,7 +188,7 @@ class _AssetDepositBody extends HookWidget {
         else
           const _AddressLoadingWidget(),
         TipTile(text: asset.getTip(context)),
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
         TipTile(
           text: context.l10n.depositConfirmation(asset.confirmations),
           highlight: asset.confirmations.toString(),
@@ -198,7 +199,7 @@ class _AssetDepositBody extends HookWidget {
               text: context.l10n
                   .depositReserve('${asset.reserve} ${asset.symbol}'),
               highlight: '${asset.reserve} ${asset.symbol}'),
-        const SizedBox(height: 32),
+        const SizedBox(height: 16),
       ],
     );
   }
@@ -220,10 +221,11 @@ class _MemoLayout extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           _HeaderText(context.l10n.memo),
+          const SizedBox(height: 16),
           _CopyableText(tag),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           _QrcodeImage(data: tag, asset: asset),
         ],
       );
@@ -326,12 +328,15 @@ class _WarningLayout extends StatelessWidget {
             SvgPicture.asset(R.resourcesIcWarningSvg, width: 20, height: 20),
             const SizedBox(width: 6),
             Expanded(
-                child: Text(context.l10n.depositNotice(symbol),
-                    style: TextStyle(
-                      color: context.colorScheme.primaryText,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w400,
-                    ))),
+                child: SelectableText(
+              context.l10n.depositNotice(symbol),
+              style: TextStyle(
+                color: context.colorScheme.primaryText,
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+              ),
+              enableInteractiveSelection: false,
+            )),
           ]),
         )
       ]));
@@ -351,12 +356,13 @@ class _AddressLayout extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 28),
+          const SizedBox(height: 16),
           _HeaderText(context.l10n.address),
+          const SizedBox(height: 16),
           _CopyableText(address),
-          const SizedBox(height: 27),
+          const SizedBox(height: 16),
           _QrcodeImage(data: address, asset: asset),
-          const SizedBox(height: 11),
+          const SizedBox(height: 16),
         ],
       );
 }
@@ -368,10 +374,10 @@ class _AddressLoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 32),
+          const SizedBox(height: 16),
           _HeaderText(context.l10n.address),
           SizedBox(
-            height: 284,
+            height: 200,
             child: Center(
               child: SizedBox(
                 width: 18,
@@ -456,14 +462,14 @@ class _QrcodeImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        width: 200,
-        height: 200,
+        width: 180,
+        height: 180,
         child: Stack(
           alignment: Alignment.center,
           children: [
             QrImage(
               data: data,
-              size: 200,
+              size: 180,
             ),
             SymbolIconWithBorder(
               symbolUrl: asset.iconUrl,
@@ -493,7 +499,7 @@ class _UsdtChooseLayout extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 32),
+          const SizedBox(height: 16),
           _HeaderText(context.l10n.networkType),
           const SizedBox(height: 16),
           Wrap(
@@ -513,6 +519,7 @@ class _UsdtChooseLayout extends StatelessWidget {
                 ),
             ],
           ),
+          const SizedBox(height: 16),
         ],
       );
 }
@@ -536,7 +543,7 @@ class _DepositEntryChooseLayout extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 32),
+          const SizedBox(height: 16),
           _HeaderText(context.l10n.networkType),
           const SizedBox(height: 16),
           Wrap(
@@ -555,6 +562,7 @@ class _DepositEntryChooseLayout extends StatelessWidget {
                 ),
             ],
           ),
+          const SizedBox(height: 16),
         ],
       );
 }
