@@ -8,6 +8,9 @@ const erc20USDT = '4d8c508b-91c5-375b-92b0-ee702ed2dac5';
 const erc20USDC = '9b180ab6-6abe-3dc0-a13f-04169eb34bfa';
 const dai = '94319320-eb5d-3e84-a07e-e24c21b8b934';
 
+const pUsd = '31d2ea9c-95eb-3355-b65b-ba096853bc18';
+const xin = 'c94ac88f-4671-3976-b60a-09064f1811e8';
+
 const topRadius = 20.0;
 
 const depositHelpLink =

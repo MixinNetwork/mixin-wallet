@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:hive/hive.dart';
 import 'package:mixswap_sdk_dart/mixswap_sdk_dart.dart';
 
+import '../util/constants.dart';
+
 class MixSwap {
   MixSwap._() {
     _client = Client(null);
@@ -19,6 +21,9 @@ class MixSwap {
 const supportMaxSlippage = 1;
 const mixSwapRetryErrorCode = 403;
 const mixSwapUserId = '6a4a121d-9673-4a7e-a93e-cb9ca4bb83a2';
+
+const defaultSourceId = pUsd;
+const defaultDestId = xin;
 
 Box<dynamic> get swapBox => Hive.box('swap');
 

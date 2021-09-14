@@ -113,7 +113,7 @@ class _Body extends HookWidget {
   @override
   Widget build(BuildContext context) {
     assert(supportedAssets.length > 1);
-    final sourceAsset = useState(initialSource ?? supportedAssets[0]);
+    final sourceAsset = useState(initialSource ?? _getInitialSource());
     final destAsset = useState(initialDest ?? _getInitialDest());
     final routeData = useState<RouteData?>(null);
     final sourceTextController = useTextEditingController();
@@ -240,11 +240,13 @@ class _Body extends HookWidget {
           ),
           const SizedBox(height: 12),
           if (routeData.value != null)
-            TipTile(
-              text: '${context.l10n.slippage} $slippageDisplay',
-              highlight: slippageDisplay,
-              highlightColor: _colorOfSlippage(context, slippage),
-            ),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: TipTile(
+                  text: '${context.l10n.slippage} $slippageDisplay',
+                  highlight: slippageDisplay,
+                  highlightColor: _colorOfSlippage(context, slippage),
+                )),
           const Spacer(),
           HookBuilder(
               builder: (context) => _SwapButton(
@@ -298,17 +300,17 @@ class _Body extends HookWidget {
         ]));
   }
 
-  AssetResult _getInitialDest() {
-    if (initialSource == null) {
-      return supportedAssets[1];
-    } else {
-      if (supportedAssets[0].assetId.equalsIgnoreCase(initialSource!.assetId)) {
-        return supportedAssets[1];
-      } else {
-        return supportedAssets[0];
-      }
-    }
-  }
+  AssetResult _getInitialSource() =>
+      supportedAssets
+          .where((e) => e.assetId.equalsIgnoreCase(defaultSourceId))
+          .firstOrNull ??
+      supportedAssets[0];
+
+  AssetResult _getInitialDest() =>
+      supportedAssets
+          .where((e) => e.assetId.equalsIgnoreCase(defaultDestId))
+          .firstOrNull ??
+      supportedAssets[1];
 
   Color _colorOfSlippage(BuildContext context, double slippage) => slippage > 5
       ? lightBrightnessThemeData.red
@@ -443,7 +445,7 @@ class _DestAmountArea extends StatelessWidget {
       child: Align(
           alignment: Alignment.centerRight,
           child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 100),
+              duration: Duration.zero,
               child: showLoading
                   ? SizedBox.square(
                       dimension: 18,
