@@ -1430,10 +1430,10 @@ class L10n {
     );
   }
 
-  /// `Services provided by Swap, transactions may have price differences`
+  /// `Services provided by MixSwap`
   String get swapDisclaimer {
     return Intl.message(
-      'Services provided by Swap, transactions may have price differences',
+      'Services provided by MixSwap',
       name: 'swapDisclaimer',
       desc: '',
       args: [],

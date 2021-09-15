@@ -187,7 +187,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "swap": MessageLookupByLibrary.simpleMessage("Swap"),
         "swapDisclaimer": MessageLookupByLibrary.simpleMessage(
-            "Services provided by Swap, transactions may have price differences"),
+            "Services provided by MixSwap"),
         "swapType": MessageLookupByLibrary.simpleMessage("Swap type"),
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
         "tagHint": MessageLookupByLibrary.simpleMessage("Tag"),

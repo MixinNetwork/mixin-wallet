@@ -137,5 +137,5 @@
   "slippage": "Slippage",
   "slippageOver": "Swap with slippage greater than {value} is not currently supported",
   "goPay": "Go pay",
-  "swapDisclaimer": "Services provided by Swap, transactions may have price differences"
+  "swapDisclaimer": "Services provided by MixSwap"
 }
