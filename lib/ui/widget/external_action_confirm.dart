@@ -97,30 +97,23 @@ class _ExternalActionConfirmDialog extends HookWidget {
                 child: hint,
               ),
               const SizedBox(height: 14),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: InkWell(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: context.theme.accent,
-                      borderRadius: BorderRadius.circular(10),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                    primary: context.theme.accent,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 24,
                     ),
-                    padding: const EdgeInsets.only(
-                        top: 12, bottom: 14, left: 54, right: 55),
-                    child: Center(
-                      child: Text(
-                        context.l10n.cancel,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+                    minimumSize: const Size(110, 48),
+                    onPrimary: Colors.white,
+                    shape: const StadiumBorder()),
+                child: Text(
+                  context.l10n.cancel,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
                 ),
               ),
               const SizedBox(height: 18),
