@@ -164,6 +164,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "slippageOver": m9,
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
         "swap": MessageLookupByLibrary.simpleMessage("闪兑"),
+        "swapDisclaimer":
+            MessageLookupByLibrary.simpleMessage("服务由 Swap 提供，交易可能存在价格差"),
         "swapType": MessageLookupByLibrary.simpleMessage("兑换币种"),
         "symbol": MessageLookupByLibrary.simpleMessage("符号"),
         "tagHint": MessageLookupByLibrary.simpleMessage("标签（Tag）"),

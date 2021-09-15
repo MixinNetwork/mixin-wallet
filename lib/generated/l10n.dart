@@ -1429,6 +1429,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Services provided by Swap, transactions may have price differences`
+  String get swapDisclaimer {
+    return Intl.message(
+      'Services provided by Swap, transactions may have price differences',
+      name: 'swapDisclaimer',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
