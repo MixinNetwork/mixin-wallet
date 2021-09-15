@@ -239,14 +239,23 @@ class _Body extends HookWidget {
             onSelected: () => sourceTextController.text = '',
           ),
           const SizedBox(height: 12),
-          if (routeData.value != null)
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6),
-                child: TipTile(
-                  text: '${context.l10n.slippage} $slippageDisplay',
-                  highlight: slippageDisplay,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: Column(
+              children: [
+                if (routeData.value != null)
+                  TipTile(
+                    text: '${context.l10n.slippage} $slippageDisplay',
+                    highlight: slippageDisplay,
+                    highlightColor: _colorOfSlippage(context, slippage),
+                  ),
+                TipTile(
+                  text: context.l10n.swapDisclaimer,
                   highlightColor: _colorOfSlippage(context, slippage),
-                )),
+                ),
+              ],
+            ),
+          ),
           const Spacer(),
           HookBuilder(
               builder: (context) => _SwapButton(

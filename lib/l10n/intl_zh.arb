@@ -133,5 +133,6 @@
   "completed": "已完成",
   "slippage": "滑点",
   "slippageOver": "暂不支持滑点大于 {value} 的闪兑",
-  "goPay": "去支付"
+  "goPay": "去支付",
+  "swapDisclaimer": "服务由 Swap 提供，交易可能存在价格差"
 }
