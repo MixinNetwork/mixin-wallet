@@ -52,7 +52,7 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
           beforeEnter: (redirector) async {
             i('check is login: $isLogin');
             if (isLogin) {
-              await context.appServices.initDbFuture;
+              await context.appServices.initServiceFuture;
               return;
             }
             redirector.to('/auth');
