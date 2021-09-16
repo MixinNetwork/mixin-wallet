@@ -447,7 +447,7 @@ class TransferAmountWidget extends HookWidget {
                     onTap: () {
                       fiatInputMode.value = !fiatInputMode.value;
                     },
-                    child: SvgPicture.asset(R.resourcesIcSwitchSvg),
+                    child: SvgPicture.asset(R.resourcesIcSwitchSmallSvg),
                   ),
                 ),
             ],
