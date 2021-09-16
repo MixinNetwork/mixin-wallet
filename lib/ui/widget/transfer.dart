@@ -203,7 +203,7 @@ class TransferContactWidget extends StatelessWidget {
                   ),
                 ),
                 SvgPicture.asset(R.resourcesIcArrowDownSvg),
-                const SizedBox(width: 20),
+                const SizedBox(width: 16),
               ],
             ),
           ),

@@ -13,17 +13,16 @@ import 'search_header_widget.dart';
 class FiatSelectionListWidget extends HookWidget {
   const FiatSelectionListWidget({
     Key? key,
-    required this.fiatList,
-    required this.onTap,
     this.selectedFiat,
   }) : super(key: key);
 
-  final List<WyreFiat> fiatList;
-  final FiatSelectCallback onTap;
   final WyreFiat? selectedFiat;
 
   @override
   Widget build(BuildContext context) {
+    final fiatList =
+        useMemoized<List<WyreFiat>>(() => getWyreFiatList().toList());
+
     final selectedFiat = this.selectedFiat ?? fiatList[0];
     final filterList = useState<List<WyreFiat>>(fiatList);
 
@@ -53,7 +52,6 @@ class FiatSelectionListWidget extends HookWidget {
               itemBuilder: (BuildContext context, int index) => _Item(
                 fiat: filterList.value[index],
                 selectedFiat: selectedFiat,
-                onTap: onTap,
               ),
             ),
           ),
@@ -68,20 +66,17 @@ class _Item extends StatelessWidget {
     Key? key,
     required this.fiat,
     required this.selectedFiat,
-    required this.onTap,
   }) : super(key: key);
 
   final WyreFiat fiat;
   final WyreFiat selectedFiat;
-  final FiatSelectCallback onTap;
 
   @override
   Widget build(BuildContext context) => Material(
       color: context.colorScheme.background,
       child: InkWell(
         onTap: () {
-          onTap(fiat);
-          Navigator.pop(context);
+          Navigator.pop(context, fiat);
         },
         child: Container(
             height: 80,
@@ -123,5 +118,3 @@ class _Item extends StatelessWidget {
             ])),
       ));
 }
-
-typedef FiatSelectCallback = void Function(WyreFiat);

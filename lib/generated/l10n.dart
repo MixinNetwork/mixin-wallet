@@ -1439,6 +1439,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Services provided by https://sendwyre.com`
+  String get buyDisclaimer {
+    return Intl.message(
+      'Services provided by https://sendwyre.com',
+      name: 'buyDisclaimer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Does not meet minimum transaction size`
+  String get notMeetMinimumAmount {
+    return Intl.message(
+      'Does not meet minimum transaction size',
+      name: 'notMeetMinimumAmount',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

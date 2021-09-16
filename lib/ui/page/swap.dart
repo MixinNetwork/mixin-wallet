@@ -365,7 +365,7 @@ class _AssetItem extends HookWidget {
             onSelected.call();
           },
           selectedAssetId: asset.value.assetId,
-          assetResultList: supportedAssets,
+          source: () => Stream.value(supportedAssets),
         ),
       );
     }
@@ -396,9 +396,9 @@ class _AssetItem extends HookWidget {
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 4),
               SvgPicture.asset(R.resourcesIcArrowDownSvg),
-              const SizedBox(width: 10),
+              const SizedBox(width: 4),
             ])),
         if (!readOnly)
           _SourceAmountArea(

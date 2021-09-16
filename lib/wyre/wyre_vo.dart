@@ -15,16 +15,14 @@ class WyreFiat {
       name == 'USD' ? WyreServiceArea.us : WyreServiceArea.international;
 }
 
-List<WyreFiat> getWyreFiatList() {
-  final fiatList = <WyreFiat>[];
+Iterable<WyreFiat> getWyreFiatList() sync* {
   for (var i = 0; i < supportedFiats.length; i++) {
-    fiatList.add(WyreFiat(
+    yield WyreFiat(
       supportedFiats[i],
       supportedFiatsFlag[i],
       supportedFiatNames[i],
-    ));
+    );
   }
-  return fiatList;
 }
 
 WyreFiat? getWyreFiatByName(String name) {

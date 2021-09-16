@@ -30,6 +30,8 @@ class R {
 
   static const String resourcesContactSvg = 'resources/contact.svg';
 
+  static const String resourcesDeleteArrowSvg = 'resources/delete_arrow.svg';
+
   static const String resourcesDownRedSvg = 'resources/down_red.svg';
 
   static const String resourcesEmptyTransactionGreySvg =

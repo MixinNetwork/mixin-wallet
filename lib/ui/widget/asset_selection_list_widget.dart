@@ -8,14 +8,29 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/l10n.dart';
 import '../../util/r.dart';
+import '../../wyre/wyre_constants.dart';
 import 'brightness_observer.dart';
 import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 import 'symbol.dart';
 
+Future<AssetResult?> showBuyAssetSelectionBottomSheet({
+  required BuildContext context,
+  String? initialSelected,
+}) =>
+    showAssetSelectionBottomSheet(
+        initialSelected: initialSelected,
+        context: context,
+        source: () async* {
+          final assets =
+              await context.appServices.findOrSyncAssets(supportedCryptosId);
+          yield assets;
+        });
+
 Future<AssetResult?> showAssetSelectionBottomSheet({
   required BuildContext context,
   String? initialSelected,
+  AssetSourceLoader? source,
 }) =>
     showMixinBottomSheet<AssetResult>(
       context: context,
@@ -23,8 +38,11 @@ Future<AssetResult?> showAssetSelectionBottomSheet({
       builder: (context) => AssetSelectionListWidget(
         selectedAssetId: initialSelected,
         onTap: (_) {},
+        source: source,
       ),
     );
+
+typedef AssetSourceLoader = Stream<List<AssetResult>> Function();
 
 // TODO Refactor use navigator pop to receive assets, instead of onTap callback.
 class AssetSelectionListWidget extends HookWidget {
@@ -32,18 +50,19 @@ class AssetSelectionListWidget extends HookWidget {
     Key? key,
     required this.onTap,
     this.selectedAssetId,
-    this.assetResultList,
+    this.source,
   }) : super(key: key);
 
   final String? selectedAssetId;
-  final List<AssetResult>? assetResultList;
   final AssetSelectCallback onTap;
+
+  final AssetSourceLoader? source;
 
   @override
   Widget build(BuildContext context) {
     final assetResults = useMemoizedStream(() {
-          if (assetResultList != null && assetResultList!.isNotEmpty) {
-            return Stream.value(assetResultList);
+          if (source != null) {
+            return source!.call();
           }
           return context.appServices.assetResults().watch().map((event) => event
             ..sort(
