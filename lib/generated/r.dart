@@ -135,6 +135,9 @@ class R {
 
   static const String resourcesIcSwitchSvg = 'resources/ic_switch.svg';
 
+  static const String resourcesIcSwitchSmallSvg =
+      'resources/ic_switch_small.svg';
+
   static const String resourcesIcWarningSvg = 'resources/ic_warning.svg';
 
   static const String resourcesLogoWebp = 'resources/logo.webp';
