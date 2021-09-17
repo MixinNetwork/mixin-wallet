@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../generated/r.dart';
+import '../../util/extension/extension.dart';
 import 'brightness_observer.dart';
 
 typedef InputCallback<T> = void Function(T value);
@@ -91,19 +92,55 @@ class _NumberInputPad extends StatelessWidget {
   final VoidCallback onDotInput;
 
   @override
-  Widget build(BuildContext context) => Wrap(
-        spacing: 45,
-        runSpacing: 12,
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          for (var i = 1; i <= 9; i++)
-            _NumberKeyboardTile(num: i, onTap: onNumberInput),
-          _KeyboardTile.char(char: '.', onTap: onDotInput),
-          _NumberKeyboardTile(num: 0, onTap: onNumberInput),
-          _KeyboardTile(
-            content: SvgPicture.asset(R.resourcesDeleteArrowSvg),
-            onTap: onDelete,
-          ),
+          _Row(children: [
+            _NumberKeyboardTile(num: 1, onTap: onNumberInput),
+            _NumberKeyboardTile(num: 2, onTap: onNumberInput),
+            _NumberKeyboardTile(num: 3, onTap: onNumberInput),
+          ]),
+          const SizedBox(height: 12),
+          _Row(children: [
+            _NumberKeyboardTile(num: 4, onTap: onNumberInput),
+            _NumberKeyboardTile(num: 5, onTap: onNumberInput),
+            _NumberKeyboardTile(num: 6, onTap: onNumberInput),
+          ]),
+          const SizedBox(height: 12),
+          _Row(children: [
+            _NumberKeyboardTile(num: 7, onTap: onNumberInput),
+            _NumberKeyboardTile(num: 8, onTap: onNumberInput),
+            _NumberKeyboardTile(num: 9, onTap: onNumberInput),
+          ]),
+          const SizedBox(height: 12),
+          _Row(children: [
+            _KeyboardTile.char(char: '.', onTap: onDotInput),
+            _NumberKeyboardTile(num: 0, onTap: onNumberInput),
+            _KeyboardTile(
+              content: SvgPicture.asset(R.resourcesDeleteArrowSvg),
+              onTap: onDelete,
+            ),
+          ]),
         ],
+      );
+}
+
+class _Row extends StatelessWidget {
+  const _Row({
+    Key? key,
+    required this.children,
+    this.spacer = const SizedBox(width: 45),
+  }) : super(key: key);
+
+  final List<Widget> children;
+
+  final Widget spacer;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: children.separated(spacer).toList(),
       );
 }
 
