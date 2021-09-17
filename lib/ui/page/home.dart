@@ -11,7 +11,6 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
-import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -321,7 +320,7 @@ class _ButtonBar extends StatelessWidget {
             ),
             HeaderButton.text(
               text: context.l10n.buy,
-              onTap: () {
+              onTap: () async {
                 if (kReleaseMode) {
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
@@ -329,7 +328,15 @@ class _ButtonBar extends StatelessWidget {
                       SnackBar(content: Text(context.l10n.comingSoon)),
                     );
                 } else {
-                  context.push(buyPath.toUri({'id': erc20USDT}));
+                  final asset = await showBuyAssetSelectionBottomSheet(
+                    context: context,
+                    initialSelected: lastSelectedAddress,
+                  );
+                  if (asset == null) {
+                    return;
+                  }
+                  lastSelectedAddress = asset.assetId;
+                  context.push(buyPath.toUri({'id': asset.assetId}));
                 }
               },
             ),

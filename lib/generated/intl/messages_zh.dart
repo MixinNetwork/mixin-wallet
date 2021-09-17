@@ -75,6 +75,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "authorize": MessageLookupByLibrary.simpleMessage("授权使用"),
         "balance": MessageLookupByLibrary.simpleMessage("余额"),
         "buy": MessageLookupByLibrary.simpleMessage("购买"),
+        "buyDisclaimer": MessageLookupByLibrary.simpleMessage(
+            "购买服务由 https://sendwyre.com 提供"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("即将推出"),
@@ -133,6 +135,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noResult": MessageLookupByLibrary.simpleMessage("无结果"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "none": MessageLookupByLibrary.simpleMessage("暂无价格"),
+        "notMeetMinimumAmount":
+            MessageLookupByLibrary.simpleMessage("未能达到最低数额"),
         "notice": MessageLookupByLibrary.simpleMessage("注意"),
         "ok": MessageLookupByLibrary.simpleMessage("好的"),
         "other": MessageLookupByLibrary.simpleMessage("其他"),

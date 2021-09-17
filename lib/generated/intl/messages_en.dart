@@ -85,6 +85,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "balance": MessageLookupByLibrary.simpleMessage("BALANCE"),
         "balanceOfBtc": m3,
         "buy": MessageLookupByLibrary.simpleMessage("Buy"),
+        "buyDisclaimer": MessageLookupByLibrary.simpleMessage(
+            "Services provided by https://sendwyre.com"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
@@ -151,6 +153,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noResult": MessageLookupByLibrary.simpleMessage("NO RESULT"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
+        "notMeetMinimumAmount": MessageLookupByLibrary.simpleMessage(
+            "Does not meet minimum transaction size"),
         "notice": MessageLookupByLibrary.simpleMessage("Notice"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),

@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:intl/intl.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/env.dart';
@@ -14,45 +14,74 @@ import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/l10n.dart';
-import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../../wyre/wyre_client.dart';
 import '../../wyre/wyre_constants.dart';
 import '../../wyre/wyre_quote.dart';
 import '../../wyre/wyre_vo.dart';
 import '../router/mixin_routes.dart';
-import '../widget/asset_selection_list_widget.dart';
 import '../widget/brightness_observer.dart';
 import '../widget/buttons.dart';
 import '../widget/fiat_selection_list_widget.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
-import '../widget/round_container.dart';
-import '../widget/symbol.dart';
+import '../widget/number_input_pad.dart';
 
 class Buy extends HookWidget {
   const Buy({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var assetId = context.pathParameters['id'];
-    assetId ??= erc20USDT;
+    var assetId = usePathParameter('id', path: buyPath);
 
-    final supportedAssets = useMemoizedFuture(
-        () => context.appServices.findOrSyncAssets(supportedCryptosId)).data;
-    final fiatList = useMemoized<List<WyreFiat>>(getWyreFiatList);
+    assert(supportedCryptosId.contains(assetId));
 
-    if (supportedAssets == null || supportedAssets.isEmpty) {
-      w('supportedAssets: $supportedAssets');
-      return const SizedBox();
+    if (!supportedCryptosId.contains(assetId)) {
+      assetId = erc20USDT;
     }
 
-    return Scaffold(
+    final asset = useMemoizedFuture(
+      () => context.appServices.findOrSyncAsset(assetId),
+      keys: [assetId],
+    );
+
+    if (!asset.hasData) {
+      return _BuyScaffold(
+        child: Center(
+          child: SizedBox.square(
+            dimension: 18,
+            child: CircularProgressIndicator(
+              color: context.colorScheme.captionIcon,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return _BuyScaffold(
+      asset: asset.data,
+      child: _Body(asset: asset.data!),
+    );
+  }
+}
+
+class _BuyScaffold extends StatelessWidget {
+  const _BuyScaffold({Key? key, this.asset, required this.child})
+      : super(key: key);
+
+  final AssetResult? asset;
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
         backgroundColor: context.colorScheme.background,
         appBar: MixinAppBar(
           backgroundColor: context.colorScheme.background,
           title: Text(
-            context.l10n.buy,
+            asset == null
+                ? context.l10n.buy
+                : '${context.l10n.buy} ${asset!.name}',
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 18,
@@ -61,332 +90,354 @@ class Buy extends HookWidget {
           ),
           leading: const MixinBackButton2(),
         ),
-        body: _BuyBody(supportedAssets: supportedAssets, fiatList: fiatList));
-  }
+        body: child,
+      );
 }
 
-class _BuyBody extends HookWidget {
-  const _BuyBody({
+class _Body extends HookWidget {
+  const _Body({
     Key? key,
-    required this.supportedAssets,
-    required this.fiatList,
+    required this.asset,
   }) : super(key: key);
 
-  final List<AssetResult> supportedAssets;
-  final List<WyreFiat> fiatList;
+  final AssetResult asset;
 
   @override
   Widget build(BuildContext context) {
-    final asset = useState(supportedAssets[0]);
-    final fiat = useState(fiatList[0]);
-    final type = useState(WyrePayType.applePay);
-    final wyreQuote = useState<WyreQuote?>(null);
-    final lastQuoteByFiat = useState(true);
+    final fiat = useState(getWyreFiatList().first);
 
-    final fiatTextController = useTextEditingController();
-    final cryptoTextController = useTextEditingController();
-    final fiatFocusNode = useFocusNode(debugLabel: 'fiat input');
-    final cryptoFocusNode = useFocusNode(debugLabel: 'crypto input');
+    final inputController = useMemoized(() => NumberInputController());
+    useValueListenable(inputController);
 
-    final country = useMemoized(getCountry);
+    final quote = useState(const AsyncSnapshot<WyreQuote>.nothing());
 
-    void showAssetListBottomSheet() {
-      showMixinBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) => AssetSelectionListWidget(
-          onTap: (AssetResult assetResult) {
-            context.replace(buyPath.toUri({'id': assetResult.assetId}));
-            asset.value = assetResult;
-          },
-          selectedAssetId: asset.value.assetId,
-          assetResultList: supportedAssets,
-        ),
-      );
-    }
+    final showLoading = useState(false);
 
-    void showFiatListBottomSheet() {
-      showMixinBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) => FiatSelectionListWidget(
-          fiatList: fiatList,
-          selectedFiat: fiat.value,
-          onTap: (WyreFiat wyreFiat) {
-            fiat.value = wyreFiat;
-          },
-        ),
-      );
-    }
-
-    Future<WyreQuote> queryOrderQuote(bool byFiat, String amount) async {
-      final data = {
-        'sourceCurrency': fiat.value.name,
-        'destCurrency': asset.value.symbol,
-        'dest': 'ethereum:${asset.value.destination}',
-        'country': country,
-        'accountId': Env.wyreAccount,
-        'walletType': type.value.forQuote(),
-        'amountIncludeFees': 'true',
-      };
-      if (byFiat) {
-        data['sourceAmount'] = amount;
-      } else {
-        data['destAmount'] = amount;
-      }
-      final quote =
-          await WyreClient.instance.api.getOrderReservationQuote(data);
-      return quote;
-    }
-
-    Future<void> updateAmount(
-      String text,
-      FocusNode inputFocusNode,
-      TextEditingController effectedController,
-    ) async {
-      final amount = double.tryParse(text) ?? 0;
-      if (amount == 0) {
-        effectedController.text = '';
-        wyreQuote.value = null;
-        return;
-      }
-
-      if (inputFocusNode.hasFocus) {
-        final byFiat = effectedController != fiatTextController;
-        final quote = await queryOrderQuote(byFiat, text);
-        effectedController.text = quote.destAmount.toString();
-        wyreQuote.value = quote;
-        lastQuoteByFiat.value = byFiat;
-      }
-    }
-
-    final fiatTextStream = useValueNotifierConvertSteam(fiatTextController);
     useEffect(() {
-      final listen = fiatTextStream
-          .map((event) => event.text)
-          .distinct()
-          .debounceTime(const Duration(milliseconds: 500))
-          .map((String text) =>
-              updateAmount(text, fiatFocusNode, cryptoTextController))
-          .listen((_) {});
+      var canceled = false;
+      scheduleMicrotask(() async {
+        final data = {
+          'sourceCurrency': fiat.value.name,
+          'destCurrency': asset.symbol,
+          'dest': 'ethereum:${asset.destination}',
+          'country': getCountry(),
+          'accountId': Env.wyreAccount,
+          'walletType': WyrePayType.applePay.forQuote(),
+          'amountIncludeFees': 'true',
+          'sourceAmount': inputController.value,
+        };
+        quote.value = const AsyncSnapshot.waiting();
+        try {
+          final result =
+              await WyreClient.instance.api.getOrderReservationQuote(data);
+          if (canceled) {
+            return;
+          }
+          quote.value = AsyncSnapshot.withData(ConnectionState.done, result);
+        } catch (e) {
+          // ignore: invariant_booleans
+          if (canceled) {
+            return;
+          }
+          quote.value = AsyncSnapshot.withError(ConnectionState.done, e);
+        }
+      });
+      return () => canceled = true;
+    }, [fiat.value, inputController.value]);
 
-      return listen.cancel;
-    });
-
-    final cryptoTextStream = useValueNotifierConvertSteam(cryptoTextController);
-    useEffect(() {
-      final listen = cryptoTextStream
-          .map((event) => event.text)
-          .distinct()
-          .debounceTime(const Duration(milliseconds: 500))
-          .map((String text) =>
-              updateAmount(text, cryptoFocusNode, fiatTextController))
-          .listen((_) {});
-      return listen.cancel;
-    });
-
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius:
-            const BorderRadius.vertical(top: Radius.circular(topRadius)),
-        color: context.colorScheme.background,
-      ),
-      child: Column(children: [
-        const SizedBox(height: 20),
-        RoundContainer(
-          height: 64,
-          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-          child: Row(children: [
-            InkWell(
-              onTap: showFiatListBottomSheet,
-              child: ClipOval(
-                  child: Image.asset(
-                fiat.value.flag,
-                width: 40,
-                height: 40,
-              )),
-            ),
-            const SizedBox(width: 12),
-            InkWell(
-                onTap: showFiatListBottomSheet,
-                child: Text(
-                  fiat.value.name,
-                  style: TextStyle(
-                    color: context.colorScheme.primaryText,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                )),
-            const SizedBox(width: 10),
-            SvgPicture.asset(R.resourcesIcArrowDownSvg),
-            const SizedBox(width: 10),
-            Expanded(
-                child: _AmountTextField(
-              focusNode: fiatFocusNode,
-              controller: fiatTextController,
-            )),
-            const SizedBox(width: 20),
-          ]),
-        ),
-        const SizedBox(height: 20),
-        RoundContainer(
-          height: 64,
-          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-          child: Row(children: [
-            InkWell(
-                onTap: showAssetListBottomSheet,
-                child: SymbolIconWithBorder(
-                  symbolUrl: asset.value.iconUrl,
-                  chainUrl: asset.value.chainIconUrl,
-                  size: 40,
-                  chainBorder:
-                      const BorderSide(color: Color(0xfff8f8f8), width: 1),
-                  symbolBorder:
-                      const BorderSide(color: Color(0xfff8f8f8), width: 2),
-                  chainSize: 8,
-                )),
-            const SizedBox(width: 10),
-            InkWell(
-                onTap: showAssetListBottomSheet,
-                child: Text(
-                  asset.value.symbol,
-                  style: TextStyle(
-                    color: context.colorScheme.primaryText,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                )),
-            const SizedBox(width: 10),
-            SvgPicture.asset(R.resourcesIcArrowDownSvg),
-            const SizedBox(width: 10),
-            Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+    return Stack(
+      children: [
+        Column(children: [
+          SizedBox(
+            height: 80,
+            child: Row(
               children: [
-                SizedBox(
-                    height: 38,
-                    child: _AmountTextField(
-                      focusNode: cryptoFocusNode,
-                      controller: cryptoTextController,
-                    )),
-                const SizedBox(height: 7),
-                Text(
-                  '${asset.value.balance} ${context.l10n.balance}',
-                  style: TextStyle(
-                    color: context.colorScheme.secondaryText,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  textAlign: TextAlign.end,
-                ),
+                const Spacer(),
+                _FiatIcon(
+                    fiat: fiat.value,
+                    onTap: () async {
+                      final selected = await showFiatListBottomSheet(
+                          context: context, selectedFiat: fiat.value);
+                      if (selected == null) {
+                        return;
+                      }
+                      fiat.value = selected;
+                    }),
+                const SizedBox(width: 17),
               ],
-            )),
-            const SizedBox(width: 20),
-          ]),
-        ),
-        const SizedBox(height: 20),
-        if (wyreQuote.value != null)
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Text.rich(TextSpan(
-                  style: TextStyle(
-                    color: context.colorScheme.secondaryText,
-                    fontSize: 13,
-                    height: 2,
-                  ),
-                  children: [
-                    TextSpan(text: '${context.l10n.transactionFee} '),
-                    TextSpan(
-                        text:
-                            '${(wyreQuote.value?.fees[fiat.value.name] ?? 0).toString()} ${fiat.value.name}',
-                        style: TextStyle(
-                          color: context.colorScheme.primaryText,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    TextSpan(text: '\n${context.l10n.networkFee} '),
-                    TextSpan(
-                        text:
-                            '${(wyreQuote.value?.fees[asset.value.symbol] ?? 0).toString()} ${fiat.value.name}',
-                        style: TextStyle(
-                          color: context.colorScheme.primaryText,
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ]))),
-        const Spacer(),
-        HookBuilder(
-            builder: (context) => _PayButton(
-                  enable: wyreQuote.value != null,
-                  onTap: () async {
-                    final fiatAmount = (await fiatTextStream.last).text;
-                    final cryptoAmount = (await cryptoTextStream.last).text;
-                    final redirectUrl =
-                        'http://localhost:8001/#/buySuccess?asset=${asset.value.assetId}&fiat=${fiat.value.name}&sourceAmount=$fiatAmount&destAmount=$cryptoAmount';
-                    final failureRedirectUrl =
-                        'http://localhost:8001/#/buy/${asset.value.assetId}';
-                    final data = {
-                      'sourceCurrency': fiat.value.name,
-                      'destCurrency': asset.value.symbol,
-                      'dest': 'ethereum:${asset.value.destination}',
-                      'country': country,
-                      'redirectUrl': redirectUrl,
-                      'failureRedirectUrl': failureRedirectUrl,
-                      'paymentMethod': type.value.forReservation(),
-                      'referrerAccountId': Env.wyreAccount,
-                      'amountIncludeFees': 'true',
-                    };
-                    if (lastQuoteByFiat.value) {
-                      data['sourceAmount'] = fiatAmount;
-                    } else {
-                      data['destAmount'] = cryptoAmount;
-                    }
-                    final url = await WyreClient.instance.api
-                        .createOrderReservation(data);
-                    if (url == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          content: Text('Wyre serve empty url')));
-                      return;
-                    }
-                    context.toExternal(url);
-                  },
-                )),
-        const SizedBox(height: 30),
-      ]),
+            ),
+          ),
+          _InputPreview(
+            text: inputController.value,
+            fiat: fiat.value,
+            asset: asset,
+            quote: quote.value,
+          ),
+          const SizedBox(height: 35),
+          NumberInputWidget(controller: inputController),
+          const Spacer(),
+          _PayButton(
+            enable: quote.value.hasData,
+            onTap: () async {
+              showLoading.value = true;
+              final redirectUrl =
+                  'http://localhost:8001/#/buySuccess?asset=${asset.assetId}&fiat=${fiat.value.name}&sourceAmount=${inputController.value}';
+              final failureRedirectUrl =
+                  'http://localhost:8001/#/buy/${asset.assetId}';
+              final data = {
+                'sourceCurrency': fiat.value.name,
+                'destCurrency': asset.symbol,
+                'dest': 'ethereum:${asset.destination}',
+                'country': getCountry(),
+                'redirectUrl': redirectUrl,
+                'failureRedirectUrl': failureRedirectUrl,
+                'paymentMethod': WyrePayType.applePay.forReservation(),
+                'referrerAccountId': Env.wyreAccount,
+                'amountIncludeFees': 'true',
+                'sourceAmount': inputController.value,
+              };
+              try {
+                final url =
+                    await WyreClient.instance.api.createOrderReservation(data);
+                if (url == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text('Wyre serve empty url')));
+                  return;
+                }
+                context.toExternal(url);
+              } finally {
+                showLoading.value = false;
+              }
+            },
+          ),
+          const SizedBox(height: 10),
+          _BuyDescription(
+              quote: quote.value.data, asset: asset, fiat: fiat.value),
+          const SizedBox(height: 16),
+        ]),
+        if (showLoading.value) const _LoadingLayout(),
+      ],
     );
   }
 }
 
-class _AmountTextField extends StatelessWidget {
-  const _AmountTextField({
+Future<WyreFiat?> showFiatListBottomSheet({
+  required BuildContext context,
+  WyreFiat? selectedFiat,
+}) =>
+    showMixinBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => FiatSelectionListWidget(selectedFiat: selectedFiat),
+    );
+
+class _FiatIcon extends StatelessWidget {
+  const _FiatIcon({
     Key? key,
-    required this.focusNode,
-    required this.controller,
+    required this.fiat,
+    required this.onTap,
   }) : super(key: key);
 
-  final FocusNode focusNode;
-  final TextEditingController controller;
+  final WyreFiat fiat;
+
+  final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => TextField(
-        focusNode: focusNode,
+  Widget build(BuildContext context) => Material(
+        color: context.colorScheme.surface,
+        borderRadius: BorderRadius.circular(64),
+        child: SizedBox(
+          height: 32,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(64),
+            onTap: onTap,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(width: 16),
+                ClipOval(
+                    child: Image.asset(
+                  fiat.flag,
+                  width: 16,
+                  height: 16,
+                )),
+                const SizedBox(width: 4),
+                SelectableText(
+                  fiat.name,
+                  enableInteractiveSelection: false,
+                  onTap: onTap,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: context.colorScheme.primaryText,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                SizedBox.square(
+                  dimension: 24,
+                  child: SvgPicture.asset(
+                    R.resourcesIcArrowDownSvg,
+                    width: 24,
+                    height: 24,
+                  ),
+                ),
+                const SizedBox(width: 4),
+              ],
+            ),
+          ),
+        ),
+      );
+}
+
+class _InputPreview extends HookWidget {
+  const _InputPreview({
+    Key? key,
+    required this.text,
+    required this.fiat,
+    required this.asset,
+    required this.quote,
+  }) : super(key: key);
+
+  final String text;
+
+  final WyreFiat fiat;
+
+  final AssetResult asset;
+  final AsyncSnapshot<WyreQuote> quote;
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget quoteWidget;
+
+    if (quote.hasData || quote.hasError) {
+      String? desc;
+      if (quote.hasData) {
+        desc = '≈ ${quote.data!.destAmount} ${asset.symbol}';
+      } else {
+        if (quote.error is DioError) {
+          final response = (quote.error! as DioError).response;
+          if (response != null) {
+            // ignore: avoid_dynamic_calls
+            final errorCode = response.data['errorCode'];
+            if (errorCode == 'validation.snapx.min' ||
+                errorCode == 'exchange.sourceAmountTooSmall') {
+              desc = context.l10n.notMeetMinimumAmount;
+            } else {
+              // ignore: avoid_dynamic_calls
+              desc = response.data['message']?.toString();
+            }
+          }
+        }
+      }
+
+      quoteWidget = SelectableText(
+        desc ?? '',
+        enableInteractiveSelection: false,
         style: TextStyle(
-          color: context.colorScheme.primaryText,
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
+          fontSize: 14,
+          color: quote.hasError
+              ? context.colorScheme.red
+              : context.colorScheme.thirdText,
         ),
         maxLines: 1,
-        decoration: const InputDecoration(
-          hintText: '0.000',
-          border: InputBorder.none,
-        ),
-        controller: controller,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,3}'))
-        ],
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        textAlign: TextAlign.end,
       );
+    } else {
+      quoteWidget = Center(
+        child: SizedBox.square(
+          dimension: 16,
+          child: CircularProgressIndicator(
+            color: context.colorScheme.captionIcon,
+            strokeWidth: 2,
+          ),
+        ),
+      );
+    }
+
+    final faitSymbol = useMemoized(
+        () => NumberFormat.simpleCurrency(name: fiat.name).currencySymbol,
+        [fiat.name]);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SelectableText(
+          '$faitSymbol$text',
+          enableInteractiveSelection: false,
+          style: TextStyle(
+            fontSize: 48,
+            fontWeight: FontWeight.w500,
+            color: context.colorScheme.primaryText,
+          ),
+        ),
+        const SizedBox(height: 4),
+        SizedBox(height: 22, child: quoteWidget),
+      ],
+    );
+  }
+}
+
+class _BuyDescription extends HookWidget {
+  const _BuyDescription({
+    Key? key,
+    required this.quote,
+    required this.fiat,
+    required this.asset,
+  }) : super(key: key);
+
+  final WyreQuote? quote;
+  final WyreFiat fiat;
+  final AssetResult asset;
+
+  @override
+  Widget build(BuildContext context) {
+    final previous = useRef(this.quote);
+
+    useEffect(() {
+      if (this.quote != null) {
+        previous.value = this.quote;
+      }
+    }, [this.quote]);
+
+    final quote = this.quote ?? previous.value;
+    return DefaultTextStyle(
+      style: TextStyle(
+        color: context.colorScheme.thirdText,
+        fontWeight: FontWeight.w600,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SelectableText.rich(
+            TextSpan(children: [
+              TextSpan(text: context.l10n.transactionFee),
+              TextSpan(
+                  text:
+                      '${(quote?.fees[fiat.name] ?? 0).toString()} ${fiat.name}',
+                  style: TextStyle(color: context.colorScheme.primaryText)),
+            ]),
+            enableInteractiveSelection: false,
+          ),
+          const SizedBox(height: 4),
+          SelectableText.rich(
+            TextSpan(children: [
+              TextSpan(text: context.l10n.networkFee),
+              TextSpan(
+                  text:
+                      '${(quote?.fees[asset.symbol] ?? 0).toString()} ${fiat.name}',
+                  style: TextStyle(color: context.colorScheme.primaryText)),
+            ]),
+            enableInteractiveSelection: false,
+          ),
+          const SizedBox(height: 4),
+          SelectableText(
+            context.l10n.buyDisclaimer,
+            enableInteractiveSelection: false,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _PayButton extends StatelessWidget {
@@ -417,14 +468,41 @@ class _PayButton extends StatelessWidget {
                 height: 15,
               ),
               const SizedBox(width: 4),
-              Text(
+              SelectableText(
                 context.l10n.pay,
                 style: TextStyle(
                   fontSize: 16,
                   color: context.colorScheme.background,
                 ),
+                enableInteractiveSelection: false,
+                onTap: onTap,
               ),
             ])),
+          ),
+        ),
+      );
+}
+
+class _LoadingLayout extends StatelessWidget {
+  const _LoadingLayout({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Center(
+        child: Container(
+          width: 110,
+          height: 90,
+          decoration: BoxDecoration(
+            color: const Color(0xFF3B3C3E),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: const Center(
+            child: SizedBox.square(
+              dimension: 30,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 2,
+              ),
+            ),
           ),
         ),
       );

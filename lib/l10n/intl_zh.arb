@@ -129,10 +129,12 @@
   "paidInMixinWarning": "如果您已经支付成功，请耐心等待，无需再次支付",
   "paid": "已支付",
   "unpaid": "未支付",
-  "incomplete":"未完成",
+  "incomplete": "未完成",
   "completed": "已完成",
   "slippage": "滑点",
   "slippageOver": "暂不支持滑点大于 {value} 的闪兑",
   "goPay": "去支付",
-  "swapDisclaimer": "服务由 MixSwap 提供"
+  "swapDisclaimer": "服务由 MixSwap 提供",
+  "buyDisclaimer": "购买服务由 https://sendwyre.com 提供",
+  "notMeetMinimumAmount": "未能达到最低数额"
 }
