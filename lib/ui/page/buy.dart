@@ -58,7 +58,10 @@ class Buy extends HookWidget {
       );
     }
 
-    return _BuyScaffold(child: _Body(asset: asset.data!));
+    return _BuyScaffold(
+      asset: asset.data,
+      child: _Body(asset: asset.data!),
+    );
   }
 }
 
