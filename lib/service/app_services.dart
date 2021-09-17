@@ -25,10 +25,19 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     client = sdk.Client(
         accessToken: accessToken,
         interceptors: interceptors,
-        httpLogLevel: sdk.HttpLogLevel.none);
-    initDbFuture = _initDatabase();
-    initDbFuture?.whenComplete(() {
-      initDbFuture = null;
+        httpLogLevel: null);
+    scheduleMicrotask(() async {
+      if (isLogin) {
+        try {
+          final response = await client.accountApi.getMe();
+          await setAuth(
+              Auth(accessToken: accessToken!, account: response.data));
+        } catch (error) {
+          d('refresh account failed. $error');
+        }
+      }
+      await _initDatabase();
+      _initCompleter.complete();
     });
   }
 
@@ -51,7 +60,10 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   final GlobalKey<VRouterState> vRouterStateKey;
   late sdk.Client client;
-  Future? initDbFuture;
+
+  final _initCompleter = Completer();
+
+  Future? get initServiceFuture => _initCompleter.future;
   MixinDatabase? _mixinDatabase;
 
   bool get databaseInitialized => _mixinDatabase != null;
