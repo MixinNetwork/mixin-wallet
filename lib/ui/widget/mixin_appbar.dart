@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../util/extension/extension.dart';
+import '../../util/mixin_context.dart';
 import 'buttons.dart';
 
 class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
@@ -29,9 +30,10 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
 
   List<Widget> get validActions {
     final isNotEmpty = actions?.isNotEmpty == true;
+    final ctx = getMixinContext();
     return [
       if (isNotEmpty) ...actions!,
-      if (isNotEmpty) const SizedBox(width: 110),
+      if (isNotEmpty && ctx.isNotEmpty) const SizedBox(width: 110),
     ];
   }
 
