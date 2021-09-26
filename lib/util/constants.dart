@@ -19,6 +19,5 @@ const depositHelpLink =
 const usdtAssets = {
   '4d8c508b-91c5-375b-92b0-ee702ed2dac5': 'ERC-20',
   'b91e18ff-a9ae-3dc7-8679-e935d9a4b34b': 'TRON',
-  '815b0b1a-2764-3736-8faa-42d694fa620a': 'Bitcoin',
   '5dac5e28-ad13-31ea-869f-41770dfcee09': 'EOS',
 };
