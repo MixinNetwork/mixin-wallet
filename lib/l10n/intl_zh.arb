@@ -10,7 +10,7 @@
   "ok": "好的",
   "depositNotice": "地址和 Memo(标签)同时使用才能充值 {value} 到你的账户。",
   "depositTip": "该充值地址仅支持 {value}.",
-  "depositTipBtc": "该充值地址仅支持 BTC 和 Omni USDT。",
+  "depositTipBtc": "该充值地址仅支持 BTC。",
   "depositTipEth": "该充值地址支持所有符合 ERC-20 标准的代币，例如 ETH、XIN 等。",
   "depositTipEos": "该充值地址支持所有基于 EOS 发行的代币，例如 EOS、IQ 等。",
   "depositTipTron": "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币，例如 TRX、USDT-TRON 等。",

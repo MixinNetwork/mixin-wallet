@@ -13,7 +13,7 @@
   "ok": "OK",
   "depositNotice": "Both Memo and Address are required to deposit {value} to your account.",
   "depositTip": "This address only supports {value}.",
-  "depositTipBtc": "This address only supports BTC and Omni USDT.",
+  "depositTipBtc": "This address only supports BTC.",
   "depositTipEth": "This address supports all ERC-20 tokens, such as ETH, XIN etc.",
   "depositTipEos": "This address supports all base on EOS tokens, such as EOS, IQ etc.",
   "depositTipTron": "This address supports all TRC-10 and TRC-20 tokens, such as TRX, USDT-TRON, etc.",

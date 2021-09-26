@@ -106,7 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositReserve": m6,
         "depositTip": m7,
         "depositTipBtc": MessageLookupByLibrary.simpleMessage(
-            "This address only supports BTC and Omni USDT."),
+            "This address only supports BTC."),
         "depositTipEos": MessageLookupByLibrary.simpleMessage(
             "This address supports all base on EOS tokens, such as EOS, IQ etc."),
         "depositTipEth": MessageLookupByLibrary.simpleMessage(

@@ -190,10 +190,10 @@ class L10n {
     );
   }
 
-  /// `This address only supports BTC and Omni USDT.`
+  /// `This address only supports BTC.`
   String get depositTipBtc {
     return Intl.message(
-      'This address only supports BTC and Omni USDT.',
+      'This address only supports BTC.',
       name: 'depositTipBtc',
       desc: '',
       args: [],

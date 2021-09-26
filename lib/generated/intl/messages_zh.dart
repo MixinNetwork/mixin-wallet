@@ -93,8 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositNotice": m5,
         "depositReserve": m6,
         "depositTip": m7,
-        "depositTipBtc":
-            MessageLookupByLibrary.simpleMessage("该充值地址仅支持 BTC 和 Omni USDT。"),
+        "depositTipBtc": MessageLookupByLibrary.simpleMessage("该充值地址仅支持 BTC。"),
         "depositTipEos": MessageLookupByLibrary.simpleMessage(
             "该充值地址支持所有基于 EOS 发行的代币，例如 EOS、IQ 等。"),
         "depositTipEth": MessageLookupByLibrary.simpleMessage(
