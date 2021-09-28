@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -72,7 +73,12 @@ class _Router extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: [
-          ...L10n.delegate.supportedLocales,
+          //FIXME remove this if https://github.com/flutter/flutter/issues/89655# has been fixed.
+          if (defaultTargetPlatform == TargetPlatform.iOS ||
+              defaultTargetPlatform == TargetPlatform.macOS)
+            const Locale.fromSubtags(languageCode: 'en')
+          else
+            ...L10n.delegate.supportedLocales
         ],
         theme: ThemeData(
           pageTransitionsTheme: const PageTransitionsTheme(
