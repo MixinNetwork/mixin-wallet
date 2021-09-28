@@ -2,30 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../db/mixin_database.dart';
-import '../../generated/r.dart';
-import '../../service/env.dart';
-import '../../util/extension/extension.dart';
-import '../../util/hook.dart';
+import '../../../db/mixin_database.dart';
+import '../../../generated/r.dart';
+import '../../../service/env.dart';
+import '../../../util/extension/extension.dart';
+import '../../../util/hook.dart';
+import '../avatar.dart';
+import '../search_header_widget.dart';
 import 'address_selection_widget.dart';
-import 'avatar.dart';
-import 'mixin_bottom_sheet.dart';
-import 'search_header_widget.dart';
 
-Future<User?> showContactSelectionBottomSheet({
-  required BuildContext context,
-  User? selectedUser,
-}) =>
-    showMixinBottomSheet<User>(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => _ContactSelectionBottomSheet(
-        selectedUser: selectedUser,
-      ),
-    );
-
-class _ContactSelectionBottomSheet extends HookWidget {
-  const _ContactSelectionBottomSheet({
+class ContactSelectionBottomSheet extends HookWidget {
+  const ContactSelectionBottomSheet({
     Key? key,
     required this.selectedUser,
   }) : super(key: key);
@@ -65,29 +52,25 @@ class _ContactSelectionBottomSheet extends HookWidget {
         ),
       );
     }
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - 100,
-      child: Column(
-        children: [
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              const SizedBox(width: 20),
-              Expanded(
-                child: SearchHeaderWidget(
-                  hintText: context.l10n.contactSearchHint,
-                  onChanged: (k) {
-                    filterKeywords.value = k.trim();
-                  },
-                ),
+    return Column(
+      children: [
+        Row(
+          children: [
+            const SizedBox(width: 20),
+            Expanded(
+              child: SearchHeaderWidget(
+                hintText: context.l10n.contactSearchHint,
+                onChanged: (k) {
+                  filterKeywords.value = k.trim();
+                },
               ),
-              const SizedBox(width: 8),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Expanded(child: body),
-        ],
-      ),
+            ),
+            const SizedBox(width: 8),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Expanded(child: body),
+      ],
     );
   }
 }

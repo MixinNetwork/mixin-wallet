@@ -21,7 +21,6 @@ import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/search_asset_bottom_sheet.dart';
-import '../widget/transfer.dart';
 
 enum _AssetSortType {
   amount,
@@ -298,7 +297,17 @@ class _ButtonBar extends StatelessWidget {
           buttons: [
             HeaderButton.text(
               text: context.l10n.send,
-              onTap: () => showTransferRouterBottomSheet(context: context),
+              onTap: () async {
+                final asset = await showAssetSelectionBottomSheet(
+                  context: context,
+                  initialSelected: lastSelectedAddress,
+                );
+                if (asset == null) {
+                  return;
+                }
+                lastSelectedAddress = asset.assetId;
+                context.push(withdrawalPath.toUri({'id': asset.assetId}));
+              },
             ),
             HeaderButton.text(
               text: context.l10n.receive,

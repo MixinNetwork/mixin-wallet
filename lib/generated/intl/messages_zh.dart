@@ -129,10 +129,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkFeeTip": MessageLookupByLibrary.simpleMessage(
             "由第三方服务商收取。直接支付给以太坊矿工以保证以太坊上交易完成。网络费根据即时市场状况变动。"),
         "networkType": MessageLookupByLibrary.simpleMessage("网络类型"),
-        "noAddressSelected": MessageLookupByLibrary.simpleMessage("需要选择一个地址"),
         "noAsset": MessageLookupByLibrary.simpleMessage("暂无资产"),
         "noResult": MessageLookupByLibrary.simpleMessage("无结果"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
+        "noWithdrawalDestinationSelected":
+            MessageLookupByLibrary.simpleMessage("需要选择一个联系人或地址"),
         "none": MessageLookupByLibrary.simpleMessage("暂无价格"),
         "notMeetMinimumAmount":
             MessageLookupByLibrary.simpleMessage("未能达到最低数额"),
@@ -156,10 +157,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("取消授权"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
-        "selectFromAddressBook": MessageLookupByLibrary.simpleMessage("从地址簿选择"),
+        "selectContactOrAddress":
+            MessageLookupByLibrary.simpleMessage("选择联系人或地址"),
         "send": MessageLookupByLibrary.simpleMessage("转出"),
         "sendTo": MessageLookupByLibrary.simpleMessage("转出至"),
-        "sendToAddress": MessageLookupByLibrary.simpleMessage("转出到地址"),
         "sendToContact": MessageLookupByLibrary.simpleMessage("转账至联系人"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "show": MessageLookupByLibrary.simpleMessage("显示"),

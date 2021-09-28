@@ -3,44 +3,78 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
+import '../../util/r.dart';
+import '../widget/action_button.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/transactions/transaction_list.dart';
+import '../widget/transactions/transactions_filter.dart';
 
-class WithdrawalTransactions extends StatelessWidget {
+class WithdrawalTransactions extends HookWidget {
   const WithdrawalTransactions({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: context.colorScheme.background,
-        appBar: MixinAppBar(
-          leading: const MixinBackButton2(),
-          title: SelectableText(
-            context.l10n.transactions,
-            style: TextStyle(
-              color: context.colorScheme.primaryText,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
-            enableInteractiveSelection: false,
+  Widget build(BuildContext context) {
+    final sort = useState(SortBy.time);
+
+    final assetId = context.pathParameters['id']!;
+
+    final destination = context.queryParameters['destination'];
+    final tag = context.queryParameters['tag'];
+
+    final opponentId = context.queryParameters['opponent'];
+
+    return Scaffold(
+      backgroundColor: context.colorScheme.background,
+      appBar: MixinAppBar(
+        leading: const MixinBackButton2(),
+        title: SelectableText(
+          context.l10n.transactions,
+          style: TextStyle(
+            color: context.colorScheme.primaryText,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
           ),
-          backgroundColor: context.colorScheme.background,
+          enableInteractiveSelection: false,
         ),
-        body: LayoutBuilder(builder: (context, constraints) {
-          final pageSize =
-              (constraints.maxHeight * 1.4) ~/ kTransactionItemHeight;
-          return _Body(
-            assetId: context.pathParameters['id']!,
-            destination: context.queryParameters['destination'],
-            tag: context.queryParameters['tag'],
-            pageSize: pageSize,
-          );
-        }),
-      );
+        backgroundColor: context.colorScheme.background,
+        actions: [
+          if (opponentId != null && opponentId.isNotEmpty)
+            ActionButton(
+              name: R.resourcesFilterSvg,
+              size: 24,
+              onTap: () async {
+                final selection = await showFilterSortBottomSheetDialog(
+                  context,
+                  initial: sort.value,
+                );
+                if (selection == null) {
+                  return;
+                }
+                sort.value = selection;
+              },
+            )
+        ],
+      ),
+      body: opponentId != null && opponentId.isNotEmpty
+          ? _UserTransactionsBody(
+              assetId: assetId, opponent: opponentId, sort: sort.value)
+          : LayoutBuilder(builder: (context, constraints) {
+              final pageSize =
+                  (constraints.maxHeight * 1.4) ~/ kTransactionItemHeight;
+              return _AddressTransactionsBody(
+                assetId: assetId,
+                destination: destination,
+                tag: tag,
+                pageSize: pageSize,
+              );
+            }),
+    );
+  }
 }
 
-class _Body extends HookWidget {
-  const _Body({
+class _AddressTransactionsBody extends HookWidget {
+  const _AddressTransactionsBody({
     Key? key,
     required this.assetId,
     required this.destination,
@@ -132,6 +166,66 @@ class _Body extends HookWidget {
           return widget;
         },
       ),
+    );
+  }
+}
+
+class _UserTransactionsBody extends StatelessWidget {
+  const _UserTransactionsBody({
+    Key? key,
+    required this.assetId,
+    required this.opponent,
+    required this.sort,
+  }) : super(key: key);
+
+  final String assetId;
+
+  final String? opponent;
+
+  final SortBy sort;
+
+  @override
+  Widget build(BuildContext context) {
+    if (opponent == null) {
+      return const EmptyTransaction();
+    }
+    return TransactionListBuilder(
+      key: ValueKey(sort),
+      loadMoreItemDb: (offset, limit) => context.mixinDatabase.snapshotDao
+          .snapshots(
+            assetId,
+            offset: offset,
+            limit: limit,
+            opponent: opponent,
+            orderByAmount: sort == SortBy.amount,
+          )
+          .get(),
+      refreshSnapshots: (offset, limit) => context.appServices.getSnapshots(
+        assetId: assetId,
+        opponent: opponent,
+        offset: offset,
+        limit: limit,
+      ),
+      builder: (context, snapshots) {
+        if (snapshots.isEmpty) {
+          return const EmptyTransaction();
+        }
+        return ListView.builder(
+          itemCount: snapshots.length,
+          itemBuilder: (context, index) {
+            final widget = TransactionItem(
+              item: snapshots[index],
+            );
+            if (index == 0) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: widget,
+              );
+            }
+            return widget;
+          },
+        );
+      },
     );
   }
 }

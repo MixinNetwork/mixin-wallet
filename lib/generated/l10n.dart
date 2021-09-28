@@ -590,31 +590,11 @@ class L10n {
     );
   }
 
-  /// `Send to Address`
-  String get sendToAddress {
-    return Intl.message(
-      'Send to Address',
-      name: 'sendToAddress',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Miner Fee`
   String get minerFee {
     return Intl.message(
       'Miner Fee',
       name: 'minerFee',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select from Address Book`
-  String get selectFromAddressBook {
-    return Intl.message(
-      'Select from Address Book',
-      name: 'selectFromAddressBook',
       desc: '',
       args: [],
     );
@@ -950,11 +930,11 @@ class L10n {
     );
   }
 
-  /// `No address selected`
-  String get noAddressSelected {
+  /// `No contact or address selected`
+  String get noWithdrawalDestinationSelected {
     return Intl.message(
-      'No address selected',
-      name: 'noAddressSelected',
+      'No contact or address selected',
+      name: 'noWithdrawalDestinationSelected',
       desc: '',
       args: [],
     );
@@ -1455,6 +1435,16 @@ class L10n {
     return Intl.message(
       'Does not meet minimum transaction size',
       name: 'notMeetMinimumAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a contact or address`
+  String get selectContactOrAddress {
+    return Intl.message(
+      'Choose a contact or address',
+      name: 'selectContactOrAddress',
       desc: '',
       args: [],
     );
