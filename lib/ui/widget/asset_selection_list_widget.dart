@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/l10n.dart';
 import '../../util/r.dart';
 import '../../wyre/wyre_constants.dart';
-import 'brightness_observer.dart';
 import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 import 'symbol.dart';

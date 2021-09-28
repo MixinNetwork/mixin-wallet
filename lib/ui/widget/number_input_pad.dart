@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../generated/r.dart';
 import '../../util/extension/extension.dart';
-import 'brightness_observer.dart';
 
 typedef InputCallback<T> = void Function(T value);
 

@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -13,14 +11,12 @@ import '../../service/env.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/l10n.dart';
 import '../../util/r.dart';
 import '../../wyre/wyre_client.dart';
 import '../../wyre/wyre_constants.dart';
 import '../../wyre/wyre_quote.dart';
 import '../../wyre/wyre_vo.dart';
 import '../router/mixin_routes.dart';
-import '../widget/brightness_observer.dart';
 import '../widget/buttons.dart';
 import '../widget/fiat_selection_list_widget.dart';
 import '../widget/mixin_appbar.dart';
