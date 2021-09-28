@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mixswap_sdk_dart/mixswap_sdk_dart.dart';
@@ -12,10 +11,8 @@ import '../../db/mixin_database.dart';
 import '../../service/mix_swap.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/l10n.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
-import '../widget/brightness_observer.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/symbol.dart';

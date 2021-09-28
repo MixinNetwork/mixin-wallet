@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../../util/l10n.dart';
 
 import 'brightness_observer.dart';

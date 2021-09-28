@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../util/extension/extension.dart';
-import 'brightness_observer.dart';
 
 class TipTile extends StatelessWidget {
   const TipTile({

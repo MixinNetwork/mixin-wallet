@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
-import '../../util/l10n.dart';
 import '../../util/r.dart';
 import 'action_button.dart';
-import 'brightness_observer.dart';
 import 'external_action_confirm.dart';
 import 'mixin_bottom_sheet.dart';
 import 'qrcode_scanner.dart';
