@@ -58,7 +58,6 @@ class TransferAssetHeader extends StatelessWidget {
       );
 }
 
-
 class TransferAmountWidget extends HookWidget {
   const TransferAmountWidget({
     Key? key,
