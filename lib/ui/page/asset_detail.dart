@@ -17,7 +17,6 @@ import '../widget/mixin_bottom_sheet.dart';
 import '../widget/symbol.dart';
 import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
-import '../widget/transfer.dart';
 
 const _kQueryParamSortBy = 'sort';
 const _kQueryParamFilterBy = 'filter';
@@ -299,10 +298,9 @@ class _HeaderButtonBar extends StatelessWidget {
         child: HeaderButtonBarLayout(buttons: [
           HeaderButton.text(
             text: context.l10n.send,
-            onTap: () => showTransferRouterBottomSheet(
-              context: context,
-              assetId: asset.assetId,
-            ),
+            onTap: () => context.push(withdrawalPath.toUri({
+              'id': asset.assetId,
+            })),
           ),
           HeaderButton.text(
             text: context.l10n.receive,

@@ -39,7 +39,7 @@ String useQueryParameter(String key, {required String path}) {
     if (parameter != result.value && path.pathMatch(currentPath)) {
       result.value = parameter ?? '';
     }
-  }, [parameter]);
+  }, [parameter, path, currentPath]);
 
   return result.value;
 }
@@ -55,7 +55,7 @@ String usePathParameter(String key, {required String path}) {
     if (parameter != result.value && path.pathMatch(currentPath)) {
       result.value = parameter ?? '';
     }
-  }, [parameter]);
+  }, [parameter, path, currentPath]);
 
   return result.value;
 }

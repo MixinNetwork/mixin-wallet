@@ -1,38 +1,20 @@
-import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
-import '../../db/mixin_database.dart';
-import '../../util/extension/extension.dart';
-import '../../util/hook.dart';
-import '../../util/r.dart';
-import 'address_add_widget.dart';
-import 'external_action_confirm.dart';
-import 'mixin_bottom_sheet.dart';
-import 'search_header_widget.dart';
+import '../../../db/mixin_database.dart';
+import '../../../util/extension/extension.dart';
+import '../../../util/hook.dart';
+import '../../../util/r.dart';
+import '../address_add_widget.dart';
+import '../external_action_confirm.dart';
+import '../mixin_bottom_sheet.dart';
+import '../search_header_widget.dart';
 
-Future<Addresse?> showAddressSelectionBottomSheet({
-  required BuildContext context,
-  required String assetId,
-  required String chainId,
-  Addresse? selectedAddress,
-}) =>
-    showMixinBottomSheet<Addresse>(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => _AddressSelectionWidget(
-        assetId: assetId,
-        selectedAddress: selectedAddress,
-        chainId: chainId,
-      ),
-    );
-
-class _AddressSelectionWidget extends HookWidget {
-  const _AddressSelectionWidget({
+class AddressSelectionWidget extends HookWidget {
+  const AddressSelectionWidget({
     Key? key,
     required this.assetId,
     required this.chainId,
@@ -70,59 +52,55 @@ class _AddressSelectionWidget extends HookWidget {
           .toList();
     }, [filterKeywords.value, addresses]);
 
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - 100,
-      child: Column(
-        children: [
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 8),
-            child: SearchHeaderWidget(
-              hintText: context.l10n.addressSearchHint,
-              onChanged: (k) {
-                filterKeywords.value = k.trim();
-              },
-            ),
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filterList.length,
-              itemBuilder: (BuildContext context, int index) => _AddressItem(
-                address: filterList[index],
-                selectedAddressId: selectedAddress?.addressId,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          TextButton(
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(
-                vertical: 16,
-                horizontal: 24,
-              ),
-              minimumSize: const Size(110, 48),
-            ),
-            onPressed: () {
-              showMixinBottomSheet(
-                context: context,
-                builder: (context) =>
-                    AddressAddWidget(assetId: assetId, chainId: chainId),
-                isScrollControlled: true,
-              );
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 8),
+          child: SearchHeaderWidget(
+            hintText: context.l10n.addressSearchHint,
+            onChanged: (k) {
+              filterKeywords.value = k.trim();
             },
-            child: Text(
-              '+ ${context.l10n.addAddress}',
-              style: TextStyle(
-                fontSize: 16,
-                color: context.colorScheme.primaryText,
-                fontWeight: FontWeight.w600,
-              ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Expanded(
+          child: ListView.builder(
+            itemCount: filterList.length,
+            itemBuilder: (BuildContext context, int index) => _AddressItem(
+              address: filterList[index],
+              selectedAddressId: selectedAddress?.addressId,
             ),
           ),
-          const SizedBox(height: 36),
-        ],
-      ),
+        ),
+        const SizedBox(height: 10),
+        TextButton(
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(
+              vertical: 16,
+              horizontal: 24,
+            ),
+            minimumSize: const Size(110, 48),
+          ),
+          onPressed: () {
+            showMixinBottomSheet(
+              context: context,
+              builder: (context) =>
+                  AddressAddWidget(assetId: assetId, chainId: chainId),
+              isScrollControlled: true,
+            );
+          },
+          child: Text(
+            '+ ${context.l10n.addAddress}',
+            style: TextStyle(
+              fontSize: 16,
+              color: context.colorScheme.primaryText,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        const SizedBox(height: 36),
+      ],
     );
   }
 }

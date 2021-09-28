@@ -41,9 +41,7 @@
   "sortBy": "排序",
   "amount": "金额",
   "filterAll": "全部",
-  "sendToAddress": "转出到地址",
   "minerFee": "挖矿手续费",
-  "selectFromAddressBook": "从地址簿选择",
   "addAddressLabelHint": "地址名称，例如 OceanOne",
   "save": "保存",
   "noTransaction": "暂无转账记录",
@@ -85,7 +83,7 @@
   "alreadyShown": "已显示 {value}",
   "undo": "撤销",
   "emptyAmount": "金额不能为空",
-  "noAddressSelected": "需要选择一个地址",
+  "noWithdrawalDestinationSelected": "需要选择一个联系人或地址",
   "emptyLabelOrAddress": "地址和标题不能为空",
   "sendTo": "转出至",
   "contact": "联系人",
@@ -136,5 +134,6 @@
   "goPay": "去支付",
   "swapDisclaimer": "服务由 MixSwap 提供",
   "buyDisclaimer": "购买服务由 https://sendwyre.com 提供",
-  "notMeetMinimumAmount": "未能达到最低数额"
+  "notMeetMinimumAmount": "未能达到最低数额",
+  "selectContactOrAddress": "选择联系人或地址"
 }

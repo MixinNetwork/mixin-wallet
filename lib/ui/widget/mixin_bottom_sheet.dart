@@ -31,7 +31,7 @@ class MixinBottomSheetTitle extends StatelessWidget {
   const MixinBottomSheetTitle({
     Key? key,
     required this.title,
-    this.action = const _BottomSheetCloseButton(),
+    this.action = const BottomSheetCloseButton(),
     this.padding = const EdgeInsets.only(left: 20, right: 12),
   }) : super(key: key);
 
@@ -63,8 +63,8 @@ class MixinBottomSheetTitle extends StatelessWidget {
       );
 }
 
-class _BottomSheetCloseButton extends StatelessWidget {
-  const _BottomSheetCloseButton({Key? key}) : super(key: key);
+class BottomSheetCloseButton extends StatelessWidget {
+  const BottomSheetCloseButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ActionButton(

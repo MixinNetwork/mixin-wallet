@@ -147,11 +147,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkFeeTip": MessageLookupByLibrary.simpleMessage(
             "Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions."),
         "networkType": MessageLookupByLibrary.simpleMessage("Network type"),
-        "noAddressSelected":
-            MessageLookupByLibrary.simpleMessage("No address selected"),
         "noAsset": MessageLookupByLibrary.simpleMessage("NO ASSET"),
         "noResult": MessageLookupByLibrary.simpleMessage("NO RESULT"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
+        "noWithdrawalDestinationSelected": MessageLookupByLibrary.simpleMessage(
+            "No contact or address selected"),
         "none": MessageLookupByLibrary.simpleMessage("N/A"),
         "notMeetMinimumAmount": MessageLookupByLibrary.simpleMessage(
             "Does not meet minimum transaction size"),
@@ -176,12 +176,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("Deauthorize"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
-        "selectFromAddressBook":
-            MessageLookupByLibrary.simpleMessage("Select from Address Book"),
+        "selectContactOrAddress":
+            MessageLookupByLibrary.simpleMessage("Choose a contact or address"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "sendTo": MessageLookupByLibrary.simpleMessage("Send to"),
-        "sendToAddress":
-            MessageLookupByLibrary.simpleMessage("Send to Address"),
         "sendToContact":
             MessageLookupByLibrary.simpleMessage("Send to contact"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),

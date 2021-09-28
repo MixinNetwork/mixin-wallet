@@ -53,9 +53,7 @@
   "sortBy": "SORT BY",
   "amount": "Amount",
   "filterAll": "All",
-  "sendToAddress": "Send to Address",
   "minerFee": "Miner Fee",
-  "selectFromAddressBook": "Select from Address Book",
   "pendingConfirmations": "{value}/{value2} confirmations",
   "addAddressLabelHint": "Label (e.g. exchanges, wallets, etc.)",
   "save": "Save",
@@ -89,7 +87,7 @@
   "alreadyShown": "{value} has been shown",
   "undo": "UNDO",
   "emptyAmount": "Empty amount",
-  "noAddressSelected": "No address selected",
+  "noWithdrawalDestinationSelected": "No contact or address selected",
   "emptyLabelOrAddress": "Empty address or label",
   "sendTo": "Send to",
   "contact": "Contact",
@@ -139,5 +137,6 @@
   "goPay": "Go pay",
   "swapDisclaimer": "Services provided by MixSwap",
   "buyDisclaimer": "Services provided by https://sendwyre.com",
-  "notMeetMinimumAmount": "Does not meet minimum transaction size"
+  "notMeetMinimumAmount": "Does not meet minimum transaction size",
+  "selectContactOrAddress": "Choose a contact or address"
 }
