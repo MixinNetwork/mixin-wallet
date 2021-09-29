@@ -22,4 +22,6 @@ extension ProviderExtension on BuildContext {
       vRouter.toExternal(url.toString(), openNewTab: openNewTab);
 
   void pop() => vRouter.historyBack();
+
+  bool canPop() => vRouter.historyCanBack();
 }

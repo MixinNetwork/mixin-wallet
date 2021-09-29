@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
+import '../router/mixin_routes.dart';
 import 'action_button.dart';
 
 class MixinBackButton extends StatelessWidget {
@@ -44,6 +45,10 @@ class MixinBackButton2 extends StatelessWidget {
           size: 24,
           onTap: () {
             if (onTap != null) return onTap?.call();
+            if (!context.canPop()) {
+              context.replace(homeUri);
+              return;
+            }
             context.pop();
           },
         ),
