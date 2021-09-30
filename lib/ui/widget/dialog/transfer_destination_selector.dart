@@ -46,16 +46,16 @@ class _TransferDestinationSelectorDialog extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  ContactSelectionBottomSheet(
-                    selectedUser: initialSelected is User
-                        ? initialSelected as User
-                        : null,
-                  ),
                   AddressSelectionWidget(
                     assetId: asset.assetId,
                     chainId: asset.chainId,
                     selectedAddress: initialSelected is Addresse
                         ? initialSelected as Addresse
+                        : null,
+                  ),
+                  ContactSelectionBottomSheet(
+                    selectedUser: initialSelected is User
+                        ? initialSelected as User
                         : null,
                   ),
                 ],
@@ -93,8 +93,8 @@ class _Header extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                     tabs: [
-                      _Tab(text: context.l10n.contact),
                       _Tab(text: context.l10n.address),
+                      _Tab(text: context.l10n.contact),
                     ],
                   ),
                 ],

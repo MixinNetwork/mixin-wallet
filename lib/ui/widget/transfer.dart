@@ -34,7 +34,9 @@ class TransferAssetHeader extends StatelessWidget {
             child: SelectableText.rich(
               TextSpan(children: [
                 TextSpan(
-                  text: asset.balance.numberFormat().overflow,
+                  text:
+                      '${context.l10n.balance}: ${asset.balance.numberFormat()}'
+                          .overflow,
                   style: TextStyle(
                     fontSize: 14,
                     color: context.colorScheme.primaryText,

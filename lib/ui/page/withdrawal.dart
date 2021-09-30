@@ -79,7 +79,7 @@ class _WithdrawalPage extends HookWidget {
         leading: const MixinBackButton2(),
         backgroundColor: context.colorScheme.background,
         title: SelectableText(
-          context.l10n.send,
+          '${context.l10n.send} ${asset.symbol}',
           style: TextStyle(
             color: context.colorScheme.primaryText,
             fontSize: 18,

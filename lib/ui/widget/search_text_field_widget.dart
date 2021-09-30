@@ -31,7 +31,7 @@ class SearchTextFieldWidget extends HookWidget {
         color: Colors.transparent,
       ),
       borderRadius: BorderRadius.all(
-        Radius.circular(20),
+        Radius.circular(100),
       ),
       gapPadding: 0,
     );

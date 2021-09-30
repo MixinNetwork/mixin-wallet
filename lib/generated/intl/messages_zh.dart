@@ -158,7 +158,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
         "selectContactOrAddress":
-            MessageLookupByLibrary.simpleMessage("选择联系人或地址"),
+            MessageLookupByLibrary.simpleMessage("选择地址或联系人"),
         "send": MessageLookupByLibrary.simpleMessage("转出"),
         "sendTo": MessageLookupByLibrary.simpleMessage("转出至"),
         "sendToContact": MessageLookupByLibrary.simpleMessage("转账至联系人"),

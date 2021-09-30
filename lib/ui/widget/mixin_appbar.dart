@@ -40,10 +40,12 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(bottom: 2),
         child: AppBar(
-          leading: leading ??
-              (Navigator.canPop(context)
-                  ? MixinBackButton(color: backButtonColor)
-                  : null),
+          leading: Center(
+            child: leading ??
+                (Navigator.canPop(context)
+                    ? MixinBackButton(color: backButtonColor)
+                    : null),
+          ),
           toolbarHeight: preferredSize.height - 2,
           elevation: 0,
           titleSpacing: 0,
