@@ -1440,10 +1440,10 @@ class L10n {
     );
   }
 
-  /// `Choose a contact or address`
+  /// `Choose a address or contact`
   String get selectContactOrAddress {
     return Intl.message(
-      'Choose a contact or address',
+      'Choose a address or contact',
       name: 'selectContactOrAddress',
       desc: '',
       args: [],

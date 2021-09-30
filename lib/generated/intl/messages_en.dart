@@ -177,7 +177,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "selectContactOrAddress":
-            MessageLookupByLibrary.simpleMessage("Choose a contact or address"),
+            MessageLookupByLibrary.simpleMessage("Choose a address or contact"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "sendTo": MessageLookupByLibrary.simpleMessage("Send to"),
         "sendToContact":

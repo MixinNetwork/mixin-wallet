@@ -138,5 +138,5 @@
   "swapDisclaimer": "Services provided by MixSwap",
   "buyDisclaimer": "Services provided by https://sendwyre.com",
   "notMeetMinimumAmount": "Does not meet minimum transaction size",
-  "selectContactOrAddress": "Choose a contact or address"
+  "selectContactOrAddress": "Choose a address or contact"
 }
