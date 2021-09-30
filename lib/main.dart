@@ -73,12 +73,7 @@ class _Router extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: [
-          //FIXME remove this if https://github.com/flutter/flutter/issues/89655# has been fixed.
-          if (defaultTargetPlatform == TargetPlatform.iOS ||
-              defaultTargetPlatform == TargetPlatform.macOS)
-            const Locale.fromSubtags(languageCode: 'en')
-          else
-            ...L10n.delegate.supportedLocales
+          ...L10n.delegate.supportedLocales,
         ],
         theme: ThemeData(
           pageTransitionsTheme: const PageTransitionsTheme(
@@ -92,7 +87,16 @@ class _Router extends StatelessWidget {
           ),
         ),
         builder: (BuildContext context, Widget child) => DefaultTextStyle(
-          style: const TextStyle(height: 1),
+          style: TextStyle(
+            height: 1,
+            // Add underline decoration for Safari.
+            // https://github.com/flutter/flutter/issues/90705#issuecomment-927944039
+            // because Chinese/Japanese characters can not render in latest safari(iOS15).
+            decoration: defaultTargetPlatform == TargetPlatform.iOS ||
+                    defaultTargetPlatform == TargetPlatform.macOS
+                ? TextDecoration.underline
+                : null,
+          ),
           child: BrightnessObserver(
             lightThemeData: lightBrightnessThemeData,
             child: child,
