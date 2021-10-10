@@ -5,7 +5,7 @@
   "assets": "资产",
   "address": "地址",
   "deposit": "充值",
-  "memo": "备注",
+  "memo": "备注 (Memo)",
   "notice": "注意",
   "ok": "好的",
   "depositNotice": "地址和 Memo(标签)同时使用才能充值 {value} 到你的账户。",

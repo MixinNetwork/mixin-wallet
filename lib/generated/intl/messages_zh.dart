@@ -119,7 +119,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hide": MessageLookupByLibrary.simpleMessage("隐藏"),
         "hideSmallAssets": MessageLookupByLibrary.simpleMessage("隐藏小额资产"),
         "incomplete": MessageLookupByLibrary.simpleMessage("未完成"),
-        "memo": MessageLookupByLibrary.simpleMessage("备注"),
+        "memo": MessageLookupByLibrary.simpleMessage("备注 (Memo)"),
         "memoHint": MessageLookupByLibrary.simpleMessage("标签（Memo）"),
         "minerFee": MessageLookupByLibrary.simpleMessage("挖矿手续费"),
         "minimumReserve": MessageLookupByLibrary.simpleMessage("最少保留数量："),
