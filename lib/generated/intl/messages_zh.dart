@@ -25,7 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(value) => "充值到账至少需要 ${value} 个区块确认";
 
-  static String m5(value) => "地址和 Memo(标签)同时使用才能充值 ${value} 到你的账户。";
+  static String m5(value) => "地址和 Memo(备注)同时使用才能充值 ${value} 到你的账户。";
 
   static String m6(value) => "首次充值至少 ${value}";
 
@@ -45,13 +45,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "addAddressLabelHint":
             MessageLookupByLibrary.simpleMessage("地址名称，例如 OceanOne"),
         "addAddressMemo":
-            MessageLookupByLibrary.simpleMessage("地址标签、数字 ID 或备注。如果没有，"),
+            MessageLookupByLibrary.simpleMessage("地址备注、数字 ID 或备注。如果没有，"),
         "addAddressMemoAction":
-            MessageLookupByLibrary.simpleMessage("点击不使用标签（Memo）"),
+            MessageLookupByLibrary.simpleMessage("点击不使用备注（Memo）"),
         "addAddressNoMemo":
-            MessageLookupByLibrary.simpleMessage("如果你需要填写地址标签、数字 ID 或备注，"),
+            MessageLookupByLibrary.simpleMessage("如果你需要填写地址备注、数字 ID 或备注，"),
         "addAddressNoMemoAction":
-            MessageLookupByLibrary.simpleMessage("点击添加标签（Memo）"),
+            MessageLookupByLibrary.simpleMessage("点击添加备注（Memo）"),
         "addAddressNoTagAction":
             MessageLookupByLibrary.simpleMessage("点击添加标签（Tag）"),
         "addAddressNotSupportTip":
@@ -120,7 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hideSmallAssets": MessageLookupByLibrary.simpleMessage("隐藏小额资产"),
         "incomplete": MessageLookupByLibrary.simpleMessage("未完成"),
         "memo": MessageLookupByLibrary.simpleMessage("备注 (Memo)"),
-        "memoHint": MessageLookupByLibrary.simpleMessage("标签（Memo）"),
+        "memoHint": MessageLookupByLibrary.simpleMessage("备注（Memo）"),
         "minerFee": MessageLookupByLibrary.simpleMessage("挖矿手续费"),
         "minimumReserve": MessageLookupByLibrary.simpleMessage("最少保留数量："),
         "minimumWithdrawal": MessageLookupByLibrary.simpleMessage("最小提现数量："),
