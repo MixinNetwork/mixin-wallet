@@ -187,16 +187,21 @@ class _AssetDepositBody extends HookWidget {
           const _AddressLoadingWidget(),
         _TipList(
           children: [
-            TipTile(text: asset.getTip(context)),
+            TipTile(
+              text: asset.getTip(context),
+              foregroundColor: context.colorScheme.secondaryText,
+            ),
             TipTile(
               text: context.l10n.depositConfirmation(asset.confirmations),
               highlight: asset.confirmations.toString(),
+              foregroundColor: context.colorScheme.secondaryText,
             ),
             if (asset.needShowReserve)
               TipTile(
                 text: context.l10n
                     .depositReserve('${asset.reserve} ${asset.symbol}'),
                 highlight: '${asset.reserve} ${asset.symbol}',
+                foregroundColor: context.colorScheme.secondaryText,
               ),
           ],
         ),
@@ -418,9 +423,9 @@ class _HeaderText extends StatelessWidget {
         child: SelectableText(
           text,
           style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: context.colorScheme.primaryText,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: context.colorScheme.secondaryText,
           ),
           enableInteractiveSelection: false,
         ),
@@ -441,7 +446,8 @@ class _CopyableText extends StatelessWidget {
               text,
               style: TextStyle(
                 color: context.colorScheme.primaryText,
-                fontSize: 14,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
