@@ -128,7 +128,6 @@ class _AssetDepositBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final depositEntry = useState<DepositEntry?>(null);
-    final showWarning = useState(false);
 
     useEffect(() {
       depositEntry.value = null;
@@ -151,7 +150,6 @@ class _AssetDepositBody extends HookWidget {
       if (tag == null || tag.isEmpty) {
         return;
       }
-      showWarning.value = false;
       Future.delayed(
           Duration.zero,
           () => showDialog(
@@ -162,7 +160,6 @@ class _AssetDepositBody extends HookWidget {
                   onTap: () {
                     scheduleMicrotask(() {
                       Navigator.of(context).pop(true);
-                      showWarning.value = true;
                     });
                   })));
     }, [tag]);
@@ -170,8 +167,6 @@ class _AssetDepositBody extends HookWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       children: [
-        if (tag != null && tag.isNotEmpty)
-          _WarningLayout(shown: showWarning, symbol: asset.symbol),
         if (usdtAssets.containsKey(asset.assetId))
           _UsdtChooseLayout(asset: asset),
         if (depositEntries.length > 1)
@@ -183,25 +178,56 @@ class _AssetDepositBody extends HookWidget {
           ),
         if (tag != null && tag.isNotEmpty) _MemoLayout(asset: asset, tag: tag),
         if (address != null && address.isNotEmpty)
-          _AddressLayout(asset: asset, address: address)
+          _AddressLayout(
+            asset: asset,
+            address: address,
+            showDepositNotice: tag != null && tag.isNotEmpty,
+          )
         else
           const _AddressLoadingWidget(),
-        TipTile(text: asset.getTip(context)),
-        const SizedBox(height: 4),
-        TipTile(
-          text: context.l10n.depositConfirmation(asset.confirmations),
-          highlight: asset.confirmations.toString(),
+        _TipList(
+          children: [
+            TipTile(text: asset.getTip(context)),
+            TipTile(
+              text: context.l10n.depositConfirmation(asset.confirmations),
+              highlight: asset.confirmations.toString(),
+            ),
+            if (asset.needShowReserve)
+              TipTile(
+                text: context.l10n
+                    .depositReserve('${asset.reserve} ${asset.symbol}'),
+                highlight: '${asset.reserve} ${asset.symbol}',
+              ),
+          ],
         ),
-        const SizedBox(height: 8),
-        if (asset.needShowReserve)
-          TipTile(
-              text: context.l10n
-                  .depositReserve('${asset.reserve} ${asset.symbol}'),
-              highlight: '${asset.reserve} ${asset.symbol}'),
         const SizedBox(height: 16),
       ],
     );
   }
+}
+
+class _TipList extends StatelessWidget {
+  const _TipList({Key? key, required this.children}) : super(key: key);
+
+  final List<TipTile> children;
+
+  @override
+  Widget build(BuildContext context) => Material(
+        borderRadius: BorderRadius.circular(8),
+        color: const Color(0xFFF5F7FA),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              ...children.cast<Widget>().separated(const SizedBox(height: 8)),
+              const SizedBox(height: 10),
+            ],
+          ),
+        ),
+      );
 }
 
 class _MemoLayout extends StatelessWidget {
@@ -222,8 +248,20 @@ class _MemoLayout extends StatelessWidget {
         children: [
           const SizedBox(height: 16),
           _HeaderText(context.l10n.memo),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           _CopyableText(tag),
+          const SizedBox(height: 8),
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: SelectableText(
+              context.l10n.depositMemoNotice,
+              enableInteractiveSelection: false,
+              style: TextStyle(
+                fontSize: 13,
+                color: context.colorScheme.red,
+              ),
+            ),
+          ),
           const SizedBox(height: 16),
           _QrcodeImage(data: tag, asset: asset),
         ],
@@ -301,55 +339,18 @@ class _MemoWarningDialog extends StatelessWidget {
                   ]))));
 }
 
-class _WarningLayout extends StatelessWidget {
-  const _WarningLayout({
-    Key? key,
-    required this.symbol,
-    required this.shown,
-  }) : super(key: key);
-
-  final String symbol;
-  final ValueNotifier<bool> shown;
-
-  @override
-  Widget build(BuildContext context) => AnimatedSize(
-      duration: const Duration(milliseconds: 300),
-      child: Column(children: [
-        SizedBox(height: shown.value ? 10 : 0),
-        Container(
-          height: shown.value ? null : 0,
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: const Color(0x33FF6550),
-          ),
-          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SvgPicture.asset(R.resourcesIcWarningSvg, width: 20, height: 20),
-            const SizedBox(width: 6),
-            Expanded(
-                child: SelectableText(
-              context.l10n.depositNotice(symbol),
-              style: TextStyle(
-                color: context.colorScheme.primaryText,
-                fontSize: 13,
-                fontWeight: FontWeight.w400,
-              ),
-              enableInteractiveSelection: false,
-            )),
-          ]),
-        )
-      ]));
-}
-
 class _AddressLayout extends StatelessWidget {
   const _AddressLayout({
     Key? key,
     required this.asset,
     required this.address,
+    required this.showDepositNotice,
   }) : super(key: key);
 
   final AssetResult asset;
   final String address;
+
+  final bool showDepositNotice;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -357,8 +358,23 @@ class _AddressLayout extends StatelessWidget {
         children: [
           const SizedBox(height: 16),
           _HeaderText(context.l10n.address),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           _CopyableText(address),
+          if (showDepositNotice)
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: SelectableText(
+                  context.l10n.depositNotice(asset.symbol),
+                  enableInteractiveSelection: false,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: context.colorScheme.red,
+                  ),
+                ),
+              ),
+            ),
           const SizedBox(height: 16),
           _QrcodeImage(data: address, asset: asset),
           const SizedBox(height: 16),
@@ -500,7 +516,7 @@ class _UsdtChooseLayout extends StatelessWidget {
         children: [
           const SizedBox(height: 16),
           _HeaderText(context.l10n.networkType),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Wrap(
             direction: Axis.horizontal,
             spacing: 12,
@@ -544,7 +560,7 @@ class _DepositEntryChooseLayout extends StatelessWidget {
         children: [
           const SizedBox(height: 16),
           _HeaderText(context.l10n.networkType),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Wrap(
             direction: Axis.horizontal,
             spacing: 12,

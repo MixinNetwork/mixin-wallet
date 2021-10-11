@@ -135,5 +135,6 @@
   "swapDisclaimer": "服务由 MixSwap 提供",
   "buyDisclaimer": "购买服务由 https://sendwyre.com 提供",
   "notMeetMinimumAmount": "未能达到最低数额",
-  "selectContactOrAddress": "选择地址或联系人"
+  "selectContactOrAddress": "选择地址或联系人",
+  "depositMemoNotice": "提币时务必填写 Memo(备注)，否则您会丢失您的数字币"
 }
