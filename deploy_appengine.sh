@@ -1,5 +1,12 @@
 #!/bin/sh
 
+fv=`flutter --version`
+
+if [[ $fv != *"flutter-2.6-candidate.5"* ]]; then
+    echo $fv
+    exit
+fi
+
 rm -r build/web/*
 
 sed -i '' "s/BUILD_VERSION/`git rev-parse HEAD`/g" web/index.html || exit
