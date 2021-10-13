@@ -90,6 +90,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
         "depositConfirmation": m4,
+        "depositMemoNotice": MessageLookupByLibrary.simpleMessage(
+            "提币时务必填写 Memo(备注)，否则您会丢失您的数字币"),
         "depositNotice": m5,
         "depositReserve": m6,
         "depositTip": m7,

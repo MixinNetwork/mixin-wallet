@@ -8,11 +8,14 @@ class TipTile extends StatelessWidget {
     required this.text,
     this.highlight,
     this.highlightColor,
+    this.foregroundColor,
   }) : super(key: key);
 
   final String text;
   final String? highlight;
   final Color? highlightColor;
+
+  final Color? foregroundColor;
 
   @override
   Widget build(BuildContext context) => Row(
@@ -23,7 +26,7 @@ class TipTile extends StatelessWidget {
             width: 4,
             height: 4,
             decoration: BoxDecoration(
-              color: context.colorScheme.thirdText,
+              color: foregroundColor ?? context.colorScheme.thirdText,
               shape: BoxShape.circle,
             ),
           ),
@@ -32,7 +35,7 @@ class TipTile extends StatelessWidget {
               child: SelectableText.rich(
             text.highlight(
               TextStyle(
-                color: context.colorScheme.thirdText,
+                color: foregroundColor ?? context.colorScheme.thirdText,
                 fontSize: 14,
               ),
               highlight,

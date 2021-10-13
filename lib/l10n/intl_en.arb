@@ -138,5 +138,6 @@
   "swapDisclaimer": "Services provided by MixSwap",
   "buyDisclaimer": "Services provided by https://sendwyre.com",
   "notMeetMinimumAmount": "Does not meet minimum transaction size",
-  "selectContactOrAddress": "Choose a address or contact"
+  "selectContactOrAddress": "Choose a address or contact",
+  "depositMemoNotice": "Be sure to fill in Memo when withdrawing coins, otherwise you will lose your digital coins"
 }

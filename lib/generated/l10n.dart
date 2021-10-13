@@ -1449,6 +1449,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Be sure to fill in Memo when withdrawing coins, otherwise you will lose your digital coins`
+  String get depositMemoNotice {
+    return Intl.message(
+      'Be sure to fill in Memo when withdrawing coins, otherwise you will lose your digital coins',
+      name: 'depositMemoNotice',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

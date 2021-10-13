@@ -102,6 +102,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
         "depositConfirmation": m4,
+        "depositMemoNotice": MessageLookupByLibrary.simpleMessage(
+            "Be sure to fill in Memo when withdrawing coins, otherwise you will lose your digital coins"),
         "depositNotice": m5,
         "depositReserve": m6,
         "depositTip": m7,
