@@ -189,19 +189,19 @@ class _AssetDepositBody extends HookWidget {
           children: [
             TipTile(
               text: asset.getTip(context),
-              foregroundColor: context.colorScheme.secondaryText,
+              foregroundColor: context.colorScheme.thirdText,
             ),
             TipTile(
               text: context.l10n.depositConfirmation(asset.confirmations),
               highlight: asset.confirmations.toString(),
-              foregroundColor: context.colorScheme.secondaryText,
+              foregroundColor: context.colorScheme.thirdText,
             ),
             if (asset.needShowReserve)
               TipTile(
                 text: context.l10n
                     .depositReserve('${asset.reserve} ${asset.symbol}'),
                 highlight: '${asset.reserve} ${asset.symbol}',
-                foregroundColor: context.colorScheme.secondaryText,
+                foregroundColor: context.colorScheme.thirdText,
               ),
           ],
         ),
@@ -219,7 +219,7 @@ class _TipList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Material(
         borderRadius: BorderRadius.circular(8),
-        color: const Color(0xFFF5F7FA),
+        color: const Color(0x99F5F7FA),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
