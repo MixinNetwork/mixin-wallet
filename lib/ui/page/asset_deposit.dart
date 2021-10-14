@@ -185,16 +185,19 @@ class _AssetDepositBody extends HookWidget {
           )
         else
           const _AddressLoadingWidget(),
+        const SizedBox(height: 8),
         _TipList(
           children: [
             TipTile(
               text: asset.getTip(context),
               foregroundColor: context.colorScheme.thirdText,
+              fontWeight: FontWeight.w600,
             ),
             TipTile(
               text: context.l10n.depositConfirmation(asset.confirmations),
               highlight: asset.confirmations.toString(),
               foregroundColor: context.colorScheme.thirdText,
+              fontWeight: FontWeight.w600,
             ),
             if (asset.needShowReserve)
               TipTile(
@@ -202,6 +205,7 @@ class _AssetDepositBody extends HookWidget {
                     .depositReserve('${asset.reserve} ${asset.symbol}'),
                 highlight: '${asset.reserve} ${asset.symbol}',
                 foregroundColor: context.colorScheme.thirdText,
+                fontWeight: FontWeight.w600,
               ),
           ],
         ),
@@ -267,8 +271,9 @@ class _MemoLayout extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 32),
           _QrcodeImage(data: tag, asset: asset),
+          const SizedBox(height: 24),
         ],
       );
 }
@@ -380,9 +385,9 @@ class _AddressLayout extends StatelessWidget {
                 ),
               ),
             ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 32),
           _QrcodeImage(data: address, asset: asset),
-          const SizedBox(height: 16),
+          const SizedBox(height: 32),
         ],
       );
 }
@@ -439,7 +444,7 @@ class _CopyableText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: SelectableText(
@@ -451,20 +456,23 @@ class _CopyableText extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 10),
-          InkResponse(
-            radius: 24,
-            child: SvgPicture.asset(
-              R.resourcesIcCopySvg,
-              width: 24,
-              height: 24,
+          const SizedBox(width: 20),
+          Transform.translate(
+            offset: const Offset(0, -2),
+            child: InkResponse(
+              radius: 24,
+              child: SvgPicture.asset(
+                R.resourcesIcCopySvg,
+                width: 24,
+                height: 24,
+              ),
+              onTap: () {
+                setClipboardText(text);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    content: Text(context.l10n.copyToClipboard)));
+              },
             ),
-            onTap: () {
-              setClipboardText(text);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  behavior: SnackBarBehavior.floating,
-                  content: Text(context.l10n.copyToClipboard)));
-            },
           )
         ],
       );

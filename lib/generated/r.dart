@@ -4,8 +4,6 @@
 // **************************************************************************
 class R {
   const R._();
-  static const String resourcesAddressSvg = 'resources/address.svg';
-
   static const String resourcesAlertSvg = 'resources/alert.svg';
 
   static const String resourcesAllTransactionsSvg =
@@ -28,8 +26,6 @@ class R {
 
   static const String resourcesCloseSvg = 'resources/close.svg';
 
-  static const String resourcesContactSvg = 'resources/contact.svg';
-
   static const String resourcesDeleteArrowSvg = 'resources/delete_arrow.svg';
 
   static const String resourcesDownRedSvg = 'resources/down_red.svg';
@@ -45,6 +41,8 @@ class R {
   static const String resourcesHiddenSvg = 'resources/hidden.svg';
 
   static const String resourcesHideAssetsSvg = 'resources/hide_assets.svg';
+
+  static const String resourcesIcAddressSvg = 'resources/ic_address.svg';
 
   static const String resourcesIcApplePaySvg = 'resources/ic_apple_pay.svg';
 

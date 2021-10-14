@@ -155,9 +155,9 @@ class _AddressItem extends StatelessWidget {
           subtitle: Text(address.displayAddress().overflow),
           selected: address.addressId == selectedAddressId,
           leading: SvgPicture.asset(
-            R.resourcesTransactionNetSvg,
-            height: 44,
-            width: 44,
+            R.resourcesIcAddressSvg,
+            height: 40,
+            width: 40,
           ),
         ),
       );
@@ -183,55 +183,60 @@ class AddressSelectionItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InkWell(
         onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox.square(
-                dimension: 40,
-                child: ClipOval(
-                  child: leading,
+        child: SizedBox(
+          height: 72,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox.square(
+                  dimension: 40,
+                  child: ClipOval(
+                    child: leading,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
+                const SizedBox(width: 12),
+                Expanded(
                   child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  DefaultTextStyle(
-                    style: TextStyle(
-                      color: context.theme.text,
-                      fontSize: 16,
-                      height: 1.4,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          color: context.colorScheme.primaryText,
+                          fontSize: 16,
+                          height: 1.2,
+                        ),
+                        child: title,
+                      ),
+                      const SizedBox(height: 2),
+                      DefaultTextStyle(
+                        softWrap: true,
+                        style: TextStyle(
+                          color: context.colorScheme.thirdText,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          height: 1.2,
+                        ),
+                        child: subtitle,
+                      ),
+                    ],
+                  ),
+                ),
+                if (selected)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25, right: 2),
+                    child: SvgPicture.asset(
+                      R.resourcesIcCheckSvg,
+                      width: 24,
+                      height: 24,
                     ),
-                    child: title,
-                  ),
-                  const SizedBox(height: 4),
-                  DefaultTextStyle(
-                    softWrap: true,
-                    style: TextStyle(
-                      color: context.theme.secondaryText,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      height: 1.4,
-                    ),
-                    child: subtitle,
-                  ),
-                ],
-              )),
-              const SizedBox(width: 48),
-              if (selected)
-                Padding(
-                  padding: const EdgeInsets.only(top: 14),
-                  child: SvgPicture.asset(
-                    R.resourcesIcCheckSvg,
-                    width: 20,
-                    height: 20,
-                  ),
-                )
-            ],
+                  )
+                else
+                  const SizedBox(width: 51),
+              ],
+            ),
           ),
         ),
       );
@@ -267,14 +272,14 @@ class _SwipeToDismiss extends StatelessWidget {
       onDismissed: (direction) => onDismiss(),
       confirmDismiss: confirmDismiss,
       background: Container(
-        color: context.theme.red,
+        color: context.colorScheme.red,
         child: Align(
           alignment: Alignment.centerLeft,
           child: indicator,
         ),
       ),
       secondaryBackground: Container(
-        color: context.theme.red,
+        color: context.colorScheme.red,
         child: Align(
           alignment: Alignment.centerRight,
           child: indicator,

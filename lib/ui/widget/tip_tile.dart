@@ -9,6 +9,7 @@ class TipTile extends StatelessWidget {
     this.highlight,
     this.highlightColor,
     this.foregroundColor,
+    this.fontWeight,
   }) : super(key: key);
 
   final String text;
@@ -16,6 +17,8 @@ class TipTile extends StatelessWidget {
   final Color? highlightColor;
 
   final Color? foregroundColor;
+
+  final FontWeight? fontWeight;
 
   @override
   Widget build(BuildContext context) => Row(
@@ -37,6 +40,7 @@ class TipTile extends StatelessWidget {
               TextStyle(
                 color: foregroundColor ?? context.colorScheme.thirdText,
                 fontSize: 14,
+                fontWeight: fontWeight,
               ),
               highlight,
               TextStyle(
