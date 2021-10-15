@@ -110,9 +110,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositTipBtc": MessageLookupByLibrary.simpleMessage(
             "This address only supports BTC."),
         "depositTipEos": MessageLookupByLibrary.simpleMessage(
-            "This address supports all base on EOS tokens, such as EOS, IQ etc."),
+            "This address supports all base on EOS tokens."),
         "depositTipEth": MessageLookupByLibrary.simpleMessage(
-            "This address supports all ERC-20 tokens, such as ETH, XIN etc."),
+            "This address supports all ERC-20 tokens."),
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "This address supports all TRC-10 and TRC-20 tokens, such as TRX, USDT-TRON, etc."),
         "depositing": MessageLookupByLibrary.simpleMessage("Depositing"),

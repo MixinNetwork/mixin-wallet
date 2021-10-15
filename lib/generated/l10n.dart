@@ -200,20 +200,20 @@ class L10n {
     );
   }
 
-  /// `This address supports all ERC-20 tokens, such as ETH, XIN etc.`
+  /// `This address supports all ERC-20 tokens.`
   String get depositTipEth {
     return Intl.message(
-      'This address supports all ERC-20 tokens, such as ETH, XIN etc.',
+      'This address supports all ERC-20 tokens.',
       name: 'depositTipEth',
       desc: '',
       args: [],
     );
   }
 
-  /// `This address supports all base on EOS tokens, such as EOS, IQ etc.`
+  /// `This address supports all base on EOS tokens.`
   String get depositTipEos {
     return Intl.message(
-      'This address supports all base on EOS tokens, such as EOS, IQ etc.',
+      'This address supports all base on EOS tokens.',
       name: 'depositTipEos',
       desc: '',
       args: [],

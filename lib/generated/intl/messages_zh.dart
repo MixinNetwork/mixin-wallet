@@ -96,12 +96,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositReserve": m6,
         "depositTip": m7,
         "depositTipBtc": MessageLookupByLibrary.simpleMessage("该充值地址仅支持 BTC。"),
-        "depositTipEos": MessageLookupByLibrary.simpleMessage(
-            "该充值地址支持所有基于 EOS 发行的代币，例如 EOS、IQ 等。"),
+        "depositTipEos":
+            MessageLookupByLibrary.simpleMessage("该充值地址支持所有基于 EOS 发行的代币。"),
         "depositTipEth": MessageLookupByLibrary.simpleMessage(
-            "该充值地址支持所有符合 ERC-20 标准的代币，例如 ETH、XIN 等。"),
+            "该充值地址支持所有符合 ERC-20 的代币，例如 XIN 等。"),
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
-            "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币，例如 TRX、USDT-TRON 等。"),
+            "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币。"),
         "depositing": MessageLookupByLibrary.simpleMessage("充值中"),
         "dontShowAgain": MessageLookupByLibrary.simpleMessage("不再提醒"),
         "emptyAmount": MessageLookupByLibrary.simpleMessage("金额不能为空"),
@@ -121,7 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hide": MessageLookupByLibrary.simpleMessage("隐藏"),
         "hideSmallAssets": MessageLookupByLibrary.simpleMessage("隐藏小额资产"),
         "incomplete": MessageLookupByLibrary.simpleMessage("未完成"),
-        "memo": MessageLookupByLibrary.simpleMessage("备注 (Memo)"),
+        "memo": MessageLookupByLibrary.simpleMessage("Memo(备注)"),
         "memoHint": MessageLookupByLibrary.simpleMessage("备注（Memo）"),
         "minerFee": MessageLookupByLibrary.simpleMessage("挖矿手续费"),
         "minimumReserve": MessageLookupByLibrary.simpleMessage("最少保留数量："),
