@@ -439,12 +439,10 @@ packages:
   mixswap_sdk_dart:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: e97c2497ffde5b6e020fdaa6acdf30934a372085
-      url: "https://github.com/MixinNetwork/mixswap_sdk_dart"
-    source: git
-    version: "0.0.1"
+      name: mixswap_sdk_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   moor:
     dependency: "direct main"
     description:
