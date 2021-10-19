@@ -627,6 +627,7 @@ class _NetworkTypeItem extends StatelessWidget {
               name,
               enableInteractiveSelection: false,
               onTap: onTap,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
                 color: selected
