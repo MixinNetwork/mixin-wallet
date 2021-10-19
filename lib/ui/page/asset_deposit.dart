@@ -491,8 +491,8 @@ class _QrcodeImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        width: 180,
-        height: 180,
+        width: 160,
+        height: 160,
         child: Stack(
           alignment: Alignment.center,
           children: [
