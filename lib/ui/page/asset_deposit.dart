@@ -491,8 +491,8 @@ class _QrcodeImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        width: 180,
-        height: 180,
+        width: 160,
+        height: 160,
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -627,6 +627,7 @@ class _NetworkTypeItem extends StatelessWidget {
               name,
               enableInteractiveSelection: false,
               onTap: onTap,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
                 color: selected
