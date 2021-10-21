@@ -244,7 +244,7 @@ class _Header extends HookWidget {
                 bitcoin!.priceUsd.asDecimal)
             .toString();
       }
-    }, [data]);
+    }, [data, bitcoin]);
 
     return Column(
       children: [
