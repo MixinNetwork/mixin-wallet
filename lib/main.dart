@@ -73,12 +73,7 @@ class _Router extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: [
-          //FIXME remove this if https://github.com/flutter/flutter/issues/89655# has been fixed.
-          if (defaultTargetPlatform == TargetPlatform.iOS ||
-              defaultTargetPlatform == TargetPlatform.macOS)
-            const Locale.fromSubtags(languageCode: 'en')
-          else
-            ...L10n.delegate.supportedLocales
+          ...L10n.delegate.supportedLocales,
         ],
         theme: ThemeData(
           pageTransitionsTheme: const PageTransitionsTheme(
