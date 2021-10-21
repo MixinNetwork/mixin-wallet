@@ -498,7 +498,8 @@ class _QrcodeImage extends StatelessWidget {
           children: [
             QrImage(
               data: data,
-              size: 180,
+              size: 160,
+              padding: EdgeInsets.zero,
             ),
             SymbolIconWithBorder(
               symbolUrl: asset.iconUrl,
