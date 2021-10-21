@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -86,21 +85,9 @@ class _Router extends StatelessWidget {
             },
           ),
         ),
-        builder: (BuildContext context, Widget child) => DefaultTextStyle(
-          style: TextStyle(
-            height: 1,
-            // Add underline decoration for Safari.
-            // https://github.com/flutter/flutter/issues/90705#issuecomment-927944039
-            // because Chinese/Japanese characters can not render in latest safari(iOS15).
-            decoration: defaultTargetPlatform == TargetPlatform.iOS ||
-                    defaultTargetPlatform == TargetPlatform.macOS
-                ? TextDecoration.underline
-                : null,
-          ),
-          child: BrightnessObserver(
-            lightThemeData: lightBrightnessThemeData,
-            child: child,
-          ),
+        builder: (BuildContext context, Widget child) => BrightnessObserver(
+          lightThemeData: lightBrightnessThemeData,
+          child: child,
         ),
         routes: buildMixinRoutes(context),
       );
