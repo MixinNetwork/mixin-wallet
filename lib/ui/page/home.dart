@@ -7,6 +7,7 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -65,6 +66,11 @@ class Home extends HookWidget {
         ..sortBy(sortType);
     }, [hideSmallAssets, assetResults, sortType]);
 
+    final bitcoinAsset = useMemoizedFuture(() async {
+      var target = assetList.firstWhereOrNull((e) => e?.assetId == bitcoin);
+      return target ??= await context.appServices.findOrSyncAsset(bitcoin);
+    }, keys: [assetResults]).data;
+
     final account = auth!.account;
 
     return Scaffold(
@@ -100,7 +106,8 @@ class Home extends HookWidget {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: _Header(data: assetList, sortType: sortType),
+            child: _Header(
+                data: assetList, sortType: sortType, bitcoin: bitcoinAsset),
           ),
           if (assetList.isEmpty)
             const SliverFillRemaining(child: _AssetsEmptyLayout())
@@ -208,9 +215,11 @@ class _Header extends HookWidget {
     Key? key,
     required this.data,
     required this.sortType,
+    this.bitcoin,
   }) : super(key: key);
 
   final List<AssetResult> data;
+  final AssetResult? bitcoin;
 
   final _AssetSortType sortType;
 
@@ -223,12 +232,19 @@ class _Header extends HookWidget {
                 previousValue + element.amountOfCurrentCurrency),
         [data]);
 
-    final balanceOfBtc = useMemoized(
-        () => data
+    final balanceOfBtc = useMemoized(() {
+      if (bitcoin == null) {
+        return data
             .fold<Decimal>(0.0.asDecimal,
                 (previousValue, element) => previousValue + element.amountOfBtc)
-            .toString(),
-        [data]);
+            .toString();
+      } else {
+        return (balance /
+                bitcoin!.fiatRate.asDecimal /
+                bitcoin!.priceUsd.asDecimal)
+            .toString();
+      }
+    }, [data, bitcoin]);
 
     return Column(
       children: [
