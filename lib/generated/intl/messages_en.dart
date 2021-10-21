@@ -31,7 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Deposit will arrive after at least ${value} block confirmations";
 
   static String m5(value) =>
-      "Both Memo and Address are required to deposit ${value} to your account.";
+      "Both a Memo and an Address are required to successfully deposit your ${value} to your account.";
 
   static String m6(value) => "Deposit at least ${value} for the first time";
 
@@ -103,7 +103,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
         "depositConfirmation": m4,
         "depositMemoNotice": MessageLookupByLibrary.simpleMessage(
-            "Be sure to fill in Memo when withdrawing coins, otherwise you will lose your digital coins"),
+            "Memo is required, or you will lose your coins."),
         "depositNotice": m5,
         "depositReserve": m6,
         "depositTip": m7,
