@@ -170,10 +170,10 @@ class L10n {
     );
   }
 
-  /// `Both Memo and Address are required to deposit {value} to your account.`
+  /// `Both a Memo and an Address are required to successfully deposit your {value} to your account.`
   String depositNotice(Object value) {
     return Intl.message(
-      'Both Memo and Address are required to deposit $value to your account.',
+      'Both a Memo and an Address are required to successfully deposit your $value to your account.',
       name: 'depositNotice',
       desc: '',
       args: [value],
@@ -1450,10 +1450,10 @@ class L10n {
     );
   }
 
-  /// `Be sure to fill in Memo when withdrawing coins, otherwise you will lose your digital coins`
+  /// `Memo is required, or you will lose your coins.`
   String get depositMemoNotice {
     return Intl.message(
-      'Be sure to fill in Memo when withdrawing coins, otherwise you will lose your digital coins',
+      'Memo is required, or you will lose your coins.',
       name: 'depositMemoNotice',
       desc: '',
       args: [],

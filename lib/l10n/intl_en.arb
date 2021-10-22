@@ -11,7 +11,7 @@
   "memo": "Memo",
   "notice": "Notice",
   "ok": "OK",
-  "depositNotice": "Both Memo and Address are required to deposit {value} to your account.",
+  "depositNotice": "Both a Memo and an Address are required to successfully deposit your {value} to your account.",
   "depositTip": "This address only supports {value}.",
   "depositTipBtc": "This address only supports BTC.",
   "depositTipEth": "This address supports all ERC-20 tokens.",
@@ -139,5 +139,5 @@
   "buyDisclaimer": "Services provided by https://sendwyre.com",
   "notMeetMinimumAmount": "Does not meet minimum transaction size",
   "selectContactOrAddress": "Choose a address or contact",
-  "depositMemoNotice": "Be sure to fill in Memo when withdrawing coins, otherwise you will lose your digital coins"
+  "depositMemoNotice": "Memo is required, or you will lose your coins."
 }
