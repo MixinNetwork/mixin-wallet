@@ -230,6 +230,16 @@ class L10n {
     );
   }
 
+  /// `Do not support smart contract transfers.`
+  String get depositTipNotSupportContract {
+    return Intl.message(
+      'Do not support smart contract transfers.',
+      name: 'depositTipNotSupportContract',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Deposit will arrive after at least {value} block confirmations`
   String depositConfirmation(Object value) {
     return Intl.message(

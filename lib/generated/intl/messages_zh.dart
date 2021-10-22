@@ -100,6 +100,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("该充值地址支持所有基于 EOS 发行的代币。"),
         "depositTipEth": MessageLookupByLibrary.simpleMessage(
             "该充值地址支持所有符合 ERC-20 的代币，例如 XIN 等。"),
+        "depositTipNotSupportContract":
+            MessageLookupByLibrary.simpleMessage("不支持合约充值。"),
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币。"),
         "depositing": MessageLookupByLibrary.simpleMessage("充值中"),

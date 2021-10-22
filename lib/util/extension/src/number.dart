@@ -78,18 +78,21 @@ extension AssetResultExtension on AssetResult {
 
   bool get needShowReserve => (int.tryParse(reserve ?? '0') ?? 0) > 0;
 
-  String getTip(BuildContext context) {
+  List<String> getTip(BuildContext context) {
     switch (chainId) {
       case bitcoin:
-        return context.l10n.depositTipBtc;
+        return [context.l10n.depositTipBtc];
       case ethereum:
-        return context.l10n.depositTipEth;
+        return [context.l10n.depositTipEth];
       case eos:
-        return context.l10n.depositTipEos;
+        return [context.l10n.depositTipEos];
       case tron:
-        return context.l10n.depositTipTron;
+        return [
+          context.l10n.depositTipTron,
+          context.l10n.depositTipNotSupportContract,
+        ];
       default:
-        return context.l10n.depositTip(symbol);
+        return [context.l10n.depositTip(symbol)];
     }
   }
 }

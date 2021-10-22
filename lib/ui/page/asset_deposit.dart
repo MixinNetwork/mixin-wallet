@@ -188,11 +188,12 @@ class _AssetDepositBody extends HookWidget {
         const SizedBox(height: 8),
         _TipList(
           children: [
-            TipTile(
-              text: asset.getTip(context),
-              foregroundColor: context.colorScheme.thirdText,
-              fontWeight: FontWeight.w600,
-            ),
+            for (final tip in asset.getTip(context))
+              TipTile(
+                text: tip,
+                foregroundColor: context.colorScheme.thirdText,
+                fontWeight: FontWeight.w600,
+              ),
             TipTile(
               text: context.l10n.depositConfirmation(asset.confirmations),
               highlight: asset.confirmations.toString(),
