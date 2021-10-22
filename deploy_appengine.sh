@@ -1,11 +1,7 @@
 #!/bin/sh
 
 fv=`flutter --version`
-
-if [[ $fv != *"flutter-2.6-candidate.5"* ]]; then
-    echo $fv
-    exit
-fi
+echo $fv
 
 rm -r build/web/*
 
