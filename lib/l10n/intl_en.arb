@@ -17,6 +17,7 @@
   "depositTipEth": "This address supports all ERC-20 tokens.",
   "depositTipEos": "This address supports all base on EOS tokens.",
   "depositTipTron": "This address supports all TRC-10 and TRC-20 tokens, such as TRX, USDT-TRON, etc.",
+  "depositTipNotSupportContract": "Do not support smart contract transfers.",
   "depositConfirmation": "Deposit will arrive after at least {value} block confirmations",
   "depositReserve": "Deposit at least {value} for the first time",
   "averageArrival": "Average arrival time:{value}",
