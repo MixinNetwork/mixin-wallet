@@ -13,6 +13,8 @@ import 'ui/router/mixin_routes.dart';
 import 'ui/widget/brightness_observer.dart';
 import 'util/l10n.dart';
 import 'util/logger.dart';
+import 'util/web/web_utils_dummy.dart'
+    if (dart.library.html) 'util/web/web_utils.dart';
 
 Future<void> main() async {
   await initStorage();
@@ -85,6 +87,7 @@ class _Router extends StatelessWidget {
               TargetPlatform.android: _NoAnimationPageTransitionsBuilder(),
             },
           ),
+          fontFamily: getFallbackFontFamily(),
         ),
         builder: (BuildContext context, Widget child) => DefaultTextStyle(
           style: TextStyle(
