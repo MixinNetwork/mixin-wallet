@@ -2,6 +2,8 @@
 
 import 'dart:html';
 
+import 'package:flutter/foundation.dart';
+
 void fixSafariIndexDb() {
   // fix safari indexedDb bug: https://bugs.webkit.org/show_bug.cgi?id=226547
   window.indexedDB!.open('dummy');
@@ -14,6 +16,26 @@ void setClipboardText(String text) {
   _select(fakeElement);
   _copyCommand();
   fakeElement.remove();
+}
+
+// https://github.com/flutter/engine/pull/29166
+// iOS 15.0 safari crash.
+String? getFallbackFontFamily() {
+  final userAgent = window.navigator.userAgent;
+  if (defaultTargetPlatform == TargetPlatform.iOS &&
+      userAgent.contains('OS 15_') &&
+      !userAgent.contains('OS 15_0')) {
+    // apply -apple-system font when version is not iOS 15.0, since
+    // iOS 15.1 fixed this crash.
+    return '-apple-system, BlinkMacSystemFont';
+  }
+  if (defaultTargetPlatform == TargetPlatform.macOS &&
+      userAgent.contains('OS X 10_15_6')) {
+    // use sans-serif as fallback font for OS X 10_15_6,
+    // since there is an crash for iPad 15.6 or macOS 11.6.
+    return 'sans-serif';
+  }
+  return null;
 }
 
 void _select(TextAreaElement element) {
