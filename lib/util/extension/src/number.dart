@@ -117,3 +117,14 @@ extension AddressExtension on Addresse {
     }
   }
 }
+
+extension PriceFormat on Decimal {
+  String get priceFormat {
+    if (this > Decimal.one || this <= Decimal.zero) {
+      return currencyFormat;
+    }
+    return NumberFormat.simpleCurrency(
+            name: auth?.account.fiatCurrency, decimalDigits: 8)
+        .format(num.tryParse('$this'));
+  }
+}

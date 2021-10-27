@@ -12,6 +12,7 @@ import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
 import '../../../util/r.dart';
 import '../../router/mixin_routes.dart';
+import '../asset.dart';
 import '../avatar.dart';
 
 const kTransactionItemHeight = 72.0;
@@ -29,10 +30,13 @@ class TransactionItem extends HookWidget {
                 .watchSingle(),
             keys: [this.item.snapshotId]).data ??
         this.item;
+
+    void onTap() =>
+        context.push(snapshotDetailPath.toUri({'id': item.snapshotId}));
+
     final isPositive = item.isPositive;
     return InkWell(
-      onTap: () =>
-          context.push(snapshotDetailPath.toUri({'id': item.snapshotId})),
+      onTap: onTap,
       child: Container(
           height: kTransactionItemHeight,
           padding: const EdgeInsets.only(top: 16, bottom: 16),
@@ -42,46 +46,54 @@ class TransactionItem extends HookWidget {
               const SizedBox(width: 16),
               _TransactionIcon(item: item),
               const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    DefaultTextStyle(
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: context.colorScheme.primaryText,
-                      ),
-                      child: TransactionTypeWidget(item: item),
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DefaultTextStyle(
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: context.colorScheme.primaryText,
                     ),
-                    const Spacer(),
-                    Text(
-                      item.type == SnapshotType.pending
-                          ? context.l10n.pendingConfirmations(
-                              item.confirmations ?? 0,
-                              item.assetConfirmations ?? 0)
-                          : DateFormat.yMMMMd().format(item.createdAt),
+                    child: TransactionTypeWidget(item: item),
+                  ),
+                  const Spacer(),
+                  Text(
+                    item.type == SnapshotType.pending
+                        ? context.l10n.pendingConfirmations(
+                            item.confirmations ?? 0,
+                            item.assetConfirmations ?? 0)
+                        : DateFormat.yMMMMd().format(item.createdAt),
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: context.colorScheme.thirdText,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => SingleLineEllipsisText(
+                      '${isPositive ? '+' : ''}${item.amount.numberFormat()}',
+                      constraints: constraints,
                       style: TextStyle(
                         fontSize: 14,
-                        color: context.colorScheme.thirdText,
-                        fontWeight: FontWeight.w400,
+                        color: item.type == SnapshotType.pending
+                            ? context.colorScheme.thirdText
+                            : isPositive
+                                ? context.colorScheme.green
+                                : context.colorScheme.red,
+                        fontWeight: FontWeight.w600,
                       ),
+                      onTap: onTap,
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              SelectableText(
-                '${isPositive ? '+' : ''}${item.amount.numberFormat()}',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: item.type == SnapshotType.pending
-                      ? context.colorScheme.thirdText
-                      : isPositive
-                          ? context.colorScheme.green
-                          : context.colorScheme.red,
-                  fontWeight: FontWeight.w600,
-                ),
-                enableInteractiveSelection: false,
               ),
               const SizedBox(width: 4),
               SelectableText(
@@ -91,6 +103,7 @@ class TransactionItem extends HookWidget {
                   color: context.colorScheme.primaryText,
                 ),
                 enableInteractiveSelection: false,
+                onTap: onTap,
               ),
               const SizedBox(width: 16),
             ],

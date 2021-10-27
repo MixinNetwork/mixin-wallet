@@ -50,7 +50,7 @@ class AssetWidget extends StatelessWidget {
                       Flexible(
                         child: LayoutBuilder(
                           builder: (context, constraints) =>
-                              _SingleLineEllipsisText(
+                              SingleLineEllipsisText(
                             data.balance.numberFormat().overflow,
                             constraints: constraints,
                             onTap: onTap,
@@ -120,7 +120,7 @@ class AssetPrice extends StatelessWidget {
           changeUsd: data.changeUsd,
         ),
         Text(
-          data.usdUnitPrice.currencyFormat,
+          data.usdUnitPrice.priceFormat,
           textAlign: TextAlign.right,
           style: TextStyle(
             color: context.colorScheme.thirdText,
@@ -135,8 +135,8 @@ class AssetPrice extends StatelessWidget {
 /// A text wrapper for ellipsis, because text ellipsis do not work
 /// on Android Webview.
 /// Remove when https://github.com/flutter/flutter/issues/86776 has been fixed.
-class _SingleLineEllipsisText extends HookWidget {
-  const _SingleLineEllipsisText(
+class SingleLineEllipsisText extends HookWidget {
+  const SingleLineEllipsisText(
     this.text, {
     Key? key,
     this.style,
@@ -183,11 +183,11 @@ class _SingleLineEllipsisText extends HookWidget {
       // https://github.com/flutter/flutter/issues/65940
       // So we use a fixed value to avoid overflow.
       final pos = textPainter.getPositionForOffset(Offset(
-        maxWidth - 50,
+        maxWidth - 32,
         0,
       ));
       return pos.offset;
-    }, [text, style, direction]);
+    }, [text, style, direction, constraints]);
 
     final resultText = useMemoized(
       () {
