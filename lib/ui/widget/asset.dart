@@ -120,7 +120,7 @@ class AssetPrice extends StatelessWidget {
           changeUsd: data.changeUsd,
         ),
         Text(
-          data.usdUnitPrice.currencyFormat,
+          data.usdUnitPrice.priceFormat,
           textAlign: TextAlign.right,
           style: TextStyle(
             color: context.colorScheme.thirdText,
