@@ -1,17 +1,26 @@
 import 'dart:convert';
+
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
 import 'dart:ui';
 
 Map<String, dynamic> getMixinContext() {
-  final mixinContext = js.context['MixinContext'];
-  if (mixinContext == null) {
-    return <String, dynamic>{};
+  // see https://developers.mixin.one/docs/js-bridge#getcontext
+  if (js.context['webkit'] != null &&
+      // ignore: avoid_dynamic_calls
+      js.context['webkit']['messageHandlers'] != null &&
+      // ignore: avoid_dynamic_calls
+      js.context['webkit']['messageHandlers']['MixinContext'] != null) {
+    final context =
+        js.context.callMethod('prompt', ['MixinContext.getContext()']);
+    return jsonDecode(context as String) as Map<String, dynamic>;
+  } else if (js.context['MixinContext'] != null) {
+    final mixinContext = js.context['MixinContext'] as js.JsObject;
+    return jsonDecode(mixinContext.callMethod('getContext').toString())
+        as Map<String, dynamic>;
   }
-  final mixinContextObj = mixinContext as js.JsObject;
-  return jsonDecode(mixinContextObj.callMethod('getContext').toString())
-      as Map<String, dynamic>;
+  return const {};
 }
 
 Locale? getMixinLocale() {
