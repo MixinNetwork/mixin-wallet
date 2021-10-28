@@ -13,11 +13,19 @@ import 'ui/router/mixin_routes.dart';
 import 'ui/widget/brightness_observer.dart';
 import 'util/l10n.dart';
 import 'util/logger.dart';
+import 'util/mixin_context.dart';
 import 'util/web/web_utils_dummy.dart'
     if (dart.library.html) 'util/web/web_utils.dart';
 
 Future<void> main() async {
   await initStorage();
+
+  final mixinLocale = getMixinLocale();
+  i('mixinLocale: $mixinLocale');
+  if (mixinLocale != null) {
+    await L10n.delegate.load(mixinLocale);
+  }
+
   runZonedGuarded(
     () => runApp(MyApp()),
     (Object error, StackTrace stack) {

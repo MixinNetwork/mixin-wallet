@@ -177,9 +177,9 @@ class _Body extends HookWidget {
             onTap: () async {
               showLoading.value = true;
               final redirectUrl =
-                  'http://localhost:8001/#/buySuccess?asset=${asset.assetId}&fiat=${fiat.value.name}&sourceAmount=${inputController.value}';
+                  'https://mixinwallet.com/#/buySuccess?asset=${asset.assetId}&fiat=${fiat.value.name}&sourceAmount=${inputController.value}';
               final failureRedirectUrl =
-                  'http://localhost:8001/#/buy/${asset.assetId}';
+                  'https://mixinwallet.com/#/buy/${asset.assetId}';
               final data = {
                 'sourceCurrency': fiat.value.name,
                 'destCurrency': asset.symbol,
