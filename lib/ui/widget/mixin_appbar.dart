@@ -32,7 +32,8 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
     final ctx = getMixinContext();
     return [
       if (isNotEmpty) ...actions!,
-      if (isNotEmpty && ctx.isNotEmpty) const SizedBox(width: 110),
+      if (isNotEmpty && ctx.isNotEmpty && ctx['platform'] != 'Desktop')
+        const SizedBox(width: 110),
     ];
   }
 
