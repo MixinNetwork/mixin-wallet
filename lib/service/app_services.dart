@@ -13,7 +13,6 @@ import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
-import '../util/mixin_context.dart';
 import 'env.dart';
 import 'profile/auth.dart';
 import 'profile/profile_manager.dart';
@@ -37,12 +36,6 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         }
       }
       await _initDatabase();
-
-      final mixinLocale = getMixinLocale();
-      if (mixinLocale != null) {
-        await L10n.delegate.load(mixinLocale);
-      }
-
       _initCompleter.complete();
     });
   }
