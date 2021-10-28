@@ -22,8 +22,8 @@ class SearchAssetBottomSheet extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final keywordStreamController = useStreamController<String>();
-    final keywordStream =
-        useMemoized(() => keywordStreamController.stream.distinct());
+    final keywordStream = useMemoized(
+        () => keywordStreamController.stream.map((e) => e.trim()).distinct());
     final hasKeyword =
         useMemoizedStream(() => keywordStream.map((event) => event.isNotEmpty))
                 .data ??

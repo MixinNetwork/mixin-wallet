@@ -99,6 +99,7 @@ WHEN $name LIKE '%$keyword' THEN 300 + LENGTH($name)
 ELSE 1000 END
 )
           ''')),
+            OrderingTerm.desc(asset.priceUsd.isBiggerThanValue('0')),
             OrderingTerm.asc(asset.symbol),
             OrderingTerm.asc(asset.name),
           ]);
