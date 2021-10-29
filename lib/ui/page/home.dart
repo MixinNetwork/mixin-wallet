@@ -287,12 +287,10 @@ class _Header extends HookWidget {
         ),
         AnimatedSize(
           duration: const Duration(milliseconds: 300),
-          child: data.length <= 1 || balance == Decimal.zero
-              ? const SizedBox()
-              : Padding(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: AssetsAnalysisChartLayout(assets: data),
-                ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 24),
+            child: AssetsAnalysisChartLayout(assets: data),
+          ),
         ),
         const SizedBox(height: 32),
         const _ButtonBar(),

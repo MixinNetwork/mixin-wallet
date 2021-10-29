@@ -38,8 +38,7 @@ class AssetsAnalysisChartLayout extends HookWidget {
   const AssetsAnalysisChartLayout({
     Key? key,
     required this.assets,
-  })  : assert(assets.length > 0),
-        super(key: key);
+  }) : super(key: key);
 
   final List<AssetResult> assets;
 
@@ -59,6 +58,10 @@ class AssetsAnalysisChartLayout extends HookWidget {
           otherAmount += sorted[i].amountOfUsd.toDouble();
         }
       }
+      if (items.isEmpty) {
+        otherAmount = 1;
+      }
+
       items.add(
         _AssetChartItem(
           color: assetColors[3],
@@ -69,8 +72,6 @@ class AssetsAnalysisChartLayout extends HookWidget {
       );
       return items;
     }, [assets]);
-
-    assert(assetChartItems.length >= 2);
 
     return SizedBox(
       height: 64,
@@ -133,6 +134,16 @@ class _PieChartLegend extends HookWidget {
     }, [chartItems]);
 
     assert(percents.length == chartItems.length);
+
+    if (chartItems.isEmpty || chartItems.first.color == assetColors[3]) {
+      return Text(
+        'N/A',
+        style: TextStyle(
+          fontSize: 14,
+          color: context.colorScheme.thirdText,
+        ),
+      );
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
