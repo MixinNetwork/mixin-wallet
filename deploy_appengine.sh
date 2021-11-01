@@ -1,8 +1,5 @@
 #!/bin/sh
 
-fv=`flutter --version`
-echo $fv
-
 rm -r build/web/*
 
 sed -i '' "s/BUILD_VERSION/`git rev-parse HEAD`/g" web/index.html || exit
