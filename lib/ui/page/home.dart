@@ -340,23 +340,15 @@ class _ButtonBar extends StatelessWidget {
             HeaderButton.text(
               text: context.l10n.buy,
               onTap: () async {
-                if (kReleaseMode) {
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(
-                      SnackBar(content: Text(context.l10n.comingSoon)),
-                    );
-                } else {
-                  final asset = await showBuyAssetSelectionBottomSheet(
-                    context: context,
-                    initialSelected: lastSelectedAddress,
-                  );
-                  if (asset == null) {
-                    return;
-                  }
-                  lastSelectedAddress = asset.assetId;
-                  context.push(buyPath.toUri({'id': asset.assetId}));
+                final asset = await showBuyAssetSelectionBottomSheet(
+                  context: context,
+                  initialSelected: lastSelectedAddress,
+                );
+                if (asset == null) {
+                  return;
                 }
+                lastSelectedAddress = asset.assetId;
+                context.push(buyPath.toUri({'id': asset.assetId}));
               },
             ),
             HeaderButton.text(
