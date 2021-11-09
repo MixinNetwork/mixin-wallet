@@ -1,11 +1,14 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
+import '../../util/mixin_context.dart';
 import '../../util/r.dart';
 import 'symbol.dart';
 
@@ -93,11 +96,11 @@ class TransferAmountWidget extends HookWidget {
     if (fiatInputMode.value) {
       assert(!asset.priceUsd.isZero);
       equivalent =
-          '${(input.asDecimalOrZero / asset.usdUnitPrice).currencyFormatCoin}'
+          '${(input.toDecimalWithLocale() / asset.usdUnitPrice).currencyFormatCoin}'
           ' ${asset.symbol}';
     } else {
       equivalent =
-          '${(input.asDecimalOrZero * asset.usdUnitPrice).currencyFormatWithoutSymbol}'
+          '${(input.toDecimalWithLocale() * asset.usdUnitPrice).currencyFormatWithoutSymbol}'
           ' $currency';
     }
 
@@ -108,9 +111,8 @@ class TransferAmountWidget extends HookWidget {
             amount.value = '';
           } else {
             assert(!asset.priceUsd.isZero);
-            amount.value =
-                (controller.text.asDecimalOrZero / asset.usdUnitPrice)
-                    .currencyFormatCoin;
+            amount.value = (input.toDecimalWithLocale() / asset.usdUnitPrice)
+                .currencyFormatCoin;
           }
         } else {
           amount.value = controller.text;
@@ -175,8 +177,8 @@ class TransferAmountWidget extends HookWidget {
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.allow(RegExp(
                               fiatInputMode.value
-                                  ? r'^\d*\.?\d{0,2}'
-                                  : r'^\d*\.?\d{0,8}')),
+                                  ? r'^\d*[,.]?\d{0,2}'
+                                  : r'^\d*[,.]?\d{0,8}')),
                         ],
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
@@ -211,6 +213,25 @@ class TransferAmountWidget extends HookWidget {
         ),
       ),
     );
+  }
+}
+
+extension _NumberFormat on String {
+  Decimal toDecimalWithLocale() {
+    try {
+      return asDecimal;
+    } catch (e) {
+      // ignore.
+    }
+    // if we can not parse the string, retry parse with locale.
+    // for example: 1,23 in fr meanings 1.23 in en.
+    final locale = getMixinLocaleOrPlatformLocale();
+    final numberFormat = NumberFormat.decimalPattern(locale.toString());
+    try {
+      return Decimal.parse(numberFormat.parse(this).toString());
+    } catch (e) {
+      return Decimal.zero;
+    }
   }
 }
 
