@@ -179,6 +179,11 @@ class TransferAmountWidget extends HookWidget {
                               fiatInputMode.value
                                   ? r'^\d*[,.]?\d{0,2}'
                                   : r'^\d*[,.]?\d{0,8}')),
+                          // See ',' as '.'
+                          TextInputFormatter.withFunction(
+                              (oldValue, newValue) => newValue.copyWith(
+                                    text: newValue.text.replaceAll(',', '.'),
+                                  )),
                         ],
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
