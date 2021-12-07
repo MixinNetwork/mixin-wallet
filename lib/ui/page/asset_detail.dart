@@ -302,13 +302,14 @@ class _HeaderButtonBar extends StatelessWidget {
               'id': asset.assetId,
             })),
           ),
-          HeaderButton.text(
-            text: context.l10n.receive,
-            onTap: () {
-              lastSelectedAddress = asset.assetId;
-              context.push(assetDepositPath.toUri({'id': asset.assetId}));
-            },
-          ),
+          if (!_shouldHideReceiveButton(asset))
+            HeaderButton.text(
+              text: context.l10n.receive,
+              onTap: () {
+                lastSelectedAddress = asset.assetId;
+                context.push(assetDepositPath.toUri({'id': asset.assetId}));
+              },
+            ),
           HeaderButton.text(
             text: context.l10n.swap,
             onTap: () => context
@@ -317,6 +318,10 @@ class _HeaderButtonBar extends StatelessWidget {
         ]),
       );
 }
+
+// hide receive button for https://mixin.one/snapshots/815b0b1a-2764-3736-8faa-42d694fa620a.
+bool _shouldHideReceiveButton(AssetResult asset) =>
+    asset.assetId == '815b0b1a-2764-3736-8faa-42d694fa620a';
 
 class _AssetTransactionsHeader extends StatelessWidget {
   const _AssetTransactionsHeader({
