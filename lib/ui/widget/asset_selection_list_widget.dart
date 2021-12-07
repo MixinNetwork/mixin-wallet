@@ -28,6 +28,7 @@ Future<AssetResult?> showAssetSelectionBottomSheet({
   required BuildContext context,
   String? initialSelected,
   AssetSourceLoader? source,
+  Set<String> ignoreAssets = const {},
 }) =>
     showMixinBottomSheet<AssetResult>(
       context: context,
@@ -36,6 +37,7 @@ Future<AssetResult?> showAssetSelectionBottomSheet({
         selectedAssetId: initialSelected,
         onTap: (_) {},
         source: source,
+        ignoreAssets: ignoreAssets,
       ),
     );
 
@@ -48,12 +50,16 @@ class AssetSelectionListWidget extends HookWidget {
     required this.onTap,
     this.selectedAssetId,
     this.source,
+    this.ignoreAssets = const {},
   }) : super(key: key);
 
   final String? selectedAssetId;
   final AssetSelectCallback onTap;
 
   final AssetSourceLoader? source;
+
+  /// The assets which was ignore and not show in the list.
+  final Set<String> ignoreAssets;
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +68,11 @@ class AssetSelectionListWidget extends HookWidget {
             return source!.call();
           }
           return context.appServices.assetResults().watch().map((event) => event
+            ..removeWhere((element) => ignoreAssets.contains(element.assetId))
             ..sort(
               (a, b) => b.amountOfUsd.compareTo(a.amountOfUsd),
             ));
-        }).data ??
+        }, keys: [ignoreAssets, source]).data ??
         const [];
 
     var selectedAssetId = this.selectedAssetId;

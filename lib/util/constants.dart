@@ -21,3 +21,6 @@ const usdtAssets = {
   'b91e18ff-a9ae-3dc7-8679-e935d9a4b34b': 'TRON',
   '5dac5e28-ad13-31ea-869f-41770dfcee09': 'EOS',
 };
+
+// ommi usdt do not support deposit.
+const omniUSDT = '815b0b1a-2764-3736-8faa-42d694fa620a';

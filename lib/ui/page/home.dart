@@ -328,6 +328,7 @@ class _ButtonBar extends StatelessWidget {
                 final asset = await showAssetSelectionBottomSheet(
                   context: context,
                   initialSelected: lastSelectedAddress,
+                  ignoreAssets: const {omniUSDT},
                 );
                 if (asset == null) {
                   return;
