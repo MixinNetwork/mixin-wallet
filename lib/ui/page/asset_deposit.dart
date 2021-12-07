@@ -80,6 +80,12 @@ class _AssetDepositLoader extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useEffect(() {
+      if (assetId == omniUSDT) {
+        scheduleMicrotask(() {
+          context.replace(notFoundUri);
+        });
+        return null;
+      }
       var cancel = false;
       scheduleMicrotask(() async {
         var asset = await context.appServices.updateAsset(assetId);

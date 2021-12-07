@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -320,8 +321,7 @@ class _HeaderButtonBar extends StatelessWidget {
 }
 
 // hide receive button for https://mixin.one/snapshots/815b0b1a-2764-3736-8faa-42d694fa620a.
-bool _shouldHideReceiveButton(AssetResult asset) =>
-    asset.assetId == '815b0b1a-2764-3736-8faa-42d694fa620a';
+bool _shouldHideReceiveButton(AssetResult asset) => asset.assetId == omniUSDT;
 
 class _AssetTransactionsHeader extends StatelessWidget {
   const _AssetTransactionsHeader({
