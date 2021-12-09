@@ -27,6 +27,25 @@ extension AssetConverter on sdk.Asset {
         depositEntries:
             Value(const DepositEntryConverter().mapToSql(depositEntries)),
       );
+
+  AssetsCompanion get asAssetsCompanionWithoutBalance => AssetsCompanion(
+        assetId: Value(assetId),
+        symbol: Value(symbol),
+        name: Value(name),
+        iconUrl: Value(iconUrl),
+        destination: Value(destination),
+        tag: Value(tag),
+        assetKey: Value(assetKey),
+        priceBtc: Value(priceBtc),
+        priceUsd: Value(priceUsd),
+        chainId: Value(chainId),
+        changeUsd: Value(changeUsd),
+        changeBtc: Value(changeBtc),
+        confirmations: Value(confirmations),
+        reserve: Value(reserve),
+        depositEntries:
+            Value(const DepositEntryConverter().mapToSql(depositEntries)),
+      );
 }
 
 @UseDao(tables: [Assets])
@@ -37,6 +56,16 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
       into(db.assets).insertOnConflictUpdate(asset.asAssetsCompanion);
 
   Future<void> deleteAsset(Asset asset) => delete(db.assets).delete(asset);
+
+  Future<void> insertAllOnConflictUpdateWithoutBalance(
+      List<sdk.Asset> assets) async {
+    await db.batch((batch) {
+      batch.insertAllOnConflictUpdate(
+        db.assets,
+        assets.map((asset) => asset.asAssetsCompanionWithoutBalance).toList(),
+      );
+    });
+  }
 
   Future<void> insertAllOnConflictUpdate(List<sdk.Asset> assets) async {
     await db.batch((batch) {

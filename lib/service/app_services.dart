@@ -407,7 +407,8 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   Future<void> searchAndUpdateAsset(String keyword) async {
     if (keyword.isEmpty) return;
     final mixinResponse = await client.assetApi.queryAsset(keyword);
-    await mixinDatabase.assetDao.insertAllOnConflictUpdate(mixinResponse.data);
+    await mixinDatabase.assetDao
+        .insertAllOnConflictUpdateWithoutBalance(mixinResponse.data);
   }
 
   Future<void> updateTopAssetIds() async {
