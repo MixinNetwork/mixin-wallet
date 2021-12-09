@@ -82,6 +82,13 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
         ));
   }
 
+  Selectable<AssetResult> assetResults(String currentFiat) => db.assetResults(
+        currentFiat,
+        (asset, _, ae, f) => ignoreWhere,
+        (_, __, ___, f) => ignoreOrderBy,
+        (_, __, ___, f) => maxLimit,
+      );
+
   Selectable<AssetResult> assetResultsNotHidden(String currentFiat) =>
       db.assetResults(
         currentFiat,
