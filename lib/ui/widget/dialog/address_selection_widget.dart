@@ -183,10 +183,10 @@ class AddressSelectionItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InkWell(
         onTap: onTap,
-        child: SizedBox(
-          height: 72,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 72),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
