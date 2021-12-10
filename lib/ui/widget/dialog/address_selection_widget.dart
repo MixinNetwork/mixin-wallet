@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../../db/mixin_database.dart';
@@ -149,31 +150,38 @@ class _AddressItem extends StatelessWidget {
                 }
               });
         },
-        child: AddressSelectionItemTile(
+        child: _AddressSelectionItemTile(
           onTap: () => Navigator.pop(context, address),
-          title: Text(address.label.overflow),
+          title: Row(
+            children: [
+              Text(address.label.overflow),
+              const Spacer(),
+              Text(
+                DateFormat.yMMMMd()
+                    .add_Hms()
+                    .format(address.updatedAt.toLocal()),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: context.colorScheme.secondaryText,
+                ),
+              ),
+            ],
+          ),
           subtitle: Text(address.displayAddress().overflow),
           selected: address.addressId == selectedAddressId,
-          leading: SvgPicture.asset(
-            R.resourcesIcAddressSvg,
-            height: 40,
-            width: 40,
-          ),
         ),
       );
 }
 
-class AddressSelectionItemTile extends StatelessWidget {
-  const AddressSelectionItemTile({
+class _AddressSelectionItemTile extends StatelessWidget {
+  const _AddressSelectionItemTile({
     Key? key,
-    required this.leading,
     required this.onTap,
     required this.title,
     required this.subtitle,
     required this.selected,
   }) : super(key: key);
 
-  final Widget leading;
   final VoidCallback onTap;
   final Widget title;
   final Widget subtitle;
@@ -190,13 +198,17 @@ class AddressSelectionItemTile extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox.square(
-                  dimension: 40,
-                  child: ClipOval(
-                    child: leading,
-                  ),
-                ),
-                const SizedBox(width: 12),
+                if (selected)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0, right: 10),
+                    child: SvgPicture.asset(
+                      R.resourcesIcCheckSvg,
+                      width: 24,
+                      height: 24,
+                    ),
+                  )
+                else
+                  const SizedBox(width: 34),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,17 +236,6 @@ class AddressSelectionItemTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (selected)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 2),
-                    child: SvgPicture.asset(
-                      R.resourcesIcCheckSvg,
-                      width: 24,
-                      height: 24,
-                    ),
-                  )
-                else
-                  const SizedBox(width: 51),
               ],
             ),
           ),

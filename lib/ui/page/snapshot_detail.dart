@@ -262,8 +262,10 @@ class _TransactionDetailInfo extends StatelessWidget {
             TransactionInfoTile(
               title: Text(context.l10n.time),
               subtitle: SelectableText(
-                  '${DateFormat.yMMMMd().format(snapshot.createdAt)} '
-                  '${DateFormat.Hms().format(snapshot.createdAt)}'),
+                DateFormat.yMMMMd()
+                    .add_Hms()
+                    .format(snapshot.createdAt.toLocal()),
+              ),
             ),
             if (snapshot.traceId != null && snapshot.traceId!.isNotEmpty)
               TransactionInfoTile(

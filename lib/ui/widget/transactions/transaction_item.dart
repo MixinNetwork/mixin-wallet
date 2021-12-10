@@ -64,7 +64,7 @@ class TransactionItem extends HookWidget {
                         ? context.l10n.pendingConfirmations(
                             item.confirmations ?? 0,
                             item.assetConfirmations ?? 0)
-                        : DateFormat.yMMMMd().format(item.createdAt),
+                        : DateFormat.yMMMMd().format(item.createdAt.toLocal()),
                     maxLines: 1,
                     style: TextStyle(
                       fontSize: 14,
