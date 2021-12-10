@@ -127,6 +127,11 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Selectable<AssetResult> assetResults() {
     assert(isLogin);
+    return mixinDatabase.assetDao.assetResults(auth!.account.fiatCurrency);
+  }
+
+  Selectable<AssetResult> assetResultsNotHidden() {
+    assert(isLogin);
     return mixinDatabase.assetDao
         .assetResultsNotHidden(auth!.account.fiatCurrency);
   }

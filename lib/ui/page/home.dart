@@ -49,7 +49,7 @@ class Home extends HookWidget {
         [sortParam]);
 
     final assetResults = useMemoizedStream(
-      () => context.appServices.assetResults().watch(),
+      () => context.appServices.assetResultsNotHidden().watch(),
       initialData: <AssetResult>[],
     ).requireData;
 
