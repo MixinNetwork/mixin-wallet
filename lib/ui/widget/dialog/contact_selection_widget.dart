@@ -118,66 +118,65 @@ class _ContactSelectionItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-    onTap: onTap,
-    child: ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 72),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox.square(
-              dimension: 40,
-              child: ClipOval(
-                child: leading,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DefaultTextStyle(
-                    style: TextStyle(
-                      color: context.colorScheme.primaryText,
-                      fontSize: 16,
-                      height: 1.2,
-                    ),
-                    child: title,
+        onTap: onTap,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 72),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox.square(
+                  dimension: 40,
+                  child: ClipOval(
+                    child: leading,
                   ),
-                  const SizedBox(height: 2),
-                  DefaultTextStyle(
-                    softWrap: true,
-                    style: TextStyle(
-                      color: context.colorScheme.thirdText,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      height: 1.2,
-                    ),
-                    child: subtitle,
-                  ),
-                ],
-              ),
-            ),
-            if (selected)
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 2),
-                child: SvgPicture.asset(
-                  R.resourcesIcCheckSvg,
-                  width: 24,
-                  height: 24,
                 ),
-              )
-            else
-              const SizedBox(width: 51),
-          ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          color: context.colorScheme.primaryText,
+                          fontSize: 16,
+                          height: 1.2,
+                        ),
+                        child: title,
+                      ),
+                      const SizedBox(height: 2),
+                      DefaultTextStyle(
+                        softWrap: true,
+                        style: TextStyle(
+                          color: context.colorScheme.thirdText,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          height: 1.2,
+                        ),
+                        child: subtitle,
+                      ),
+                    ],
+                  ),
+                ),
+                if (selected)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25, right: 2),
+                    child: SvgPicture.asset(
+                      R.resourcesIcCheckSvg,
+                      width: 24,
+                      height: 24,
+                    ),
+                  )
+                else
+                  const SizedBox(width: 51),
+              ],
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 }
-
 
 class _UnauthorizedWidget extends StatelessWidget {
   const _UnauthorizedWidget({Key? key}) : super(key: key);
