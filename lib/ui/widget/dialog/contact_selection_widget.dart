@@ -9,7 +9,6 @@ import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
 import '../avatar.dart';
 import '../search_header_widget.dart';
-import 'address_selection_widget.dart';
 
 class ContactSelectionBottomSheet extends HookWidget {
   const ContactSelectionBottomSheet({
@@ -86,7 +85,7 @@ class _UserItem extends StatelessWidget {
   final User user;
 
   @override
-  Widget build(BuildContext context) => AddressSelectionItemTile(
+  Widget build(BuildContext context) => _ContactSelectionItemTile(
         onTap: () => Navigator.pop(context, user),
         title: Text(user.fullName?.overflow ?? ''),
         subtitle: Text(user.identityNumber),
@@ -99,6 +98,86 @@ class _UserItem extends StatelessWidget {
             name: user.fullName ?? '?'),
       );
 }
+
+class _ContactSelectionItemTile extends StatelessWidget {
+  const _ContactSelectionItemTile({
+    Key? key,
+    required this.leading,
+    required this.onTap,
+    required this.title,
+    required this.subtitle,
+    required this.selected,
+  }) : super(key: key);
+
+  final Widget? leading;
+  final VoidCallback onTap;
+  final Widget title;
+  final Widget subtitle;
+
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 72),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox.square(
+              dimension: 40,
+              child: ClipOval(
+                child: leading,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DefaultTextStyle(
+                    style: TextStyle(
+                      color: context.colorScheme.primaryText,
+                      fontSize: 16,
+                      height: 1.2,
+                    ),
+                    child: title,
+                  ),
+                  const SizedBox(height: 2),
+                  DefaultTextStyle(
+                    softWrap: true,
+                    style: TextStyle(
+                      color: context.colorScheme.thirdText,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      height: 1.2,
+                    ),
+                    child: subtitle,
+                  ),
+                ],
+              ),
+            ),
+            if (selected)
+              Padding(
+                padding: const EdgeInsets.only(left: 25, right: 2),
+                child: SvgPicture.asset(
+                  R.resourcesIcCheckSvg,
+                  width: 24,
+                  height: 24,
+                ),
+              )
+            else
+              const SizedBox(width: 51),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 
 class _UnauthorizedWidget extends StatelessWidget {
   const _UnauthorizedWidget({Key? key}) : super(key: key);
