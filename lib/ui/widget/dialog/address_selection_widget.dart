@@ -186,7 +186,7 @@ class AddressSelectionItemTile extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 72),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
