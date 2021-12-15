@@ -670,10 +670,10 @@ class L10n {
     );
   }
 
-  /// `Copy to clipboard`
+  /// `Copied to Clipboard`
   String get copyToClipboard {
     return Intl.message(
-      'Copy to clipboard',
+      'Copied to Clipboard',
       name: 'copyToClipboard',
       desc: '',
       args: [],

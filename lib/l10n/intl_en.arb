@@ -61,7 +61,7 @@
   "allTransactions": "All Transactions",
   "assetTrending": "Trending",
   "recentSearches": "Recent searches",
-  "copyToClipboard": "Copy to clipboard",
+  "copyToClipboard": "Copied to Clipboard",
   "addAddressMemo": "Destination Tag or ID Number or notes. If not, you can set it ",
   "addAddressNoMemo": "If you are required to fill in Destination Tag or ID Number or notes, you can ",
   "addAddressTagAction": "No Tag",

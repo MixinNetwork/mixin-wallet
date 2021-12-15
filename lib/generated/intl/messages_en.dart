@@ -99,7 +99,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Name, Mixin ID"),
         "contract": MessageLookupByLibrary.simpleMessage("Asset Key"),
         "copyToClipboard":
-            MessageLookupByLibrary.simpleMessage("Copy to clipboard"),
+            MessageLookupByLibrary.simpleMessage("Copied to Clipboard"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
         "depositConfirmation": m4,
