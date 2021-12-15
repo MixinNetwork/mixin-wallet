@@ -155,7 +155,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Future<void> updateAssetHidden(String assetId, {required bool hidden}) {
     assert(isLogin);
-    return mixinDatabase.assetsExtraDao.updateHidden(assetId, hidden);
+    return mixinDatabase.assetsExtraDao.updateHidden(assetId, hidden: hidden);
   }
 
   Future<Future<void> Function()?> _checkAssetExistWithReturnInsert(

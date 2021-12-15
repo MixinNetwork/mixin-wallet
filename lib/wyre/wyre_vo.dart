@@ -44,7 +44,7 @@ String calcTransactionFee(double price, WyreServiceArea wyreServiceArea) {
   switch (wyreServiceArea) {
     case WyreServiceArea.us:
       return min(price * 0.029 + 0.3, minTransactionFee).toString();
-    default:
+    case WyreServiceArea.international:
       return min(price * 0.039 + 0.3, minTransactionFee).toString();
   }
 }
