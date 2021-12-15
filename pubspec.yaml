@@ -18,7 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 2.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.15.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -66,9 +66,6 @@ dependencies:
       url: https://github.com/MixinNetwork/flutter-plugins.git
       path: packages/web_qrcode
       ref: 7a0703301c6b9b2950f14bb045e2a660c8530c7a
-
-dependency_overrides:
-  analyzer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

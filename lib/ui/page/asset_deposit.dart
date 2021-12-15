@@ -572,7 +572,7 @@ class _DepositEntryChooseLayout extends StatelessWidget {
 
   final List<DepositEntry> entries;
 
-  final _AddressTypeCallback onSelected;
+  final void Function(DepositEntry) onSelected;
   final AssetResult asset;
   final String selectedAddress;
 
@@ -657,5 +657,3 @@ String _getDestinationType(String? checkedDestination, String? destination) {
     return 'Bitcoin (Segwit)';
   }
 }
-
-typedef _AddressTypeCallback = void Function(DepositEntry);

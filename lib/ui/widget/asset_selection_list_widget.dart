@@ -43,7 +43,7 @@ Future<AssetResult?> showAssetSelectionBottomSheet({
 
 typedef AssetSourceLoader = Stream<List<AssetResult>> Function();
 
-// TODO Refactor use navigator pop to receive assets, instead of onTap callback.
+// TODO(boyan): Refactor use navigator pop to receive assets, instead of onTap callback.
 class AssetSelectionListWidget extends HookWidget {
   const AssetSelectionListWidget({
     Key? key,
