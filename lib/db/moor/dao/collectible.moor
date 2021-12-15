@@ -1,0 +1,10 @@
+import '../mixin.moor';
+
+collectiblesResult as CollectibleItem:
+SELECT token.*,
+       meta.*
+FROM collectible_token as token
+LEFT JOIN collectible_token_meta as meta on token.token_id = meta.token_id
+WHERE $where
+ORDER BY $orderBy
+LIMIT $limit;

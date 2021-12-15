@@ -20,10 +20,6 @@ extension IterableExtension<T> on Iterable<T> {
   }
 }
 
-extension IterableExtenstionNull<T> on Iterable<T?> {
-  Iterable<T> whereNotNull() => where((e) => e != null).cast();
-}
-
 extension EnumByNameNull<T extends Enum> on Iterable<T> {
   T? byNameOrNull(String name) {
     for (final value in this) {

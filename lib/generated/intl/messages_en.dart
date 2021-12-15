@@ -90,6 +90,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Services provided by https://sendwyre.com"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
+        "coins": MessageLookupByLibrary.simpleMessage("Coins"),
+        "collectibles": MessageLookupByLibrary.simpleMessage("Collectibles"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
         "completed": MessageLookupByLibrary.simpleMessage("Completed"),
         "contact": MessageLookupByLibrary.simpleMessage("Contact"),
@@ -153,6 +155,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions."),
         "networkType": MessageLookupByLibrary.simpleMessage("Network type"),
         "noAsset": MessageLookupByLibrary.simpleMessage("NO ASSET"),
+        "noCollectiblesFound":
+            MessageLookupByLibrary.simpleMessage("No collectibles found"),
         "noResult": MessageLookupByLibrary.simpleMessage("NO RESULT"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "noWithdrawalDestinationSelected": MessageLookupByLibrary.simpleMessage(

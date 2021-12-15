@@ -140,5 +140,8 @@
   "buyDisclaimer": "Services provided by https://sendwyre.com",
   "notMeetMinimumAmount": "Does not meet minimum transaction size",
   "selectContactOrAddress": "Choose a address or contact",
-  "depositMemoNotice": "Memo is required, or you will lose your coins."
+  "depositMemoNotice": "Memo is required, or you will lose your coins.",
+  "coins": "Coins",
+  "collectibles": "Collectibles",
+  "noCollectiblesFound": "No collectibles found"
 }

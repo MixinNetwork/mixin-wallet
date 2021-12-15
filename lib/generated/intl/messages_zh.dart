@@ -80,6 +80,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "购买服务由 https://sendwyre.com 提供"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
+        "coins": MessageLookupByLibrary.simpleMessage("Coins"),
+        "collectibles": MessageLookupByLibrary.simpleMessage("Collectibles"),
         "comingSoon": MessageLookupByLibrary.simpleMessage("即将推出"),
         "completed": MessageLookupByLibrary.simpleMessage("已完成"),
         "contact": MessageLookupByLibrary.simpleMessage("联系人"),
@@ -135,6 +137,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "由第三方服务商收取。直接支付给以太坊矿工以保证以太坊上交易完成。网络费根据即时市场状况变动。"),
         "networkType": MessageLookupByLibrary.simpleMessage("网络类型"),
         "noAsset": MessageLookupByLibrary.simpleMessage("暂无资产"),
+        "noCollectiblesFound":
+            MessageLookupByLibrary.simpleMessage("No collectibles found"),
         "noResult": MessageLookupByLibrary.simpleMessage("无结果"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "noWithdrawalDestinationSelected":

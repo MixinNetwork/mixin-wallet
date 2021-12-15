@@ -20,6 +20,7 @@ const lightBrightnessThemeData = BrightnessThemeData(
       green: Color(0xFF2CD73D),
       red: Color(0xFFFF6550),
       background: Colors.white,
+      accent: Color(0xFF3D75E3),
     ));
 
 final avatarColors = [

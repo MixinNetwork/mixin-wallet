@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:collection/collection.dart';
+import 'package:convert/convert.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:moor/moor.dart';
+import 'package:pointycastle/digests/sha3.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../db/dao/snapshot_dao.dart';
@@ -454,4 +458,54 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .assetResult(auth!.account.fiatCurrency, assetId)
         .getSingleOrNull();
   }
+
+  Future<void> updateCollectibles() async {
+    // hash member id.
+    String hashMemberId() {
+      try {
+        final userId = auth!.account.userId;
+        final bytes =
+            SHA3Digest(256).process(Uint8List.fromList(utf8.encode(userId)));
+        return hex.encode(bytes);
+      } catch (e, s) {
+        d('updateCollectibles error: $e, $s');
+        return '';
+      }
+    }
+
+    final collectibles = (await client.collectibleApi.getOutputs(
+      members: hashMemberId(),
+      limit: 100,
+      threshold: 1,
+    ))
+        .data;
+    await refreshCollectiblesTokenIfNotExist(
+        collectibles.map((e) => e.tokenId).toList());
+    debugPrint('update collectibles: $collectibles');
+  }
+
+  Future<void> refreshCollectiblesTokenIfNotExist(List<String> tokenIds) async {
+    final toRefresh =
+        await mixinDatabase.collectibleDao.filterExistsTokens(tokenIds);
+    for (final tokenId in toRefresh) {
+      try {
+        final response = await client.collectibleApi.getToken(tokenId);
+        final token = response.data;
+        await mixinDatabase.collectibleDao.insertCollectible(token);
+      } catch (e) {
+        d('refreshTokenIfNotExist error: $e');
+      }
+    }
+  }
+
+  Selectable<CollectibleItem> collectibleItems() =>
+      mixinDatabase.collectibleDao.getAllCollectibles();
+
+  // TODO(boyan): maybe we can select top n record instead all collectible.
+  // https://stackoverflow.com/questions/28119176/select-top-n-record-from-each-group-sqlite
+  Stream<List<MapEntry<String, List<CollectibleItem>>>> groupedCollectibles() =>
+      mixinDatabase.collectibleDao
+          .getAllCollectibles()
+          .watch()
+          .map((event) => event.groupListsBy((e) => e.group).entries.toList());
 }

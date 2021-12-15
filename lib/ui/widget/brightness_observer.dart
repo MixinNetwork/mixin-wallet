@@ -155,6 +155,7 @@ class MixinColorScheme extends Equatable {
     required this.green,
     required this.red,
     required this.background,
+    required this.accent,
   });
 
   /// primary color, title, button
@@ -180,6 +181,8 @@ class MixinColorScheme extends Equatable {
 
   final Color background;
 
+  final Color accent;
+
   static MixinColorScheme lerp(
           MixinColorScheme a, MixinColorScheme b, double t) =>
       MixinColorScheme(
@@ -191,6 +194,7 @@ class MixinColorScheme extends Equatable {
         green: Color.lerp(a.green, b.green, t)!,
         red: Color.lerp(a.red, b.red, t)!,
         background: Color.lerp(a.background, b.background, t)!,
+        accent: Color.lerp(a.accent, b.accent, t)!,
       );
 
   @override
@@ -203,6 +207,7 @@ class MixinColorScheme extends Equatable {
         green,
         red,
         background,
+        accent,
       ];
 }
 

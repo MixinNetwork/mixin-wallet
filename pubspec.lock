@@ -452,11 +452,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: f497761b9ca3451f0305e0dd283faeb72819bc32
-      resolved-ref: f497761b9ca3451f0305e0dd283faeb72819bc32
+      ref: df6b69c74bc6d40ecc09f8c811748c2e5674a847
+      resolved-ref: df6b69c74bc6d40ecc09f8c811748c2e5674a847
       url: "https://github.com/MixinNetwork/mixin_bot_sdk_dart.git"
     source: git
-    version: "0.0.8"
+    version: "0.2.2"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:

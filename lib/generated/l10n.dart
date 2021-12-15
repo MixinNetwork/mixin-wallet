@@ -1469,6 +1469,36 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Coins`
+  String get coins {
+    return Intl.message(
+      'Coins',
+      name: 'coins',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Collectibles`
+  String get collectibles {
+    return Intl.message(
+      'Collectibles',
+      name: 'collectibles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No collectibles found`
+  String get noCollectiblesFound {
+    return Intl.message(
+      'No collectibles found',
+      name: 'noCollectiblesFound',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

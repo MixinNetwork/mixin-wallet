@@ -15,6 +15,7 @@ import '../../service/profile/profile_manager.dart';
 import '../constants.dart';
 import '../l10n.dart';
 
+export 'package:collection/collection.dart';
 export 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart'
     show UuidHashcodeExtension;
 export 'package:provider/provider.dart' show ReadContext, WatchContext;
@@ -25,13 +26,9 @@ export 'src/async.dart';
 export 'src/errors.dart';
 
 part 'src/iterable.dart';
-
 part 'src/number.dart';
-
 part 'src/path.dart';
-
 part 'src/provider.dart';
-
 part 'src/string.dart';
 
 void importExtension() {}
