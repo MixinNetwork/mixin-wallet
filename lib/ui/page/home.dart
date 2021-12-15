@@ -2,7 +2,6 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
@@ -44,7 +43,7 @@ class Home extends HookWidget {
 
     final sortType = useMemoized(
         () =>
-            sdk.EnumToString.fromString(_AssetSortType.values, sortParam) ??
+            _AssetSortType.values.byNameOrNull(sortParam) ??
             _AssetSortType.amount,
         [sortParam]);
 
@@ -186,8 +185,7 @@ class _AssetHeader extends StatelessWidget {
               radius: 24,
               onTap: () {
                 context.replace(homeUri.replace(queryParameters: {
-                  _kQueryParameterSort:
-                      sdk.EnumToString.convertToString(sortType.next)
+                  _kQueryParameterSort: sortType.next.name,
                 }));
               },
               child: SvgPicture.asset(

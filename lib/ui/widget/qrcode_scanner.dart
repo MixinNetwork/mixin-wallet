@@ -99,7 +99,7 @@ class _QrcodeScannerDialog extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final qrcodeReaderKey = useMemoized(() => GlobalKey<QrCodeReaderState>());
+    final qrcodeReaderKey = useMemoized(GlobalKey<QrCodeReaderState>.new);
     return Container(
       color: Colors.black,
       child: Stack(

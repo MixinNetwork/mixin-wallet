@@ -102,7 +102,7 @@ class _Body extends HookWidget {
   Widget build(BuildContext context) {
     final fiat = useState(getWyreFiatList().first);
 
-    final inputController = useMemoized(() => NumberInputController());
+    final inputController = useMemoized(NumberInputController.new);
     useValueListenable(inputController);
 
     final quote = useState(const AsyncSnapshot<WyreQuote>.nothing());

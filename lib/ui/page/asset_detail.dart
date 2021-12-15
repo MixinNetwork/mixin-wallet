@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
@@ -112,8 +111,8 @@ class _AssetDetailLoader extends HookWidget {
 
     final filter = useMemoized(
       () => SnapshotFilter(
-        sdk.EnumToString.fromString(SortBy.values, sortBy) ?? SortBy.time,
-        sdk.EnumToString.fromString(FilterBy.values, filterBy) ?? FilterBy.all,
+        SortBy.values.byNameOrNull(sortBy) ?? SortBy.time,
+        FilterBy.values.byNameOrNull(filterBy) ?? FilterBy.all,
       ),
       [sortBy, filterBy],
     );
@@ -357,10 +356,8 @@ class _AssetTransactionsHeader extends StatelessWidget {
                   return;
                 }
                 context.push(Uri.parse(context.url).replace(queryParameters: {
-                  _kQueryParamSortBy:
-                      sdk.EnumToString.convertToString(filter.sortBy),
-                  _kQueryParamFilterBy:
-                      sdk.EnumToString.convertToString(filter.filterBy),
+                  _kQueryParamSortBy: filter.sortBy.name,
+                  _kQueryParamFilterBy: filter.filterBy.name,
                 }));
               },
               radius: 20,
