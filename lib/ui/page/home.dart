@@ -85,7 +85,7 @@ class Home extends HookWidget {
             SliverToBoxAdapter(child: AssetHeader(sortType: sortType)),
             CoinsSliverList(assetList: assetList),
           ] else ...[
-            const CollectiblesSliverGrid(),
+            const CollectiblesGroupSliverGrid(),
           ],
         ],
       ),

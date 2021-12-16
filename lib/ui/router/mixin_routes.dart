@@ -10,6 +10,7 @@ import '../page/asset_detail.dart';
 import '../page/auth.dart';
 import '../page/buy.dart';
 import '../page/buy_success.dart';
+import '../page/collectibles_group.dart';
 import '../page/hidden_assets.dart';
 import '../page/home.dart';
 import '../page/not_found.dart';
@@ -37,6 +38,8 @@ const buySuccessPath = '/buySuccess';
 const swapPath = '/swap';
 const swapTransactionsPath = '/swap/transactions';
 const swapDetailPath = '/swap/:id/detail';
+const collectiblesGroupPath = '/collectibles_group/:id';
+const collectiblesPath = '/collectibles/:id';
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VWidget(
@@ -134,6 +137,11 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     path: swapTransactionsPath,
                     widget: const SwapTransactions(),
                   ),
+                  VWidget(
+                    path: collectiblesGroupPath,
+                    key: const ValueKey('CollectiblesGroup'),
+                    widget: const CollectiblesGroup(),
+                  )
                 ]),
           ]),
       VRouteRedirector(path: ':_(.+)', redirectTo: '/404'),

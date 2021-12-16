@@ -4,10 +4,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../../db/mixin_database.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
+import '../../router/mixin_routes.dart';
 import 'empty.dart';
 
-class CollectiblesSliverGrid extends HookWidget {
-  const CollectiblesSliverGrid({Key? key}) : super(key: key);
+class CollectiblesGroupSliverGrid extends HookWidget {
+  const CollectiblesGroupSliverGrid({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +46,18 @@ class CollectiblesSliverGrid extends HookWidget {
         // imageHeight = itemWidth - 16.
         final itemHeight = itemWidth + 44;
         return SliverGrid(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            if (index >= collectibles.length) {
-              return null;
-            }
-            return _CollectiblesTile(
-              group: collectibles[index].key,
-              items: collectibles[index].value,
-            );
-          }),
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              if (index >= collectibles.length) {
+                return null;
+              }
+              return _CollectiblesGroupTile(
+                group: collectibles[index].key,
+                items: collectibles[index].value,
+              );
+            },
+            childCount: collectibles.length,
+          ),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: itemWidth / itemHeight,
@@ -66,8 +70,8 @@ class CollectiblesSliverGrid extends HookWidget {
   }
 }
 
-class _CollectiblesTile extends StatelessWidget {
-  const _CollectiblesTile({
+class _CollectiblesGroupTile extends StatelessWidget {
+  const _CollectiblesGroupTile({
     Key? key,
     required this.group,
     required this.items,
@@ -89,48 +93,52 @@ class _CollectiblesTile extends StatelessWidget {
       return const SizedBox.expand();
     }
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black.withOpacity(0.1),
-          width: 1,
+    return InkWell(
+      onTap: () => context.push(collectiblesGroupPath.toUri({'id': group})),
+      borderRadius: BorderRadius.circular(8),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.black.withOpacity(0.1),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(8),
         ),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Spacer(),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: _GroupCover(items: items),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Spacer(),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: _GroupCover(items: items),
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              group,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: context.colorScheme.primaryText,
+              const SizedBox(height: 8),
+              Text(
+                group,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: context.colorScheme.primaryText,
+                ),
+                maxLines: 1,
               ),
-              maxLines: 1,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              subtitle,
-              style: TextStyle(
-                fontSize: 14,
-                color: context.colorScheme.thirdText,
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: context.colorScheme.thirdText,
+                ),
+                maxLines: 1,
               ),
-              maxLines: 1,
-            ),
-            const Spacer(),
-          ],
+              const Spacer(),
+            ],
+          ),
         ),
       ),
     );

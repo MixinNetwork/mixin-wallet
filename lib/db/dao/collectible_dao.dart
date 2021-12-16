@@ -56,4 +56,11 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
     final result = tokens.toList()..remove(exists.toSet().contains);
     return result;
   }
+
+  Selectable<CollectibleItem> collectibleItemByGroup(String group) =>
+      db.collectiblesResult(
+        (token, meta) => meta.group.equals(group),
+        (token, meta) => OrderBy([OrderingTerm.desc(token.createdAt)]),
+        (token, meta) => maxLimit,
+      );
 }
