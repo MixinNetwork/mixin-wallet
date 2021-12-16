@@ -63,4 +63,11 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
         (token, meta) => OrderBy([OrderingTerm.desc(token.createdAt)]),
         (token, meta) => maxLimit,
       );
+
+  Selectable<CollectibleItem> collectibleItemByTokenId(String tokenId) =>
+      db.collectiblesResult(
+        (token, meta) => token.tokenId.equals(tokenId),
+        (token, meta) => OrderBy([OrderingTerm.desc(token.createdAt)]),
+        (token, meta) => Limit(1, 0),
+      );
 }

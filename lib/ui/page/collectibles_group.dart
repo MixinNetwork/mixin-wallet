@@ -171,7 +171,7 @@ class _CollectiblesItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: () => context.push(collectiblesPath.toUri({'id': item.tokenId})),
+        onTap: () => context.push(collectiblePath.toUri({'id': item.tokenId})),
         borderRadius: BorderRadius.circular(8),
         child: DecoratedBox(
           decoration: BoxDecoration(
