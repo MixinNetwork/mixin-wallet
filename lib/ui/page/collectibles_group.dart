@@ -91,8 +91,6 @@ class _GroupHeader extends StatelessWidget {
                     color: context.colorScheme.secondaryText,
                     fontSize: 16,
                   ),
-                  // TODO(bin): add ellipsis
-                  maxLines: 3,
                 ),
               ),
               const SizedBox(height: 33),
