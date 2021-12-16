@@ -142,11 +142,13 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     path: collectiblesGroupPath,
                     key: const ValueKey('CollectiblesGroup'),
                     widget: const CollectiblesGroup(),
-                  ),
-                  VWidget(
-                    path: collectiblePath,
-                    key: const ValueKey('CollectibleDetail'),
-                    widget: const CollectibleDetail(),
+                    stackedRoutes: [
+                      VWidget(
+                        path: collectiblePath,
+                        key: const ValueKey('CollectibleDetail'),
+                        widget: const CollectibleDetail(),
+                      ),
+                    ],
                   ),
                 ]),
           ]),

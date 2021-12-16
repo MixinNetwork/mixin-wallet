@@ -8,6 +8,7 @@ import '../../router/mixin_routes.dart';
 import '../../widget/asset.dart';
 import '../../widget/mixin_bottom_sheet.dart';
 import '../../widget/search_asset_bottom_sheet.dart';
+import '../home.dart';
 import 'empty.dart';
 
 enum AssetSortType {
@@ -15,8 +16,6 @@ enum AssetSortType {
   increase,
   decrease,
 }
-
-const kQueryParameterSort = 'sort';
 
 class CoinsSliverList extends StatelessWidget {
   const CoinsSliverList({
@@ -103,9 +102,10 @@ class AssetHeader extends StatelessWidget {
             InkResponse(
               radius: 24,
               onTap: () {
-                context.replace(homeUri.replace(queryParameters: {
-                  kQueryParameterSort: sortType.next.name,
-                }));
+                final params =
+                    Map<String, String>.from(context.queryParameters);
+                params[kQueryParameterSort] = sortType.next.name;
+                context.replace(homeUri.replace(queryParameters: params));
               },
               child: SvgPicture.asset(
                 R.resourcesAmplitudeSvg,

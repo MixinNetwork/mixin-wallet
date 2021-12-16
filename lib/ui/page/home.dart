@@ -19,6 +19,17 @@ import 'home/header.dart';
 import 'home/tab_coins.dart';
 import 'home/tab_collectibles.dart';
 
+// sort type for coins.
+const kQueryParameterSort = 'sort';
+
+// the selected tab.
+const kQueryParameterTab = 'tab';
+
+enum _Tab {
+  coins,
+  collectibles,
+}
+
 class Home extends HookWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -59,11 +70,8 @@ class Home extends HookWidget {
       return target ??= await context.appServices.findOrSyncAsset(bitcoin);
     }, keys: [assetResults]).data;
 
-    final tabController = useTabController(
-      initialLength: 2,
-      initialIndex: 0,
-    );
-    final selectedTab = useListenable(tabController).index;
+    final tabParam = useQueryParameter(kQueryParameterTab, path: homeUri.path);
+    final selectedTab = _Tab.values.byNameOrNull(tabParam) ?? _Tab.coins;
     return Scaffold(
       backgroundColor: context.theme.background,
       appBar: _HomeAppBar(account: auth!.account),
@@ -79,9 +87,9 @@ class Home extends HookWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: _TabSwitchBar(controller: tabController),
+            child: _TabSwitchBar(selectedTab: selectedTab),
           ),
-          if (selectedTab == 0) ...[
+          if (selectedTab == _Tab.coins) ...[
             SliverToBoxAdapter(child: AssetHeader(sortType: sortType)),
             CoinsSliverList(assetList: assetList),
           ] else ...[
@@ -203,43 +211,58 @@ class _AccountBottomSheet extends StatelessWidget {
   }
 }
 
-class _TabSwitchBar extends StatelessWidget implements PreferredSizeWidget {
+class _TabSwitchBar extends HookWidget implements PreferredSizeWidget {
   const _TabSwitchBar({
     Key? key,
-    required this.controller,
-  })  : assert(controller.length == 2, 'length of controller must be 2'),
-        super(key: key);
+    required this.selectedTab,
+  }) : super(key: key);
 
-  final TabController controller;
+  final _Tab selectedTab;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-        height: 60,
-        child: TabBar(
-          labelStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-          ),
-          unselectedLabelStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-          ),
-          labelColor: context.colorScheme.primaryText,
-          unselectedLabelColor: const Color(0xFFBCBEC3),
-          tabs: [
-            Tab(text: context.l10n.coins),
-            Tab(text: context.l10n.collectibles),
-          ],
-          indicatorSize: TabBarIndicatorSize.label,
-          indicatorWeight: 3,
-          indicator: BoxDecoration(
-            color: context.colorScheme.accent,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          indicatorPadding: const EdgeInsets.only(bottom: 16, top: 41),
-          controller: controller,
+  Widget build(BuildContext context) {
+    final controller = useTabController(
+      initialLength: 2,
+      initialIndex: selectedTab.index,
+    );
+    useEffect(() {
+      void _onTabChanged() {
+        final params = Map<String, String>.from(context.queryParameters);
+        params[kQueryParameterTab] = _Tab.values[controller.index].name;
+        context.replace(homeUri.replace(queryParameters: params));
+      }
+
+      controller.addListener(_onTabChanged);
+      return () => controller.removeListener(_onTabChanged);
+    });
+    return SizedBox(
+      height: 60,
+      child: TabBar(
+        labelStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
         ),
-      );
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+        ),
+        labelColor: context.colorScheme.primaryText,
+        unselectedLabelColor: const Color(0xFFBCBEC3),
+        tabs: [
+          Tab(text: context.l10n.coins),
+          Tab(text: context.l10n.collectibles),
+        ],
+        indicatorSize: TabBarIndicatorSize.label,
+        indicatorWeight: 3,
+        indicator: BoxDecoration(
+          color: context.colorScheme.accent,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        indicatorPadding: const EdgeInsets.only(bottom: 16, top: 41),
+        controller: controller,
+      ),
+    );
+  }
 
   @override
   Size get preferredSize => const Size.fromHeight(60);
