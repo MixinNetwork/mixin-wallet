@@ -13,7 +13,7 @@ extension AssetConverter on sdk.Asset {
         symbol: symbol,
         name: name,
         iconUrl: iconUrl,
-        balance: balance,
+        balance: Value(balance),
         destination: Value(destination),
         tag: Value(tag),
         assetKey: Value(assetKey),

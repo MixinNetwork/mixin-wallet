@@ -814,7 +814,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
     required String symbol,
     required String name,
     required String iconUrl,
-    required String balance,
+    this.balance = const Value.absent(),
     this.destination = const Value.absent(),
     this.tag = const Value.absent(),
     required String priceBtc,
@@ -830,7 +830,6 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
         symbol = Value(symbol),
         name = Value(name),
         iconUrl = Value(iconUrl),
-        balance = Value(balance),
         priceBtc = Value(priceBtc),
         priceUsd = Value(priceUsd),
         chainId = Value(chainId),
@@ -1022,8 +1021,9 @@ class Assets extends Table with TableInfo<Assets, Asset> {
   late final GeneratedColumn<String?> balance = GeneratedColumn<String?>(
       'balance', aliasedName, false,
       type: const StringType(),
-      requiredDuringInsert: true,
-      $customConstraints: 'NOT NULL');
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL DEFAULT \'0\'',
+      defaultValue: const CustomExpression<String>('\'0\''));
   final VerificationMeta _destinationMeta =
       const VerificationMeta('destination');
   late final GeneratedColumn<String?> destination = GeneratedColumn<String?>(
@@ -1148,8 +1148,6 @@ class Assets extends Table with TableInfo<Assets, Asset> {
     if (data.containsKey('balance')) {
       context.handle(_balanceMeta,
           balance.isAcceptableOrUnknown(data['balance']!, _balanceMeta));
-    } else if (isInserting) {
-      context.missing(_balanceMeta);
     }
     if (data.containsKey('destination')) {
       context.handle(

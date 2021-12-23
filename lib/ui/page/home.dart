@@ -327,6 +327,7 @@ class _ButtonBar extends StatelessWidget {
                   context: context,
                   initialSelected: lastSelectedAddress,
                   ignoreAssets: const {omniUSDT},
+                  useSearchApi: true,
                 );
                 if (asset == null) {
                   return;
