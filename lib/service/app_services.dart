@@ -483,7 +483,10 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
     // TODO(BIN): TEST ONLY, remove this when release
     assert(() {
-      tokenIds.add('e98c983c-0988-32ab-a421-51c874d5122d');
+      tokenIds
+        ..add('e98c983c-0988-32ab-a421-51c874d5122d')
+        ..add('0d759930-d65a-378e-bf40-11211f761f42')
+        ..add('690c202f-a326-3cbe-a6f9-d6582b7f0651');
       return true;
     }());
     mixinDatabase.collectibleDao.removeNotExist(tokenIds);
