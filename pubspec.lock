@@ -433,7 +433,7 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.2"
+    version: "0.1.3"
   meta:
     dependency: transitive
     description:
@@ -452,11 +452,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: df6b69c74bc6d40ecc09f8c811748c2e5674a847
-      resolved-ref: df6b69c74bc6d40ecc09f8c811748c2e5674a847
+      ref: "7feb1a6a5022559e6491db266f18bbe3aa380745"
+      resolved-ref: "7feb1a6a5022559e6491db266f18bbe3aa380745"
       url: "https://github.com/MixinNetwork/mixin_bot_sdk_dart.git"
     source: git
-    version: "0.2.2"
+    version: "0.2.6"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:

@@ -15,9 +15,10 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
   CollectibleDao(MixinDatabase attachedDatabase) : super(attachedDatabase);
 
   Selectable<CollectibleItem> getAllCollectibles() => db.collectiblesResult(
-        (token, meta) => ignoreWhere,
-        (token, meta) => OrderBy([OrderingTerm.desc(token.createdAt)]),
-        (token, meta) => maxLimit,
+        (token, meta, collection) => ignoreWhere,
+        (token, meta, collection) =>
+            OrderBy([OrderingTerm.desc(token.createdAt)]),
+        (token, meta, collection) => maxLimit,
       );
 
   Future<void> insertCollectible(sdk.CollectibleToken token) => batch((batch) {
@@ -32,6 +33,7 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
               nfo: token.nfo,
               createdAt: DateTime.parse(token.createdAt),
               metaHash: token.meta.hash,
+              collectionId: token.collectionId,
             )
           ])
           ..insertAllOnConflictUpdate(db.collectibleTokenMeta, [
@@ -57,17 +59,57 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
     return result;
   }
 
-  Selectable<CollectibleItem> collectibleItemByGroup(String group) =>
+  Future<List<String>> filterExistsCollections(
+      List<String> collectionIds) async {
+    final exists = await (db.select(db.collections)
+          ..where((tbl) => tbl.collectionId.isIn(collectionIds))
+          ..map((tbl) => tbl.collectionId))
+        .get();
+    final result = collectionIds.toList()..remove(exists.toSet().contains);
+    return result;
+  }
+
+  Selectable<CollectibleItem> collectibleItemByCollectionId(
+          String collectionId) =>
       db.collectiblesResult(
-        (token, meta) => meta.group.equals(group),
-        (token, meta) => OrderBy([OrderingTerm.desc(token.createdAt)]),
-        (token, meta) => maxLimit,
+        (token, meta, collection) =>
+            collection.collectionId.equals(collectionId),
+        (token, meta, collection) =>
+            OrderBy([OrderingTerm.desc(token.createdAt)]),
+        (token, meta, collection) => maxLimit,
       );
 
   Selectable<CollectibleItem> collectibleItemByTokenId(String tokenId) =>
       db.collectiblesResult(
-        (token, meta) => token.tokenId.equals(tokenId),
-        (token, meta) => OrderBy([OrderingTerm.desc(token.createdAt)]),
-        (token, meta) => Limit(1, 0),
+        (token, meta, collection) => token.tokenId.equals(tokenId),
+        (token, meta, collection) =>
+            OrderBy([OrderingTerm.desc(token.createdAt)]),
+        (token, meta, collection) => Limit(1, 0),
       );
+
+  void removeNotExist(List<String> tokenIds) {
+    batch((batch) {
+      batch
+        ..deleteWhere<CollectibleToken, CollectibleTokenData>(
+            db.collectibleToken, (token) => token.tokenId.isNotIn(tokenIds))
+        ..deleteWhere<CollectibleTokenMeta, CollectibleTokenMetaData>(
+            db.collectibleTokenMeta, (tbl) => tbl.tokenId.isNotIn(tokenIds));
+    });
+  }
+
+  Future<int> insertCollection(sdk.CollectibleCollection collection) =>
+      db.into(db.collections).insert(
+            CollectionsCompanion.insert(
+              collectionId: collection.collectionId,
+              name: collection.name,
+              description: collection.description,
+              iconUrl: collection.iconUrl,
+              createdAt: collection.createdAt,
+              type: collection.type,
+            ),
+          );
+
+  Selectable<Collection> collection(String collectionId) =>
+      db.select(db.collections)
+        ..where((tbl) => tbl.collectionId.equals(collectionId));
 }

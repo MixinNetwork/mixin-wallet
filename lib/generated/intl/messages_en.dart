@@ -28,24 +28,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(value) => "${value} BTC";
 
-  static String m4(value) =>
-      "Deposit will arrive after at least ${value} block confirmations";
+  static String m4(count) => "${count} items";
 
   static String m5(value) =>
+      "Deposit will arrive after at least ${value} block confirmations";
+
+  static String m6(value) =>
       "Both a Memo and an Address are required to successfully deposit your ${value} to your account.";
 
-  static String m6(value) => "Deposit at least ${value} for the first time";
+  static String m7(value) => "Deposit at least ${value} for the first time";
 
-  static String m7(value) => "This address only supports ${value}.";
+  static String m8(value) => "This address only supports ${value}.";
 
-  static String m8(value, value2) => "${value}/${value2} confirmations";
+  static String m9(value, value2) => "${value}/${value2} confirmations";
 
-  static String m9(value) =>
+  static String m10(value) =>
       "Swap with slippage greater than ${value} is not currently supported";
 
-  static String m10(value) => "value now ${value}";
+  static String m11(value) => "value now ${value}";
 
-  static String m11(value) => "value then ${value}";
+  static String m12(value) => "value then ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -92,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
         "coins": MessageLookupByLibrary.simpleMessage("Coins"),
         "collectibles": MessageLookupByLibrary.simpleMessage("Collectibles"),
+        "collectionItemCount": m4,
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
         "completed": MessageLookupByLibrary.simpleMessage("Completed"),
         "contact": MessageLookupByLibrary.simpleMessage("Contact"),
@@ -104,12 +107,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Copied to Clipboard"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
-        "depositConfirmation": m4,
+        "depositConfirmation": m5,
         "depositMemoNotice": MessageLookupByLibrary.simpleMessage(
             "Memo is required, or you will lose your coins."),
-        "depositNotice": m5,
-        "depositReserve": m6,
-        "depositTip": m7,
+        "depositNotice": m6,
+        "depositReserve": m7,
+        "depositTip": m8,
         "depositTipBtc": MessageLookupByLibrary.simpleMessage(
             "This address only supports BTC."),
         "depositTipEos": MessageLookupByLibrary.simpleMessage(
@@ -157,6 +160,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noAsset": MessageLookupByLibrary.simpleMessage("NO ASSET"),
         "noCollectiblesFound":
             MessageLookupByLibrary.simpleMessage("No collectibles found"),
+        "noCollectionFound":
+            MessageLookupByLibrary.simpleMessage("No collection found"),
         "noResult": MessageLookupByLibrary.simpleMessage("NO RESULT"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "noWithdrawalDestinationSelected": MessageLookupByLibrary.simpleMessage(
@@ -173,7 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidInMixinWarning": MessageLookupByLibrary.simpleMessage(
             "If you have paid via Mixin, please be patient."),
         "pay": MessageLookupByLibrary.simpleMessage("Pay"),
-        "pendingConfirmations": m8,
+        "pendingConfirmations": m9,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
@@ -194,7 +199,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "slippage": MessageLookupByLibrary.simpleMessage("Slippage"),
-        "slippageOver": m9,
+        "slippageOver": m10,
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "swap": MessageLookupByLibrary.simpleMessage("Swap"),
         "swapDisclaimer": MessageLookupByLibrary.simpleMessage(
@@ -233,10 +238,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
-        "walletTransactionCurrentValue": m10,
+        "walletTransactionCurrentValue": m11,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
-        "walletTransactionThatTimeValue": m11,
+        "walletTransactionThatTimeValue": m12,
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "This service is provided by Wyre. We act as a conduit only and do not charge additional fees."),
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),

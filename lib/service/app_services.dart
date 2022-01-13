@@ -479,33 +479,70 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       threshold: 1,
     ))
         .data;
-    await refreshCollectiblesTokenIfNotExist(
-        collectibles.map((e) => e.tokenId).toList());
-    debugPrint('update collectibles: $collectibles');
+    final tokenIds = collectibles.map((e) => e.tokenId).toList();
+
+    // TODO(BIN): TEST ONLY, remove this when release
+    assert(() {
+      tokenIds.add('e98c983c-0988-32ab-a421-51c874d5122d');
+      return true;
+    }());
+    mixinDatabase.collectibleDao.removeNotExist(tokenIds);
+    await refreshCollectiblesTokenIfNotExist(tokenIds);
   }
 
   Future<void> refreshCollectiblesTokenIfNotExist(List<String> tokenIds) async {
     final toRefresh =
         await mixinDatabase.collectibleDao.filterExistsTokens(tokenIds);
+
+    final collectionIds = <String>{};
     for (final tokenId in toRefresh) {
       try {
         final response = await client.collectibleApi.getToken(tokenId);
         final token = response.data;
+        collectionIds.add(token.collectionId);
         await mixinDatabase.collectibleDao.insertCollectible(token);
-      } catch (e) {
-        d('refreshTokenIfNotExist error: $e');
+      } catch (error, stacktrace) {
+        d('refreshTokenIfNotExist error:$tokenId $error $stacktrace');
+      }
+    }
+    await refreshCollection(collectionIds.toList(), force: false);
+  }
+
+  Future<void> refreshCollection(
+    List<String> collectionIds, {
+    bool force = false,
+  }) async {
+    final toRefresh = force
+        ? collectionIds
+        : await mixinDatabase.collectibleDao
+            .filterExistsCollections(collectionIds);
+    for (final collectionId in toRefresh) {
+      try {
+        final response = await client.collectibleApi.collections(collectionId);
+        final collection = response.data;
+        await mixinDatabase.collectibleDao.insertCollection(collection);
+      } catch (error, stacktrace) {
+        d('refreshCollection error:$collectionId $error $stacktrace');
       }
     }
   }
 
-  Selectable<CollectibleItem> collectibleItems() =>
-      mixinDatabase.collectibleDao.getAllCollectibles();
-
-  // TODO(boyan): maybe we can select top n record instead all collectible.
-  // https://stackoverflow.com/questions/28119176/select-top-n-record-from-each-group-sqlite
   Stream<List<MapEntry<String, List<CollectibleItem>>>> groupedCollectibles() =>
-      mixinDatabase.collectibleDao
-          .getAllCollectibles()
-          .watch()
-          .map((event) => event.groupListsBy((e) => e.group).entries.toList());
+      mixinDatabase.collectibleDao.getAllCollectibles().watch().map((event) {
+        final grouped = event.groupListsBy((e) => e.collectionId);
+        final result = <MapEntry<String, List<CollectibleItem>>>[];
+        grouped.forEach((key, value) {
+          if (key.isEmpty) {
+            for (final item in value) {
+              result.add(MapEntry(key, [item]));
+            }
+          } else {
+            result.add(MapEntry(key, value + value));
+          }
+        });
+        return result;
+      });
+
+  Stream<Collection?> collection(String collectionId) =>
+      mixinDatabase.collectibleDao.collection(collectionId).watchSingleOrNull();
 }

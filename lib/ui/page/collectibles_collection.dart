@@ -8,17 +8,54 @@ import '../router/mixin_routes.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 
-class CollectiblesGroup extends HookWidget {
-  const CollectiblesGroup({Key? key}) : super(key: key);
+class CollectiblesCollection extends HookWidget {
+  const CollectiblesCollection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final group = usePathParameter('id', path: collectiblesGroupPath);
+    final collectionId = usePathParameter(
+      'id',
+      path: collectiblesCollectionPath,
+    );
+
+    useEffect(() {
+      context.appServices.refreshCollection([collectionId], force: true);
+    }, [collectionId]);
+
+    final collectionSnapshot = useMemoizedStream(
+      () => context.appServices.collection(collectionId),
+      keys: [collectionId],
+    );
+    if (collectionSnapshot.isNoneOrWaiting) {
+      return Scaffold(
+        appBar: AppBar(leading: const MixinBackButton2()),
+        body: Center(
+          child: SizedBox.square(
+            dimension: 18,
+            child: CircularProgressIndicator(
+              color: context.colorScheme.surface,
+            ),
+          ),
+        ),
+      );
+    }
+    final collection = collectionSnapshot.data;
+    if (collection == null) {
+      return Scaffold(
+        appBar: AppBar(leading: const MixinBackButton2()),
+        body: Center(
+          child: Text(
+            context.l10n.noCollectionFound,
+            style: TextStyle(color: context.colorScheme.primaryText),
+          ),
+        ),
+      );
+    }
     return Scaffold(
       appBar: MixinAppBar(
         leading: const MixinBackButton2(),
         title: SelectableText(
-          group,
+          collection.name,
           style: TextStyle(
             color: context.colorScheme.primaryText,
             fontSize: 18,
@@ -28,13 +65,21 @@ class CollectiblesGroup extends HookWidget {
         backgroundColor: context.colorScheme.background,
       ),
       backgroundColor: context.colorScheme.background,
-      body: _Body(group: group),
+      body: _Body(collection: collection),
     );
   }
 }
 
 class _GroupHeader extends StatelessWidget {
-  const _GroupHeader({Key? key}) : super(key: key);
+  const _GroupHeader({
+    Key? key,
+    required this.collection,
+    required this.count,
+  }) : super(key: key);
+
+  final Collection collection;
+
+  final int count;
 
   @override
   Widget build(BuildContext context) => Stack(
@@ -45,7 +90,7 @@ class _GroupHeader extends StatelessWidget {
             top: 0,
             left: 0,
             right: 0,
-            child: Container(color: Colors.blue),
+            child: Container(color: context.colorScheme.background),
           ),
           Column(
             children: [
@@ -62,12 +107,12 @@ class _GroupHeader extends StatelessWidget {
                 height: 80,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(13),
-                  child: Container(color: Colors.red),
+                  child: Image.network(collection.iconUrl),
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                'GroupTitle',
+                collection.name,
                 style: TextStyle(
                   color: context.colorScheme.primaryText,
                   fontSize: 18,
@@ -76,7 +121,7 @@ class _GroupHeader extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '14 items',
+                context.l10n.collectionItemCount(count),
                 style: TextStyle(
                   color: context.colorScheme.secondaryText,
                   fontSize: 14,
@@ -86,7 +131,7 @@ class _GroupHeader extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
-                  'Efdot is a colorblind visual artist creating in an abstract-meets-figurative style. His playful and meditative drawing practices produce vivid, ',
+                  collection.description,
                   style: TextStyle(
                     color: context.colorScheme.secondaryText,
                     fontSize: 16,
@@ -101,20 +146,17 @@ class _GroupHeader extends StatelessWidget {
 }
 
 class _Body extends HookWidget {
-  const _Body({
-    Key? key,
-    required this.group,
-  }) : super(key: key);
+  const _Body({Key? key, required this.collection}) : super(key: key);
 
-  final String group;
+  final Collection collection;
 
   @override
   Widget build(BuildContext context) {
     final snapshot = useMemoizedStream(
         () => context.mixinDatabase.collectibleDao
-            .collectibleItemByGroup(group)
+            .collectibleItemByCollectionId(collection.collectionId)
             .watch(),
-        keys: [group]);
+        keys: [collection]);
     if (snapshot.isNoneOrWaiting) {
       return Center(
         child: SizedBox.square(
@@ -124,10 +166,15 @@ class _Body extends HookWidget {
       );
     }
     final collectibles = snapshot.data ?? const [];
-    debugPrint('collectibles: $group $collectibles');
+    debugPrint('collectibles: $collection $collectibles');
     return CustomScrollView(
       slivers: [
-        const SliverToBoxAdapter(child: _GroupHeader()),
+        SliverToBoxAdapter(
+          child: _GroupHeader(
+            collection: collection,
+            count: collectibles.length,
+          ),
+        ),
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           sliver: SliverLayoutBuilder(builder: (context, constraints) {

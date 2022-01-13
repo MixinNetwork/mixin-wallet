@@ -51,10 +51,7 @@ class CollectiblesGroupSliverGrid extends HookWidget {
               if (index >= collectibles.length) {
                 return null;
               }
-              return _CollectiblesGroupTile(
-                group: collectibles[index].key,
-                items: collectibles[index].value,
-              );
+              return _CollectiblesGroupTile(items: collectibles[index].value);
             },
             childCount: collectibles.length,
           ),
@@ -73,28 +70,36 @@ class CollectiblesGroupSliverGrid extends HookWidget {
 class _CollectiblesGroupTile extends StatelessWidget {
   const _CollectiblesGroupTile({
     Key? key,
-    required this.group,
     required this.items,
   }) : super(key: key);
 
-  final String group;
   final List<CollectibleItem> items;
 
   @override
   Widget build(BuildContext context) {
     final String subtitle;
-
+    final String title;
     if (items.length > 1) {
       subtitle = '${items.length} ${context.l10n.collectibles}';
+      title = items.first.collectionName ?? '';
     } else if (items.length == 1) {
       // FIXME: replace with subtitle.
-      subtitle = items.single.name ?? '';
+      title = items.single.name ?? '';
+      subtitle = items.single.hash ?? '';
     } else {
       return const SizedBox.expand();
     }
 
     return InkWell(
-      onTap: () => context.push(collectiblesGroupPath.toUri({'id': group})),
+      onTap: () {
+        if (items.length == 1) {
+          context.push(collectiblePath.toUri({'id': items.single.tokenId}));
+        } else {
+          context.push(
+            collectiblesCollectionPath.toUri({'id': items.first.collectionId}),
+          );
+        }
+      },
       borderRadius: BorderRadius.circular(8),
       child: DecoratedBox(
         decoration: BoxDecoration(
@@ -119,7 +124,7 @@ class _CollectiblesGroupTile extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                group,
+                title,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,

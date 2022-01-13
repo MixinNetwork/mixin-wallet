@@ -143,5 +143,7 @@
   "depositMemoNotice": "Memo is required, or you will lose your coins.",
   "coins": "Coins",
   "collectibles": "Collectibles",
-  "noCollectiblesFound": "No collectibles found"
+  "noCollectiblesFound": "No collectibles found",
+  "noCollectionFound": "No collection found",
+  "collectionItemCount": "{count} items"
 }

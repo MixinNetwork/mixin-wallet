@@ -3246,6 +3246,7 @@ class CollectibleTokenData extends DataClass
   final String nfo;
   final DateTime createdAt;
   final String metaHash;
+  final String collectionId;
   CollectibleTokenData(
       {required this.type,
       required this.tokenId,
@@ -3254,7 +3255,8 @@ class CollectibleTokenData extends DataClass
       required this.mixinId,
       required this.nfo,
       required this.createdAt,
-      required this.metaHash});
+      required this.metaHash,
+      required this.collectionId});
   factory CollectibleTokenData.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
@@ -3276,6 +3278,8 @@ class CollectibleTokenData extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']))!,
       metaHash: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}meta_hash'])!,
+      collectionId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}collection_id'])!,
     );
   }
   @override
@@ -3292,6 +3296,7 @@ class CollectibleTokenData extends DataClass
       map['created_at'] = Variable<int>(converter.mapToSql(createdAt)!);
     }
     map['meta_hash'] = Variable<String>(metaHash);
+    map['collection_id'] = Variable<String>(collectionId);
     return map;
   }
 
@@ -3305,6 +3310,7 @@ class CollectibleTokenData extends DataClass
       nfo: Value(nfo),
       createdAt: Value(createdAt),
       metaHash: Value(metaHash),
+      collectionId: Value(collectionId),
     );
   }
 
@@ -3320,6 +3326,7 @@ class CollectibleTokenData extends DataClass
       nfo: serializer.fromJson<String>(json['nfo']),
       createdAt: serializer.fromJson<DateTime>(json['created_at']),
       metaHash: serializer.fromJson<String>(json['meta_hash']),
+      collectionId: serializer.fromJson<String>(json['collection_id']),
     );
   }
   @override
@@ -3334,6 +3341,7 @@ class CollectibleTokenData extends DataClass
       'nfo': serializer.toJson<String>(nfo),
       'created_at': serializer.toJson<DateTime>(createdAt),
       'meta_hash': serializer.toJson<String>(metaHash),
+      'collection_id': serializer.toJson<String>(collectionId),
     };
   }
 
@@ -3345,7 +3353,8 @@ class CollectibleTokenData extends DataClass
           String? mixinId,
           String? nfo,
           DateTime? createdAt,
-          String? metaHash}) =>
+          String? metaHash,
+          String? collectionId}) =>
       CollectibleTokenData(
         type: type ?? this.type,
         tokenId: tokenId ?? this.tokenId,
@@ -3355,6 +3364,7 @@ class CollectibleTokenData extends DataClass
         nfo: nfo ?? this.nfo,
         createdAt: createdAt ?? this.createdAt,
         metaHash: metaHash ?? this.metaHash,
+        collectionId: collectionId ?? this.collectionId,
       );
   @override
   String toString() {
@@ -3366,14 +3376,15 @@ class CollectibleTokenData extends DataClass
           ..write('mixinId: $mixinId, ')
           ..write('nfo: $nfo, ')
           ..write('createdAt: $createdAt, ')
-          ..write('metaHash: $metaHash')
+          ..write('metaHash: $metaHash, ')
+          ..write('collectionId: $collectionId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      type, tokenId, group, token, mixinId, nfo, createdAt, metaHash);
+  int get hashCode => Object.hash(type, tokenId, group, token, mixinId, nfo,
+      createdAt, metaHash, collectionId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3385,7 +3396,8 @@ class CollectibleTokenData extends DataClass
           other.mixinId == this.mixinId &&
           other.nfo == this.nfo &&
           other.createdAt == this.createdAt &&
-          other.metaHash == this.metaHash);
+          other.metaHash == this.metaHash &&
+          other.collectionId == this.collectionId);
 }
 
 class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
@@ -3397,6 +3409,7 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
   final Value<String> nfo;
   final Value<DateTime> createdAt;
   final Value<String> metaHash;
+  final Value<String> collectionId;
   const CollectibleTokenCompanion({
     this.type = const Value.absent(),
     this.tokenId = const Value.absent(),
@@ -3406,6 +3419,7 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
     this.nfo = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.metaHash = const Value.absent(),
+    this.collectionId = const Value.absent(),
   });
   CollectibleTokenCompanion.insert({
     required String type,
@@ -3416,6 +3430,7 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
     required String nfo,
     required DateTime createdAt,
     required String metaHash,
+    required String collectionId,
   })  : type = Value(type),
         tokenId = Value(tokenId),
         group = Value(group),
@@ -3423,7 +3438,8 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
         mixinId = Value(mixinId),
         nfo = Value(nfo),
         createdAt = Value(createdAt),
-        metaHash = Value(metaHash);
+        metaHash = Value(metaHash),
+        collectionId = Value(collectionId);
   static Insertable<CollectibleTokenData> custom({
     Expression<String>? type,
     Expression<String>? tokenId,
@@ -3433,6 +3449,7 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
     Expression<String>? nfo,
     Expression<DateTime>? createdAt,
     Expression<String>? metaHash,
+    Expression<String>? collectionId,
   }) {
     return RawValuesInsertable({
       if (type != null) 'type': type,
@@ -3443,6 +3460,7 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
       if (nfo != null) 'nfo': nfo,
       if (createdAt != null) 'created_at': createdAt,
       if (metaHash != null) 'meta_hash': metaHash,
+      if (collectionId != null) 'collection_id': collectionId,
     });
   }
 
@@ -3454,7 +3472,8 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
       Value<String>? mixinId,
       Value<String>? nfo,
       Value<DateTime>? createdAt,
-      Value<String>? metaHash}) {
+      Value<String>? metaHash,
+      Value<String>? collectionId}) {
     return CollectibleTokenCompanion(
       type: type ?? this.type,
       tokenId: tokenId ?? this.tokenId,
@@ -3464,6 +3483,7 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
       nfo: nfo ?? this.nfo,
       createdAt: createdAt ?? this.createdAt,
       metaHash: metaHash ?? this.metaHash,
+      collectionId: collectionId ?? this.collectionId,
     );
   }
 
@@ -3495,6 +3515,9 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
     if (metaHash.present) {
       map['meta_hash'] = Variable<String>(metaHash.value);
     }
+    if (collectionId.present) {
+      map['collection_id'] = Variable<String>(collectionId.value);
+    }
     return map;
   }
 
@@ -3508,7 +3531,8 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
           ..write('mixinId: $mixinId, ')
           ..write('nfo: $nfo, ')
           ..write('createdAt: $createdAt, ')
-          ..write('metaHash: $metaHash')
+          ..write('metaHash: $metaHash, ')
+          ..write('collectionId: $collectionId')
           ..write(')'))
         .toString();
   }
@@ -3568,9 +3592,25 @@ class CollectibleToken extends Table
       type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
+  final VerificationMeta _collectionIdMeta =
+      const VerificationMeta('collectionId');
+  late final GeneratedColumn<String?> collectionId = GeneratedColumn<String?>(
+      'collection_id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   @override
-  List<GeneratedColumn> get $columns =>
-      [type, tokenId, group, token, mixinId, nfo, createdAt, metaHash];
+  List<GeneratedColumn> get $columns => [
+        type,
+        tokenId,
+        group,
+        token,
+        mixinId,
+        nfo,
+        createdAt,
+        metaHash,
+        collectionId
+      ];
   @override
   String get aliasedName => _alias ?? 'collectible_token';
   @override
@@ -3624,6 +3664,14 @@ class CollectibleToken extends Table
     } else if (isInserting) {
       context.missing(_metaHashMeta);
     }
+    if (data.containsKey('collection_id')) {
+      context.handle(
+          _collectionIdMeta,
+          collectionId.isAcceptableOrUnknown(
+              data['collection_id']!, _collectionIdMeta));
+    } else if (isInserting) {
+      context.missing(_collectionIdMeta);
+    }
     return context;
   }
 
@@ -3647,6 +3695,347 @@ class CollectibleToken extends Table
   bool get dontWriteConstraints => true;
 }
 
+class Collection extends DataClass implements Insertable<Collection> {
+  final String type;
+  final String collectionId;
+  final String name;
+  final String description;
+  final String iconUrl;
+  final DateTime createdAt;
+  Collection(
+      {required this.type,
+      required this.collectionId,
+      required this.name,
+      required this.description,
+      required this.iconUrl,
+      required this.createdAt});
+  factory Collection.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return Collection(
+      type: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
+      collectionId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}collection_id'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      description: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
+      iconUrl: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}icon_url'])!,
+      createdAt: Collections.$converter0.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at']))!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['type'] = Variable<String>(type);
+    map['collection_id'] = Variable<String>(collectionId);
+    map['name'] = Variable<String>(name);
+    map['description'] = Variable<String>(description);
+    map['icon_url'] = Variable<String>(iconUrl);
+    {
+      final converter = Collections.$converter0;
+      map['created_at'] = Variable<int>(converter.mapToSql(createdAt)!);
+    }
+    return map;
+  }
+
+  CollectionsCompanion toCompanion(bool nullToAbsent) {
+    return CollectionsCompanion(
+      type: Value(type),
+      collectionId: Value(collectionId),
+      name: Value(name),
+      description: Value(description),
+      iconUrl: Value(iconUrl),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory Collection.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Collection(
+      type: serializer.fromJson<String>(json['type']),
+      collectionId: serializer.fromJson<String>(json['collection_id']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String>(json['description']),
+      iconUrl: serializer.fromJson<String>(json['icon_url']),
+      createdAt: serializer.fromJson<DateTime>(json['created_at']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'type': serializer.toJson<String>(type),
+      'collection_id': serializer.toJson<String>(collectionId),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String>(description),
+      'icon_url': serializer.toJson<String>(iconUrl),
+      'created_at': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  Collection copyWith(
+          {String? type,
+          String? collectionId,
+          String? name,
+          String? description,
+          String? iconUrl,
+          DateTime? createdAt}) =>
+      Collection(
+        type: type ?? this.type,
+        collectionId: collectionId ?? this.collectionId,
+        name: name ?? this.name,
+        description: description ?? this.description,
+        iconUrl: iconUrl ?? this.iconUrl,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Collection(')
+          ..write('type: $type, ')
+          ..write('collectionId: $collectionId, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('iconUrl: $iconUrl, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(type, collectionId, name, description, iconUrl, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Collection &&
+          other.type == this.type &&
+          other.collectionId == this.collectionId &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.iconUrl == this.iconUrl &&
+          other.createdAt == this.createdAt);
+}
+
+class CollectionsCompanion extends UpdateCompanion<Collection> {
+  final Value<String> type;
+  final Value<String> collectionId;
+  final Value<String> name;
+  final Value<String> description;
+  final Value<String> iconUrl;
+  final Value<DateTime> createdAt;
+  const CollectionsCompanion({
+    this.type = const Value.absent(),
+    this.collectionId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.iconUrl = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  CollectionsCompanion.insert({
+    required String type,
+    required String collectionId,
+    required String name,
+    required String description,
+    required String iconUrl,
+    required DateTime createdAt,
+  })  : type = Value(type),
+        collectionId = Value(collectionId),
+        name = Value(name),
+        description = Value(description),
+        iconUrl = Value(iconUrl),
+        createdAt = Value(createdAt);
+  static Insertable<Collection> custom({
+    Expression<String>? type,
+    Expression<String>? collectionId,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<String>? iconUrl,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (type != null) 'type': type,
+      if (collectionId != null) 'collection_id': collectionId,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (iconUrl != null) 'icon_url': iconUrl,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  CollectionsCompanion copyWith(
+      {Value<String>? type,
+      Value<String>? collectionId,
+      Value<String>? name,
+      Value<String>? description,
+      Value<String>? iconUrl,
+      Value<DateTime>? createdAt}) {
+    return CollectionsCompanion(
+      type: type ?? this.type,
+      collectionId: collectionId ?? this.collectionId,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      iconUrl: iconUrl ?? this.iconUrl,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (collectionId.present) {
+      map['collection_id'] = Variable<String>(collectionId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (iconUrl.present) {
+      map['icon_url'] = Variable<String>(iconUrl.value);
+    }
+    if (createdAt.present) {
+      final converter = Collections.$converter0;
+      map['created_at'] = Variable<int>(converter.mapToSql(createdAt.value)!);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CollectionsCompanion(')
+          ..write('type: $type, ')
+          ..write('collectionId: $collectionId, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('iconUrl: $iconUrl, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Collections extends Table with TableInfo<Collections, Collection> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  Collections(this._db, [this._alias]);
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+      'type', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _collectionIdMeta =
+      const VerificationMeta('collectionId');
+  late final GeneratedColumn<String?> collectionId = GeneratedColumn<String?>(
+      'collection_id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+      'description', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _iconUrlMeta = const VerificationMeta('iconUrl');
+  late final GeneratedColumn<String?> iconUrl = GeneratedColumn<String?>(
+      'icon_url', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  late final GeneratedColumnWithTypeConverter<DateTime, int?> createdAt =
+      GeneratedColumn<int?>('created_at', aliasedName, false,
+              type: const IntType(),
+              requiredDuringInsert: true,
+              $customConstraints: 'NOT NULL')
+          .withConverter<DateTime>(Collections.$converter0);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [type, collectionId, name, description, iconUrl, createdAt];
+  @override
+  String get aliasedName => _alias ?? 'collections';
+  @override
+  String get actualTableName => 'collections';
+  @override
+  VerificationContext validateIntegrity(Insertable<Collection> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('collection_id')) {
+      context.handle(
+          _collectionIdMeta,
+          collectionId.isAcceptableOrUnknown(
+              data['collection_id']!, _collectionIdMeta));
+    } else if (isInserting) {
+      context.missing(_collectionIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('icon_url')) {
+      context.handle(_iconUrlMeta,
+          iconUrl.isAcceptableOrUnknown(data['icon_url']!, _iconUrlMeta));
+    } else if (isInserting) {
+      context.missing(_iconUrlMeta);
+    }
+    context.handle(_createdAtMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {collectionId};
+  @override
+  Collection map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return Collection.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  Collections createAlias(String alias) {
+    return Collections(_db, alias);
+  }
+
+  static TypeConverter<DateTime, int> $converter0 = const MillisDateConverter();
+  @override
+  List<String> get customConstraints => const ['PRIMARY KEY(collection_id)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 abstract class _$MixinDatabase extends GeneratedDatabase {
   _$MixinDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   _$MixinDatabase.connect(DatabaseConnection c) : super.connect(c);
@@ -3659,6 +4048,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final CollectibleTokenMeta collectibleTokenMeta =
       CollectibleTokenMeta(this);
   late final CollectibleToken collectibleToken = CollectibleToken(this);
+  late final Collections collections = Collections(this);
   late final AddressDao addressDao = AddressDao(this as MixinDatabase);
   late final AssetDao assetDao = AssetDao(this as MixinDatabase);
   late final SnapshotDao snapshotDao = SnapshotDao(this as MixinDatabase);
@@ -3670,38 +4060,48 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
       CollectibleDao(this as MixinDatabase);
   Selectable<CollectibleItem> collectiblesResult(
       Expression<bool?> Function(
-              CollectibleToken token, CollectibleTokenMeta meta)
+              CollectibleToken token, CollectibleTokenMeta meta, Collections c)
           where,
-      OrderBy Function(CollectibleToken token, CollectibleTokenMeta meta)
+      OrderBy Function(
+              CollectibleToken token, CollectibleTokenMeta meta, Collections c)
           orderBy,
-      Limit Function(CollectibleToken token, CollectibleTokenMeta meta) limit) {
+      Limit Function(
+              CollectibleToken token, CollectibleTokenMeta meta, Collections c)
+          limit) {
     var $arrayStartIndex = 1;
     final generatedwhere = $write(
-        where(alias(this.collectibleToken, 'token'),
-            alias(this.collectibleTokenMeta, 'meta')),
+        where(
+            alias(this.collectibleToken, 'token'),
+            alias(this.collectibleTokenMeta, 'meta'),
+            alias(this.collections, 'c')),
         hasMultipleTables: true,
         startIndex: $arrayStartIndex);
     $arrayStartIndex += generatedwhere.amountOfVariables;
     final generatedorderBy = $write(
-        orderBy(alias(this.collectibleToken, 'token'),
-            alias(this.collectibleTokenMeta, 'meta')),
+        orderBy(
+            alias(this.collectibleToken, 'token'),
+            alias(this.collectibleTokenMeta, 'meta'),
+            alias(this.collections, 'c')),
         hasMultipleTables: true,
         startIndex: $arrayStartIndex);
     $arrayStartIndex += generatedorderBy.amountOfVariables;
     final generatedlimit = $write(
-        limit(alias(this.collectibleToken, 'token'),
-            alias(this.collectibleTokenMeta, 'meta')),
+        limit(
+            alias(this.collectibleToken, 'token'),
+            alias(this.collectibleTokenMeta, 'meta'),
+            alias(this.collections, 'c')),
         hasMultipleTables: true,
         startIndex: $arrayStartIndex);
     $arrayStartIndex += generatedlimit.amountOfVariables;
     return customSelect(
-        'SELECT token.*, meta.* FROM collectible_token AS token LEFT JOIN collectible_token_meta AS meta ON token.token_id = meta.token_id WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
+        'SELECT token.*, meta.*, c.type AS collection_type, c.name AS collection_name, c.description AS collection_description, c.icon_url AS collection_icon_url, c.created_at AS collection_created_at FROM collectible_token AS token LEFT JOIN collectible_token_meta AS meta ON token.token_id = meta.token_id LEFT JOIN collections AS c ON token.collection_id = c.collection_id WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
         variables: [
           ...generatedwhere.introducedVariables,
           ...generatedorderBy.introducedVariables,
           ...generatedlimit.introducedVariables
         ],
         readsFrom: {
+          collections,
           collectibleToken,
           collectibleTokenMeta,
           ...generatedwhere.watchedTables,
@@ -3718,6 +4118,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         createdAt: CollectibleToken.$converter0
             .mapToDart(row.read<int>('created_at'))!,
         metaHash: row.read<String>('meta_hash'),
+        collectionId: row.read<String>('collection_id'),
         group1: row.read<String?>('group'),
         name: row.read<String?>('name'),
         description: row.read<String?>('description'),
@@ -3726,6 +4127,12 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         mime: row.read<String?>('mime'),
         hash: row.read<String?>('hash'),
         tokenId1: row.read<String?>('token_id'),
+        collectionType: row.read<String?>('collection_type'),
+        collectionName: row.read<String?>('collection_name'),
+        collectionDescription: row.read<String?>('collection_description'),
+        collectionIconUrl: row.read<String?>('collection_icon_url'),
+        collectionCreatedAt: Collections.$converter0
+            .mapToDart(row.read<int?>('collection_created_at')),
       );
     });
   }
@@ -3895,7 +4302,8 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         fiats,
         assetsExtra,
         collectibleTokenMeta,
-        collectibleToken
+        collectibleToken,
+        collections
       ];
 }
 
@@ -3908,6 +4316,7 @@ class CollectibleItem {
   final String nfo;
   final DateTime createdAt;
   final String metaHash;
+  final String collectionId;
   final String? group1;
   final String? name;
   final String? description;
@@ -3916,6 +4325,11 @@ class CollectibleItem {
   final String? mime;
   final String? hash;
   final String? tokenId1;
+  final String? collectionType;
+  final String? collectionName;
+  final String? collectionDescription;
+  final String? collectionIconUrl;
+  final DateTime? collectionCreatedAt;
   CollectibleItem({
     required this.type,
     required this.tokenId,
@@ -3925,6 +4339,7 @@ class CollectibleItem {
     required this.nfo,
     required this.createdAt,
     required this.metaHash,
+    required this.collectionId,
     this.group1,
     this.name,
     this.description,
@@ -3933,25 +4348,37 @@ class CollectibleItem {
     this.mime,
     this.hash,
     this.tokenId1,
+    this.collectionType,
+    this.collectionName,
+    this.collectionDescription,
+    this.collectionIconUrl,
+    this.collectionCreatedAt,
   });
   @override
-  int get hashCode => Object.hash(
-      type,
-      tokenId,
-      group,
-      token,
-      mixinId,
-      nfo,
-      createdAt,
-      metaHash,
-      group1,
-      name,
-      description,
-      iconUrl,
-      mediaUrl,
-      mime,
-      hash,
-      tokenId1);
+  int get hashCode => Object.hashAll([
+        type,
+        tokenId,
+        group,
+        token,
+        mixinId,
+        nfo,
+        createdAt,
+        metaHash,
+        collectionId,
+        group1,
+        name,
+        description,
+        iconUrl,
+        mediaUrl,
+        mime,
+        hash,
+        tokenId1,
+        collectionType,
+        collectionName,
+        collectionDescription,
+        collectionIconUrl,
+        collectionCreatedAt
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3964,6 +4391,7 @@ class CollectibleItem {
           other.nfo == this.nfo &&
           other.createdAt == this.createdAt &&
           other.metaHash == this.metaHash &&
+          other.collectionId == this.collectionId &&
           other.group1 == this.group1 &&
           other.name == this.name &&
           other.description == this.description &&
@@ -3971,7 +4399,12 @@ class CollectibleItem {
           other.mediaUrl == this.mediaUrl &&
           other.mime == this.mime &&
           other.hash == this.hash &&
-          other.tokenId1 == this.tokenId1);
+          other.tokenId1 == this.tokenId1 &&
+          other.collectionType == this.collectionType &&
+          other.collectionName == this.collectionName &&
+          other.collectionDescription == this.collectionDescription &&
+          other.collectionIconUrl == this.collectionIconUrl &&
+          other.collectionCreatedAt == this.collectionCreatedAt);
   @override
   String toString() {
     return (StringBuffer('CollectibleItem(')
@@ -3983,6 +4416,7 @@ class CollectibleItem {
           ..write('nfo: $nfo, ')
           ..write('createdAt: $createdAt, ')
           ..write('metaHash: $metaHash, ')
+          ..write('collectionId: $collectionId, ')
           ..write('group1: $group1, ')
           ..write('name: $name, ')
           ..write('description: $description, ')
@@ -3990,7 +4424,12 @@ class CollectibleItem {
           ..write('mediaUrl: $mediaUrl, ')
           ..write('mime: $mime, ')
           ..write('hash: $hash, ')
-          ..write('tokenId1: $tokenId1')
+          ..write('tokenId1: $tokenId1, ')
+          ..write('collectionType: $collectionType, ')
+          ..write('collectionName: $collectionName, ')
+          ..write('collectionDescription: $collectionDescription, ')
+          ..write('collectionIconUrl: $collectionIconUrl, ')
+          ..write('collectionCreatedAt: $collectionCreatedAt')
           ..write(')'))
         .toString();
   }

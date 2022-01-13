@@ -140,5 +140,7 @@
   "depositMemoNotice": "提币时务必填写 Memo(备注)，否则您会丢失您的数字币",
   "coins": "Coins",
   "collectibles": "Collectibles",
-  "noCollectiblesFound": "No collectibles found"
+  "noCollectiblesFound": "No collectibles found",
+  "noCollectionFound": "No collection found",
+  "collectionItemCount": "{count} items"
 }

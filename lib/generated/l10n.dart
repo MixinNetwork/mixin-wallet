@@ -1499,6 +1499,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `No collection found`
+  String get noCollectionFound {
+    return Intl.message(
+      'No collection found',
+      name: 'noCollectionFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} items`
+  String collectionItemCount(Object count) {
+    return Intl.message(
+      '$count items',
+      name: 'collectionItemCount',
+      desc: '',
+      args: [count],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
