@@ -55,18 +55,18 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
           ..where((tbl) => tbl.tokenId.isIn(tokens)))
         .map((token) => token.tokenId)
         .get();
-    final result = tokens.toList()..remove(exists.toSet().contains);
-    return result;
+    final set = exists.toSet();
+    return tokens.where((token) => !set.contains(token)).toList();
   }
 
   Future<List<String>> filterExistsCollections(
       List<String> collectionIds) async {
     final exists = await (db.select(db.collections)
-          ..where((tbl) => tbl.collectionId.isIn(collectionIds))
-          ..map((tbl) => tbl.collectionId))
+          ..where((tbl) => tbl.collectionId.isIn(collectionIds)))
+        .map((tbl) => tbl.collectionId)
         .get();
-    final result = collectionIds.toList()..remove(exists.toSet().contains);
-    return result;
+    final set = exists.toSet();
+    return collectionIds.where((id) => !set.contains(id)).toList();
   }
 
   Selectable<CollectibleItem> collectibleItemByCollectionId(
@@ -98,7 +98,7 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
   }
 
   Future<int> insertCollection(sdk.CollectibleCollection collection) =>
-      db.into(db.collections).insert(
+      db.into(db.collections).insertOnConflictUpdate(
             CollectionsCompanion.insert(
               collectionId: collection.collectionId,
               name: collection.name,

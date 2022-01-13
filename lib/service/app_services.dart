@@ -517,6 +517,10 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         : await mixinDatabase.collectibleDao
             .filterExistsCollections(collectionIds);
     for (final collectionId in toRefresh) {
+      if (collectionId.isEmpty) {
+        // Ignore empty collectionId;
+        continue;
+      }
       try {
         final response = await client.collectibleApi.collections(collectionId);
         final collection = response.data;
