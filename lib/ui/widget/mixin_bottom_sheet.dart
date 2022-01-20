@@ -48,7 +48,7 @@ class MixinBottomSheetTitle extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              DefaultTextStyle(
+              DefaultTextStyle.merge(
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,

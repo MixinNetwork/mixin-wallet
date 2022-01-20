@@ -81,7 +81,7 @@ class _Body extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          DefaultTextStyle(
+          DefaultTextStyle.merge(
             style: TextStyle(
               fontSize: 16,
               color: context.colorScheme.thirdText,
@@ -142,7 +142,7 @@ class _AssetLayout extends StatelessWidget {
           height: 40,
         ),
         const SizedBox(width: 10),
-        DefaultTextStyle(
+        DefaultTextStyle.merge(
           style: TextStyle(
             fontSize: 16,
             color: context.colorScheme.primaryText,
@@ -165,7 +165,7 @@ class _AssetLayout extends StatelessWidget {
           chainSize: 8,
         ),
         const SizedBox(width: 10),
-        DefaultTextStyle(
+        DefaultTextStyle.merge(
           style: TextStyle(
             fontSize: 16,
             color: context.colorScheme.primaryText,

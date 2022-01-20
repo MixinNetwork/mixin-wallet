@@ -396,7 +396,7 @@ class _BuyDescription extends HookWidget {
     }, [this.quote]);
 
     final quote = this.quote ?? previous.value;
-    return DefaultTextStyle(
+    return DefaultTextStyle.merge(
       style: TextStyle(
         color: context.colorScheme.thirdText,
         fontWeight: FontWeight.w600,

@@ -50,7 +50,7 @@ class TransactionItem extends HookWidget {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DefaultTextStyle(
+                  DefaultTextStyle.merge(
                     maxLines: 1,
                     style: TextStyle(
                       fontSize: 16,
