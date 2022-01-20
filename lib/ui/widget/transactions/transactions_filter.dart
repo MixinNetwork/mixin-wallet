@@ -211,7 +211,7 @@ class _FilterBySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onChanged(FilterBy value) => filterValue.value = value;
-    return DefaultTextStyle(
+    return DefaultTextStyle.merge(
       style: const TextStyle(fontSize: 16, color: Color(0xFF222222)),
       child: Wrap(
         direction: Axis.horizontal,
@@ -287,7 +287,7 @@ class _Button extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
         onPressed: onTap,
-        child: DefaultTextStyle(
+        child: DefaultTextStyle.merge(
           style: TextStyle(
             color: context.colorScheme.background,
             fontSize: 16,

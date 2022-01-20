@@ -120,7 +120,7 @@ class HeaderButton extends StatelessWidget {
   Widget build(BuildContext context) => InkWell(
         onTap: onTap,
         child: Center(
-          child: DefaultTextStyle(
+          child: DefaultTextStyle.merge(
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 16,

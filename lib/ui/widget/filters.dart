@@ -38,7 +38,7 @@ class FilterWidget<T> extends StatelessWidget {
           onTap: () => onChanged?.call(value),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
-            child: DefaultTextStyle(
+            child: DefaultTextStyle.merge(
               style: TextStyle(
                 fontSize: 16,
                 color: context.colorScheme.primaryText,

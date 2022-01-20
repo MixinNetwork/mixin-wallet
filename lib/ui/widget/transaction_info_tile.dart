@@ -19,7 +19,7 @@ class TransactionInfoTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 12),
-          DefaultTextStyle(
+          DefaultTextStyle.merge(
             style: TextStyle(
               fontSize: 16,
               height: 1,
@@ -28,7 +28,7 @@ class TransactionInfoTile extends StatelessWidget {
             child: title,
           ),
           const SizedBox(height: 8),
-          DefaultTextStyle(
+          DefaultTextStyle.merge(
             style: TextStyle(
               fontSize: 16,
               height: 1,

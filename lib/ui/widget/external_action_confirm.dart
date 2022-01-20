@@ -88,7 +88,7 @@ class _ExternalActionConfirmDialog extends HookWidget {
                 strokeWidth: 2,
               ),
               const SizedBox(height: 14),
-              DefaultTextStyle(
+              DefaultTextStyle.merge(
                 style: TextStyle(
                   color: context.theme.text,
                   fontSize: 16,

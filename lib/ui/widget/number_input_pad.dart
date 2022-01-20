@@ -187,7 +187,7 @@ class _KeyboardTile extends StatelessWidget {
           onTap: onTap,
           radius: 32,
           child: Center(
-            child: DefaultTextStyle(
+            child: DefaultTextStyle.merge(
               style: TextStyle(
                 fontSize: 36,
                 color: context.colorScheme.primaryText,
