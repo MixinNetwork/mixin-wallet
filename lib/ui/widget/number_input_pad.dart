@@ -129,17 +129,14 @@ class _Row extends StatelessWidget {
   const _Row({
     Key? key,
     required this.children,
-    this.spacer = const SizedBox(width: 45),
   }) : super(key: key);
 
   final List<Widget> children;
 
-  final Widget spacer;
-
   @override
   Widget build(BuildContext context) => Row(
         mainAxisSize: MainAxisSize.min,
-        children: children.separated(spacer).toList(),
+        children: children.separated(const SizedBox(width: 45)).toList(),
       );
 }
 
