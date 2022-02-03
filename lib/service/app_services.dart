@@ -115,7 +115,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final fixedAssets = <sdk.Asset>[];
     for (final a in assets) {
       if (a.assetId == '47b13785-25e2-3c5c-ac6b-3713e9c31c22') {
-        a.name = 'BitTorrent old';
+        a.name = 'BitTorrent Old';
+        // ignore: cascade_invocations
+        a.symbol = 'BTTOLD';
       }
       fixedAssets.add(a);
     }
