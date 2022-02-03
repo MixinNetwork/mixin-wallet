@@ -112,9 +112,16 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final assets = (list.first as sdk.MixinResponse<List<sdk.Asset>>).data;
     final fiats = (list.last as sdk.MixinResponse<List<sdk.Fiat>>).data;
 
+    final fixedAssets = <sdk.Asset>[];
+    for (final a in assets) {
+      if (a.assetId == '47b13785-25e2-3c5c-ac6b-3713e9c31c22') {
+        a.name = 'BitTorrent old';
+      }
+      fixedAssets.add(a);
+    }
     await mixinDatabase.transaction(() async {
       await mixinDatabase.assetDao.resetAllBalance();
-      await mixinDatabase.assetDao.insertAllOnConflictUpdate(assets);
+      await mixinDatabase.assetDao.insertAllOnConflictUpdate(fixedAssets);
       await mixinDatabase.fiatDao.insertAllOnConflictUpdate(fiats);
     });
   }
