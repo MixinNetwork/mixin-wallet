@@ -82,7 +82,7 @@ class PercentageChange extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final decimal = Decimal.tryParse(changeUsd) ?? Decimal.zero;
-    final negative = decimal.isNegative;
+    final negative = decimal < Decimal.zero;
     final change = (decimal.abs() * Decimal.fromInt(100))
         .toDouble()
         .currencyFormatWithoutSymbol;
