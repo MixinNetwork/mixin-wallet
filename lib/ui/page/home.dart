@@ -238,6 +238,7 @@ class _Header extends HookWidget {
       } else {
         return ((balance / bitcoin!.fiatRate.asDecimal).toDecimal() /
                 bitcoin!.priceUsd.asDecimal)
+            .toDecimal(scaleOnInfinitePrecision: 8)
             .toString();
       }
     }, [data, bitcoin]);
