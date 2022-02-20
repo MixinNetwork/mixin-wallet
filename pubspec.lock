@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "31.0.0"
+  adaptive_number:
+    dependency: transitive
+    description:
+      name: adaptive_number
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   analyzer:
     dependency: transitive
     description:
@@ -224,7 +231,7 @@ packages:
       name: ed25519_edwards
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.1"
+    version: "0.3.1"
   enum_to_string:
     dependency: transitive
     description:
@@ -452,11 +459,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: f497761b9ca3451f0305e0dd283faeb72819bc32
-      resolved-ref: f497761b9ca3451f0305e0dd283faeb72819bc32
+      ref: "8ed59f31610480abb5175419bbb510a97ae73b9d"
+      resolved-ref: "8ed59f31610480abb5175419bbb510a97ae73b9d"
       url: "https://github.com/MixinNetwork/mixin_bot_sdk_dart.git"
     source: git
-    version: "0.0.8"
+    version: "0.2.11"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:
