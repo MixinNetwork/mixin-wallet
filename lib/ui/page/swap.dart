@@ -203,10 +203,7 @@ class _Body extends HookWidget {
                 child: Center(
                   child: SizedBox.square(
                     dimension: 40,
-                    child: SvgPicture.asset(
-                      R.resourcesIcSwitchSvg,
-                      color: context.colorScheme.primaryText,
-                    ),
+                    child: SvgPicture.asset(R.resourcesIcSwitchSvg),
                   ),
                 )),
             Expanded(
