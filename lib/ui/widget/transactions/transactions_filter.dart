@@ -29,6 +29,7 @@ Future<SortBy?> showFilterSortBottomSheetDialog(
     );
 
 enum SortBy { time, amount }
+
 enum FilterBy { all, transfer, deposit, withdrawal, fee, rebate, raw }
 
 extension FilterBySnapshots on FilterBy {
