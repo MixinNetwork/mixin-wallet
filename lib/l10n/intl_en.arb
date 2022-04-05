@@ -78,7 +78,7 @@
   "mixinWallet": "Mixin Wallet",
   "authSlogan": "Mixin Wallet is a user-friendly, secure and powerful multi-chain digital wallet.",
   "authHint": "Read-only authorization cannot use your assets, please rest assured",
-  "authorize": "Authorize",
+  "authorize": "Sign in with Mixin",
   "authTips": "An open source cryptocurrency wallet",
   "hiddenAssets": "Hidden Assets",
   "hideSmallAssets": "Hide small assets",

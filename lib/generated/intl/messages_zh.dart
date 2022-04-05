@@ -73,7 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Mixin 钱包是一款用户友好、安全且功能强大的多链数字钱包。"),
         "authTips":
             MessageLookupByLibrary.simpleMessage("你知道吗？Mixin 是一个开源的加密钱包"),
-        "authorize": MessageLookupByLibrary.simpleMessage("授权使用"),
+        "authorize": MessageLookupByLibrary.simpleMessage("使用 Mixin 登录"),
         "balance": MessageLookupByLibrary.simpleMessage("余额"),
         "buy": MessageLookupByLibrary.simpleMessage("购买"),
         "buyDisclaimer": MessageLookupByLibrary.simpleMessage(
