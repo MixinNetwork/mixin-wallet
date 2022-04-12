@@ -840,10 +840,10 @@ class L10n {
     );
   }
 
-  /// `Authorize`
+  /// `Sign in with Mixin`
   String get authorize {
     return Intl.message(
-      'Authorize',
+      'Sign in with Mixin',
       name: 'authorize',
       desc: '',
       args: [],

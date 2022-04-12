@@ -83,7 +83,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Mixin Wallet is a user-friendly, secure and powerful multi-chain digital wallet."),
         "authTips": MessageLookupByLibrary.simpleMessage(
             "An open source cryptocurrency wallet"),
-        "authorize": MessageLookupByLibrary.simpleMessage("Authorize"),
+        "authorize": MessageLookupByLibrary.simpleMessage("Sign in with Mixin"),
         "averageArrival": m2,
         "balance": MessageLookupByLibrary.simpleMessage("BALANCE"),
         "balanceOfBtc": m3,

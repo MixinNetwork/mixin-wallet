@@ -63,14 +63,10 @@ class Avatar extends StatelessWidget {
 class _AvatarPlaceholder extends HookWidget {
   const _AvatarPlaceholder({
     Key? key,
-    this.size = 32.0,
-    this.fontSize = 18,
     required this.userId,
     required this.name,
   }) : super(key: key);
 
-  final double size;
-  final double fontSize;
   final String userId;
   final String name;
 
@@ -78,7 +74,7 @@ class _AvatarPlaceholder extends HookWidget {
   Widget build(BuildContext context) {
     final color = useMemoized(() => _getAvatarColorById(userId), [userId]);
     return SizedBox.fromSize(
-      size: Size.square(size),
+      size: const Size.square(32.0),
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: color,

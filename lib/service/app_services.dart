@@ -116,15 +116,29 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final assets = (list.first as sdk.MixinResponse<List<sdk.Asset>>).data;
     final fiats = (list.last as sdk.MixinResponse<List<sdk.Fiat>>).data;
 
+    final fixedAssets = <sdk.Asset>[];
+    for (final a in assets) {
+      if (a.assetId == '47b13785-25e2-3c5c-ac6b-3713e9c31c22') {
+        a.name = 'BitTorrent Old';
+        // ignore: cascade_invocations
+        a.symbol = 'BTTOLD';
+      }
+      fixedAssets.add(a);
+    }
     await mixinDatabase.transaction(() async {
       await mixinDatabase.assetDao.resetAllBalance();
-      await mixinDatabase.assetDao.insertAllOnConflictUpdate(assets);
+      await mixinDatabase.assetDao.insertAllOnConflictUpdate(fixedAssets);
       await mixinDatabase.fiatDao.insertAllOnConflictUpdate(fiats);
     });
   }
 
   Future<sdk.Asset> updateAsset(String assetId) async {
     final asset = (await client.assetApi.getAssetById(assetId)).data;
+    if (asset.assetId == '47b13785-25e2-3c5c-ac6b-3713e9c31c22') {
+      asset.name = 'BitTorrent Old';
+      // ignore: cascade_invocations
+      asset.symbol = 'BTTOLD';
+    }
     await mixinDatabase.assetDao.insert(asset);
     return asset;
   }
@@ -416,8 +430,17 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   Future<void> searchAndUpdateAsset(String keyword) async {
     if (keyword.isEmpty) return;
     final mixinResponse = await client.assetApi.queryAsset(keyword);
+    final fixedAssets = <sdk.Asset>[];
+    for (final a in mixinResponse.data) {
+      if (a.assetId == '47b13785-25e2-3c5c-ac6b-3713e9c31c22') {
+        a.name = 'BitTorrent Old';
+        // ignore: cascade_invocations
+        a.symbol = 'BTTOLD';
+      }
+      fixedAssets.add(a);
+    }
     await mixinDatabase.assetDao
-        .insertAllOnConflictUpdateWithoutBalance(mixinResponse.data);
+        .insertAllOnConflictUpdateWithoutBalance(fixedAssets);
   }
 
   Future<void> updateTopAssetIds() async {

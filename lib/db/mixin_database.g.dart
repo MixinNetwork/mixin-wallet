@@ -334,9 +334,10 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
 }
 
 class Addresses extends Table with TableInfo<Addresses, Addresse> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Addresses(this._db, [this._alias]);
+  Addresses(this.attachedDatabase, [this._alias]);
   final VerificationMeta _addressIdMeta = const VerificationMeta('addressId');
   late final GeneratedColumn<String?> addressId = GeneratedColumn<String?>(
       'address_id', aliasedName, false,
@@ -481,13 +482,13 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
   Set<GeneratedColumn> get $primaryKey => {addressId};
   @override
   Addresse map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Addresse.fromData(data, _db,
+    return Addresse.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Addresses createAlias(String alias) {
-    return Addresses(_db, alias);
+    return Addresses(attachedDatabase, alias);
   }
 
   static TypeConverter<DateTime, int> $converter0 = const MillisDateConverter();
@@ -814,7 +815,7 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
     required String symbol,
     required String name,
     required String iconUrl,
-    required String balance,
+    this.balance = const Value.absent(),
     this.destination = const Value.absent(),
     this.tag = const Value.absent(),
     required String priceBtc,
@@ -830,7 +831,6 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
         symbol = Value(symbol),
         name = Value(name),
         iconUrl = Value(iconUrl),
-        balance = Value(balance),
         priceBtc = Value(priceBtc),
         priceUsd = Value(priceUsd),
         chainId = Value(chainId),
@@ -991,9 +991,10 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
 }
 
 class Assets extends Table with TableInfo<Assets, Asset> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Assets(this._db, [this._alias]);
+  Assets(this.attachedDatabase, [this._alias]);
   final VerificationMeta _assetIdMeta = const VerificationMeta('assetId');
   late final GeneratedColumn<String?> assetId = GeneratedColumn<String?>(
       'asset_id', aliasedName, false,
@@ -1022,8 +1023,9 @@ class Assets extends Table with TableInfo<Assets, Asset> {
   late final GeneratedColumn<String?> balance = GeneratedColumn<String?>(
       'balance', aliasedName, false,
       type: const StringType(),
-      requiredDuringInsert: true,
-      $customConstraints: 'NOT NULL');
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL DEFAULT \'0\'',
+      defaultValue: const CustomExpression<String>('\'0\''));
   final VerificationMeta _destinationMeta =
       const VerificationMeta('destination');
   late final GeneratedColumn<String?> destination = GeneratedColumn<String?>(
@@ -1148,8 +1150,6 @@ class Assets extends Table with TableInfo<Assets, Asset> {
     if (data.containsKey('balance')) {
       context.handle(_balanceMeta,
           balance.isAcceptableOrUnknown(data['balance']!, _balanceMeta));
-    } else if (isInserting) {
-      context.missing(_balanceMeta);
     }
     if (data.containsKey('destination')) {
       context.handle(
@@ -1220,13 +1220,13 @@ class Assets extends Table with TableInfo<Assets, Asset> {
   Set<GeneratedColumn> get $primaryKey => {assetId};
   @override
   Asset map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Asset.fromData(data, _db,
+    return Asset.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Assets createAlias(String alias) {
-    return Assets(_db, alias);
+    return Assets(attachedDatabase, alias);
   }
 
   @override
@@ -1640,9 +1640,10 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
 }
 
 class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Snapshots(this._db, [this._alias]);
+  Snapshots(this.attachedDatabase, [this._alias]);
   final VerificationMeta _snapshotIdMeta = const VerificationMeta('snapshotId');
   late final GeneratedColumn<String?> snapshotId = GeneratedColumn<String?>(
       'snapshot_id', aliasedName, false,
@@ -1810,13 +1811,13 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
   Set<GeneratedColumn> get $primaryKey => {snapshotId};
   @override
   Snapshot map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Snapshot.fromData(data, _db,
+    return Snapshot.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Snapshots createAlias(String alias) {
-    return Snapshots(_db, alias);
+    return Snapshots(attachedDatabase, alias);
   }
 
   static TypeConverter<DateTime, int> $converter0 = const MillisDateConverter();
@@ -2269,9 +2270,10 @@ class UsersCompanion extends UpdateCompanion<User> {
 }
 
 class Users extends Table with TableInfo<Users, User> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Users(this._db, [this._alias]);
+  Users(this.attachedDatabase, [this._alias]);
   final VerificationMeta _userIdMeta = const VerificationMeta('userId');
   late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
       'user_id', aliasedName, false,
@@ -2438,13 +2440,13 @@ class Users extends Table with TableInfo<Users, User> {
   Set<GeneratedColumn> get $primaryKey => {userId};
   @override
   User map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return User.fromData(data, _db,
+    return User.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Users createAlias(String alias) {
-    return Users(_db, alias);
+    return Users(attachedDatabase, alias);
   }
 
   static TypeConverter<UserRelationship, String> $converter0 =
@@ -2576,9 +2578,10 @@ class FiatsCompanion extends UpdateCompanion<Fiat> {
 }
 
 class Fiats extends Table with TableInfo<Fiats, Fiat> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Fiats(this._db, [this._alias]);
+  Fiats(this.attachedDatabase, [this._alias]);
   final VerificationMeta _codeMeta = const VerificationMeta('code');
   late final GeneratedColumn<String?> code = GeneratedColumn<String?>(
       'code', aliasedName, false,
@@ -2621,13 +2624,13 @@ class Fiats extends Table with TableInfo<Fiats, Fiat> {
   Set<GeneratedColumn> get $primaryKey => {code};
   @override
   Fiat map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Fiat.fromData(data, _db,
+    return Fiat.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Fiats createAlias(String alias) {
-    return Fiats(_db, alias);
+    return Fiats(attachedDatabase, alias);
   }
 
   @override
@@ -2763,9 +2766,10 @@ class AssetsExtraCompanion extends UpdateCompanion<AssetsExtraData> {
 }
 
 class AssetsExtra extends Table with TableInfo<AssetsExtra, AssetsExtraData> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  AssetsExtra(this._db, [this._alias]);
+  AssetsExtra(this.attachedDatabase, [this._alias]);
   final VerificationMeta _assetIdMeta = const VerificationMeta('assetId');
   late final GeneratedColumn<String?> assetId = GeneratedColumn<String?>(
       'asset_id', aliasedName, false,
@@ -2806,13 +2810,13 @@ class AssetsExtra extends Table with TableInfo<AssetsExtra, AssetsExtraData> {
   Set<GeneratedColumn> get $primaryKey => {assetId};
   @override
   AssetsExtraData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return AssetsExtraData.fromData(data, _db,
+    return AssetsExtraData.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   AssetsExtra createAlias(String alias) {
-    return AssetsExtra(_db, alias);
+    return AssetsExtra(attachedDatabase, alias);
   }
 
   @override

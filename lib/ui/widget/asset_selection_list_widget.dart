@@ -1,6 +1,8 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
@@ -29,6 +31,7 @@ Future<AssetResult?> showAssetSelectionBottomSheet({
   String? initialSelected,
   AssetSourceLoader? source,
   Set<String> ignoreAssets = const {},
+  bool useSearchApi = false,
 }) =>
     showMixinBottomSheet<AssetResult>(
       context: context,
@@ -38,6 +41,7 @@ Future<AssetResult?> showAssetSelectionBottomSheet({
         onTap: (_) {},
         source: source,
         ignoreAssets: ignoreAssets,
+        useSearchApi: useSearchApi,
       ),
     );
 
@@ -51,6 +55,7 @@ class AssetSelectionListWidget extends HookWidget {
     this.selectedAssetId,
     this.source,
     this.ignoreAssets = const {},
+    this.useSearchApi = false,
   }) : super(key: key);
 
   final String? selectedAssetId;
@@ -60,6 +65,8 @@ class AssetSelectionListWidget extends HookWidget {
 
   /// The assets which was ignore and not show in the list.
   final Set<String> ignoreAssets;
+
+  final bool useSearchApi;
 
   @override
   Widget build(BuildContext context) {
@@ -78,25 +85,58 @@ class AssetSelectionListWidget extends HookWidget {
     var selectedAssetId = this.selectedAssetId;
     selectedAssetId ??= assetResults.firstOrNull?.assetId;
 
-    final filterKeyword = useState('');
+    final keywordStreamController = useStreamController<String>();
+    final keywordStream = useMemoized(
+      () => keywordStreamController.stream.map((e) => e.trim()).distinct(),
+      [keywordStreamController],
+    );
+    final filterKeyword = useMemoizedStream(() => keywordStream.throttleTime(
+              const Duration(milliseconds: 100),
+              trailing: true,
+              leading: false,
+            )).data ??
+        '';
 
     final filterList = useMemoized(
       () {
-        final k = filterKeyword.value;
-        if (k.isEmpty) {
+        if (filterKeyword.isEmpty) {
           return assetResults;
         }
         return assetResults
             .where(
               (e) =>
-                  e.symbol.containsIgnoreCase(k) ||
-                  e.name.containsIgnoreCase(k) ||
-                  (e.chainName?.containsIgnoreCase(k) ?? false),
+                  e.symbol.containsIgnoreCase(filterKeyword) ||
+                  e.name.containsIgnoreCase(filterKeyword) ||
+                  (e.chainName?.containsIgnoreCase(filterKeyword) ?? false),
             )
             .toList();
       },
-      [filterKeyword.value, assetResults],
+      [filterKeyword, assetResults],
     );
+    useEffect(() {
+      if (!useSearchApi) {
+        return null;
+      }
+      CancelableOperation? lastRequest;
+      final listen = keywordStream
+          .where((event) => event.isNotEmpty)
+          .debounceTime(const Duration(milliseconds: 500))
+          .map(
+        (String keyword) {
+          debugPrint('search keyword: $keyword');
+          return CancelableOperation.fromFuture(
+            context.appServices.searchAndUpdateAsset(keyword),
+          );
+        },
+      ).listen((event) {
+        lastRequest?.cancel();
+        lastRequest = event;
+      });
+      return () {
+        listen.cancel();
+        lastRequest?.cancel();
+      };
+    }, [keywordStream, useSearchApi]);
 
     return SizedBox(
       height: MediaQuery.of(context).size.height - 100,
@@ -107,9 +147,7 @@ class AssetSelectionListWidget extends HookWidget {
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
               child: SearchHeaderWidget(
                 hintText: context.l10n.search,
-                onChanged: (k) {
-                  filterKeyword.value = k.trim();
-                },
+                onChanged: keywordStreamController.add,
               )),
           const SizedBox(height: 10),
           Expanded(

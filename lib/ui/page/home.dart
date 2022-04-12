@@ -183,13 +183,25 @@ class _AccountBottomSheet extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         MixinBottomSheetTitle(
-          title: Avatar(
-            avatarUrl: account.avatarUrl,
-            userId: account.userId,
-            name: account.fullName ?? '',
-            size: 32,
-          ),
-        ),
+            title: Row(
+          children: [
+            Avatar(
+              avatarUrl: account.avatarUrl,
+              userId: account.userId,
+              name: account.fullName ?? '',
+              size: 32,
+            ),
+            const SizedBox(width: 16),
+            Text(
+              account.fullName ?? '',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        )),
         const SizedBox(height: 8),
         MenuItemWidget(
           topRounded: true,

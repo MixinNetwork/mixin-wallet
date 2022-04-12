@@ -448,7 +448,7 @@ class _AssetBottomSheetTile extends StatelessWidget {
             Flexible(
               flex: 20,
               fit: FlexFit.tight,
-              child: DefaultTextStyle(
+              child: DefaultTextStyle.merge(
                 style: TextStyle(
                   color: context.colorScheme.thirdText,
                   fontSize: 16,
@@ -462,7 +462,7 @@ class _AssetBottomSheetTile extends StatelessWidget {
             Flexible(
               flex: 65,
               fit: FlexFit.tight,
-              child: DefaultTextStyle(
+              child: DefaultTextStyle.merge(
                 style: TextStyle(
                   fontSize: 16,
                   color: context.colorScheme.primaryText,

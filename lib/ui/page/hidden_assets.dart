@@ -75,12 +75,10 @@ class _SwipeToUnHide extends StatelessWidget {
     required Key key,
     required this.child,
     required this.onDismiss,
-    this.confirmDismiss,
   }) : super(key: key);
 
   final Widget child;
   final VoidCallback onDismiss;
-  final ConfirmDismissCallback? confirmDismiss;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +96,6 @@ class _SwipeToUnHide extends StatelessWidget {
     return Dismissible(
       key: ValueKey(key),
       onDismissed: (direction) => onDismiss(),
-      confirmDismiss: confirmDismiss,
       background: Container(
         color: context.theme.red,
         child: Align(

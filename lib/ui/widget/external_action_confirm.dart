@@ -33,17 +33,16 @@ Future<bool> showAndWaitingExternalAction({
   return result == true;
 }
 
+const _kLoopInterval = Duration(seconds: 2);
+
 class _ExternalActionConfirmDialog extends HookWidget {
   const _ExternalActionConfirmDialog({
     required Key key,
     required this.loopAction,
-    this.loopInterval = const Duration(seconds: 2),
     required this.hint,
   }) : super(key: key);
 
   final ConfirmLoopAction loopAction;
-
-  final Duration loopInterval;
 
   final Widget hint;
 
@@ -66,7 +65,7 @@ class _ExternalActionConfirmDialog extends HookWidget {
             Navigator.of(context).pop();
             break;
           }
-          await Future.delayed(loopInterval);
+          await Future.delayed(_kLoopInterval);
         }
       });
       return () => canceled = true;
@@ -88,7 +87,7 @@ class _ExternalActionConfirmDialog extends HookWidget {
                 strokeWidth: 2,
               ),
               const SizedBox(height: 14),
-              DefaultTextStyle(
+              DefaultTextStyle.merge(
                 style: TextStyle(
                   color: context.theme.text,
                   fontSize: 16,

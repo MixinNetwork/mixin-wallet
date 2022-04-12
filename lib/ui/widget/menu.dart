@@ -53,7 +53,7 @@ class MenuItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(flex: 2),
-                    DefaultTextStyle(
+                    DefaultTextStyle.merge(
                       style: TextStyle(
                         fontSize: 16,
                         height: 1.5,
@@ -63,7 +63,7 @@ class MenuItemWidget extends StatelessWidget {
                     ),
                     if (subtitle != null) ...[
                       const Spacer(flex: 1),
-                      DefaultTextStyle(
+                      DefaultTextStyle.merge(
                         style: TextStyle(
                           fontSize: 14,
                           height: 1,

@@ -214,7 +214,7 @@ class _AddressSelectionItemTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      DefaultTextStyle(
+                      DefaultTextStyle.merge(
                         style: TextStyle(
                           color: context.colorScheme.primaryText,
                           fontSize: 16,
@@ -223,7 +223,7 @@ class _AddressSelectionItemTile extends StatelessWidget {
                         child: title,
                       ),
                       const SizedBox(height: 2),
-                      DefaultTextStyle(
+                      DefaultTextStyle.merge(
                         softWrap: true,
                         style: TextStyle(
                           color: context.colorScheme.thirdText,
