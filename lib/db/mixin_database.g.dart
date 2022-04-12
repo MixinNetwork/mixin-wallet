@@ -3102,9 +3102,10 @@ class CollectibleTokenMetaCompanion
 
 class CollectibleTokenMeta extends Table
     with TableInfo<CollectibleTokenMeta, CollectibleTokenMetaData> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  CollectibleTokenMeta(this._db, [this._alias]);
+  CollectibleTokenMeta(this.attachedDatabase, [this._alias]);
   final VerificationMeta _groupMeta = const VerificationMeta('group');
   late final GeneratedColumn<String?> group = GeneratedColumn<String?>(
       'group', aliasedName, false,
@@ -3225,13 +3226,13 @@ class CollectibleTokenMeta extends Table
   @override
   CollectibleTokenMetaData map(Map<String, dynamic> data,
       {String? tablePrefix}) {
-    return CollectibleTokenMetaData.fromData(data, _db,
+    return CollectibleTokenMetaData.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   CollectibleTokenMeta createAlias(String alias) {
-    return CollectibleTokenMeta(_db, alias);
+    return CollectibleTokenMeta(attachedDatabase, alias);
   }
 
   @override
@@ -3544,9 +3545,10 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
 
 class CollectibleToken extends Table
     with TableInfo<CollectibleToken, CollectibleTokenData> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  CollectibleToken(this._db, [this._alias]);
+  CollectibleToken(this.attachedDatabase, [this._alias]);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
   late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
       'type', aliasedName, false,
@@ -3683,13 +3685,13 @@ class CollectibleToken extends Table
   Set<GeneratedColumn> get $primaryKey => {tokenId};
   @override
   CollectibleTokenData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return CollectibleTokenData.fromData(data, _db,
+    return CollectibleTokenData.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   CollectibleToken createAlias(String alias) {
-    return CollectibleToken(_db, alias);
+    return CollectibleToken(attachedDatabase, alias);
   }
 
   static TypeConverter<DateTime, int> $converter0 = const MillisDateConverter();
@@ -3928,9 +3930,10 @@ class CollectionsCompanion extends UpdateCompanion<Collection> {
 }
 
 class Collections extends Table with TableInfo<Collections, Collection> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Collections(this._db, [this._alias]);
+  Collections(this.attachedDatabase, [this._alias]);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
   late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
       'type', aliasedName, false,
@@ -4024,13 +4027,13 @@ class Collections extends Table with TableInfo<Collections, Collection> {
   Set<GeneratedColumn> get $primaryKey => {collectionId};
   @override
   Collection map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Collection.fromData(data, _db,
+    return Collection.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Collections createAlias(String alias) {
-    return Collections(_db, alias);
+    return Collections(attachedDatabase, alias);
   }
 
   static TypeConverter<DateTime, int> $converter0 = const MillisDateConverter();
