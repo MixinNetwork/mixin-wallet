@@ -25,5 +25,5 @@ const usdtAssets = {
 // ommi usdt do not support deposit.
 const omniUSDT = '815b0b1a-2764-3736-8faa-42d694fa620a';
 
-
-const authScope = 'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ+COLLECTIBLES:READ';
+const authScope =
+    'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ+COLLECTIBLES:READ';
