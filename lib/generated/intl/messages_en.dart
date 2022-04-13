@@ -157,6 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkFeeTip": MessageLookupByLibrary.simpleMessage(
             "Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions."),
         "networkType": MessageLookupByLibrary.simpleMessage("Network type"),
+        "nfts": MessageLookupByLibrary.simpleMessage("NFTs"),
         "noAsset": MessageLookupByLibrary.simpleMessage("NO ASSET"),
         "noCollectiblesFound":
             MessageLookupByLibrary.simpleMessage("No collectibles found"),

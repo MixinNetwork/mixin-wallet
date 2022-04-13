@@ -1490,6 +1490,16 @@ class L10n {
     );
   }
 
+  /// `NFTs`
+  String get nfts {
+    return Intl.message(
+      'NFTs',
+      name: 'nfts',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `No collectibles found`
   String get noCollectiblesFound {
     return Intl.message(

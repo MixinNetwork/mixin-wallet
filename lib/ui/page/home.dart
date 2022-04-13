@@ -262,7 +262,7 @@ class _TabSwitchBar extends HookWidget implements PreferredSizeWidget {
         unselectedLabelColor: const Color(0xFFBCBEC3),
         tabs: [
           Tab(text: context.l10n.coins),
-          Tab(text: context.l10n.collectibles),
+          Tab(text: context.l10n.nfts),
         ],
         indicatorSize: TabBarIndicatorSize.label,
         indicatorWeight: 3,
