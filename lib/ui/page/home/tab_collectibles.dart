@@ -80,7 +80,7 @@ class _CollectiblesGroupTile extends StatelessWidget {
     final String subtitle;
     final String title;
     if (items.length > 1) {
-      subtitle = '${items.length} ${context.l10n.collectibles}';
+      subtitle = context.l10n.collectionItemCount(items.length);
       title = items.first.collectionName ?? '';
     } else if (items.length == 1) {
       // FIXME: replace with subtitle.

@@ -1480,16 +1480,6 @@ class L10n {
     );
   }
 
-  /// `Collectibles`
-  String get collectibles {
-    return Intl.message(
-      'Collectibles',
-      name: 'collectibles',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `NFTs`
   String get nfts {
     return Intl.message(
