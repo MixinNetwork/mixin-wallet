@@ -567,7 +567,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
               result.add(MapEntry(key, [item]));
             }
           } else {
-            result.add(MapEntry(key, value + value));
+            result.add(MapEntry(key, value));
           }
         });
         return result;
