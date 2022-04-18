@@ -499,8 +499,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     try {
       final collectibles = (await client.collectibleApi.getOutputs(
         members: hashMemberId(),
-        limit: 100,
+        limit: 500,
         threshold: 1,
+        state: 'unspent',
       ))
           .data;
       final tokenIds = collectibles.map((e) => e.tokenId).toList();
