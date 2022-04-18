@@ -496,15 +496,24 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       }
     }
 
-    final collectibles = (await client.collectibleApi.getOutputs(
-      members: hashMemberId(),
-      limit: 100,
-      threshold: 1,
-    ))
-        .data;
-    final tokenIds = collectibles.map((e) => e.tokenId).toList();
-    mixinDatabase.collectibleDao.removeNotExist(tokenIds);
-    await refreshCollectiblesTokenIfNotExist(tokenIds);
+    try {
+      final collectibles = (await client.collectibleApi.getOutputs(
+        members: hashMemberId(),
+        limit: 100,
+        threshold: 1,
+      ))
+          .data;
+      final tokenIds = collectibles.map((e) => e.tokenId).toList();
+      mixinDatabase.collectibleDao.removeNotExist(tokenIds);
+      await refreshCollectiblesTokenIfNotExist(tokenIds);
+    } on DioError catch (e, s) {
+      if (e.optionMixinError?.isForbidden == true) {
+        rethrow;
+      }
+      d('updateCollectibles error: $e, $s');
+    } catch (e, s) {
+      d('updateCollectibles error: $e, $s');
+    }
   }
 
   Future<void> refreshCollectiblesTokenIfNotExist(List<String> tokenIds) async {

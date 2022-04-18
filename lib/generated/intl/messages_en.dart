@@ -93,6 +93,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
         "coins": MessageLookupByLibrary.simpleMessage("Coins"),
+        "collectiblesReadFailed":
+            MessageLookupByLibrary.simpleMessage("Failed to read collectibles"),
         "collectionItemCount": m4,
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
         "completed": MessageLookupByLibrary.simpleMessage("Completed"),

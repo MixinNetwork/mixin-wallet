@@ -145,5 +145,6 @@
   "nfts": "NFTs",
   "noCollectiblesFound": "No collectibles found",
   "noCollectionFound": "No collection found",
-  "collectionItemCount": "{count} items"
+  "collectionItemCount": "{count} items",
+  "collectiblesReadFailed": "Failed to read collectibles"
 }
