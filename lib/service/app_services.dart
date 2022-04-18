@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:collection/collection.dart';
+import 'package:convert/convert.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:moor/moor.dart';
+import 'package:pointycastle/digests/sha3.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../db/dao/snapshot_dao.dart';
@@ -477,4 +481,89 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .assetResult(auth!.account.fiatCurrency, assetId)
         .getSingleOrNull();
   }
+
+  Future<void> updateCollectibles() async {
+    // hash member id.
+    String hashMemberId() {
+      try {
+        final userId = auth!.account.userId;
+        final bytes =
+            SHA3Digest(256).process(Uint8List.fromList(utf8.encode(userId)));
+        return hex.encode(bytes);
+      } catch (e, s) {
+        d('updateCollectibles error: $e, $s');
+        return '';
+      }
+    }
+
+    final collectibles = (await client.collectibleApi.getOutputs(
+      members: hashMemberId(),
+      limit: 100,
+      threshold: 1,
+    ))
+        .data;
+    final tokenIds = collectibles.map((e) => e.tokenId).toList();
+    mixinDatabase.collectibleDao.removeNotExist(tokenIds);
+    await refreshCollectiblesTokenIfNotExist(tokenIds);
+  }
+
+  Future<void> refreshCollectiblesTokenIfNotExist(List<String> tokenIds) async {
+    final toRefresh =
+        await mixinDatabase.collectibleDao.filterExistsTokens(tokenIds);
+
+    final collectionIds = <String>{};
+    for (final tokenId in toRefresh) {
+      try {
+        final response = await client.collectibleApi.getToken(tokenId);
+        final token = response.data;
+        collectionIds.add(token.collectionId);
+        await mixinDatabase.collectibleDao.insertCollectible(token);
+      } catch (error, stacktrace) {
+        d('refreshTokenIfNotExist error:$tokenId $error $stacktrace');
+      }
+    }
+    await refreshCollection(collectionIds.toList(), force: false);
+  }
+
+  Future<void> refreshCollection(
+    List<String> collectionIds, {
+    bool force = false,
+  }) async {
+    final toRefresh = force
+        ? collectionIds
+        : await mixinDatabase.collectibleDao
+            .filterExistsCollections(collectionIds);
+    for (final collectionId in toRefresh) {
+      if (collectionId.isEmpty) {
+        // Ignore empty collectionId;
+        continue;
+      }
+      try {
+        final response = await client.collectibleApi.collections(collectionId);
+        final collection = response.data;
+        await mixinDatabase.collectibleDao.insertCollection(collection);
+      } catch (error, stacktrace) {
+        d('refreshCollection error:$collectionId $error $stacktrace');
+      }
+    }
+  }
+
+  Stream<List<MapEntry<String, List<CollectibleItem>>>> groupedCollectibles() =>
+      mixinDatabase.collectibleDao.getAllCollectibles().watch().map((event) {
+        final grouped = event.groupListsBy((e) => e.collectionId);
+        final result = <MapEntry<String, List<CollectibleItem>>>[];
+        grouped.forEach((key, value) {
+          if (key.isEmpty) {
+            for (final item in value) {
+              result.add(MapEntry(key, [item]));
+            }
+          } else {
+            result.add(MapEntry(key, value));
+          }
+        });
+        return result;
+      });
+
+  Stream<Collection?> collection(String collectionId) =>
+      mixinDatabase.collectibleDao.collection(collectionId).watchSingleOrNull();
 }

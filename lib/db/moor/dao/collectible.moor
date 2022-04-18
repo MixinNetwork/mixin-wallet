@@ -1,0 +1,16 @@
+import '../mixin.moor';
+
+collectiblesResult as CollectibleItem:
+SELECT token.*,
+       meta.*,
+       c.type as collection_type,
+       c.name as collection_name,
+       c.description as collection_description,
+       c.icon_url as collection_icon_url,
+       c.created_at as collection_created_at
+FROM collectible_token as token
+LEFT JOIN collectible_token_meta as meta on token.token_id = meta.token_id
+LEFT JOIN collections as c on token.collection_id = c.collection_id
+WHERE $where
+ORDER BY $orderBy
+LIMIT $limit;

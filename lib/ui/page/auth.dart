@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../service/env.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
@@ -152,7 +153,7 @@ class _AuthorizeButton extends StatelessWidget {
     void onTap() {
       final uri = Uri.https('mixin-www.zeromesh.net', 'oauth/authorize', {
         'client_id': Env.clientId,
-        'scope': 'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ',
+        'scope': authScope,
         'response_type': 'code',
       });
       context.toExternal(uri);

@@ -24,21 +24,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(value) => "已显示 ${value}";
 
-  static String m4(value) => "充值到账至少需要 ${value} 个区块确认";
+  static String m4(count) => "${count} items";
 
-  static String m5(value) => "地址和 Memo(备注)同时使用才能充值 ${value} 到你的账户。";
+  static String m5(value) => "充值到账至少需要 ${value} 个区块确认";
 
-  static String m6(value) => "首次充值至少 ${value}";
+  static String m6(value) => "地址和 Memo(备注)同时使用才能充值 ${value} 到你的账户。";
 
-  static String m7(value) => "该充值地址仅支持 ${value}.";
+  static String m7(value) => "首次充值至少 ${value}";
 
-  static String m8(value, value2) => "${value}/${value2} 区块确认数";
+  static String m8(value) => "该充值地址仅支持 ${value}.";
 
-  static String m9(value) => "暂不支持滑点大于 ${value} 的闪兑";
+  static String m9(value, value2) => "${value}/${value2} 区块确认数";
 
-  static String m10(value) => "价值 ${value}";
+  static String m10(value) => "暂不支持滑点大于 ${value} 的闪兑";
 
-  static String m11(value) => "当时价值 ${value}";
+  static String m11(value) => "价值 ${value}";
+
+  static String m12(value) => "当时价值 ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -80,6 +82,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "购买服务由 https://sendwyre.com 提供"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
+        "coins": MessageLookupByLibrary.simpleMessage("代币"),
+        "collectionItemCount": m4,
         "comingSoon": MessageLookupByLibrary.simpleMessage("即将推出"),
         "completed": MessageLookupByLibrary.simpleMessage("已完成"),
         "contact": MessageLookupByLibrary.simpleMessage("联系人"),
@@ -90,12 +94,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "copyToClipboard": MessageLookupByLibrary.simpleMessage("已复制到剪切板"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
-        "depositConfirmation": m4,
+        "depositConfirmation": m5,
         "depositMemoNotice": MessageLookupByLibrary.simpleMessage(
             "提币时务必填写 Memo(备注)，否则您会丢失您的数字币"),
-        "depositNotice": m5,
-        "depositReserve": m6,
-        "depositTip": m7,
+        "depositNotice": m6,
+        "depositReserve": m7,
+        "depositTip": m8,
         "depositTipBtc": MessageLookupByLibrary.simpleMessage("该充值地址仅支持 BTC。"),
         "depositTipEos":
             MessageLookupByLibrary.simpleMessage("该充值地址支持所有基于 EOS 发行的代币。"),
@@ -134,7 +138,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkFeeTip": MessageLookupByLibrary.simpleMessage(
             "由第三方服务商收取。直接支付给以太坊矿工以保证以太坊上交易完成。网络费根据即时市场状况变动。"),
         "networkType": MessageLookupByLibrary.simpleMessage("网络类型"),
+        "nfts": MessageLookupByLibrary.simpleMessage("NFTs"),
         "noAsset": MessageLookupByLibrary.simpleMessage("暂无资产"),
+        "noCollectiblesFound":
+            MessageLookupByLibrary.simpleMessage("No collectibles found"),
+        "noCollectionFound":
+            MessageLookupByLibrary.simpleMessage("No collection found"),
         "noResult": MessageLookupByLibrary.simpleMessage("无结果"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "noWithdrawalDestinationSelected":
@@ -151,7 +160,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidInMixinWarning":
             MessageLookupByLibrary.simpleMessage("如果您已经支付成功，请耐心等待，无需再次支付"),
         "pay": MessageLookupByLibrary.simpleMessage("支付"),
-        "pendingConfirmations": m8,
+        "pendingConfirmations": m9,
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),
         "rebate": MessageLookupByLibrary.simpleMessage("退款"),
@@ -170,7 +179,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "show": MessageLookupByLibrary.simpleMessage("显示"),
         "slippage": MessageLookupByLibrary.simpleMessage("滑点"),
-        "slippageOver": m9,
+        "slippageOver": m10,
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
         "swap": MessageLookupByLibrary.simpleMessage("闪兑"),
         "swapDisclaimer":
@@ -201,10 +210,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "undo": MessageLookupByLibrary.simpleMessage("撤销"),
         "unpaid": MessageLookupByLibrary.simpleMessage("未支付"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),
-        "walletTransactionCurrentValue": m10,
+        "walletTransactionCurrentValue": m11,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),
-        "walletTransactionThatTimeValue": m11,
+        "walletTransactionThatTimeValue": m12,
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "本服务由 Wyre 提供。我们仅作为渠道，不额外收取手续费。"),
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),

@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../db/mixin_database.dart';
 import '../../../generated/r.dart';
 import '../../../service/env.dart';
+import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
 import '../avatar.dart';
@@ -206,8 +207,7 @@ class _UnauthorizedWidget extends StatelessWidget {
               final uri =
                   Uri.https('mixin-www.zeromesh.net', 'oauth/authorize', {
                 'client_id': Env.clientId,
-                'scope':
-                    'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ',
+                'scope': authScope,
                 'response_type': 'code',
               });
               context.toExternal(uri.toString());

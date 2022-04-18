@@ -1469,6 +1469,56 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Coins`
+  String get coins {
+    return Intl.message(
+      'Coins',
+      name: 'coins',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NFTs`
+  String get nfts {
+    return Intl.message(
+      'NFTs',
+      name: 'nfts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No collectibles found`
+  String get noCollectiblesFound {
+    return Intl.message(
+      'No collectibles found',
+      name: 'noCollectiblesFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No collection found`
+  String get noCollectionFound {
+    return Intl.message(
+      'No collection found',
+      name: 'noCollectionFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} items`
+  String collectionItemCount(Object count) {
+    return Intl.message(
+      '$count items',
+      name: 'collectionItemCount',
+      desc: '',
+      args: [count],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

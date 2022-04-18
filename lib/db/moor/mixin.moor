@@ -12,3 +12,38 @@ CREATE TABLE users (user_id TEXT NOT NULL, identity_number TEXT NOT NULL, relati
 CREATE TABLE fiats (code TEXT NOT NULL, rate DOUBLE NOT NULL, PRIMARY KEY(code));
 
 CREATE TABLE assets_extra (asset_id TEXT NOT NULL, hidden BOOLEAN, PRIMARY KEY(asset_id));
+
+CREATE TABLE collectible_token_meta (
+  "group" TEXT NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  icon_url TEXT NOT NULL,
+  media_url TEXT NOT NULL,
+  mime TEXT NOT NULL,
+  hash TEXT NOT NULL,
+  token_id TEXT NOT NULL,
+  PRIMARY KEY(token_id)
+);
+
+CREATE TABLE collectible_token (
+  type TEXT NOT NULL,
+  token_id TEXT NOT NULL,
+  "group" TEXT NOT NULL,
+  token TEXT NOT NULL,
+  mixin_id TEXT NOT NULL,
+  nfo TEXT NOT NULL,
+  created_at INTEGER NOT NULL MAPPED BY `const MillisDateConverter()`,
+  meta_hash TEXT NOT NULL,
+  collection_id TEXT NOT NULL,
+  PRIMARY KEY(token_id)
+);
+
+CREATE TABLE collections(
+  type TEXT NOT NULL,
+  collection_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  icon_url TEXT NOT NULL,
+  created_at INTEGER NOT NULL MAPPED BY `const MillisDateConverter()`,
+  PRIMARY KEY(collection_id)
+);

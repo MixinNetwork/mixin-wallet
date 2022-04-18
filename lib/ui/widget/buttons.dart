@@ -131,3 +131,45 @@ class HeaderButton extends StatelessWidget {
         ),
       );
 }
+
+class SendButton extends StatelessWidget {
+  const SendButton({
+    Key? key,
+    required this.onTap,
+    required this.enable,
+  }) : super(key: key);
+
+  final VoidCallback onTap;
+  final bool enable;
+
+  @override
+  Widget build(BuildContext context) => ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateColor.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) {
+              return context.colorScheme.primaryText.withOpacity(0.2);
+            }
+            return context.colorScheme.primaryText;
+          }),
+          padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 24,
+          )),
+          minimumSize: MaterialStateProperty.all(const Size(110, 48)),
+          foregroundColor:
+              MaterialStateProperty.all(context.colorScheme.background),
+          shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+        ),
+        onPressed: enable ? onTap : null,
+        child: SelectableText(
+          context.l10n.send,
+          style: TextStyle(
+            fontSize: 16,
+            color: context.colorScheme.background,
+          ),
+          onTap: enable ? onTap : null,
+          enableInteractiveSelection: false,
+        ),
+      );
+}
