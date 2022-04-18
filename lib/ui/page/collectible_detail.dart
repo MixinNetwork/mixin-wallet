@@ -51,7 +51,10 @@ class CollectibleDetail extends HookWidget {
     }
     return _CollectibleDetailScaffold(
       item: collectible,
-      child: _Body(item: collectible),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: _Body(item: collectible),
+      ),
     );
   }
 }
@@ -101,11 +104,14 @@ class _Body extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(13),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Image.network(item.mediaUrl ?? ''),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(13),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Image.network(item.mediaUrl ?? ''),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
