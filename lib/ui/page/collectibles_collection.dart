@@ -83,7 +83,7 @@ class _GroupHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-        fit: StackFit.loose,
+        fit: StackFit.passthrough,
         children: [
           Positioned(
             height: 88,
@@ -93,6 +93,7 @@ class _GroupHeader extends StatelessWidget {
             child: Container(color: context.colorScheme.background),
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 62),
               Container(
