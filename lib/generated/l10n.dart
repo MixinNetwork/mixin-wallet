@@ -1519,6 +1519,16 @@ class L10n {
       args: [count],
     );
   }
+
+  /// `Failed to read collectibles`
+  String get collectiblesReadFailed {
+    return Intl.message(
+      'Failed to read collectibles',
+      name: 'collectiblesReadFailed',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

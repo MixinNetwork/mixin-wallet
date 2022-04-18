@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../db/mixin_database.dart';
+import '../../../service/env.dart';
+import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
 import '../../router/mixin_routes.dart';
@@ -12,7 +14,8 @@ class CollectiblesGroupSliverGrid extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    useMemoized(() => context.appServices.updateCollectibles());
+    final update =
+        useMemoizedFuture(() => context.appServices.updateCollectibles());
 
     final snapshot =
         useMemoizedStream(() => context.appServices.groupedCollectibles());
@@ -31,6 +34,13 @@ class CollectiblesGroupSliverGrid extends HookWidget {
         ),
       );
     }
+
+    if (update.hasError) {
+      return const SliverFillRemaining(
+        child: _UnauthorizedWidget(),
+      );
+    }
+
     final collectibles = snapshot.data ?? const [];
     if (collectibles.isEmpty) {
       return SliverFillRemaining(
@@ -242,5 +252,45 @@ class _CollectibleItemImage extends StatelessWidget {
   Widget build(BuildContext context) => Image.network(
         item.mediaUrl ?? item.iconUrl ?? '',
         fit: BoxFit.cover,
+      );
+}
+
+class _UnauthorizedWidget extends StatelessWidget {
+  const _UnauthorizedWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Spacer(flex: 100),
+          Text(
+            context.l10n.collectiblesReadFailed,
+            style: TextStyle(
+              color: context.colorScheme.thirdText,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 6),
+          TextButton(
+            onPressed: () {
+              final uri =
+                  Uri.https('mixin-www.zeromesh.net', 'oauth/authorize', {
+                'client_id': Env.clientId,
+                'scope': authScope,
+                'response_type': 'code',
+              });
+              context.toExternal(uri.toString());
+            },
+            child: Text(
+              context.l10n.reauthorize,
+              style: TextStyle(
+                color: context.colorScheme.primaryText,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          const Spacer(flex: 164),
+        ],
       );
 }

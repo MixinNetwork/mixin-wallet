@@ -83,6 +83,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
         "coins": MessageLookupByLibrary.simpleMessage("代币"),
+        "collectiblesReadFailed":
+            MessageLookupByLibrary.simpleMessage("读取 NFT 失败"),
         "collectionItemCount": m4,
         "comingSoon": MessageLookupByLibrary.simpleMessage("即将推出"),
         "completed": MessageLookupByLibrary.simpleMessage("已完成"),
