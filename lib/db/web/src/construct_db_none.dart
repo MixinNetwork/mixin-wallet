@@ -20,6 +20,12 @@ Future<MixinDatabase> constructDb(String identityNumber) async {
   return MixinDatabase.connect(databaseConnection);
 }
 
+Future<void> deleteDatabase(String identityNumber) async {
+  final dbFolder = await getMixinDocumentsDirectory();
+  final dbFile = File(join(dbFolder.path, identityNumber, 'mixin.db'));
+  await dbFile.delete();
+}
+
 Future<MoorIsolate> _createMoorIsolate(File dbFile) async {
   final receivePort = ReceivePort();
   await Isolate.spawn(
