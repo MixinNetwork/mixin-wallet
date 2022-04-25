@@ -244,8 +244,9 @@ class _CollectiblesItemTile extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
+                SelectableText(
                   item.name ?? '',
+                  enableInteractiveSelection: false,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -254,8 +255,9 @@ class _CollectiblesItemTile extends StatelessWidget {
                   maxLines: 1,
                 ),
                 const SizedBox(height: 4),
-                Text(
+                SelectableText(
                   item.metaHash,
+                  enableInteractiveSelection: false,
                   style: TextStyle(
                     fontSize: 14,
                     color: context.colorScheme.thirdText,

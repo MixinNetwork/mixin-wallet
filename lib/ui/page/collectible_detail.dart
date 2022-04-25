@@ -42,9 +42,10 @@ class CollectibleDetail extends HookWidget {
       return _CollectibleDetailScaffold(
         item: null,
         child: Center(
-          child: Text(
+          child: SelectableText(
             context.l10n.noCollectiblesFound,
             style: TextStyle(color: context.colorScheme.primaryText),
+            enableInteractiveSelection: false,
           ),
         ),
       );
