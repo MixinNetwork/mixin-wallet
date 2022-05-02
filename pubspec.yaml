@@ -72,7 +72,7 @@ dev_dependencies:
     sdk: flutter
 
   build_runner: any
-  json_serializable: ^6.1.4
+  json_serializable: ^6.2.0
   moor_generator: ^4.4.1
   hive_generator: ^1.1.0
   envify_generator: ^2.0.1
