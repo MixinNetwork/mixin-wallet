@@ -267,7 +267,6 @@ class _AssetHeader extends StatelessWidget {
                 ),
               ]),
               textAlign: TextAlign.center,
-              enableInteractiveSelection: false,
             ),
           ),
           const SizedBox(height: 4),

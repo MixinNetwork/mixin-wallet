@@ -39,7 +39,7 @@ dependencies:
       ref: 17107b6ceea49bbc9d25e3a849955a406448070a
   very_good_analysis: ^2.3.0
   intl: ^0.17.0
-  json_annotation: ^4.1.0
+  json_annotation: ^4.5.0
   flutter_hooks: ^0.18.2+1
   equatable: ^2.0.3
   flutter_svg: ^1.0.3
@@ -72,7 +72,7 @@ dev_dependencies:
     sdk: flutter
 
   build_runner: any
-  json_serializable: ^6.1.4
+  json_serializable: ^6.2.0
   moor_generator: ^4.4.1
   hive_generator: ^1.1.0
   envify_generator: ^2.0.1

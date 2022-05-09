@@ -76,11 +76,12 @@ class _CollectibleDetailScaffold extends StatelessWidget {
         appBar: MixinAppBar(
           leading: const MixinBackButton2(),
           title: SelectableText(
-            item?.name ?? '',
+            item == null ? '' : '${item?.name} #${item?.token}',
             style: TextStyle(
               color: context.colorScheme.primaryText,
               fontSize: 18,
             ),
+            maxLines: 1,
             enableInteractiveSelection: false,
           ),
           backgroundColor: context.colorScheme.background,
@@ -127,7 +128,7 @@ class _Body extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               SelectableText(
-                item.hash ?? '',
+                '#${item.token}',
                 style: TextStyle(
                   fontSize: 14,
                   color: context.colorScheme.thirdText,

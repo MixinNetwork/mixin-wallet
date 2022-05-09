@@ -256,7 +256,7 @@ class _CollectiblesItemTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 SelectableText(
-                  item.metaHash,
+                  '#${item.token}',
                   enableInteractiveSelection: false,
                   style: TextStyle(
                     fontSize: 14,
