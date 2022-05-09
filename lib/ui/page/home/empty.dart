@@ -24,12 +24,13 @@ class EmptyLayout extends StatelessWidget {
             height: 80,
           ),
           const SizedBox(height: 16),
-          Text(
+          SelectableText(
             content,
             style: TextStyle(
               color: context.colorScheme.thirdText,
               fontSize: 14,
             ),
+            enableInteractiveSelection: false,
           ),
           const Spacer(flex: 164),
         ],

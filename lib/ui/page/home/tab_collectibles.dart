@@ -132,8 +132,9 @@ class _CollectiblesGroupTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
+              SelectableText(
                 title,
+                enableInteractiveSelection: false,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -142,8 +143,9 @@ class _CollectiblesGroupTile extends StatelessWidget {
                 maxLines: 1,
               ),
               const SizedBox(height: 4),
-              Text(
+              SelectableText(
                 subtitle,
+                enableInteractiveSelection: false,
                 style: TextStyle(
                   fontSize: 14,
                   color: context.colorScheme.thirdText,
