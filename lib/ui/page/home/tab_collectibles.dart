@@ -93,9 +93,8 @@ class _CollectiblesGroupTile extends StatelessWidget {
       subtitle = context.l10n.collectionItemCount(items.length);
       title = items.first.collectionName ?? '';
     } else if (items.length == 1) {
-      // FIXME: replace with subtitle.
       title = items.single.name ?? '';
-      subtitle = items.single.hash ?? '';
+      subtitle = '#${items.single.token}';
     } else {
       return const SizedBox.expand();
     }

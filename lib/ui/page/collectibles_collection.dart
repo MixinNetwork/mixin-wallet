@@ -255,7 +255,7 @@ class _CollectiblesItemTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  item.metaHash,
+                  '#${item.token}',
                   style: TextStyle(
                     fontSize: 14,
                     color: context.colorScheme.thirdText,
