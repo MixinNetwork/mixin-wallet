@@ -138,7 +138,7 @@ class _ButtonBar extends StatelessWidget {
             HeaderButton.text(
               text: context.l10n.buy,
               onTap: () async {
-                 ScaffoldMessenger.of(context)
+                ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(content: Text(context.l10n.comingSoon)),
