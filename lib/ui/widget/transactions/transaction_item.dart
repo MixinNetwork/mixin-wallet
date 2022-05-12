@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../util/extension/extension.dart';
@@ -173,7 +173,7 @@ class _TransactionIcon extends StatelessWidget {
       child = InkResponse(
         onTap: () {
           assert(item.opponentId != null);
-          launch('mixin://users/${item.opponentId}');
+          launchUrlString('mixin://users/${item.opponentId}');
         },
         child: Avatar(
           avatarUrl: item.avatarUrl,

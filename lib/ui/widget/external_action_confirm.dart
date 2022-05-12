@@ -16,11 +16,10 @@ Future<bool> showAndWaitingExternalAction({
   required ConfirmLoopAction action,
   required Widget hint,
 }) async {
-  final uriString = uri.toString();
-  if (!await canLaunch(uriString)) {
+  if (!await canLaunchUrl(uri)) {
     return false;
   }
-  await launch(uri.toString());
+  await launchUrl(uri);
   final result = await showDialog<bool>(
     context: context,
     barrierDismissible: false,
