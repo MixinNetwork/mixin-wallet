@@ -35,7 +35,7 @@ class Home extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    assert(context.appServices.databaseInitialized);
+    // assert(context.appServices.databaseInitialized);
 
     useMemoizedFuture(() => context.appServices.updateAssets());
 

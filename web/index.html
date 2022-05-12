@@ -27,12 +27,33 @@
   <meta name="apple-mobile-web-app-title" content="mixin_wallet">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
   <title>Mixin Wallet</title>
   <link rel="manifest" href="manifest.json">
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js?v=BUILD_VERSION" defer></script>
   <script defer src="sql-wasm.js" type="application/javascript"></script>
-  <script defer src="main.dart.js?v=BUILD_VERSION" type="application/javascript"></script>
   <script defer src="assets/packages/web_qrcode/assets/html5-qrcode.min.js"></script>
 </head>
 <body>
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        }
+      }).then(function(engineInitializer) {
+        return engineInitializer.initializeEngine();
+      }).then(function(appRunner) {
+        return appRunner.runApp();
+      });
+    });
+  </script>
 </body>
 </html>
