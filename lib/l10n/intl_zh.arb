@@ -1,7 +1,7 @@
 {
   "totalBalance": "总余额",
-  "send": "转出",
-  "receive": "转入",
+  "send": "发送",
+  "receive": "接受",
   "assets": "资产",
   "address": "地址",
   "deposit": "充值",

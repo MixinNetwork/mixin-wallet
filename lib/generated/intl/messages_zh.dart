@@ -166,7 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),
         "rebate": MessageLookupByLibrary.simpleMessage("退款"),
-        "receive": MessageLookupByLibrary.simpleMessage("转入"),
+        "receive": MessageLookupByLibrary.simpleMessage("接受"),
         "received": MessageLookupByLibrary.simpleMessage("获得"),
         "recentSearches": MessageLookupByLibrary.simpleMessage("最近搜索"),
         "refund": MessageLookupByLibrary.simpleMessage("退回"),
@@ -175,7 +175,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
         "selectContactOrAddress":
             MessageLookupByLibrary.simpleMessage("选择地址或联系人"),
-        "send": MessageLookupByLibrary.simpleMessage("转出"),
+        "send": MessageLookupByLibrary.simpleMessage("发送"),
         "sendTo": MessageLookupByLibrary.simpleMessage("转出至"),
         "sendToContact": MessageLookupByLibrary.simpleMessage("转账至联系人"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
