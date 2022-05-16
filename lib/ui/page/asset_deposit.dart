@@ -8,6 +8,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../db/converter/deposit_entry_converter.dart';
 import '../../db/mixin_database.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
@@ -17,7 +18,10 @@ import '../../util/web/web_utils_dummy.dart'
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';
+import '../widget/dialog/request_payment_bottom_sheet.dart';
+import '../widget/dialog/request_payment_result_bottom_sheet.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/mixin_bottom_sheet.dart';
 import '../widget/symbol.dart';
 import '../widget/tip_tile.dart';
 
@@ -192,7 +196,7 @@ class _AssetDepositBody extends HookWidget {
         else
           const _AddressLoadingWidget(),
         const SizedBox(height: 8),
-        _TipList(
+        TipListLayout(
           children: [
             for (final tip in asset.getTip(context))
               TipTile(
@@ -216,34 +220,17 @@ class _AssetDepositBody extends HookWidget {
               ),
           ],
         ),
+        const SizedBox(height: 32),
+        if (address != null)
+          _RequestPaymentButton(
+            asset: asset,
+            address: address,
+            tag: tag,
+          ),
         const SizedBox(height: 16),
       ],
     );
   }
-}
-
-class _TipList extends StatelessWidget {
-  const _TipList({Key? key, required this.children}) : super(key: key);
-
-  final List<TipTile> children;
-
-  @override
-  Widget build(BuildContext context) => Material(
-        borderRadius: BorderRadius.circular(8),
-        color: const Color(0x99F5F7FA),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-              ...children.cast<Widget>().separated(const SizedBox(height: 8)),
-              const SizedBox(height: 10),
-            ],
-          ),
-        ),
-      );
 }
 
 class _MemoLayout extends StatelessWidget {
@@ -648,6 +635,53 @@ class _NetworkTypeItem extends StatelessWidget {
       ),
     );
   }
+}
+
+class _RequestPaymentButton extends StatelessWidget {
+  const _RequestPaymentButton({
+    Key? key,
+    required this.asset,
+    required this.address,
+    required this.tag,
+  }) : super(key: key);
+
+  final AssetResult asset;
+  final String address;
+  final String? tag;
+
+  @override
+  Widget build(BuildContext context) => Center(
+        child: MixinPrimaryTextButton(
+          onTap: () async {
+            final result = await showMixinBottomSheet<List<String>>(
+              context: context,
+              isScrollControlled: true,
+              builder: (context) => RequestPaymentBottomSheet(
+                asset: asset,
+                address: address,
+                tag: tag,
+              ),
+            );
+            if (result == null || result.isEmpty) {
+              return;
+            }
+            assert(result.length == 2, 'Invalid result');
+            final amount = result[0];
+            final memo = result[1];
+
+            await showRequestPaymentResultBottomSheet(
+              context,
+              asset: asset,
+              address: address,
+              tag: tag,
+              amount: amount,
+              memo: memo,
+              recipient: auth!.account.userId,
+            );
+          },
+          text: context.l10n.requestPayment,
+        ),
+      );
 }
 
 String _getDestinationType(String? checkedDestination, String? destination) {

@@ -173,3 +173,38 @@ class SendButton extends StatelessWidget {
         ),
       );
 }
+
+class MixinPrimaryTextButton extends StatelessWidget {
+  const MixinPrimaryTextButton({
+    Key? key,
+    required this.onTap,
+    required this.text,
+  }) : super(key: key);
+
+  final VoidCallback onTap;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          primary: context.colorScheme.primaryText,
+          padding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 24,
+          ),
+          minimumSize: const Size(110, 48),
+          onPrimary: context.colorScheme.background,
+          shape: const StadiumBorder(),
+        ),
+        child: SelectableText(
+          text,
+          onTap: onTap,
+          enableInteractiveSelection: false,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      );
+}

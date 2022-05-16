@@ -1529,6 +1529,86 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Request payment`
+  String get requestPayment {
+    return Intl.message(
+      'Request payment',
+      name: 'requestPayment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm if the receiving address requires a Memo.`
+  String get requestPaymentMemoTips {
+    return Intl.message(
+      'Confirm if the receiving address requires a Memo.',
+      name: 'requestPaymentMemoTips',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get continueText {
+    return Intl.message(
+      'Continue',
+      name: 'continueText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send link`
+  String get sendLink {
+    return Intl.message(
+      'Send link',
+      name: 'sendLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copy link`
+  String get copyLink {
+    return Intl.message(
+      'Copy link',
+      name: 'copyLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A request payment link has been generated, please send it to the specified contact.`
+  String get requestPaymentGeneratedTips {
+    return Intl.message(
+      'A request payment link has been generated, please send it to the specified contact.',
+      name: 'requestPaymentGeneratedTips',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request payment amount: {value}`
+  String requestPaymentAmount(Object value) {
+    return Intl.message(
+      'Request payment amount: $value',
+      name: 'requestPaymentAmount',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Link generated`
+  String get linkGenerated {
+    return Intl.message(
+      'Link generated',
+      name: 'linkGenerated',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

@@ -146,5 +146,13 @@
   "noCollectiblesFound": "No collectibles found",
   "noCollectionFound": "No collection found",
   "collectionItemCount": "{count} items",
-  "collectiblesReadFailed": "Failed to read collectibles"
+  "collectiblesReadFailed": "Failed to read collectibles",
+  "requestPayment": "Request payment",
+  "requestPaymentMemoTips": "Confirm if the receiving address requires a Memo.",
+  "continueText": "Continue",
+  "sendLink": "Send link",
+  "copyLink": "Copy link",
+  "requestPaymentGeneratedTips": "A request payment link has been generated, please send it to the specified contact.",
+  "requestPaymentAmount": "Request payment amount: {value}",
+  "linkGenerated": "Link generated"
 }

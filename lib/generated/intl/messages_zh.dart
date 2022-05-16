@@ -36,11 +36,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m9(value, value2) => "${value}/${value2} 区块确认数";
 
-  static String m10(value) => "暂不支持滑点大于 ${value} 的闪兑";
+  static String m10(value) => "请求付款金额: ${value}";
 
-  static String m11(value) => "价值 ${value}";
+  static String m11(value) => "暂不支持滑点大于 ${value} 的闪兑";
 
-  static String m12(value) => "当时价值 ${value}";
+  static String m12(value) => "价值 ${value}";
+
+  static String m13(value) => "当时价值 ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -92,7 +94,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "contactReadFailed": MessageLookupByLibrary.simpleMessage("读取联系人列表失败"),
         "contactSearchHint":
             MessageLookupByLibrary.simpleMessage("名称, Mixin ID"),
+        "continueText": MessageLookupByLibrary.simpleMessage("继续"),
         "contract": MessageLookupByLibrary.simpleMessage("资产标识"),
+        "copyLink": MessageLookupByLibrary.simpleMessage("复制链接"),
         "copyToClipboard": MessageLookupByLibrary.simpleMessage("已复制到剪切板"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
@@ -130,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hide": MessageLookupByLibrary.simpleMessage("隐藏"),
         "hideSmallAssets": MessageLookupByLibrary.simpleMessage("隐藏小额资产"),
         "incomplete": MessageLookupByLibrary.simpleMessage("未完成"),
+        "linkGenerated": MessageLookupByLibrary.simpleMessage("链接已生成"),
         "memo": MessageLookupByLibrary.simpleMessage("Memo(备注)"),
         "memoHint": MessageLookupByLibrary.simpleMessage("备注（Memo）"),
         "minerFee": MessageLookupByLibrary.simpleMessage("挖矿手续费"),
@@ -171,17 +176,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "recentSearches": MessageLookupByLibrary.simpleMessage("最近搜索"),
         "refund": MessageLookupByLibrary.simpleMessage("退回"),
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("取消授权"),
+        "requestPayment": MessageLookupByLibrary.simpleMessage("请求付款"),
+        "requestPaymentAmount": m10,
+        "requestPaymentGeneratedTips":
+            MessageLookupByLibrary.simpleMessage("请求付款链接已生成，请发送给指定联系人。"),
+        "requestPaymentMemoTips":
+            MessageLookupByLibrary.simpleMessage("请确认收款地址是否需要 MEMO。"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
         "selectContactOrAddress":
             MessageLookupByLibrary.simpleMessage("选择地址或联系人"),
         "send": MessageLookupByLibrary.simpleMessage("发送"),
+        "sendLink": MessageLookupByLibrary.simpleMessage("发送链接"),
         "sendTo": MessageLookupByLibrary.simpleMessage("转出至"),
         "sendToContact": MessageLookupByLibrary.simpleMessage("转账至联系人"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "show": MessageLookupByLibrary.simpleMessage("显示"),
         "slippage": MessageLookupByLibrary.simpleMessage("滑点"),
-        "slippageOver": m10,
+        "slippageOver": m11,
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
         "swap": MessageLookupByLibrary.simpleMessage("闪兑"),
         "swapDisclaimer":
@@ -212,10 +224,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "undo": MessageLookupByLibrary.simpleMessage("撤销"),
         "unpaid": MessageLookupByLibrary.simpleMessage("未支付"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),
-        "walletTransactionCurrentValue": m11,
+        "walletTransactionCurrentValue": m12,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),
-        "walletTransactionThatTimeValue": m12,
+        "walletTransactionThatTimeValue": m13,
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "本服务由 Wyre 提供。我们仅作为渠道，不额外收取手续费。"),
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),
