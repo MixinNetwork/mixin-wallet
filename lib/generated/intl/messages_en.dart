@@ -42,12 +42,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m9(value, value2) => "${value}/${value2} confirmations";
 
-  static String m10(value) =>
+  static String m10(value) => "Request payment amount: ${value}";
+
+  static String m11(value) =>
       "Swap with slippage greater than ${value} is not currently supported";
 
-  static String m11(value) => "value now ${value}";
+  static String m12(value) => "value now ${value}";
 
-  static String m12(value) => "value then ${value}";
+  static String m13(value) => "value then ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -103,7 +105,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Failed to read contact list"),
         "contactSearchHint":
             MessageLookupByLibrary.simpleMessage("Name, Mixin ID"),
+        "continueText": MessageLookupByLibrary.simpleMessage("Continue"),
         "contract": MessageLookupByLibrary.simpleMessage("Asset Key"),
+        "copyLink": MessageLookupByLibrary.simpleMessage("Copy link"),
         "copyToClipboard":
             MessageLookupByLibrary.simpleMessage("Copied to Clipboard"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
@@ -146,6 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hideSmallAssets":
             MessageLookupByLibrary.simpleMessage("Hide small assets"),
         "incomplete": MessageLookupByLibrary.simpleMessage("Incomplete"),
+        "linkGenerated": MessageLookupByLibrary.simpleMessage("Link generated"),
         "memo": MessageLookupByLibrary.simpleMessage("Memo"),
         "memoHint": MessageLookupByLibrary.simpleMessage("Memo"),
         "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
@@ -190,18 +195,26 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Recent searches"),
         "refund": MessageLookupByLibrary.simpleMessage("Refund"),
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("Deauthorize"),
+        "requestPayment":
+            MessageLookupByLibrary.simpleMessage("Request payment"),
+        "requestPaymentAmount": m10,
+        "requestPaymentGeneratedTips": MessageLookupByLibrary.simpleMessage(
+            "A request payment link has been generated, please send it to the specified contact."),
+        "requestPaymentMemoTips": MessageLookupByLibrary.simpleMessage(
+            "Confirm if the receiving address requires a Memo."),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "selectContactOrAddress":
             MessageLookupByLibrary.simpleMessage("Choose a address or contact"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
+        "sendLink": MessageLookupByLibrary.simpleMessage("Send link"),
         "sendTo": MessageLookupByLibrary.simpleMessage("Send to"),
         "sendToContact":
             MessageLookupByLibrary.simpleMessage("Send to contact"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "slippage": MessageLookupByLibrary.simpleMessage("Slippage"),
-        "slippageOver": m10,
+        "slippageOver": m11,
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "swap": MessageLookupByLibrary.simpleMessage("Swap"),
         "swapDisclaimer": MessageLookupByLibrary.simpleMessage(
@@ -240,10 +253,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
-        "walletTransactionCurrentValue": m11,
+        "walletTransactionCurrentValue": m12,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
-        "walletTransactionThatTimeValue": m12,
+        "walletTransactionThatTimeValue": m13,
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "This service is provided by Wyre. We act as a conduit only and do not charge additional fees."),
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),

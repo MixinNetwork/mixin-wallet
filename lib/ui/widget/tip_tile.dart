@@ -52,3 +52,27 @@ class TipTile extends StatelessWidget {
         ],
       );
 }
+
+class TipListLayout extends StatelessWidget {
+  const TipListLayout({Key? key, required this.children}) : super(key: key);
+
+  final List<TipTile> children;
+
+  @override
+  Widget build(BuildContext context) => Material(
+        borderRadius: BorderRadius.circular(8),
+        color: const Color(0x99F5F7FA),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              ...children.cast<Widget>().separated(const SizedBox(height: 8)),
+              const SizedBox(height: 10),
+            ],
+          ),
+        ),
+      );
+}
