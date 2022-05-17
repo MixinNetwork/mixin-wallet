@@ -96,7 +96,7 @@ class TransferAmountWidget extends HookWidget {
     if (fiatInputMode.value) {
       assert(!asset.priceUsd.isZero);
       equivalent =
-          '${(input.toDecimalWithLocale() / asset.usdUnitPrice).currencyFormatCoin}'
+          '${(input.toDecimalWithLocale() / asset.usdUnitPrice).toDecimal(scaleOnInfinitePrecision: 8).toString()}'
           ' ${asset.symbol}';
     } else {
       equivalent =
@@ -105,27 +105,19 @@ class TransferAmountWidget extends HookWidget {
     }
 
     useEffect(() {
-      void updateAmount() {
-        if (fiatInputMode.value) {
-          if (controller.text.isEmpty) {
-            amount.value = '';
-          } else {
-            assert(!asset.priceUsd.isZero);
-            amount.value = (input.toDecimalWithLocale() / asset.usdUnitPrice)
-                .currencyFormatCoin;
-          }
+      if (fiatInputMode.value) {
+        if (controller.text.isEmpty) {
+          amount.value = '';
         } else {
-          amount.value = controller.text;
+          assert(!asset.priceUsd.isZero);
+          amount.value = (input.toDecimalWithLocale() / asset.usdUnitPrice)
+              .toDecimal(scaleOnInfinitePrecision: 8)
+              .toString();
         }
+      } else {
+        amount.value = controller.text;
       }
-
-      controller.addListener(updateAmount);
-      fiatInputMode.addListener(updateAmount);
-      return () {
-        controller.removeListener(updateAmount);
-        fiatInputMode.removeListener(updateAmount);
-      };
-    }, [controller, fiatInputMode]);
+    }, [controller.value, fiatInputMode.value]);
 
     return Material(
       borderRadius: BorderRadius.circular(13),
