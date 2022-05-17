@@ -50,17 +50,6 @@ class RequestPaymentBottomSheet extends HookWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  context.l10n.requestPaymentMemoTips,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: context.colorScheme.thirdText,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
               const Spacer(),
               Center(
                 child: Builder(

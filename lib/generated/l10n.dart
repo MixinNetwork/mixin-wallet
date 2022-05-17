@@ -1540,16 +1540,6 @@ class L10n {
     );
   }
 
-  /// `Confirm if the receiving address requires a Memo.`
-  String get requestPaymentMemoTips {
-    return Intl.message(
-      'Confirm if the receiving address requires a Memo.',
-      name: 'requestPaymentMemoTips',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Continue`
   String get continueText {
     return Intl.message(

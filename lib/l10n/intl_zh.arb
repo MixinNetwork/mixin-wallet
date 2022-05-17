@@ -145,7 +145,6 @@
   "collectionItemCount": "{count} items",
   "collectiblesReadFailed": "读取 NFT 失败",
   "requestPayment": "请求付款",
-  "requestPaymentMemoTips": "请确认收款地址是否需要 MEMO。",
   "continueText": "继续",
   "sendLink": "发送链接",
   "copyLink": "复制链接",

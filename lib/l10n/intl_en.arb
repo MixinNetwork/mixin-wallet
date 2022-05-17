@@ -148,7 +148,6 @@
   "collectionItemCount": "{count} items",
   "collectiblesReadFailed": "Failed to read collectibles",
   "requestPayment": "Request payment",
-  "requestPaymentMemoTips": "Confirm if the receiving address requires a Memo.",
   "continueText": "Continue",
   "sendLink": "Send link",
   "copyLink": "Copy link",

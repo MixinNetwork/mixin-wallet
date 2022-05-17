@@ -200,8 +200,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "requestPaymentAmount": m10,
         "requestPaymentGeneratedTips": MessageLookupByLibrary.simpleMessage(
             "A request payment link has been generated, please send it to the specified contact."),
-        "requestPaymentMemoTips": MessageLookupByLibrary.simpleMessage(
-            "Confirm if the receiving address requires a Memo."),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "selectContactOrAddress":

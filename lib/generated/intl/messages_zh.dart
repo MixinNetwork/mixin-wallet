@@ -180,8 +180,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "requestPaymentAmount": m10,
         "requestPaymentGeneratedTips":
             MessageLookupByLibrary.simpleMessage("请求付款链接已生成，请发送给指定联系人。"),
-        "requestPaymentMemoTips":
-            MessageLookupByLibrary.simpleMessage("请确认收款地址是否需要 MEMO。"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
         "selectContactOrAddress":
