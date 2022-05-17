@@ -6,7 +6,7 @@ import 'package:uuid/uuid.dart';
 import '../../../db/mixin_database.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
-import '../../../util/web/web_utils_dummy.dart';
+import '../../../util/web/web_utils.dart';
 import '../buttons.dart';
 import '../mixin_bottom_sheet.dart';
 import '../tip_tile.dart';
