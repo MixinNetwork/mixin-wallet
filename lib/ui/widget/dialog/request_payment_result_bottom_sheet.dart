@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
+import '../../../util/mixin_context.dart';
 import '../../../util/web/web_utils.dart';
 import '../buttons.dart';
 import '../mixin_bottom_sheet.dart';
@@ -122,7 +126,14 @@ class _RequestPaymentResultBottomSheet extends StatelessWidget {
                         child: MixinPrimaryTextButton(
                           text: context.l10n.sendLink,
                           onTap: () {
-                            Share.share(url);
+                            final mixinContext = getMixinContext();
+                            if (mixinContext.isEmpty) {
+                              Share.share(url);
+                            } else {
+                              final dest =
+                                  'mixin://send?data=${base64UrlEncode(utf8.encode(url))}&category=text';
+                              launchUrl(Uri.parse(dest));
+                            }
                           },
                         ),
                       ),
