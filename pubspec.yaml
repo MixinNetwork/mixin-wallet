@@ -50,7 +50,7 @@ dependencies:
   dio: ^4.0.0
   moor: ^4.4.1
   tuple: ^2.0.0
-  hive: ^2.0.4
+  hive: ^2.2.1
   hive_flutter: ^1.1.0
   ansicolor: ^2.0.1
   decimal: ^2.2.0
