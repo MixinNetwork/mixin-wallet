@@ -10,9 +10,13 @@ import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
+import '../widget/firework/fireworks.dart';
+import '../widget/firework/foundation/controller.dart';
 
 class AuthPage extends HookWidget {
-  const AuthPage({Key? key}) : super(key: key);
+  AuthPage({Key? key}) : super(key: key);
+
+  FireworkController? _controller;
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +35,15 @@ class AuthPage extends HookWidget {
       }
     }, keys: [oauthCode]);
 
+    final singleTickerProvider =  useSingleTickerProvider();
+    _controller ??= FireworkController(vsync: singleTickerProvider)..start();
+
     return Scaffold(
       backgroundColor: context.colorScheme.background,
       body: Center(
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),
-          child: loading.value ? _ProgressBody() : const _AuthBody(),
+          child: loading.value ? _ProgressBody() : _AuthBody(controller: _controller!),
         ),
       ),
     );
@@ -61,7 +68,10 @@ class _ProgressBody extends StatelessWidget {
 class _AuthBody extends StatelessWidget {
   const _AuthBody({
     Key? key,
+    required this.controller,
   }) : super(key: key);
+
+  final FireworkController controller;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -71,6 +81,7 @@ class _AuthBody extends StatelessWidget {
           Expanded(
             child: Stack(
               children: [
+                Fireworks(controller: controller),
                 Center(
                   child: Opacity(
                     opacity: 0.9,

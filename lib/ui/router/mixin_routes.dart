@@ -46,7 +46,7 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VWidget(
         key: const ValueKey('Auth'),
         path: '/auth',
-        widget: const AuthPage(),
+        widget: AuthPage(),
       ),
       VGuard(
           beforeEnter: (redirector) async {
