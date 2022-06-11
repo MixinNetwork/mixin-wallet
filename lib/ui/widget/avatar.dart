@@ -33,7 +33,7 @@ class Avatar extends StatelessWidget {
     );
 
     return ClipOval(
-      child: Container(
+      child: ColoredBox(
         color: Colors.white,
         child: Padding(
           padding: EdgeInsets.all(borderWidth),

@@ -96,14 +96,14 @@ class _SwipeToUnHide extends StatelessWidget {
     return Dismissible(
       key: ValueKey(key),
       onDismissed: (direction) => onDismiss(),
-      background: Container(
+      background: ColoredBox(
         color: context.theme.red,
         child: Align(
           alignment: Alignment.centerLeft,
           child: indicator,
         ),
       ),
-      secondaryBackground: Container(
+      secondaryBackground: ColoredBox(
         color: context.theme.red,
         child: Align(
           alignment: Alignment.centerRight,

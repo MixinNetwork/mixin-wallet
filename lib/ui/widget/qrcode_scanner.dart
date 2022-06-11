@@ -100,7 +100,7 @@ class _QrcodeScannerDialog extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final qrcodeReaderKey = useMemoized(GlobalKey<QrCodeReaderState>.new);
-    return Container(
+    return ColoredBox(
       color: Colors.black,
       child: Stack(
         fit: StackFit.expand,

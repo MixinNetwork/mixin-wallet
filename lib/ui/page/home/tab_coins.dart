@@ -153,7 +153,7 @@ class _SwipeToHide extends StatelessWidget {
       key: ValueKey(key),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) => onDismiss(),
-      background: Container(
+      background: ColoredBox(
         color: context.colorScheme.red,
         child: Align(
           alignment: Alignment.centerRight,

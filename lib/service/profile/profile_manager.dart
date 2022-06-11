@@ -54,7 +54,7 @@ bool get _isSmallAssetsHidden {
 set _isSmallAssetsHidden(bool value) =>
     profileBox.put('isSmallAssetsHidden', value);
 
-late final ValueNotifier<bool> isSmallAssetsHidden = () {
+final ValueNotifier<bool> isSmallAssetsHidden = () {
   final notifier = ValueNotifier(_isSmallAssetsHidden);
   notifier.addListener(() {
     _isSmallAssetsHidden = notifier.value;

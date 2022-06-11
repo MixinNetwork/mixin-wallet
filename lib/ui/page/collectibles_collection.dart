@@ -90,7 +90,7 @@ class _GroupHeader extends StatelessWidget {
             top: 0,
             left: 0,
             right: 0,
-            child: Container(color: context.colorScheme.background),
+            child: ColoredBox(color: context.colorScheme.background),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,

@@ -203,7 +203,7 @@ class _TransactionIcon extends StatelessWidget {
             width: 40,
           ),
           Positioned.fill(
-              child: Container(color: Colors.black.withOpacity(0.5))),
+              child: ColoredBox(color: Colors.black.withOpacity(0.5))),
           Text(
             '${(progress * 100).round()}%',
             style: const TextStyle(

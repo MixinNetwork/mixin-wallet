@@ -31,7 +31,7 @@ class SymbolIconWithBorder extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-              child: Container(
+              child: DecoratedBox(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.symmetric(
@@ -50,7 +50,7 @@ class SymbolIconWithBorder extends StatelessWidget {
                   symbolBorder.width - chainBorder.width,
                   chainBorder.width - symbolBorder.width,
                 ),
-                child: Container(
+                child: DecoratedBox(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.symmetric(

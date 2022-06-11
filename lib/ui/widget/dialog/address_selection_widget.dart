@@ -272,14 +272,14 @@ class _SwipeToDismiss extends StatelessWidget {
       key: ValueKey(key),
       onDismissed: (direction) => onDismiss(),
       confirmDismiss: confirmDismiss,
-      background: Container(
+      background: ColoredBox(
         color: context.colorScheme.red,
         child: Align(
           alignment: Alignment.centerLeft,
           child: indicator,
         ),
       ),
-      secondaryBackground: Container(
+      secondaryBackground: ColoredBox(
         color: context.colorScheme.red,
         child: Align(
           alignment: Alignment.centerRight,
