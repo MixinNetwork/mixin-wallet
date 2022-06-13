@@ -1,6 +1,6 @@
+import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart'
     show UserRelationship;
-import 'package:moor/moor.dart';
 
 import 'converter/millis_date_converter.dart';
 import 'converter/user_relationship_converter.dart';
@@ -15,13 +15,13 @@ import 'database_event_bus.dart';
 
 part 'mixin_database.g.dart';
 
-@UseMoor(
+@DriftDatabase(
   include: {
-    'moor/mixin.moor',
-    'moor/dao/asset.moor',
-    'moor/dao/snapshot.moor',
-    'moor/dao/user.moor',
-    'moor/dao/collectible.moor',
+    'moor/mixin.drift',
+    'moor/dao/asset.drift',
+    'moor/dao/snapshot.drift',
+    'moor/dao/user.drift',
+    'moor/dao/collectible.drift'
   },
   daos: [
     AddressDao,

@@ -1,5 +1,5 @@
+import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
-import 'package:moor/moor.dart';
 
 import '../mixin_database.dart';
 
@@ -38,7 +38,7 @@ extension SnapshotConverterForPendingDeposit on sdk.PendingDeposit {
       );
 }
 
-@UseDao(tables: [Snapshots])
+@DriftAccessor(tables: [Snapshots])
 class SnapshotDao extends DatabaseAccessor<MixinDatabase>
     with _$SnapshotDaoMixin {
   SnapshotDao(MixinDatabase db) : super(db);

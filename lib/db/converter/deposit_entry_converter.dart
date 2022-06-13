@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
-import 'package:moor/moor.dart';
 
 class DepositEntryConverter extends TypeConverter<List<DepositEntry>, String> {
   const DepositEntryConverter();

@@ -1,12 +1,12 @@
+import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
-import 'package:moor/moor.dart';
 
 import '../mixin_database.dart';
 import '../util/util.dart';
 
 part 'collectible_dao.g.dart';
 
-@UseDao(tables: [
+@DriftAccessor(tables: [
   CollectibleToken,
   CollectibleTokenMeta,
 ])

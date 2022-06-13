@@ -1,5 +1,5 @@
+import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
-import 'package:moor/moor.dart';
 
 import '../converter/deposit_entry_converter.dart';
 import '../mixin_database.dart';
@@ -48,7 +48,7 @@ extension AssetConverter on sdk.Asset {
       );
 }
 
-@UseDao(tables: [Assets])
+@DriftAccessor(tables: [Assets])
 class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
   AssetDao(MixinDatabase db) : super(db);
 

@@ -1,5 +1,5 @@
+import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
-import 'package:moor/moor.dart';
 
 import '../mixin_database.dart';
 
@@ -21,7 +21,7 @@ extension UserMapper on sdk.User {
       createdAt: createdAt);
 }
 
-@UseDao(tables: [User])
+@DriftAccessor(tables: [User])
 class UserDao extends DatabaseAccessor<MixinDatabase> with _$UserDaoMixin {
   UserDao(MixinDatabase db) : super(db);
 
