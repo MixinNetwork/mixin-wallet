@@ -50,6 +50,7 @@ class MixinDatabase extends _$MixinDatabase {
           if (executor.dialect == SqlDialect.sqlite) {
             await customStatement('PRAGMA journal_mode=WAL');
             await customStatement('PRAGMA foreign_keys=ON');
+            await customStatement('PRAGMA synchronous=NORMAL');
           }
         },
         onUpgrade: (m, from, to) async {
