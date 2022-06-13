@@ -1,5 +1,5 @@
+import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
-import 'package:moor/moor.dart';
 
 import '../mixin_database.dart';
 
@@ -20,7 +20,7 @@ extension AddressConverter on sdk.Address {
       );
 }
 
-@UseDao(tables: [Addresses])
+@DriftAccessor(tables: [Addresses])
 class AddressDao extends DatabaseAccessor<MixinDatabase>
     with _$AddressDaoMixin {
   AddressDao(MixinDatabase db) : super(db);

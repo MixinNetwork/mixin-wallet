@@ -1,16 +1,16 @@
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:moor/ffi.dart';
-import 'package:moor/isolate.dart';
-import 'package:moor/moor.dart';
+import 'package:drift/drift.dart';
+import 'package:drift/isolate.dart';
+import 'package:drift/native.dart';
 import 'package:path/path.dart';
 
 import '../../../util/file.dart';
 import '../../mixin_database.dart';
 
 LazyDatabase _openConnection(File dbFile) =>
-    LazyDatabase(() => VmDatabase(dbFile));
+    LazyDatabase(() => NativeDatabase(dbFile));
 
 Future<MixinDatabase> constructDb(String identityNumber) async {
   final dbFolder = await getMixinDocumentsDirectory();
@@ -26,19 +26,19 @@ Future<void> deleteDatabase(String identityNumber) async {
   await dbFile.delete();
 }
 
-Future<MoorIsolate> _createMoorIsolate(File dbFile) async {
+Future<DriftIsolate> _createMoorIsolate(File dbFile) async {
   final receivePort = ReceivePort();
   await Isolate.spawn(
     _startBackground,
     _IsolateStartRequest(receivePort.sendPort, dbFile),
   );
 
-  return await receivePort.first as MoorIsolate;
+  return await receivePort.first as DriftIsolate;
 }
 
 void _startBackground(_IsolateStartRequest request) {
   final executor = _openConnection(request.dbFile);
-  final moorIsolate = MoorIsolate.inCurrent(
+  final moorIsolate = DriftIsolate.inCurrent(
     () => DatabaseConnection.fromExecutor(executor),
   );
   request.sendMoorIsolate.send(moorIsolate);

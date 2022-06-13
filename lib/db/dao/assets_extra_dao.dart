@@ -1,10 +1,10 @@
-import 'package:moor/moor.dart';
+import 'package:drift/drift.dart';
 
 import '../mixin_database.dart';
 
 part 'assets_extra_dao.g.dart';
 
-@UseDao(tables: [AssetsExtra])
+@DriftAccessor(tables: [AssetsExtra])
 class AssetsExtraDao extends DatabaseAccessor<MixinDatabase>
     with _$AssetsExtraDaoMixin {
   AssetsExtraDao(MixinDatabase db) : super(db);

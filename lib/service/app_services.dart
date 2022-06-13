@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:convert/convert.dart';
 import 'package:dio/dio.dart';
+import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
-import 'package:moor/moor.dart';
 import 'package:pointycastle/digests/sha3.dart';
 import 'package:vrouter/vrouter.dart';
 

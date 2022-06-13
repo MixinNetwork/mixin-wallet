@@ -1,5 +1,5 @@
+import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
-import 'package:moor/moor.dart';
 
 import '../mixin_database.dart';
 
@@ -38,7 +38,7 @@ extension SnapshotConverterForPendingDeposit on sdk.PendingDeposit {
       );
 }
 
-@UseDao(tables: [Snapshots])
+@DriftAccessor(tables: [Snapshots])
 class SnapshotDao extends DatabaseAccessor<MixinDatabase>
     with _$SnapshotDaoMixin {
   SnapshotDao(MixinDatabase db) : super(db);
@@ -65,19 +65,28 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
 
   Selectable<SnapshotItem> snapshotsByIds(List<String> snapshotIds) =>
       db.snapshotItems(
-        (s, u, a) => s.snapshotId.isIn(snapshotIds),
-        (s, u, a) => OrderBy([
-          OrderingTerm.desc(s.createdAt),
-          OrderingTerm.desc(s.snapshotId),
+        db.snapshots.snapshotId.isIn(snapshotIds),
+        OrderBy([
+          OrderingTerm.desc(db.snapshots.createdAt),
+          OrderingTerm.desc(db.snapshots.snapshotId),
         ]),
-        (s, u, a) => Limit(snapshotIds.length, null),
+        Limit(snapshotIds.length, null),
       );
 
   Selectable<SnapshotItem> snapshotsById(String snapshotId) => db.snapshotItems(
-        (s, u, a) => s.snapshotId.equals(snapshotId),
-        (s, u, a) => const OrderBy.nothing(),
-        (s, u, a) => Limit(1, null),
+        db.snapshots.snapshotId.equals(snapshotId),
+        const OrderBy.nothing(),
+        Limit(1, null),
       );
+
+  Expression<bool?> _allSnapshotsWhere(
+      List<String> types, Snapshots snapshots) {
+    Expression<bool?> predicate = const Constant(true);
+    if (types.isNotEmpty) {
+      predicate &= snapshots.type.isIn(types);
+    }
+    return predicate;
+  }
 
   Selectable<SnapshotItem> allSnapshots({
     int? offset,
@@ -86,20 +95,26 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
     List<String> types = const [],
   }) =>
       db.snapshotItems(
-        (s, u, a) {
-          Expression<bool?> predicate = const Constant(true);
-          if (types.isNotEmpty) {
-            predicate &= s.type.isIn(types);
-          }
-          return predicate;
-        },
-        (s, u, a) => OrderBy([
-          if (orderByAmount) OrderingTerm.desc(_AmountSqlExpression(s)),
-          if (!orderByAmount) OrderingTerm.desc(s.createdAt),
-          OrderingTerm.desc(s.snapshotId),
+        _allSnapshotsWhere(types, db.snapshots),
+        OrderBy([
+          if (orderByAmount)
+            OrderingTerm.desc(_AmountSqlExpression(db.snapshots)),
+          if (!orderByAmount) OrderingTerm.desc(db.snapshots.createdAt),
+          OrderingTerm.desc(db.snapshots.snapshotId),
         ]),
-        (s, u, a) => Limit(limit, offset),
+        Limit(limit, offset),
       );
+  Expression<bool?> _snapshotsWhere(String assetId, List<String> types,
+      Snapshots snapshots, String? opponent) {
+    Expression<bool?> predicate = snapshots.assetId.equals(assetId);
+    if (types.isNotEmpty) {
+      predicate &= snapshots.type.isIn(types);
+    }
+    if (opponent != null) {
+      predicate &= snapshots.opponentId.equals(opponent);
+    }
+    return predicate;
+  }
 
   Selectable<SnapshotItem> snapshots(
     String assetId, {
@@ -110,26 +125,18 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
     String? opponent,
   }) =>
       db.snapshotItems(
-        (s, u, a) {
-          Expression<bool?> predicate = a.assetId.equals(assetId);
-          if (types.isNotEmpty) {
-            predicate &= s.type.isIn(types);
-          }
-          if (opponent != null) {
-            predicate &= s.opponentId.equals(opponent);
-          }
-          return predicate;
-        },
-        (s, u, a) => OrderBy([
-          if (orderByAmount) OrderingTerm.desc(_AmountSqlExpression(s)),
-          if (!orderByAmount) OrderingTerm.desc(s.createdAt),
-          OrderingTerm.desc(s.snapshotId),
+        _snapshotsWhere(assetId, types, db.snapshots, opponent),
+        OrderBy([
+          if (orderByAmount)
+            OrderingTerm.desc(_AmountSqlExpression(db.snapshots)),
+          if (!orderByAmount) OrderingTerm.desc(db.snapshots.createdAt),
+          OrderingTerm.desc(db.snapshots.snapshotId),
         ]),
-        (s, u, a) => Limit(limit, offset),
+        Limit(limit, offset),
       );
 
-  Future<int> clearPendingDepositsByAssetId(String assetId) => db
-      .clearPendingDepositsBy((snapshots) => snapshots.assetId.equals(assetId));
+  Future<int> clearPendingDepositsByAssetId(String assetId) =>
+      db.clearPendingDepositsBy(db.snapshots.assetId.equals(assetId));
 
   Selectable<String> snapshotIdsByTransactionHashList(
           String assetId, List<String> hashList) =>

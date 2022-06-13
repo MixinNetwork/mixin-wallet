@@ -6,7 +6,7 @@ part of 'mixin_database.dart';
 // MoorGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
+// ignore_for_file: type=lint
 class Addresse extends DataClass implements Insertable<Addresse> {
   final String addressId;
   final String type;
@@ -29,8 +29,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
       required this.fee,
       this.tag,
       this.dust});
-  factory Addresse.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory Addresse.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Addresse(
       addressId: const StringType()
@@ -95,7 +94,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
 
   factory Addresse.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return Addresse(
       addressId: serializer.fromJson<String>(json['address_id']),
       type: serializer.fromJson<String>(json['type']),
@@ -111,7 +110,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'address_id': serializer.toJson<String>(addressId),
       'type': serializer.toJson<String>(type),
@@ -135,8 +134,8 @@ class Addresse extends DataClass implements Insertable<Addresse> {
           DateTime? updatedAt,
           String? reserve,
           String? fee,
-          Value<String?> tag = const Value.absent(),
-          Value<String?> dust = const Value.absent()}) =>
+          String? tag,
+          String? dust}) =>
       Addresse(
         addressId: addressId ?? this.addressId,
         type: type ?? this.type,
@@ -146,8 +145,8 @@ class Addresse extends DataClass implements Insertable<Addresse> {
         updatedAt: updatedAt ?? this.updatedAt,
         reserve: reserve ?? this.reserve,
         fee: fee ?? this.fee,
-        tag: tag.present ? tag.value : this.tag,
-        dust: dust.present ? dust.value : this.dust,
+        tag: tag ?? this.tag,
+        dust: dust ?? this.dust,
       );
   @override
   String toString() {
@@ -334,67 +333,72 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
 }
 
 class Addresses extends Table with TableInfo<Addresses, Addresse> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Addresses(this._db, [this._alias]);
+  Addresses(this.attachedDatabase, [this._alias]);
   final VerificationMeta _addressIdMeta = const VerificationMeta('addressId');
   late final GeneratedColumn<String?> addressId = GeneratedColumn<String?>(
       'address_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _typeMeta = const VerificationMeta('type');
   late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
       'type', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _assetIdMeta = const VerificationMeta('assetId');
   late final GeneratedColumn<String?> assetId = GeneratedColumn<String?>(
       'asset_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _destinationMeta =
       const VerificationMeta('destination');
   late final GeneratedColumn<String?> destination = GeneratedColumn<String?>(
       'destination', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _labelMeta = const VerificationMeta('label');
   late final GeneratedColumn<String?> label = GeneratedColumn<String?>(
       'label', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   late final GeneratedColumnWithTypeConverter<DateTime, int?> updatedAt =
       GeneratedColumn<int?>('updated_at', aliasedName, false,
-              typeName: 'INTEGER',
+              type: const IntType(),
               requiredDuringInsert: true,
               $customConstraints: 'NOT NULL')
           .withConverter<DateTime>(Addresses.$converter0);
   final VerificationMeta _reserveMeta = const VerificationMeta('reserve');
   late final GeneratedColumn<String?> reserve = GeneratedColumn<String?>(
       'reserve', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _feeMeta = const VerificationMeta('fee');
   late final GeneratedColumn<String?> fee = GeneratedColumn<String?>(
       'fee', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _tagMeta = const VerificationMeta('tag');
   late final GeneratedColumn<String?> tag = GeneratedColumn<String?>(
       'tag', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _dustMeta = const VerificationMeta('dust');
   late final GeneratedColumn<String?> dust = GeneratedColumn<String?>(
       'dust', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         addressId,
@@ -477,13 +481,13 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
   Set<GeneratedColumn> get $primaryKey => {addressId};
   @override
   Addresse map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Addresse.fromData(data, _db,
+    return Addresse.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Addresses createAlias(String alias) {
-    return Addresses(_db, alias);
+    return Addresses(attachedDatabase, alias);
   }
 
   static TypeConverter<DateTime, int> $converter0 = const MillisDateConverter();
@@ -527,8 +531,7 @@ class Asset extends DataClass implements Insertable<Asset> {
       this.assetKey,
       this.reserve,
       this.depositEntries});
-  factory Asset.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory Asset.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Asset(
       assetId: const StringType()
@@ -628,7 +631,7 @@ class Asset extends DataClass implements Insertable<Asset> {
 
   factory Asset.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return Asset(
       assetId: serializer.fromJson<String>(json['asset_id']),
       symbol: serializer.fromJson<String>(json['symbol']),
@@ -650,7 +653,7 @@ class Asset extends DataClass implements Insertable<Asset> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'asset_id': serializer.toJson<String>(assetId),
       'symbol': serializer.toJson<String>(symbol),
@@ -677,35 +680,34 @@ class Asset extends DataClass implements Insertable<Asset> {
           String? name,
           String? iconUrl,
           String? balance,
-          Value<String?> destination = const Value.absent(),
-          Value<String?> tag = const Value.absent(),
+          String? destination,
+          String? tag,
           String? priceBtc,
           String? priceUsd,
           String? chainId,
           String? changeUsd,
           String? changeBtc,
           int? confirmations,
-          Value<String?> assetKey = const Value.absent(),
-          Value<String?> reserve = const Value.absent(),
-          Value<String?> depositEntries = const Value.absent()}) =>
+          String? assetKey,
+          String? reserve,
+          String? depositEntries}) =>
       Asset(
         assetId: assetId ?? this.assetId,
         symbol: symbol ?? this.symbol,
         name: name ?? this.name,
         iconUrl: iconUrl ?? this.iconUrl,
         balance: balance ?? this.balance,
-        destination: destination.present ? destination.value : this.destination,
-        tag: tag.present ? tag.value : this.tag,
+        destination: destination ?? this.destination,
+        tag: tag ?? this.tag,
         priceBtc: priceBtc ?? this.priceBtc,
         priceUsd: priceUsd ?? this.priceUsd,
         chainId: chainId ?? this.chainId,
         changeUsd: changeUsd ?? this.changeUsd,
         changeBtc: changeBtc ?? this.changeBtc,
         confirmations: confirmations ?? this.confirmations,
-        assetKey: assetKey.present ? assetKey.value : this.assetKey,
-        reserve: reserve.present ? reserve.value : this.reserve,
-        depositEntries:
-            depositEntries.present ? depositEntries.value : this.depositEntries,
+        assetKey: assetKey ?? this.assetKey,
+        reserve: reserve ?? this.reserve,
+        depositEntries: depositEntries ?? this.depositEntries,
       );
   @override
   String toString() {
@@ -986,37 +988,38 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
 }
 
 class Assets extends Table with TableInfo<Assets, Asset> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Assets(this._db, [this._alias]);
+  Assets(this.attachedDatabase, [this._alias]);
   final VerificationMeta _assetIdMeta = const VerificationMeta('assetId');
   late final GeneratedColumn<String?> assetId = GeneratedColumn<String?>(
       'asset_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _symbolMeta = const VerificationMeta('symbol');
   late final GeneratedColumn<String?> symbol = GeneratedColumn<String?>(
       'symbol', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _iconUrlMeta = const VerificationMeta('iconUrl');
   late final GeneratedColumn<String?> iconUrl = GeneratedColumn<String?>(
       'icon_url', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _balanceMeta = const VerificationMeta('balance');
   late final GeneratedColumn<String?> balance = GeneratedColumn<String?>(
       'balance', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: 'NOT NULL DEFAULT \'0\'',
       defaultValue: const CustomExpression<String>('\'0\''));
@@ -1024,63 +1027,71 @@ class Assets extends Table with TableInfo<Assets, Asset> {
       const VerificationMeta('destination');
   late final GeneratedColumn<String?> destination = GeneratedColumn<String?>(
       'destination', aliasedName, true,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: false,
       $customConstraints: 'NULL');
   final VerificationMeta _tagMeta = const VerificationMeta('tag');
   late final GeneratedColumn<String?> tag = GeneratedColumn<String?>(
       'tag', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _priceBtcMeta = const VerificationMeta('priceBtc');
   late final GeneratedColumn<String?> priceBtc = GeneratedColumn<String?>(
       'price_btc', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _priceUsdMeta = const VerificationMeta('priceUsd');
   late final GeneratedColumn<String?> priceUsd = GeneratedColumn<String?>(
       'price_usd', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _chainIdMeta = const VerificationMeta('chainId');
   late final GeneratedColumn<String?> chainId = GeneratedColumn<String?>(
       'chain_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _changeUsdMeta = const VerificationMeta('changeUsd');
   late final GeneratedColumn<String?> changeUsd = GeneratedColumn<String?>(
       'change_usd', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _changeBtcMeta = const VerificationMeta('changeBtc');
   late final GeneratedColumn<String?> changeBtc = GeneratedColumn<String?>(
       'change_btc', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _confirmationsMeta =
       const VerificationMeta('confirmations');
   late final GeneratedColumn<int?> confirmations = GeneratedColumn<int?>(
       'confirmations', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _assetKeyMeta = const VerificationMeta('assetKey');
   late final GeneratedColumn<String?> assetKey = GeneratedColumn<String?>(
       'asset_key', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _reserveMeta = const VerificationMeta('reserve');
   late final GeneratedColumn<String?> reserve = GeneratedColumn<String?>(
       'reserve', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _depositEntriesMeta =
       const VerificationMeta('depositEntries');
   late final GeneratedColumn<String?> depositEntries = GeneratedColumn<String?>(
       'deposit_entries', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         assetId,
@@ -1206,13 +1217,13 @@ class Assets extends Table with TableInfo<Assets, Asset> {
   Set<GeneratedColumn> get $primaryKey => {assetId};
   @override
   Asset map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Asset.fromData(data, _db,
+    return Asset.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Assets createAlias(String alias) {
-    return Assets(_db, alias);
+    return Assets(attachedDatabase, alias);
   }
 
   @override
@@ -1247,8 +1258,7 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
       this.receiver,
       this.memo,
       this.confirmations});
-  factory Snapshot.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory Snapshot.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Snapshot(
       snapshotId: const StringType()
@@ -1342,7 +1352,7 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
 
   factory Snapshot.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return Snapshot(
       snapshotId: serializer.fromJson<String>(json['snapshot_id']),
       type: serializer.fromJson<String>(json['type']),
@@ -1360,7 +1370,7 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'snapshot_id': serializer.toJson<String>(snapshotId),
       'type': serializer.toJson<String>(type),
@@ -1383,29 +1393,26 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
           String? assetId,
           String? amount,
           DateTime? createdAt,
-          Value<String?> opponentId = const Value.absent(),
-          Value<String?> traceId = const Value.absent(),
-          Value<String?> transactionHash = const Value.absent(),
-          Value<String?> sender = const Value.absent(),
-          Value<String?> receiver = const Value.absent(),
-          Value<String?> memo = const Value.absent(),
-          Value<int?> confirmations = const Value.absent()}) =>
+          String? opponentId,
+          String? traceId,
+          String? transactionHash,
+          String? sender,
+          String? receiver,
+          String? memo,
+          int? confirmations}) =>
       Snapshot(
         snapshotId: snapshotId ?? this.snapshotId,
         type: type ?? this.type,
         assetId: assetId ?? this.assetId,
         amount: amount ?? this.amount,
         createdAt: createdAt ?? this.createdAt,
-        opponentId: opponentId.present ? opponentId.value : this.opponentId,
-        traceId: traceId.present ? traceId.value : this.traceId,
-        transactionHash: transactionHash.present
-            ? transactionHash.value
-            : this.transactionHash,
-        sender: sender.present ? sender.value : this.sender,
-        receiver: receiver.present ? receiver.value : this.receiver,
-        memo: memo.present ? memo.value : this.memo,
-        confirmations:
-            confirmations.present ? confirmations.value : this.confirmations,
+        opponentId: opponentId ?? this.opponentId,
+        traceId: traceId ?? this.traceId,
+        transactionHash: transactionHash ?? this.transactionHash,
+        sender: sender ?? this.sender,
+        receiver: receiver ?? this.receiver,
+        memo: memo ?? this.memo,
+        confirmations: confirmations ?? this.confirmations,
       );
   @override
   String toString() {
@@ -1626,72 +1633,85 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
 }
 
 class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Snapshots(this._db, [this._alias]);
+  Snapshots(this.attachedDatabase, [this._alias]);
   final VerificationMeta _snapshotIdMeta = const VerificationMeta('snapshotId');
   late final GeneratedColumn<String?> snapshotId = GeneratedColumn<String?>(
       'snapshot_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _typeMeta = const VerificationMeta('type');
   late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
       'type', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _assetIdMeta = const VerificationMeta('assetId');
   late final GeneratedColumn<String?> assetId = GeneratedColumn<String?>(
       'asset_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   late final GeneratedColumn<String?> amount = GeneratedColumn<String?>(
       'amount', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   late final GeneratedColumnWithTypeConverter<DateTime, int?> createdAt =
       GeneratedColumn<int?>('created_at', aliasedName, false,
-              typeName: 'INTEGER',
+              type: const IntType(),
               requiredDuringInsert: true,
               $customConstraints: 'NOT NULL')
           .withConverter<DateTime>(Snapshots.$converter0);
   final VerificationMeta _opponentIdMeta = const VerificationMeta('opponentId');
   late final GeneratedColumn<String?> opponentId = GeneratedColumn<String?>(
       'opponent_id', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _traceIdMeta = const VerificationMeta('traceId');
   late final GeneratedColumn<String?> traceId = GeneratedColumn<String?>(
       'trace_id', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _transactionHashMeta =
       const VerificationMeta('transactionHash');
   late final GeneratedColumn<String?> transactionHash =
       GeneratedColumn<String?>('transaction_hash', aliasedName, true,
-          typeName: 'TEXT',
+          type: const StringType(),
           requiredDuringInsert: false,
           $customConstraints: '');
   final VerificationMeta _senderMeta = const VerificationMeta('sender');
   late final GeneratedColumn<String?> sender = GeneratedColumn<String?>(
       'sender', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _receiverMeta = const VerificationMeta('receiver');
   late final GeneratedColumn<String?> receiver = GeneratedColumn<String?>(
       'receiver', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _memoMeta = const VerificationMeta('memo');
   late final GeneratedColumn<String?> memo = GeneratedColumn<String?>(
       'memo', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _confirmationsMeta =
       const VerificationMeta('confirmations');
   late final GeneratedColumn<int?> confirmations = GeneratedColumn<int?>(
       'confirmations', aliasedName, true,
-      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         snapshotId,
@@ -1784,13 +1804,13 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
   Set<GeneratedColumn> get $primaryKey => {snapshotId};
   @override
   Snapshot map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Snapshot.fromData(data, _db,
+    return Snapshot.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Snapshots createAlias(String alias) {
-    return Snapshots(_db, alias);
+    return Snapshots(attachedDatabase, alias);
   }
 
   static TypeConverter<DateTime, int> $converter0 = const MillisDateConverter();
@@ -1828,8 +1848,7 @@ class User extends DataClass implements Insertable<User> {
       this.appId,
       this.biography,
       this.isScam});
-  factory User.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory User.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return User(
       userId: const StringType()
@@ -1942,7 +1961,7 @@ class User extends DataClass implements Insertable<User> {
 
   factory User.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return User(
       userId: serializer.fromJson<String>(json['user_id']),
       identityNumber: serializer.fromJson<String>(json['identity_number']),
@@ -1962,7 +1981,7 @@ class User extends DataClass implements Insertable<User> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'user_id': serializer.toJson<String>(userId),
       'identity_number': serializer.toJson<String>(identityNumber),
@@ -1983,32 +2002,31 @@ class User extends DataClass implements Insertable<User> {
   User copyWith(
           {String? userId,
           String? identityNumber,
-          Value<UserRelationship?> relationship = const Value.absent(),
-          Value<String?> fullName = const Value.absent(),
-          Value<String?> avatarUrl = const Value.absent(),
-          Value<String?> phone = const Value.absent(),
-          Value<bool?> isVerified = const Value.absent(),
-          Value<DateTime?> createdAt = const Value.absent(),
-          Value<DateTime?> muteUntil = const Value.absent(),
-          Value<int?> hasPin = const Value.absent(),
-          Value<String?> appId = const Value.absent(),
-          Value<String?> biography = const Value.absent(),
-          Value<int?> isScam = const Value.absent()}) =>
+          UserRelationship? relationship,
+          String? fullName,
+          String? avatarUrl,
+          String? phone,
+          bool? isVerified,
+          DateTime? createdAt,
+          DateTime? muteUntil,
+          int? hasPin,
+          String? appId,
+          String? biography,
+          int? isScam}) =>
       User(
         userId: userId ?? this.userId,
         identityNumber: identityNumber ?? this.identityNumber,
-        relationship:
-            relationship.present ? relationship.value : this.relationship,
-        fullName: fullName.present ? fullName.value : this.fullName,
-        avatarUrl: avatarUrl.present ? avatarUrl.value : this.avatarUrl,
-        phone: phone.present ? phone.value : this.phone,
-        isVerified: isVerified.present ? isVerified.value : this.isVerified,
-        createdAt: createdAt.present ? createdAt.value : this.createdAt,
-        muteUntil: muteUntil.present ? muteUntil.value : this.muteUntil,
-        hasPin: hasPin.present ? hasPin.value : this.hasPin,
-        appId: appId.present ? appId.value : this.appId,
-        biography: biography.present ? biography.value : this.biography,
-        isScam: isScam.present ? isScam.value : this.isScam,
+        relationship: relationship ?? this.relationship,
+        fullName: fullName ?? this.fullName,
+        avatarUrl: avatarUrl ?? this.avatarUrl,
+        phone: phone ?? this.phone,
+        isVerified: isVerified ?? this.isVerified,
+        createdAt: createdAt ?? this.createdAt,
+        muteUntil: muteUntil ?? this.muteUntil,
+        hasPin: hasPin ?? this.hasPin,
+        appId: appId ?? this.appId,
+        biography: biography ?? this.biography,
+        isScam: isScam ?? this.isScam,
       );
   @override
   String toString() {
@@ -2243,76 +2261,93 @@ class UsersCompanion extends UpdateCompanion<User> {
 }
 
 class Users extends Table with TableInfo<Users, User> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Users(this._db, [this._alias]);
+  Users(this.attachedDatabase, [this._alias]);
   final VerificationMeta _userIdMeta = const VerificationMeta('userId');
   late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
       'user_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _identityNumberMeta =
       const VerificationMeta('identityNumber');
   late final GeneratedColumn<String?> identityNumber = GeneratedColumn<String?>(
       'identity_number', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _relationshipMeta =
       const VerificationMeta('relationship');
   late final GeneratedColumnWithTypeConverter<UserRelationship, String?>
       relationship = GeneratedColumn<String?>('relationship', aliasedName, true,
-              typeName: 'TEXT',
+              type: const StringType(),
               requiredDuringInsert: false,
               $customConstraints: '')
           .withConverter<UserRelationship>(Users.$converter0);
   final VerificationMeta _fullNameMeta = const VerificationMeta('fullName');
   late final GeneratedColumn<String?> fullName = GeneratedColumn<String?>(
       'full_name', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _avatarUrlMeta = const VerificationMeta('avatarUrl');
   late final GeneratedColumn<String?> avatarUrl = GeneratedColumn<String?>(
       'avatar_url', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _phoneMeta = const VerificationMeta('phone');
   late final GeneratedColumn<String?> phone = GeneratedColumn<String?>(
       'phone', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _isVerifiedMeta = const VerificationMeta('isVerified');
   late final GeneratedColumn<bool?> isVerified = GeneratedColumn<bool?>(
       'is_verified', aliasedName, true,
-      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   late final GeneratedColumnWithTypeConverter<DateTime, int?> createdAt =
       GeneratedColumn<int?>('created_at', aliasedName, true,
-              typeName: 'INTEGER',
+              type: const IntType(),
               requiredDuringInsert: false,
               $customConstraints: '')
           .withConverter<DateTime>(Users.$converter1);
   final VerificationMeta _muteUntilMeta = const VerificationMeta('muteUntil');
   late final GeneratedColumnWithTypeConverter<DateTime, int?> muteUntil =
       GeneratedColumn<int?>('mute_until', aliasedName, true,
-              typeName: 'INTEGER',
+              type: const IntType(),
               requiredDuringInsert: false,
               $customConstraints: '')
           .withConverter<DateTime>(Users.$converter2);
   final VerificationMeta _hasPinMeta = const VerificationMeta('hasPin');
   late final GeneratedColumn<int?> hasPin = GeneratedColumn<int?>(
       'has_pin', aliasedName, true,
-      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _appIdMeta = const VerificationMeta('appId');
   late final GeneratedColumn<String?> appId = GeneratedColumn<String?>(
       'app_id', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _biographyMeta = const VerificationMeta('biography');
   late final GeneratedColumn<String?> biography = GeneratedColumn<String?>(
       'biography', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   final VerificationMeta _isScamMeta = const VerificationMeta('isScam');
   late final GeneratedColumn<int?> isScam = GeneratedColumn<int?>(
       'is_scam', aliasedName, true,
-      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
+      type: const IntType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         userId,
@@ -2396,13 +2431,13 @@ class Users extends Table with TableInfo<Users, User> {
   Set<GeneratedColumn> get $primaryKey => {userId};
   @override
   User map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return User.fromData(data, _db,
+    return User.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Users createAlias(String alias) {
-    return Users(_db, alias);
+    return Users(attachedDatabase, alias);
   }
 
   static TypeConverter<UserRelationship, String> $converter0 =
@@ -2419,8 +2454,7 @@ class Fiat extends DataClass implements Insertable<Fiat> {
   final String code;
   final double rate;
   Fiat({required this.code, required this.rate});
-  factory Fiat.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory Fiat.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Fiat(
       code: const StringType()
@@ -2446,7 +2480,7 @@ class Fiat extends DataClass implements Insertable<Fiat> {
 
   factory Fiat.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return Fiat(
       code: serializer.fromJson<String>(json['code']),
       rate: serializer.fromJson<double>(json['rate']),
@@ -2454,7 +2488,7 @@ class Fiat extends DataClass implements Insertable<Fiat> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'code': serializer.toJson<String>(code),
       'rate': serializer.toJson<double>(rate),
@@ -2534,19 +2568,20 @@ class FiatsCompanion extends UpdateCompanion<Fiat> {
 }
 
 class Fiats extends Table with TableInfo<Fiats, Fiat> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Fiats(this._db, [this._alias]);
+  Fiats(this.attachedDatabase, [this._alias]);
   final VerificationMeta _codeMeta = const VerificationMeta('code');
   late final GeneratedColumn<String?> code = GeneratedColumn<String?>(
       'code', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _rateMeta = const VerificationMeta('rate');
   late final GeneratedColumn<double?> rate = GeneratedColumn<double?>(
       'rate', aliasedName, false,
-      typeName: 'REAL',
+      type: const RealType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   @override
@@ -2579,13 +2614,13 @@ class Fiats extends Table with TableInfo<Fiats, Fiat> {
   Set<GeneratedColumn> get $primaryKey => {code};
   @override
   Fiat map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Fiat.fromData(data, _db,
+    return Fiat.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Fiats createAlias(String alias) {
-    return Fiats(_db, alias);
+    return Fiats(attachedDatabase, alias);
   }
 
   @override
@@ -2598,8 +2633,7 @@ class AssetsExtraData extends DataClass implements Insertable<AssetsExtraData> {
   final String assetId;
   final bool? hidden;
   AssetsExtraData({required this.assetId, this.hidden});
-  factory AssetsExtraData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
+  factory AssetsExtraData.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return AssetsExtraData(
@@ -2629,7 +2663,7 @@ class AssetsExtraData extends DataClass implements Insertable<AssetsExtraData> {
 
   factory AssetsExtraData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return AssetsExtraData(
       assetId: serializer.fromJson<String>(json['asset_id']),
       hidden: serializer.fromJson<bool?>(json['hidden']),
@@ -2637,18 +2671,16 @@ class AssetsExtraData extends DataClass implements Insertable<AssetsExtraData> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'asset_id': serializer.toJson<String>(assetId),
       'hidden': serializer.toJson<bool?>(hidden),
     };
   }
 
-  AssetsExtraData copyWith(
-          {String? assetId, Value<bool?> hidden = const Value.absent()}) =>
-      AssetsExtraData(
+  AssetsExtraData copyWith({String? assetId, bool? hidden}) => AssetsExtraData(
         assetId: assetId ?? this.assetId,
-        hidden: hidden.present ? hidden.value : this.hidden,
+        hidden: hidden ?? this.hidden,
       );
   @override
   String toString() {
@@ -2721,19 +2753,22 @@ class AssetsExtraCompanion extends UpdateCompanion<AssetsExtraData> {
 }
 
 class AssetsExtra extends Table with TableInfo<AssetsExtra, AssetsExtraData> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  AssetsExtra(this._db, [this._alias]);
+  AssetsExtra(this.attachedDatabase, [this._alias]);
   final VerificationMeta _assetIdMeta = const VerificationMeta('assetId');
   late final GeneratedColumn<String?> assetId = GeneratedColumn<String?>(
       'asset_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _hiddenMeta = const VerificationMeta('hidden');
   late final GeneratedColumn<bool?> hidden = GeneratedColumn<bool?>(
       'hidden', aliasedName, true,
-      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [assetId, hidden];
   @override
@@ -2762,13 +2797,13 @@ class AssetsExtra extends Table with TableInfo<AssetsExtra, AssetsExtraData> {
   Set<GeneratedColumn> get $primaryKey => {assetId};
   @override
   AssetsExtraData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return AssetsExtraData.fromData(data, _db,
+    return AssetsExtraData.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   AssetsExtra createAlias(String alias) {
-    return AssetsExtra(_db, alias);
+    return AssetsExtra(attachedDatabase, alias);
   }
 
   @override
@@ -2796,8 +2831,7 @@ class CollectibleTokenMetaData extends DataClass
       required this.mime,
       required this.hash,
       required this.tokenId});
-  factory CollectibleTokenMetaData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
+  factory CollectibleTokenMetaData.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return CollectibleTokenMetaData(
@@ -2848,7 +2882,7 @@ class CollectibleTokenMetaData extends DataClass
 
   factory CollectibleTokenMetaData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return CollectibleTokenMetaData(
       group: serializer.fromJson<String>(json['group']),
       name: serializer.fromJson<String>(json['name']),
@@ -2862,7 +2896,7 @@ class CollectibleTokenMetaData extends DataClass
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'group': serializer.toJson<String>(group),
       'name': serializer.toJson<String>(name),
@@ -3054,56 +3088,57 @@ class CollectibleTokenMetaCompanion
 
 class CollectibleTokenMeta extends Table
     with TableInfo<CollectibleTokenMeta, CollectibleTokenMetaData> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  CollectibleTokenMeta(this._db, [this._alias]);
+  CollectibleTokenMeta(this.attachedDatabase, [this._alias]);
   final VerificationMeta _groupMeta = const VerificationMeta('group');
   late final GeneratedColumn<String?> group = GeneratedColumn<String?>(
       'group', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
       'description', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _iconUrlMeta = const VerificationMeta('iconUrl');
   late final GeneratedColumn<String?> iconUrl = GeneratedColumn<String?>(
       'icon_url', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _mediaUrlMeta = const VerificationMeta('mediaUrl');
   late final GeneratedColumn<String?> mediaUrl = GeneratedColumn<String?>(
       'media_url', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _mimeMeta = const VerificationMeta('mime');
   late final GeneratedColumn<String?> mime = GeneratedColumn<String?>(
       'mime', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _hashMeta = const VerificationMeta('hash');
   late final GeneratedColumn<String?> hash = GeneratedColumn<String?>(
       'hash', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _tokenIdMeta = const VerificationMeta('tokenId');
   late final GeneratedColumn<String?> tokenId = GeneratedColumn<String?>(
       'token_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   @override
@@ -3177,13 +3212,13 @@ class CollectibleTokenMeta extends Table
   @override
   CollectibleTokenMetaData map(Map<String, dynamic> data,
       {String? tablePrefix}) {
-    return CollectibleTokenMetaData.fromData(data, _db,
+    return CollectibleTokenMetaData.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   CollectibleTokenMeta createAlias(String alias) {
-    return CollectibleTokenMeta(_db, alias);
+    return CollectibleTokenMeta(attachedDatabase, alias);
   }
 
   @override
@@ -3213,8 +3248,7 @@ class CollectibleTokenData extends DataClass
       required this.createdAt,
       required this.metaHash,
       required this.collectionId});
-  factory CollectibleTokenData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
+  factory CollectibleTokenData.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return CollectibleTokenData(
@@ -3272,7 +3306,7 @@ class CollectibleTokenData extends DataClass
 
   factory CollectibleTokenData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return CollectibleTokenData(
       type: serializer.fromJson<String>(json['type']),
       tokenId: serializer.fromJson<String>(json['token_id']),
@@ -3287,7 +3321,7 @@ class CollectibleTokenData extends DataClass
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'type': serializer.toJson<String>(type),
       'token_id': serializer.toJson<String>(tokenId),
@@ -3496,63 +3530,64 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
 
 class CollectibleToken extends Table
     with TableInfo<CollectibleToken, CollectibleTokenData> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  CollectibleToken(this._db, [this._alias]);
+  CollectibleToken(this.attachedDatabase, [this._alias]);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
   late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
       'type', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _tokenIdMeta = const VerificationMeta('tokenId');
   late final GeneratedColumn<String?> tokenId = GeneratedColumn<String?>(
       'token_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _groupMeta = const VerificationMeta('group');
   late final GeneratedColumn<String?> group = GeneratedColumn<String?>(
       'group', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _tokenMeta = const VerificationMeta('token');
   late final GeneratedColumn<String?> token = GeneratedColumn<String?>(
       'token', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _mixinIdMeta = const VerificationMeta('mixinId');
   late final GeneratedColumn<String?> mixinId = GeneratedColumn<String?>(
       'mixin_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _nfoMeta = const VerificationMeta('nfo');
   late final GeneratedColumn<String?> nfo = GeneratedColumn<String?>(
       'nfo', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   late final GeneratedColumnWithTypeConverter<DateTime, int?> createdAt =
       GeneratedColumn<int?>('created_at', aliasedName, false,
-              typeName: 'INTEGER',
+              type: const IntType(),
               requiredDuringInsert: true,
               $customConstraints: 'NOT NULL')
           .withConverter<DateTime>(CollectibleToken.$converter0);
   final VerificationMeta _metaHashMeta = const VerificationMeta('metaHash');
   late final GeneratedColumn<String?> metaHash = GeneratedColumn<String?>(
       'meta_hash', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _collectionIdMeta =
       const VerificationMeta('collectionId');
   late final GeneratedColumn<String?> collectionId = GeneratedColumn<String?>(
       'collection_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   @override
@@ -3635,13 +3670,13 @@ class CollectibleToken extends Table
   Set<GeneratedColumn> get $primaryKey => {tokenId};
   @override
   CollectibleTokenData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return CollectibleTokenData.fromData(data, _db,
+    return CollectibleTokenData.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   CollectibleToken createAlias(String alias) {
-    return CollectibleToken(_db, alias);
+    return CollectibleToken(attachedDatabase, alias);
   }
 
   static TypeConverter<DateTime, int> $converter0 = const MillisDateConverter();
@@ -3665,8 +3700,7 @@ class Collection extends DataClass implements Insertable<Collection> {
       required this.description,
       required this.iconUrl,
       required this.createdAt});
-  factory Collection.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory Collection.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Collection(
       type: const StringType()
@@ -3711,7 +3745,7 @@ class Collection extends DataClass implements Insertable<Collection> {
 
   factory Collection.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return Collection(
       type: serializer.fromJson<String>(json['type']),
       collectionId: serializer.fromJson<String>(json['collection_id']),
@@ -3723,7 +3757,7 @@ class Collection extends DataClass implements Insertable<Collection> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'type': serializer.toJson<String>(type),
       'collection_id': serializer.toJson<String>(collectionId),
@@ -3880,45 +3914,46 @@ class CollectionsCompanion extends UpdateCompanion<Collection> {
 }
 
 class Collections extends Table with TableInfo<Collections, Collection> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Collections(this._db, [this._alias]);
+  Collections(this.attachedDatabase, [this._alias]);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
   late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
       'type', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _collectionIdMeta =
       const VerificationMeta('collectionId');
   late final GeneratedColumn<String?> collectionId = GeneratedColumn<String?>(
       'collection_id', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
       'description', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _iconUrlMeta = const VerificationMeta('iconUrl');
   late final GeneratedColumn<String?> iconUrl = GeneratedColumn<String?>(
       'icon_url', aliasedName, false,
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   late final GeneratedColumnWithTypeConverter<DateTime, int?> createdAt =
       GeneratedColumn<int?>('created_at', aliasedName, false,
-              typeName: 'INTEGER',
+              type: const IntType(),
               requiredDuringInsert: true,
               $customConstraints: 'NOT NULL')
           .withConverter<DateTime>(Collections.$converter0);
@@ -3976,13 +4011,13 @@ class Collections extends Table with TableInfo<Collections, Collection> {
   Set<GeneratedColumn> get $primaryKey => {collectionId};
   @override
   Collection map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Collection.fromData(data, _db,
+    return Collection.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   Collections createAlias(String alias) {
-    return Collections(_db, alias);
+    return Collections(attachedDatabase, alias);
   }
 
   static TypeConverter<DateTime, int> $converter0 = const MillisDateConverter();
@@ -3994,7 +4029,6 @@ class Collections extends Table with TableInfo<Collections, Collection> {
 
 abstract class _$MixinDatabase extends GeneratedDatabase {
   _$MixinDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  _$MixinDatabase.connect(DatabaseConnection c) : super.connect(c);
   late final Addresses addresses = Addresses(this);
   late final Assets assets = Assets(this);
   late final Snapshots snapshots = Snapshots(this);
@@ -4015,35 +4049,12 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final CollectibleDao collectibleDao =
       CollectibleDao(this as MixinDatabase);
   Selectable<CollectibleItem> collectiblesResult(
-      Expression<bool?> Function(
-              CollectibleToken token, CollectibleTokenMeta meta, Collections c)
-          where,
-      OrderBy Function(
-              CollectibleToken token, CollectibleTokenMeta meta, Collections c)
-          orderBy,
-      Limit Function(
-              CollectibleToken token, CollectibleTokenMeta meta, Collections c)
-          limit) {
-    final generatedwhere = $write(
-        where(
-            alias(this.collectibleToken, 'token'),
-            alias(this.collectibleTokenMeta, 'meta'),
-            alias(this.collections, 'c')),
-        hasMultipleTables: true);
-    final generatedorderBy = $write(
-        orderBy(
-            alias(this.collectibleToken, 'token'),
-            alias(this.collectibleTokenMeta, 'meta'),
-            alias(this.collections, 'c')),
-        hasMultipleTables: true);
-    final generatedlimit = $write(
-        limit(
-            alias(this.collectibleToken, 'token'),
-            alias(this.collectibleTokenMeta, 'meta'),
-            alias(this.collections, 'c')),
-        hasMultipleTables: true);
+      Expression<bool?> where, OrderBy orderBy, Limit limit) {
+    final generatedwhere = $write(where, hasMultipleTables: true);
+    final generatedorderBy = $write(orderBy, hasMultipleTables: true);
+    final generatedlimit = $write(limit, hasMultipleTables: true);
     return customSelect(
-        'SELECT token.*, meta.*, c.type AS collection_type, c.name AS collection_name, c.description AS collection_description, c.icon_url AS collection_icon_url, c.created_at AS collection_created_at FROM collectible_token AS token LEFT JOIN collectible_token_meta AS meta ON token.token_id = meta.token_id LEFT JOIN collections AS c ON token.collection_id = c.collection_id WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
+        'SELECT token.*,\n       meta.*,\n       c.type as collection_type,\n       c.name as collection_name,\n       c.description as collection_description,\n       c.icon_url as collection_icon_url,\n       c.created_at as collection_created_at\nFROM collectible_token as token\nLEFT JOIN collectible_token_meta as meta on token.token_id = meta.token_id\nLEFT JOIN collections as c on token.collection_id = c.collection_id\nWHERE ${generatedwhere.sql}\n${generatedorderBy.sql}\n${generatedlimit.sql}',
         variables: [
           ...generatedwhere.introducedVariables,
           ...generatedorderBy.introducedVariables,
@@ -4096,23 +4107,12 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   }
 
   Selectable<SnapshotItem> snapshotItems(
-      Expression<bool?> Function(Snapshots s, Users u, Assets a) where,
-      OrderBy Function(Snapshots s, Users u, Assets a) order,
-      Limit Function(Snapshots s, Users u, Assets a) limit) {
-    final generatedwhere = $write(
-        where(alias(this.snapshots, 's'), alias(this.users, 'u'),
-            alias(this.assets, 'a')),
-        hasMultipleTables: true);
-    final generatedorder = $write(
-        order(alias(this.snapshots, 's'), alias(this.users, 'u'),
-            alias(this.assets, 'a')),
-        hasMultipleTables: true);
-    final generatedlimit = $write(
-        limit(alias(this.snapshots, 's'), alias(this.users, 'u'),
-            alias(this.assets, 'a')),
-        hasMultipleTables: true);
+      Expression<bool?> where, OrderBy order, Limit limit) {
+    final generatedwhere = $write(where, hasMultipleTables: true);
+    final generatedorder = $write(order, hasMultipleTables: true);
+    final generatedlimit = $write(limit, hasMultipleTables: true);
     return customSelect(
-        'SELECT s.*, u.avatar_url, u.full_name AS opponent_ful_name, a.symbol AS asset_symbol, a.confirmations AS asset_confirmations FROM snapshots AS s LEFT JOIN users AS u ON u.user_id = s.opponent_id LEFT JOIN assets AS a ON a.asset_id = s.asset_id WHERE ${generatedwhere.sql} ${generatedorder.sql} ${generatedlimit.sql}',
+        'SELECT s.*, u.avatar_url, u.full_name AS opponent_ful_name, a.symbol AS asset_symbol, a.confirmations AS asset_confirmations FROM snapshots s\n                LEFT JOIN users u ON u.user_id = s.opponent_id\n                LEFT JOIN assets a ON a.asset_id = s.asset_id\nWHERE ${generatedwhere.sql}\n${generatedorder.sql}\n${generatedlimit.sql}',
         variables: [
           ...generatedwhere.introducedVariables,
           ...generatedorder.introducedVariables,
@@ -4148,9 +4148,8 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
     });
   }
 
-  Future<int> clearPendingDepositsBy(
-      Expression<bool?> Function(Snapshots snapshots) where) {
-    final generatedwhere = $write(where(this.snapshots));
+  Future<int> clearPendingDepositsBy(Expression<bool?> where) {
+    final generatedwhere = $write(where);
     return customUpdate(
       'DELETE FROM snapshots WHERE type = \'pending\' AND ${generatedwhere.sql}',
       variables: [...generatedwhere.introducedVariables],
@@ -4159,30 +4158,13 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
     );
   }
 
-  Selectable<AssetResult> assetResults(
-      String currentFiat,
-      Expression<bool?> Function(
-              Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat)
-          where,
-      OrderBy Function(
-              Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat)
-          orderBy,
-      Limit Function(Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat)
-          limit) {
-    final generatedwhere = $write(
-        where(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
-            alias(this.assetsExtra, 'ae'), alias(this.fiats, 'fiat')),
-        hasMultipleTables: true);
-    final generatedorderBy = $write(
-        orderBy(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
-            alias(this.assetsExtra, 'ae'), alias(this.fiats, 'fiat')),
-        hasMultipleTables: true);
-    final generatedlimit = $write(
-        limit(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
-            alias(this.assetsExtra, 'ae'), alias(this.fiats, 'fiat')),
-        hasMultipleTables: true);
+  Selectable<AssetResult> assetResults(String currentFiat,
+      Expression<bool?> where, OrderBy orderBy, Limit limit) {
+    final generatedwhere = $write(where, hasMultipleTables: true);
+    final generatedorderBy = $write(orderBy, hasMultipleTables: true);
+    final generatedlimit = $write(limit, hasMultipleTables: true);
     return customSelect(
-        'SELECT asset.*, tempAsset.symbol AS chainSymbol, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName, ae.hidden FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id LEFT JOIN assets_extra AS ae ON ae.asset_id = asset.asset_id INNER JOIN fiats AS fiat ON fiat.code = ?1 WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
+        'SELECT asset.*,\n       tempAsset.symbol AS chainSymbol,\n       tempAsset.icon_url AS chainIconUrl,\n       fiat.rate AS fiatRate,\n       tempAsset.name as chainName,\n       ae.hidden\nFROM assets asset\nLEFT  JOIN assets tempAsset ON asset.chain_id = tempAsset.asset_id\nLEFT  JOIN assets_extra ae ON ae.asset_id = asset.asset_id\nINNER JOIN fiats fiat ON fiat.code = :currentFiat\nWHERE ${generatedwhere.sql}\n${generatedorderBy.sql}\n${generatedlimit.sql}',
         variables: [
           Variable<String>(currentFiat),
           ...generatedwhere.introducedVariables,
@@ -4286,85 +4268,6 @@ class CollectibleItem {
     this.collectionIconUrl,
     this.collectionCreatedAt,
   });
-  @override
-  int get hashCode => Object.hashAll([
-        type,
-        tokenId,
-        group,
-        token,
-        mixinId,
-        nfo,
-        createdAt,
-        metaHash,
-        collectionId,
-        group1,
-        name,
-        description,
-        iconUrl,
-        mediaUrl,
-        mime,
-        hash,
-        tokenId1,
-        collectionType,
-        collectionName,
-        collectionDescription,
-        collectionIconUrl,
-        collectionCreatedAt
-      ]);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is CollectibleItem &&
-          other.type == this.type &&
-          other.tokenId == this.tokenId &&
-          other.group == this.group &&
-          other.token == this.token &&
-          other.mixinId == this.mixinId &&
-          other.nfo == this.nfo &&
-          other.createdAt == this.createdAt &&
-          other.metaHash == this.metaHash &&
-          other.collectionId == this.collectionId &&
-          other.group1 == this.group1 &&
-          other.name == this.name &&
-          other.description == this.description &&
-          other.iconUrl == this.iconUrl &&
-          other.mediaUrl == this.mediaUrl &&
-          other.mime == this.mime &&
-          other.hash == this.hash &&
-          other.tokenId1 == this.tokenId1 &&
-          other.collectionType == this.collectionType &&
-          other.collectionName == this.collectionName &&
-          other.collectionDescription == this.collectionDescription &&
-          other.collectionIconUrl == this.collectionIconUrl &&
-          other.collectionCreatedAt == this.collectionCreatedAt);
-  @override
-  String toString() {
-    return (StringBuffer('CollectibleItem(')
-          ..write('type: $type, ')
-          ..write('tokenId: $tokenId, ')
-          ..write('group: $group, ')
-          ..write('token: $token, ')
-          ..write('mixinId: $mixinId, ')
-          ..write('nfo: $nfo, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('metaHash: $metaHash, ')
-          ..write('collectionId: $collectionId, ')
-          ..write('group1: $group1, ')
-          ..write('name: $name, ')
-          ..write('description: $description, ')
-          ..write('iconUrl: $iconUrl, ')
-          ..write('mediaUrl: $mediaUrl, ')
-          ..write('mime: $mime, ')
-          ..write('hash: $hash, ')
-          ..write('tokenId1: $tokenId1, ')
-          ..write('collectionType: $collectionType, ')
-          ..write('collectionName: $collectionName, ')
-          ..write('collectionDescription: $collectionDescription, ')
-          ..write('collectionIconUrl: $collectionIconUrl, ')
-          ..write('collectionCreatedAt: $collectionCreatedAt')
-          ..write(')'))
-        .toString();
-  }
 }
 
 class SnapshotItem {
@@ -4402,66 +4305,6 @@ class SnapshotItem {
     this.assetSymbol,
     this.assetConfirmations,
   });
-  @override
-  int get hashCode => Object.hash(
-      snapshotId,
-      type,
-      assetId,
-      amount,
-      createdAt,
-      opponentId,
-      traceId,
-      transactionHash,
-      sender,
-      receiver,
-      memo,
-      confirmations,
-      avatarUrl,
-      opponentFulName,
-      assetSymbol,
-      assetConfirmations);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is SnapshotItem &&
-          other.snapshotId == this.snapshotId &&
-          other.type == this.type &&
-          other.assetId == this.assetId &&
-          other.amount == this.amount &&
-          other.createdAt == this.createdAt &&
-          other.opponentId == this.opponentId &&
-          other.traceId == this.traceId &&
-          other.transactionHash == this.transactionHash &&
-          other.sender == this.sender &&
-          other.receiver == this.receiver &&
-          other.memo == this.memo &&
-          other.confirmations == this.confirmations &&
-          other.avatarUrl == this.avatarUrl &&
-          other.opponentFulName == this.opponentFulName &&
-          other.assetSymbol == this.assetSymbol &&
-          other.assetConfirmations == this.assetConfirmations);
-  @override
-  String toString() {
-    return (StringBuffer('SnapshotItem(')
-          ..write('snapshotId: $snapshotId, ')
-          ..write('type: $type, ')
-          ..write('assetId: $assetId, ')
-          ..write('amount: $amount, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('opponentId: $opponentId, ')
-          ..write('traceId: $traceId, ')
-          ..write('transactionHash: $transactionHash, ')
-          ..write('sender: $sender, ')
-          ..write('receiver: $receiver, ')
-          ..write('memo: $memo, ')
-          ..write('confirmations: $confirmations, ')
-          ..write('avatarUrl: $avatarUrl, ')
-          ..write('opponentFulName: $opponentFulName, ')
-          ..write('assetSymbol: $assetSymbol, ')
-          ..write('assetConfirmations: $assetConfirmations')
-          ..write(')'))
-        .toString();
-  }
 }
 
 class AssetResult {
@@ -4509,80 +4352,4 @@ class AssetResult {
     this.chainName,
     this.hidden,
   });
-  @override
-  int get hashCode => Object.hashAll([
-        assetId,
-        symbol,
-        name,
-        iconUrl,
-        balance,
-        destination,
-        tag,
-        priceBtc,
-        priceUsd,
-        chainId,
-        changeUsd,
-        changeBtc,
-        confirmations,
-        assetKey,
-        reserve,
-        depositEntries,
-        chainSymbol,
-        chainIconUrl,
-        fiatRate,
-        chainName,
-        hidden
-      ]);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is AssetResult &&
-          other.assetId == this.assetId &&
-          other.symbol == this.symbol &&
-          other.name == this.name &&
-          other.iconUrl == this.iconUrl &&
-          other.balance == this.balance &&
-          other.destination == this.destination &&
-          other.tag == this.tag &&
-          other.priceBtc == this.priceBtc &&
-          other.priceUsd == this.priceUsd &&
-          other.chainId == this.chainId &&
-          other.changeUsd == this.changeUsd &&
-          other.changeBtc == this.changeBtc &&
-          other.confirmations == this.confirmations &&
-          other.assetKey == this.assetKey &&
-          other.reserve == this.reserve &&
-          other.depositEntries == this.depositEntries &&
-          other.chainSymbol == this.chainSymbol &&
-          other.chainIconUrl == this.chainIconUrl &&
-          other.fiatRate == this.fiatRate &&
-          other.chainName == this.chainName &&
-          other.hidden == this.hidden);
-  @override
-  String toString() {
-    return (StringBuffer('AssetResult(')
-          ..write('assetId: $assetId, ')
-          ..write('symbol: $symbol, ')
-          ..write('name: $name, ')
-          ..write('iconUrl: $iconUrl, ')
-          ..write('balance: $balance, ')
-          ..write('destination: $destination, ')
-          ..write('tag: $tag, ')
-          ..write('priceBtc: $priceBtc, ')
-          ..write('priceUsd: $priceUsd, ')
-          ..write('chainId: $chainId, ')
-          ..write('changeUsd: $changeUsd, ')
-          ..write('changeBtc: $changeBtc, ')
-          ..write('confirmations: $confirmations, ')
-          ..write('assetKey: $assetKey, ')
-          ..write('reserve: $reserve, ')
-          ..write('depositEntries: $depositEntries, ')
-          ..write('chainSymbol: $chainSymbol, ')
-          ..write('chainIconUrl: $chainIconUrl, ')
-          ..write('fiatRate: $fiatRate, ')
-          ..write('chainName: $chainName, ')
-          ..write('hidden: $hidden')
-          ..write(')'))
-        .toString();
-  }
 }
