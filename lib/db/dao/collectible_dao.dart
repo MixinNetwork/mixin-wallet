@@ -15,9 +15,10 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
   CollectibleDao(MixinDatabase attachedDatabase) : super(attachedDatabase);
 
   Selectable<CollectibleItem> getAllCollectibles() => db.collectiblesResult(
-        ignoreWhere,
-        OrderBy([OrderingTerm.desc(db.collections.createdAt)]),
-        maxLimit,
+        (token, meta, collection) => ignoreWhere,
+        (token, meta, collection) =>
+            OrderBy([OrderingTerm.desc(token.createdAt)]),
+        (token, meta, collection) => maxLimit,
       );
 
   Future<void> insertCollectible(sdk.CollectibleToken token) => batch((batch) {
@@ -71,16 +72,19 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
   Selectable<CollectibleItem> collectibleItemByCollectionId(
           String collectionId) =>
       db.collectiblesResult(
-        db.collections.collectionId.equals(collectionId),
-        OrderBy([OrderingTerm.desc(db.collections.createdAt)]),
-        maxLimit,
+        (token, meta, collection) =>
+            collection.collectionId.equals(collectionId),
+        (token, meta, collection) =>
+            OrderBy([OrderingTerm.desc(token.createdAt)]),
+        (token, meta, collection) => maxLimit,
       );
 
   Selectable<CollectibleItem> collectibleItemByTokenId(String tokenId) =>
       db.collectiblesResult(
-        db.collectibleToken.tokenId.equals(tokenId),
-        OrderBy([OrderingTerm.desc(db.collectibleToken.createdAt)]),
-        Limit(1, 0),
+        (token, meta, collection) => token.tokenId.equals(tokenId),
+        (token, meta, collection) =>
+            OrderBy([OrderingTerm.desc(token.createdAt)]),
+        (token, meta, collection) => Limit(1, 0),
       );
 
   void removeNotExist(List<String> tokenIds) {

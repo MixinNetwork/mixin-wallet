@@ -134,8 +134,8 @@ class Addresse extends DataClass implements Insertable<Addresse> {
           DateTime? updatedAt,
           String? reserve,
           String? fee,
-          String? tag,
-          String? dust}) =>
+          Value<String?> tag = const Value.absent(),
+          Value<String?> dust = const Value.absent()}) =>
       Addresse(
         addressId: addressId ?? this.addressId,
         type: type ?? this.type,
@@ -145,8 +145,8 @@ class Addresse extends DataClass implements Insertable<Addresse> {
         updatedAt: updatedAt ?? this.updatedAt,
         reserve: reserve ?? this.reserve,
         fee: fee ?? this.fee,
-        tag: tag ?? this.tag,
-        dust: dust ?? this.dust,
+        tag: tag.present ? tag.value : this.tag,
+        dust: dust.present ? dust.value : this.dust,
       );
   @override
   String toString() {
@@ -680,34 +680,35 @@ class Asset extends DataClass implements Insertable<Asset> {
           String? name,
           String? iconUrl,
           String? balance,
-          String? destination,
-          String? tag,
+          Value<String?> destination = const Value.absent(),
+          Value<String?> tag = const Value.absent(),
           String? priceBtc,
           String? priceUsd,
           String? chainId,
           String? changeUsd,
           String? changeBtc,
           int? confirmations,
-          String? assetKey,
-          String? reserve,
-          String? depositEntries}) =>
+          Value<String?> assetKey = const Value.absent(),
+          Value<String?> reserve = const Value.absent(),
+          Value<String?> depositEntries = const Value.absent()}) =>
       Asset(
         assetId: assetId ?? this.assetId,
         symbol: symbol ?? this.symbol,
         name: name ?? this.name,
         iconUrl: iconUrl ?? this.iconUrl,
         balance: balance ?? this.balance,
-        destination: destination ?? this.destination,
-        tag: tag ?? this.tag,
+        destination: destination.present ? destination.value : this.destination,
+        tag: tag.present ? tag.value : this.tag,
         priceBtc: priceBtc ?? this.priceBtc,
         priceUsd: priceUsd ?? this.priceUsd,
         chainId: chainId ?? this.chainId,
         changeUsd: changeUsd ?? this.changeUsd,
         changeBtc: changeBtc ?? this.changeBtc,
         confirmations: confirmations ?? this.confirmations,
-        assetKey: assetKey ?? this.assetKey,
-        reserve: reserve ?? this.reserve,
-        depositEntries: depositEntries ?? this.depositEntries,
+        assetKey: assetKey.present ? assetKey.value : this.assetKey,
+        reserve: reserve.present ? reserve.value : this.reserve,
+        depositEntries:
+            depositEntries.present ? depositEntries.value : this.depositEntries,
       );
   @override
   String toString() {
@@ -1393,26 +1394,29 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
           String? assetId,
           String? amount,
           DateTime? createdAt,
-          String? opponentId,
-          String? traceId,
-          String? transactionHash,
-          String? sender,
-          String? receiver,
-          String? memo,
-          int? confirmations}) =>
+          Value<String?> opponentId = const Value.absent(),
+          Value<String?> traceId = const Value.absent(),
+          Value<String?> transactionHash = const Value.absent(),
+          Value<String?> sender = const Value.absent(),
+          Value<String?> receiver = const Value.absent(),
+          Value<String?> memo = const Value.absent(),
+          Value<int?> confirmations = const Value.absent()}) =>
       Snapshot(
         snapshotId: snapshotId ?? this.snapshotId,
         type: type ?? this.type,
         assetId: assetId ?? this.assetId,
         amount: amount ?? this.amount,
         createdAt: createdAt ?? this.createdAt,
-        opponentId: opponentId ?? this.opponentId,
-        traceId: traceId ?? this.traceId,
-        transactionHash: transactionHash ?? this.transactionHash,
-        sender: sender ?? this.sender,
-        receiver: receiver ?? this.receiver,
-        memo: memo ?? this.memo,
-        confirmations: confirmations ?? this.confirmations,
+        opponentId: opponentId.present ? opponentId.value : this.opponentId,
+        traceId: traceId.present ? traceId.value : this.traceId,
+        transactionHash: transactionHash.present
+            ? transactionHash.value
+            : this.transactionHash,
+        sender: sender.present ? sender.value : this.sender,
+        receiver: receiver.present ? receiver.value : this.receiver,
+        memo: memo.present ? memo.value : this.memo,
+        confirmations:
+            confirmations.present ? confirmations.value : this.confirmations,
       );
   @override
   String toString() {
@@ -2002,31 +2006,32 @@ class User extends DataClass implements Insertable<User> {
   User copyWith(
           {String? userId,
           String? identityNumber,
-          UserRelationship? relationship,
-          String? fullName,
-          String? avatarUrl,
-          String? phone,
-          bool? isVerified,
-          DateTime? createdAt,
-          DateTime? muteUntil,
-          int? hasPin,
-          String? appId,
-          String? biography,
-          int? isScam}) =>
+          Value<UserRelationship?> relationship = const Value.absent(),
+          Value<String?> fullName = const Value.absent(),
+          Value<String?> avatarUrl = const Value.absent(),
+          Value<String?> phone = const Value.absent(),
+          Value<bool?> isVerified = const Value.absent(),
+          Value<DateTime?> createdAt = const Value.absent(),
+          Value<DateTime?> muteUntil = const Value.absent(),
+          Value<int?> hasPin = const Value.absent(),
+          Value<String?> appId = const Value.absent(),
+          Value<String?> biography = const Value.absent(),
+          Value<int?> isScam = const Value.absent()}) =>
       User(
         userId: userId ?? this.userId,
         identityNumber: identityNumber ?? this.identityNumber,
-        relationship: relationship ?? this.relationship,
-        fullName: fullName ?? this.fullName,
-        avatarUrl: avatarUrl ?? this.avatarUrl,
-        phone: phone ?? this.phone,
-        isVerified: isVerified ?? this.isVerified,
-        createdAt: createdAt ?? this.createdAt,
-        muteUntil: muteUntil ?? this.muteUntil,
-        hasPin: hasPin ?? this.hasPin,
-        appId: appId ?? this.appId,
-        biography: biography ?? this.biography,
-        isScam: isScam ?? this.isScam,
+        relationship:
+            relationship.present ? relationship.value : this.relationship,
+        fullName: fullName.present ? fullName.value : this.fullName,
+        avatarUrl: avatarUrl.present ? avatarUrl.value : this.avatarUrl,
+        phone: phone.present ? phone.value : this.phone,
+        isVerified: isVerified.present ? isVerified.value : this.isVerified,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        muteUntil: muteUntil.present ? muteUntil.value : this.muteUntil,
+        hasPin: hasPin.present ? hasPin.value : this.hasPin,
+        appId: appId.present ? appId.value : this.appId,
+        biography: biography.present ? biography.value : this.biography,
+        isScam: isScam.present ? isScam.value : this.isScam,
       );
   @override
   String toString() {
@@ -2678,9 +2683,11 @@ class AssetsExtraData extends DataClass implements Insertable<AssetsExtraData> {
     };
   }
 
-  AssetsExtraData copyWith({String? assetId, bool? hidden}) => AssetsExtraData(
+  AssetsExtraData copyWith(
+          {String? assetId, Value<bool?> hidden = const Value.absent()}) =>
+      AssetsExtraData(
         assetId: assetId ?? this.assetId,
-        hidden: hidden ?? this.hidden,
+        hidden: hidden.present ? hidden.value : this.hidden,
       );
   @override
   String toString() {
@@ -4029,6 +4036,7 @@ class Collections extends Table with TableInfo<Collections, Collection> {
 
 abstract class _$MixinDatabase extends GeneratedDatabase {
   _$MixinDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  _$MixinDatabase.connect(DatabaseConnection c) : super.connect(c);
   late final Addresses addresses = Addresses(this);
   late final Assets assets = Assets(this);
   late final Snapshots snapshots = Snapshots(this);
@@ -4049,12 +4057,42 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final CollectibleDao collectibleDao =
       CollectibleDao(this as MixinDatabase);
   Selectable<CollectibleItem> collectiblesResult(
-      Expression<bool?> where, OrderBy orderBy, Limit limit) {
-    final generatedwhere = $write(where, hasMultipleTables: true);
-    final generatedorderBy = $write(orderBy, hasMultipleTables: true);
-    final generatedlimit = $write(limit, hasMultipleTables: true);
+      Expression<bool?> Function(
+              CollectibleToken token, CollectibleTokenMeta meta, Collections c)
+          where,
+      OrderBy Function(
+              CollectibleToken token, CollectibleTokenMeta meta, Collections c)
+          orderBy,
+      Limit Function(
+              CollectibleToken token, CollectibleTokenMeta meta, Collections c)
+          limit) {
+    var $arrayStartIndex = 1;
+    final generatedwhere = $write(
+        where(
+            alias(this.collectibleToken, 'token'),
+            alias(this.collectibleTokenMeta, 'meta'),
+            alias(this.collections, 'c')),
+        hasMultipleTables: true,
+        startIndex: $arrayStartIndex);
+    $arrayStartIndex += generatedwhere.amountOfVariables;
+    final generatedorderBy = $write(
+        orderBy(
+            alias(this.collectibleToken, 'token'),
+            alias(this.collectibleTokenMeta, 'meta'),
+            alias(this.collections, 'c')),
+        hasMultipleTables: true,
+        startIndex: $arrayStartIndex);
+    $arrayStartIndex += generatedorderBy.amountOfVariables;
+    final generatedlimit = $write(
+        limit(
+            alias(this.collectibleToken, 'token'),
+            alias(this.collectibleTokenMeta, 'meta'),
+            alias(this.collections, 'c')),
+        hasMultipleTables: true,
+        startIndex: $arrayStartIndex);
+    $arrayStartIndex += generatedlimit.amountOfVariables;
     return customSelect(
-        'SELECT token.*,\n       meta.*,\n       c.type as collection_type,\n       c.name as collection_name,\n       c.description as collection_description,\n       c.icon_url as collection_icon_url,\n       c.created_at as collection_created_at\nFROM collectible_token as token\nLEFT JOIN collectible_token_meta as meta on token.token_id = meta.token_id\nLEFT JOIN collections as c on token.collection_id = c.collection_id\nWHERE ${generatedwhere.sql}\n${generatedorderBy.sql}\n${generatedlimit.sql}',
+        'SELECT token.*, meta.*, c.type AS collection_type, c.name AS collection_name, c.description AS collection_description, c.icon_url AS collection_icon_url, c.created_at AS collection_created_at FROM collectible_token AS token LEFT JOIN collectible_token_meta AS meta ON token.token_id = meta.token_id LEFT JOIN collections AS c ON token.collection_id = c.collection_id WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
         variables: [
           ...generatedwhere.introducedVariables,
           ...generatedorderBy.introducedVariables,
@@ -4107,12 +4145,30 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   }
 
   Selectable<SnapshotItem> snapshotItems(
-      Expression<bool?> where, OrderBy order, Limit limit) {
-    final generatedwhere = $write(where, hasMultipleTables: true);
-    final generatedorder = $write(order, hasMultipleTables: true);
-    final generatedlimit = $write(limit, hasMultipleTables: true);
+      Expression<bool?> Function(Snapshots s, Users u, Assets a) where,
+      OrderBy Function(Snapshots s, Users u, Assets a) order,
+      Limit Function(Snapshots s, Users u, Assets a) limit) {
+    var $arrayStartIndex = 1;
+    final generatedwhere = $write(
+        where(alias(this.snapshots, 's'), alias(this.users, 'u'),
+            alias(this.assets, 'a')),
+        hasMultipleTables: true,
+        startIndex: $arrayStartIndex);
+    $arrayStartIndex += generatedwhere.amountOfVariables;
+    final generatedorder = $write(
+        order(alias(this.snapshots, 's'), alias(this.users, 'u'),
+            alias(this.assets, 'a')),
+        hasMultipleTables: true,
+        startIndex: $arrayStartIndex);
+    $arrayStartIndex += generatedorder.amountOfVariables;
+    final generatedlimit = $write(
+        limit(alias(this.snapshots, 's'), alias(this.users, 'u'),
+            alias(this.assets, 'a')),
+        hasMultipleTables: true,
+        startIndex: $arrayStartIndex);
+    $arrayStartIndex += generatedlimit.amountOfVariables;
     return customSelect(
-        'SELECT s.*, u.avatar_url, u.full_name AS opponent_ful_name, a.symbol AS asset_symbol, a.confirmations AS asset_confirmations FROM snapshots s\n                LEFT JOIN users u ON u.user_id = s.opponent_id\n                LEFT JOIN assets a ON a.asset_id = s.asset_id\nWHERE ${generatedwhere.sql}\n${generatedorder.sql}\n${generatedlimit.sql}',
+        'SELECT s.*, u.avatar_url, u.full_name AS opponent_ful_name, a.symbol AS asset_symbol, a.confirmations AS asset_confirmations FROM snapshots AS s LEFT JOIN users AS u ON u.user_id = s.opponent_id LEFT JOIN assets AS a ON a.asset_id = s.asset_id WHERE ${generatedwhere.sql} ${generatedorder.sql} ${generatedlimit.sql}',
         variables: [
           ...generatedwhere.introducedVariables,
           ...generatedorder.introducedVariables,
@@ -4148,8 +4204,12 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
     });
   }
 
-  Future<int> clearPendingDepositsBy(Expression<bool?> where) {
-    final generatedwhere = $write(where);
+  Future<int> clearPendingDepositsBy(
+      Expression<bool?> Function(Snapshots snapshots) where) {
+    var $arrayStartIndex = 1;
+    final generatedwhere =
+        $write(where(this.snapshots), startIndex: $arrayStartIndex);
+    $arrayStartIndex += generatedwhere.amountOfVariables;
     return customUpdate(
       'DELETE FROM snapshots WHERE type = \'pending\' AND ${generatedwhere.sql}',
       variables: [...generatedwhere.introducedVariables],
@@ -4158,13 +4218,37 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
     );
   }
 
-  Selectable<AssetResult> assetResults(String currentFiat,
-      Expression<bool?> where, OrderBy orderBy, Limit limit) {
-    final generatedwhere = $write(where, hasMultipleTables: true);
-    final generatedorderBy = $write(orderBy, hasMultipleTables: true);
-    final generatedlimit = $write(limit, hasMultipleTables: true);
+  Selectable<AssetResult> assetResults(
+      String currentFiat,
+      Expression<bool?> Function(
+              Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat)
+          where,
+      OrderBy Function(
+              Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat)
+          orderBy,
+      Limit Function(Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat)
+          limit) {
+    var $arrayStartIndex = 2;
+    final generatedwhere = $write(
+        where(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
+            alias(this.assetsExtra, 'ae'), alias(this.fiats, 'fiat')),
+        hasMultipleTables: true,
+        startIndex: $arrayStartIndex);
+    $arrayStartIndex += generatedwhere.amountOfVariables;
+    final generatedorderBy = $write(
+        orderBy(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
+            alias(this.assetsExtra, 'ae'), alias(this.fiats, 'fiat')),
+        hasMultipleTables: true,
+        startIndex: $arrayStartIndex);
+    $arrayStartIndex += generatedorderBy.amountOfVariables;
+    final generatedlimit = $write(
+        limit(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
+            alias(this.assetsExtra, 'ae'), alias(this.fiats, 'fiat')),
+        hasMultipleTables: true,
+        startIndex: $arrayStartIndex);
+    $arrayStartIndex += generatedlimit.amountOfVariables;
     return customSelect(
-        'SELECT asset.*,\n       tempAsset.symbol AS chainSymbol,\n       tempAsset.icon_url AS chainIconUrl,\n       fiat.rate AS fiatRate,\n       tempAsset.name as chainName,\n       ae.hidden\nFROM assets asset\nLEFT  JOIN assets tempAsset ON asset.chain_id = tempAsset.asset_id\nLEFT  JOIN assets_extra ae ON ae.asset_id = asset.asset_id\nINNER JOIN fiats fiat ON fiat.code = :currentFiat\nWHERE ${generatedwhere.sql}\n${generatedorderBy.sql}\n${generatedlimit.sql}',
+        'SELECT asset.*, tempAsset.symbol AS chainSymbol, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName, ae.hidden FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id LEFT JOIN assets_extra AS ae ON ae.asset_id = asset.asset_id INNER JOIN fiats AS fiat ON fiat.code = ?1 WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
         variables: [
           Variable<String>(currentFiat),
           ...generatedwhere.introducedVariables,
@@ -4268,6 +4352,85 @@ class CollectibleItem {
     this.collectionIconUrl,
     this.collectionCreatedAt,
   });
+  @override
+  int get hashCode => Object.hashAll([
+        type,
+        tokenId,
+        group,
+        token,
+        mixinId,
+        nfo,
+        createdAt,
+        metaHash,
+        collectionId,
+        group1,
+        name,
+        description,
+        iconUrl,
+        mediaUrl,
+        mime,
+        hash,
+        tokenId1,
+        collectionType,
+        collectionName,
+        collectionDescription,
+        collectionIconUrl,
+        collectionCreatedAt
+      ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CollectibleItem &&
+          other.type == this.type &&
+          other.tokenId == this.tokenId &&
+          other.group == this.group &&
+          other.token == this.token &&
+          other.mixinId == this.mixinId &&
+          other.nfo == this.nfo &&
+          other.createdAt == this.createdAt &&
+          other.metaHash == this.metaHash &&
+          other.collectionId == this.collectionId &&
+          other.group1 == this.group1 &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.iconUrl == this.iconUrl &&
+          other.mediaUrl == this.mediaUrl &&
+          other.mime == this.mime &&
+          other.hash == this.hash &&
+          other.tokenId1 == this.tokenId1 &&
+          other.collectionType == this.collectionType &&
+          other.collectionName == this.collectionName &&
+          other.collectionDescription == this.collectionDescription &&
+          other.collectionIconUrl == this.collectionIconUrl &&
+          other.collectionCreatedAt == this.collectionCreatedAt);
+  @override
+  String toString() {
+    return (StringBuffer('CollectibleItem(')
+          ..write('type: $type, ')
+          ..write('tokenId: $tokenId, ')
+          ..write('group: $group, ')
+          ..write('token: $token, ')
+          ..write('mixinId: $mixinId, ')
+          ..write('nfo: $nfo, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('metaHash: $metaHash, ')
+          ..write('collectionId: $collectionId, ')
+          ..write('group1: $group1, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('iconUrl: $iconUrl, ')
+          ..write('mediaUrl: $mediaUrl, ')
+          ..write('mime: $mime, ')
+          ..write('hash: $hash, ')
+          ..write('tokenId1: $tokenId1, ')
+          ..write('collectionType: $collectionType, ')
+          ..write('collectionName: $collectionName, ')
+          ..write('collectionDescription: $collectionDescription, ')
+          ..write('collectionIconUrl: $collectionIconUrl, ')
+          ..write('collectionCreatedAt: $collectionCreatedAt')
+          ..write(')'))
+        .toString();
+  }
 }
 
 class SnapshotItem {
@@ -4305,6 +4468,66 @@ class SnapshotItem {
     this.assetSymbol,
     this.assetConfirmations,
   });
+  @override
+  int get hashCode => Object.hash(
+      snapshotId,
+      type,
+      assetId,
+      amount,
+      createdAt,
+      opponentId,
+      traceId,
+      transactionHash,
+      sender,
+      receiver,
+      memo,
+      confirmations,
+      avatarUrl,
+      opponentFulName,
+      assetSymbol,
+      assetConfirmations);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SnapshotItem &&
+          other.snapshotId == this.snapshotId &&
+          other.type == this.type &&
+          other.assetId == this.assetId &&
+          other.amount == this.amount &&
+          other.createdAt == this.createdAt &&
+          other.opponentId == this.opponentId &&
+          other.traceId == this.traceId &&
+          other.transactionHash == this.transactionHash &&
+          other.sender == this.sender &&
+          other.receiver == this.receiver &&
+          other.memo == this.memo &&
+          other.confirmations == this.confirmations &&
+          other.avatarUrl == this.avatarUrl &&
+          other.opponentFulName == this.opponentFulName &&
+          other.assetSymbol == this.assetSymbol &&
+          other.assetConfirmations == this.assetConfirmations);
+  @override
+  String toString() {
+    return (StringBuffer('SnapshotItem(')
+          ..write('snapshotId: $snapshotId, ')
+          ..write('type: $type, ')
+          ..write('assetId: $assetId, ')
+          ..write('amount: $amount, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('opponentId: $opponentId, ')
+          ..write('traceId: $traceId, ')
+          ..write('transactionHash: $transactionHash, ')
+          ..write('sender: $sender, ')
+          ..write('receiver: $receiver, ')
+          ..write('memo: $memo, ')
+          ..write('confirmations: $confirmations, ')
+          ..write('avatarUrl: $avatarUrl, ')
+          ..write('opponentFulName: $opponentFulName, ')
+          ..write('assetSymbol: $assetSymbol, ')
+          ..write('assetConfirmations: $assetConfirmations')
+          ..write(')'))
+        .toString();
+  }
 }
 
 class AssetResult {
@@ -4352,4 +4575,80 @@ class AssetResult {
     this.chainName,
     this.hidden,
   });
+  @override
+  int get hashCode => Object.hashAll([
+        assetId,
+        symbol,
+        name,
+        iconUrl,
+        balance,
+        destination,
+        tag,
+        priceBtc,
+        priceUsd,
+        chainId,
+        changeUsd,
+        changeBtc,
+        confirmations,
+        assetKey,
+        reserve,
+        depositEntries,
+        chainSymbol,
+        chainIconUrl,
+        fiatRate,
+        chainName,
+        hidden
+      ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AssetResult &&
+          other.assetId == this.assetId &&
+          other.symbol == this.symbol &&
+          other.name == this.name &&
+          other.iconUrl == this.iconUrl &&
+          other.balance == this.balance &&
+          other.destination == this.destination &&
+          other.tag == this.tag &&
+          other.priceBtc == this.priceBtc &&
+          other.priceUsd == this.priceUsd &&
+          other.chainId == this.chainId &&
+          other.changeUsd == this.changeUsd &&
+          other.changeBtc == this.changeBtc &&
+          other.confirmations == this.confirmations &&
+          other.assetKey == this.assetKey &&
+          other.reserve == this.reserve &&
+          other.depositEntries == this.depositEntries &&
+          other.chainSymbol == this.chainSymbol &&
+          other.chainIconUrl == this.chainIconUrl &&
+          other.fiatRate == this.fiatRate &&
+          other.chainName == this.chainName &&
+          other.hidden == this.hidden);
+  @override
+  String toString() {
+    return (StringBuffer('AssetResult(')
+          ..write('assetId: $assetId, ')
+          ..write('symbol: $symbol, ')
+          ..write('name: $name, ')
+          ..write('iconUrl: $iconUrl, ')
+          ..write('balance: $balance, ')
+          ..write('destination: $destination, ')
+          ..write('tag: $tag, ')
+          ..write('priceBtc: $priceBtc, ')
+          ..write('priceUsd: $priceUsd, ')
+          ..write('chainId: $chainId, ')
+          ..write('changeUsd: $changeUsd, ')
+          ..write('changeBtc: $changeBtc, ')
+          ..write('confirmations: $confirmations, ')
+          ..write('assetKey: $assetKey, ')
+          ..write('reserve: $reserve, ')
+          ..write('depositEntries: $depositEntries, ')
+          ..write('chainSymbol: $chainSymbol, ')
+          ..write('chainIconUrl: $chainIconUrl, ')
+          ..write('fiatRate: $fiatRate, ')
+          ..write('chainName: $chainName, ')
+          ..write('hidden: $hidden')
+          ..write(')'))
+        .toString();
+  }
 }
