@@ -36,12 +36,14 @@ jobs:
           CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
           WYRE_SECRET=WYRE_SECRET
           WYRE_ACCOUNT=WYRE_ACCOUNT
+          TRANSAK_API_KEY=TRANSAK_API_KEY
           EOF
           tee .production.env &>/dev/null << EOF
           CLIENT_ID=${{ secrets.CLIENT_ID }}
           CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
           WYRE_SECRET=WYRE_SECRET
           WYRE_ACCOUNT=WYRE_ACCOUNT
+          TRANSAK_API_KEY=TRANSAK_API_KEY
           EOF
 
       - name: Run Build Runner
