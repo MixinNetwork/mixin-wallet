@@ -7,3 +7,5 @@ void setClipboardText(String text) {
 }
 
 String? getFallbackFontFamily() => null;
+
+String locationOrigin() => 'https://mixinwallet.com';
