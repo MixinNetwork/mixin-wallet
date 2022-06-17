@@ -86,3 +86,5 @@ bool _copyCommand() {
     return false;
   }
 }
+
+String locationOrigin() => window.location.origin;
