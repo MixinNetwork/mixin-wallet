@@ -97,7 +97,7 @@ class _AssetDepositLoader extends HookWidget {
             (asset.destination == null || asset.destination!.isEmpty)) {
           // delay 2 seconds to request again if we didn't get the address.
           // https://developers.mixin.one/document/wallet/api/asset
-          await Future.delayed(const Duration(milliseconds: 2000));
+          await Future<void>.delayed(const Duration(milliseconds: 2000));
           asset = await context.appServices.updateAsset(assetId);
         }
       });
@@ -162,7 +162,7 @@ class _AssetDepositBody extends HookWidget {
       }
       Future.delayed(
           Duration.zero,
-          () => showDialog(
+          () => showDialog<void>(
               context: context,
               barrierDismissible: false,
               builder: (context) => _MemoWarningDialog(

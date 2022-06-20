@@ -117,6 +117,7 @@ class AssetSelectionListWidget extends HookWidget {
       if (!useSearchApi) {
         return null;
       }
+      // ignore: strict_raw_type
       CancelableOperation? lastRequest;
       final listen = keywordStream
           .where((event) => event.isNotEmpty)

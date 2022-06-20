@@ -157,7 +157,7 @@ class _AssetDetailPage extends StatelessWidget {
                   name: R.resourcesAlertSvg,
                   size: 24,
                   onTap: () {
-                    showMixinBottomSheet(
+                    showMixinBottomSheet<void>(
                       context: context,
                       builder: (context) =>
                           _AssetDescriptionBottomSheet(asset: asset),

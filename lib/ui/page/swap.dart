@@ -347,7 +347,7 @@ class _AssetItem extends HookWidget {
   @override
   Widget build(BuildContext context) {
     void showAssetListBottomSheet(ValueNotifier<AssetResult> asset) {
-      showMixinBottomSheet(
+      showMixinBottomSheet<void>(
         context: context,
         isScrollControlled: true,
         builder: (context) => AssetSelectionListWidget(

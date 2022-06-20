@@ -113,7 +113,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Center(
           child: InkResponse(
             radius: 24,
-            onTap: () => showMixinBottomSheet(
+            onTap: () => showMixinBottomSheet<void>(
               context: context,
               builder: (context) => const _AccountBottomSheet(),
             ),

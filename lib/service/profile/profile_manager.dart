@@ -11,8 +11,8 @@ Future<void> initStorage() async {
   Hive.registerAdapter(_AuthAdapter());
   await Hive.initFlutter();
   fixSafariIndexDb();
-  await Hive.openBox('profile');
-  await Hive.openBox('swap');
+  await Hive.openBox<dynamic>('profile');
+  await Hive.openBox<dynamic>('swap');
 }
 
 Auth? get auth => profileBox.get('auth') as Auth?;

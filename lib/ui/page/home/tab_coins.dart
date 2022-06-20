@@ -86,7 +86,7 @@ class AssetHeader extends StatelessWidget {
             const Spacer(),
             InkResponse(
               radius: 24,
-              onTap: () => showMixinBottomSheet(
+              onTap: () => showMixinBottomSheet<void>(
                   context: context,
                   isScrollControlled: true,
                   builder: (BuildContext context) =>

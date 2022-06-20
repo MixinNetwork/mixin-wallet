@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-extension AsyncSnapshotExt on AsyncSnapshot {
+extension AsyncSnapshotExt on AsyncSnapshot<void> {
   bool get isNoneOrWaiting =>
       connectionState == ConnectionState.none ||
       connectionState == ConnectionState.waiting;

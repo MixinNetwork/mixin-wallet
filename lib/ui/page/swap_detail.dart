@@ -121,7 +121,7 @@ class _SwapDetailLoader extends HookWidget {
               break;
             }
           }
-          await Future.delayed(const Duration(milliseconds: 2000));
+          await Future<void>.delayed(const Duration(milliseconds: 2000));
         }
       });
       return () => canceled = true;

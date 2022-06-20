@@ -60,7 +60,7 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
             mode: InsertMode.insertOrReplace,
           ));
 
-  Future deleteSnapshot(Snapshot snapshot) =>
+  Future<void> deleteSnapshot(Snapshot snapshot) =>
       delete(db.snapshots).delete(snapshot);
 
   Selectable<SnapshotItem> snapshotsByIds(List<String> snapshotIds) =>

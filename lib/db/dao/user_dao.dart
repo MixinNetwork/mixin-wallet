@@ -31,7 +31,7 @@ class UserDao extends DatabaseAccessor<MixinDatabase> with _$UserDaoMixin {
         batch.insertAllOnConflictUpdate(db.users, users);
       });
 
-  Future deleteUser(User user) => delete(db.users).delete(user);
+  Future<void> deleteUser(User user) => delete(db.users).delete(user);
 
   SimpleSelectStatement<Users, User> userById(String userId) =>
       select(db.users)..where((tbl) => tbl.userId.equals(userId));

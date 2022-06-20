@@ -10,14 +10,14 @@ import 'mixin_appbar.dart';
 Future<String?> scanTextFromQrcode({
   required BuildContext context,
 }) async {
-  final cameras = [];
+  final cameras = <String>[];
   try {
     cameras.addAll(await getCameras());
   } catch (e) {
     i('get cameras failed: $e');
   }
   if (cameras.isEmpty) {
-    await showDialog(
+    await showDialog<void>(
         context: context, builder: (context) => const _NoCameraTips());
     return null;
   }

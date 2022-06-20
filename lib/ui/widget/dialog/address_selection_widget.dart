@@ -84,7 +84,7 @@ class AddressSelectionWidget extends HookWidget {
             minimumSize: const Size(110, 48),
           ),
           onPressed: () {
-            showMixinBottomSheet(
+            showMixinBottomSheet<void>(
               context: context,
               builder: (context) =>
                   AddressAddWidget(assetId: assetId, chainId: chainId),

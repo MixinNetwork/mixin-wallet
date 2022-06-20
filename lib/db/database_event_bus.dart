@@ -21,5 +21,5 @@ class DataBaseEventBus {
   void send<T>(DatabaseEvent event, T value) =>
       _streamController.add(Tuple2(event, value));
 
-  Future dispose() => _streamController.close();
+  Future<void> dispose() => _streamController.close();
 }

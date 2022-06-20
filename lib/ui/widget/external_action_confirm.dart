@@ -64,7 +64,7 @@ class _ExternalActionConfirmDialog extends HookWidget {
             Navigator.of(context).pop();
             break;
           }
-          await Future.delayed(_kLoopInterval);
+          await Future<void>.delayed(_kLoopInterval);
         }
       });
       return () => canceled = true;

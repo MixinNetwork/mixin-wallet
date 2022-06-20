@@ -66,6 +66,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   final _initCompleter = Completer();
 
+  // ignore: strict_raw_type
   Future? get initServiceFuture => _initCompleter.future;
   MixinDatabase? _mixinDatabase;
 
@@ -230,7 +231,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         mixinDatabase.snapshotDao.insertAll(response.data),
         insertUsers?.call(),
         insertAsset?.call(),
-      ].where((element) => element != null).cast<Future>());
+      ].where((element) => element != null).cast<Future<void>>());
     });
   }
 
@@ -263,7 +264,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         mixinDatabase.snapshotDao.insertAll(response.data),
         insertUsers?.call(),
         insertAsset?.call(),
-      ].where((element) => element != null).cast<Future>());
+      ].where((element) => element != null).cast<Future<void>>());
       return mixinDatabase.snapshotDao
           .snapshotsByIds(response.data.map((e) => e.snapshotId).toList())
           .get();
@@ -308,7 +309,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       await Future.wait([
         mixinDatabase.snapshotDao.insertAll([data.data]),
         ...closures.map((e) => e?.call()),
-      ].where((element) => element != null).cast<Future>());
+      ].where((element) => element != null).cast<Future<void>>());
     });
   }
 
@@ -325,7 +326,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         await Future.wait([
           mixinDatabase.snapshotDao.insertAll([data.data]),
           ...closures.map((e) => e?.call()),
-        ].whereNotNull().cast<Future>());
+        ].whereNotNull().cast<Future<void>>());
       });
       return true;
     } catch (e) {

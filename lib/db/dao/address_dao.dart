@@ -34,7 +34,7 @@ class AddressDao extends DatabaseAccessor<MixinDatabase>
             mode: InsertMode.insertOrReplace,
           ));
 
-  Future deleteAddress(Addresse address) =>
+  Future<void> deleteAddress(Addresse address) =>
       delete(db.addresses).delete(address);
 
   Selectable<Addresse> addressesByAssetId(String assetId) =>

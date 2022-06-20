@@ -149,7 +149,7 @@ class _SearchAssetList extends HookWidget {
   Widget build(BuildContext context) {
     final isNetworkSearching = useState(false);
     useEffect(() {
-      CancelableOperation? lastRequest;
+      CancelableOperation<dynamic>? lastRequest;
       final listen = keywordStream
           .where((event) => event.isNotEmpty)
           .map((event) {
