@@ -2,6 +2,9 @@
 
 rm -r build/web/*
 
+flutter clean
+flutter pub get
+
 sed -i '' "s/BUILD_VERSION/`git rev-parse HEAD`/g" web/index.html || exit
 flutter pub run build_runner build --delete-conflicting-outputs || exit
 flutter build web --web-renderer html --release || exit
