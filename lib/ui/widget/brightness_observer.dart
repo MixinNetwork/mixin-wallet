@@ -211,7 +211,7 @@ class MixinColorScheme extends Equatable {
       ];
 }
 
-extension Theme on BuildContext {
+extension ThemeExt on BuildContext {
   BrightnessThemeData get theme => BrightnessData.themeOf(this);
 
   MixinColorScheme get colorScheme => theme.colorScheme;

@@ -6,18 +6,20 @@ import 'brightness_observer.dart';
 import 'search_text_field_widget.dart';
 
 class SearchHeaderWidget extends HookWidget {
-  const SearchHeaderWidget(
-      {Key? key,
-      this.hintText,
-      this.controller,
-      this.onChanged,
-      this.cancelVisible = true})
-      : super(key: key);
+  const SearchHeaderWidget({
+    Key? key,
+    this.hintText,
+    this.controller,
+    this.onChanged,
+    this.cancelVisible = true,
+    this.onCancelPressed,
+  }) : super(key: key);
 
   final String? hintText;
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
   final bool cancelVisible;
+  final VoidCallback? onCancelPressed;
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -42,9 +44,10 @@ class SearchHeaderWidget extends HookWidget {
               padding: const EdgeInsets.only(left: 4),
               child: InkWell(
                   customBorder: const CircleBorder(),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: onCancelPressed ??
+                      () {
+                        Navigator.pop(context);
+                      },
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Text(context.l10n.cancel,

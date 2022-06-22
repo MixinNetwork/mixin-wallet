@@ -3,28 +3,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../db/mixin_database.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/logger.dart';
 import '../../util/r.dart';
+import '../../util/transak.dart';
 import '../../wyre/wyre_constants.dart';
+import '../router/mixin_routes.dart';
 import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 import 'symbol.dart';
 
-Future<AssetResult?> showBuyAssetSelectionBottomSheet({
-  required BuildContext context,
-  String? initialSelected,
-}) =>
-    showAssetSelectionBottomSheet(
-        initialSelected: initialSelected,
-        context: context,
+class BuyAssetSelectionBottomSheet extends StatelessWidget {
+  const BuyAssetSelectionBottomSheet({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => AssetSelectionListWidget(
+        selectedAssetId: lastSelectedAddress,
+        onTap: (asset) async {
+          lastSelectedAddress = asset.assetId;
+          final url = generateTransakPayUrl(asset);
+          d('PayUrl: $url');
+          await launchUrlString(url);
+        },
         source: () async* {
           final assets =
               await context.appServices.findOrSyncAssets(supportedCryptosId);
           yield assets;
-        });
+        },
+        useSearchApi: false,
+        onCancelPressed: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.replace(homeUri);
+          }
+        },
+      );
+}
 
 Future<AssetResult?> showAssetSelectionBottomSheet({
   required BuildContext context,
@@ -38,16 +58,18 @@ Future<AssetResult?> showAssetSelectionBottomSheet({
       isScrollControlled: true,
       builder: (context) => AssetSelectionListWidget(
         selectedAssetId: initialSelected,
-        onTap: (_) {},
+        onTap: (asset) {
+          Navigator.pop(context, asset);
+        },
         source: source,
         ignoreAssets: ignoreAssets,
         useSearchApi: useSearchApi,
+        onCancelPressed: () => Navigator.pop(context),
       ),
     );
 
 typedef AssetSourceLoader = Stream<List<AssetResult>> Function();
 
-// TODO(boyan): Refactor use navigator pop to receive assets, instead of onTap callback.
 class AssetSelectionListWidget extends HookWidget {
   const AssetSelectionListWidget({
     Key? key,
@@ -56,6 +78,7 @@ class AssetSelectionListWidget extends HookWidget {
     this.source,
     this.ignoreAssets = const {},
     this.useSearchApi = false,
+    required this.onCancelPressed,
   }) : super(key: key);
 
   final String? selectedAssetId;
@@ -67,6 +90,8 @@ class AssetSelectionListWidget extends HookWidget {
   final Set<String> ignoreAssets;
 
   final bool useSearchApi;
+
+  final VoidCallback onCancelPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +174,7 @@ class AssetSelectionListWidget extends HookWidget {
               child: SearchHeaderWidget(
                 hintText: context.l10n.search,
                 onChanged: keywordStreamController.add,
+                onCancelPressed: onCancelPressed,
               )),
           const SizedBox(height: 10),
           Expanded(
@@ -185,7 +211,6 @@ class _Item extends StatelessWidget {
       child: InkWell(
         onTap: () {
           onTap(asset);
-          Navigator.pop(context, asset);
         },
         child: Container(
             height: 80,

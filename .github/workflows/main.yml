@@ -20,7 +20,7 @@ jobs:
 
       - uses: subosito/flutter-action@v1
         with:
-          channel: 'master' # 'master', 'beta', 'dev' or 'stable'
+          channel: 'stable' # 'master', 'beta', 'dev' or 'stable'
 
       - name: Install dependencies
         run: flutter pub get
