@@ -359,9 +359,11 @@ class _AssetItem extends HookWidget {
               await setSourceAssetId(assetResult.assetId);
             }
             onSelected.call();
+            Navigator.pop(context, asset);
           },
           selectedAssetId: asset.value.assetId,
           source: () => Stream.value(supportedAssets),
+          onCancelPressed: () => Navigator.pop(context, null),
         ),
       );
     }

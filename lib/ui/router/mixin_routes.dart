@@ -22,6 +22,8 @@ import '../page/swap_detail.dart';
 import '../page/swap_transactions.dart';
 import '../page/withdrawal.dart';
 import '../page/withdrawal_transactions.dart';
+import '../widget/asset_selection_list_widget.dart';
+import '../widget/bottom_sheet.dart';
 
 final homeUri = Uri(path: '/');
 final authUri = Uri(path: '/auth');
@@ -34,6 +36,7 @@ const snapshotDetailPath = '/snapshots/:id';
 final transactionsUri = Uri(path: '/transactions');
 final hiddenAssetsUri = Uri(path: '/hiddenAssets');
 const settingPath = '/setting';
+const buyChoosePath = '/buy';
 const buyPath = '/buy/:id';
 const buySuccessPath = '/buySuccess';
 const swapPath = '/swap';
@@ -149,6 +152,15 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                         widget: const CollectibleDetail(),
                       ),
                     ],
+                  ),
+                  VPage(
+                    path: buyChoosePath,
+                    pageBuilder: (key, child, name) => MixinBottomSheetPage(
+                      key: key,
+                      child: child,
+                      isScrollControlled: true,
+                    ),
+                    widget: const BuyAssetSelectionBottomSheet(),
                   ),
                 ]),
           ]),
