@@ -161,4 +161,9 @@ const supportedContries = [
 ];
 
 const supportedCryptos = ['USDT', 'USDC'];
-const supportedCryptosId = [erc20USDT, erc20USDC];
+const supportedCryptosId = [
+  bitcoin,
+  ethereum,
+  erc20USDC,
+  erc20USDT,
+];
