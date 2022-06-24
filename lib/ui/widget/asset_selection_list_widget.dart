@@ -6,7 +6,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../db/mixin_database.dart';
-import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
@@ -23,9 +22,7 @@ class BuyAssetSelectionBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AssetSelectionListWidget(
-        selectedAssetId: lastSelectedAddress,
         onTap: (asset) async {
-          lastSelectedAddress = asset.assetId;
           final url = generateTransakPayUrl(asset);
           d('PayUrl: $url');
           await launchUrlString(url);
@@ -106,9 +103,6 @@ class AssetSelectionListWidget extends HookWidget {
             ));
         }, keys: [ignoreAssets, source]).data ??
         const [];
-
-    var selectedAssetId = this.selectedAssetId;
-    selectedAssetId ??= assetResults.firstOrNull?.assetId;
 
     final keywordStreamController = useStreamController<String>();
     final keywordStream = useMemoized(
