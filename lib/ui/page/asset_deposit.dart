@@ -179,7 +179,7 @@ class _AssetDepositBody extends HookWidget {
       children: [
         if (usdtAssets.containsKey(asset.assetId))
           _UsdtChooseLayout(asset: asset),
-        if (depositEntries.length > 1)
+        if (depositEntries.length > 1 && asset.assetId == bitcoin)
           _DepositEntryChooseLayout(
             asset: asset,
             entries: depositEntries,
@@ -575,13 +575,12 @@ class _DepositEntryChooseLayout extends StatelessWidget {
             spacing: 12,
             runSpacing: 16,
             children: [
-              for (final entry in entries)
+              for (final entry in entries.reversed)
                 _NetworkTypeItem(
                   selected: selectedAddress == entry.destination,
                   onTap: () => onSelected(entry),
                   name: _getDestinationType(
-                    entry.destination,
-                    asset.destination,
+                    entry.properties,
                   ),
                 ),
             ],
@@ -684,10 +683,13 @@ class _RequestPaymentButton extends StatelessWidget {
       );
 }
 
-String _getDestinationType(String? checkedDestination, String? destination) {
-  if (checkedDestination == destination) {
-    return 'Bitcoin';
-  } else {
+String _getDestinationType(List<String>? properties) {
+  if (properties == null) {
+    return '';
+  }
+  if (properties.contains('SegWit')) {
     return 'Bitcoin (Segwit)';
+  } else {
+    return 'Bitcoin';
   }
 }
