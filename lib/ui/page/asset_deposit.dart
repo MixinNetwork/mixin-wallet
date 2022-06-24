@@ -139,8 +139,22 @@ class _AssetDepositBody extends HookWidget {
   Widget build(BuildContext context) {
     final depositEntry = useState<DepositEntry?>(null);
 
+    final depositEntries = useMemoized(
+      () =>
+          const DepositEntryConverter()
+              .mapToDart(asset.depositEntries)
+              ?.reversed
+              .toList() ??
+          const [],
+      [asset.assetId, asset.depositEntries],
+    );
+
     useEffect(() {
-      depositEntry.value = null;
+      if (depositEntries.length > 1 && asset.assetId == bitcoin) {
+        depositEntry.value = depositEntries.firstOrNull;
+      } else {
+        depositEntry.value = null;
+      }
     }, [asset.assetId]);
 
     final tag =
@@ -148,13 +162,6 @@ class _AssetDepositBody extends HookWidget {
     final address = depositEntry.value != null
         ? depositEntry.value?.destination
         : asset.destination;
-
-    final depositEntries = useMemoized(
-      () =>
-          const DepositEntryConverter().mapToDart(asset.depositEntries) ??
-          const [],
-      [asset.depositEntries],
-    );
 
     useMemoized(() {
       if (tag == null || tag.isEmpty) {
@@ -575,7 +582,7 @@ class _DepositEntryChooseLayout extends StatelessWidget {
             spacing: 12,
             runSpacing: 16,
             children: [
-              for (final entry in entries.reversed)
+              for (final entry in entries)
                 _NetworkTypeItem(
                   selected: selectedAddress == entry.destination,
                   onTap: () => onSelected(entry),
