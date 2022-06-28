@@ -11,6 +11,7 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:pointycastle/digests/sha3.dart';
 import 'package:vrouter/vrouter.dart';
 
+import '../db/dao/extension.dart';
 import '../db/dao/snapshot_dao.dart';
 import '../db/dao/user_dao.dart';
 import '../db/mixin_database.dart';
@@ -335,7 +336,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   }
 
   Future<void> refreshPendingDeposits(AssetResult asset) =>
-      _refreshPendingDeposits(asset.assetId, asset.destination, asset.tag);
+      _refreshPendingDeposits(asset.assetId, asset.getDestination(), asset.tag);
 
   Future<void> _refreshPendingDeposits(
     String assetId,
