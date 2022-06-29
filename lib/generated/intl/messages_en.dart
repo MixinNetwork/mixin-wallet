@@ -110,6 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "copyLink": MessageLookupByLibrary.simpleMessage("Copy link"),
         "copyToClipboard":
             MessageLookupByLibrary.simpleMessage("Copied to Clipboard"),
+        "date": MessageLookupByLibrary.simpleMessage("Date"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
         "depositConfirmation": m5,
