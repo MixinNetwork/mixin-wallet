@@ -98,6 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "contract": MessageLookupByLibrary.simpleMessage("资产标识"),
         "copyLink": MessageLookupByLibrary.simpleMessage("复制链接"),
         "copyToClipboard": MessageLookupByLibrary.simpleMessage("已复制到剪切板"),
+        "date": MessageLookupByLibrary.simpleMessage("日期"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
         "depositConfirmation": m5,

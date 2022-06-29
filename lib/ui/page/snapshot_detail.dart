@@ -260,7 +260,7 @@ class _TransactionDetailInfo extends StatelessWidget {
               }),
             ),
             TransactionInfoTile(
-              title: Text(context.l10n.time),
+              title: Text(context.l10n.date),
               subtitle: SelectableText(
                 DateFormat.yMMMMd()
                     .add_Hms()

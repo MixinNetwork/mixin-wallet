@@ -400,6 +400,16 @@ class L10n {
     );
   }
 
+  /// `Date`
+  String get date {
+    return Intl.message(
+      'Date',
+      name: 'date',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Trace`
   String get trace {
     return Intl.message(
