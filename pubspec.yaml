@@ -48,7 +48,7 @@ dependencies:
   isolate: ^2.1.1
   path: ^1.8.0
   dio: ^4.0.0
-  drift: ^1.7.0
+  drift: ^1.7.1
   tuple: ^2.0.0
   hive: ^2.2.1
   hive_flutter: ^1.1.0
