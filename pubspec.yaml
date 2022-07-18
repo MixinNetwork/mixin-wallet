@@ -54,7 +54,7 @@ dependencies:
   hive_flutter: ^1.1.0
   ansicolor: ^2.0.1
   decimal: ^2.2.0
-  rxdart: ^0.27.4
+  rxdart: ^0.27.5
   qr_flutter: ^4.0.0
   vrouter: ^1.2.0+5
   uuid: ^3.0.4
