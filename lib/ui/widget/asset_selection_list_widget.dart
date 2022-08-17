@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/logger.dart';
 import '../../util/r.dart';
-import '../../util/transak.dart';
 import '../../wyre/wyre_constants.dart';
 import '../router/mixin_routes.dart';
 import 'mixin_bottom_sheet.dart';
@@ -23,9 +20,7 @@ class BuyAssetSelectionBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AssetSelectionListWidget(
         onTap: (asset) async {
-          final url = generateTransakPayUrl(asset);
-          d('PayUrl: $url');
-          await launchUrlString(url);
+          context.push(buyPath.toUri({'id': asset.assetId}));
         },
         source: () async* {
           final assets =

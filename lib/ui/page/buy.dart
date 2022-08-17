@@ -8,13 +8,15 @@ import 'package:intl/intl.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/env.dart';
+import '../../service/profile/profile_manager.dart';
+import '../../third_party/buy_coin_api.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../../wyre/wyre_client.dart';
 import '../../wyre/wyre_constants.dart';
-import '../../wyre/wyre_quote.dart';
 import '../../wyre/wyre_vo.dart';
 import '../router/mixin_routes.dart';
 import '../widget/buttons.dart';
@@ -105,37 +107,50 @@ class _Body extends HookWidget {
     final inputController = useMemoized(NumberInputController.new);
     useValueListenable(inputController);
 
-    final quote = useState(const AsyncSnapshot<WyreQuote>.nothing());
+    final quote = useState(const AsyncSnapshot<Quote>.nothing());
 
     final showLoading = useState(false);
 
     useEffect(() {
       var canceled = false;
       scheduleMicrotask(() async {
-        final data = {
-          'sourceCurrency': fiat.value.name,
-          'destCurrency': asset.symbol,
-          'dest': 'ethereum:${asset.destination}',
-          'country': getCountry(),
-          'accountId': Env.wyreAccount,
-          'walletType': WyrePayType.applePay.forQuote(),
-          'amountIncludeFees': 'true',
-          'sourceAmount': inputController.value,
-        };
+        if (inputController.value == '0') {
+          quote.value = const AsyncSnapshot<Quote>.nothing();
+          return;
+        }
         quote.value = const AsyncSnapshot.waiting();
         try {
-          final result =
-              await WyreClient.instance.api.getOrderReservationQuote(data);
+          final results = await Future.wait([
+            for (final service in BuyService.values)
+              service.api.getCurrencyPrice(
+                asset,
+                inputController.value,
+                fiat.value.name,
+              ),
+          ]);
+
+          assert(() {
+            for (final result in results) {
+              d('api ${result.service} : ${result.fee} ${result.sourceAmount} ${result.destAmount}');
+            }
+            return true;
+          }());
+
+          final minFee = results.reduce(
+            (value, element) => value.fee < element.fee ? value : element,
+          );
+
           if (canceled) {
             return;
           }
-          quote.value = AsyncSnapshot.withData(ConnectionState.done, result);
-        } catch (e) {
+          quote.value = AsyncSnapshot.withData(ConnectionState.done, minFee);
+        } catch (error, stacktrace) {
           // ignore: invariant_booleans
           if (canceled) {
             return;
           }
-          quote.value = AsyncSnapshot.withError(ConnectionState.done, e);
+          e('get currency price failed: $error $stacktrace');
+          quote.value = AsyncSnapshot.withError(ConnectionState.done, error);
         }
       });
       return () => canceled = true;
@@ -180,28 +195,23 @@ class _Body extends HookWidget {
                   'https://mixinwallet.com/#/buySuccess?asset=${asset.assetId}&fiat=${fiat.value.name}&sourceAmount=${inputController.value}';
               final failureRedirectUrl =
                   'https://mixinwallet.com/#/buy/${asset.assetId}';
-              final data = {
-                'sourceCurrency': fiat.value.name,
-                'destCurrency': asset.symbol,
-                'dest': 'ethereum:${asset.destination}',
-                'country': getCountry(),
-                'redirectUrl': redirectUrl,
-                'failureRedirectUrl': failureRedirectUrl,
-                'paymentMethod': WyrePayType.applePay.forReservation(),
-                'referrerAccountId': Env.wyreAccount,
-                'amountIncludeFees': 'true',
-                'sourceAmount': inputController.value,
-              };
               try {
-                final url =
-                    await WyreClient.instance.api.createOrderReservation(data);
-                if (url == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: Text('Wyre serve empty url')));
-                  return;
-                }
+                final quoteData = quote.value.data!;
+                final url = await quoteData.service.api.generatePayUrl(
+                  asset,
+                  auth!.account.userId,
+                  fiat.value.name,
+                  inputController.value,
+                );
                 context.toExternal(url);
+              } catch (error, stacktrace) {
+                e('generate pay url failed: $error $stacktrace');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    content: Text('Generate pay url failed: $error'),
+                  ),
+                );
               } finally {
                 showLoading.value = false;
               }
@@ -299,7 +309,7 @@ class _InputPreview extends HookWidget {
   final WyreFiat fiat;
 
   final AssetResult asset;
-  final AsyncSnapshot<WyreQuote> quote;
+  final AsyncSnapshot<Quote> quote;
 
   @override
   Widget build(BuildContext context) {
@@ -381,7 +391,7 @@ class _BuyDescription extends HookWidget {
     required this.asset,
   }) : super(key: key);
 
-  final WyreQuote? quote;
+  final Quote? quote;
   final WyreFiat fiat;
   final AssetResult asset;
 
@@ -407,10 +417,10 @@ class _BuyDescription extends HookWidget {
           SelectableText.rich(
             TextSpan(children: [
               TextSpan(text: context.l10n.transactionFee),
-              TextSpan(
-                  text:
-                      '${(quote?.fees[fiat.name] ?? 0).toString()} ${fiat.name}',
-                  style: TextStyle(color: context.colorScheme.primaryText)),
+              // TextSpan(
+              //     text:
+              //         '${(quote?.fees[fiat.name] ?? 0).toString()} ${fiat.name}',
+              //     style: TextStyle(color: context.colorScheme.primaryText)),
             ]),
             enableInteractiveSelection: false,
           ),
@@ -418,10 +428,10 @@ class _BuyDescription extends HookWidget {
           SelectableText.rich(
             TextSpan(children: [
               TextSpan(text: context.l10n.networkFee),
-              TextSpan(
-                  text:
-                      '${(quote?.fees[asset.symbol] ?? 0).toString()} ${fiat.name}',
-                  style: TextStyle(color: context.colorScheme.primaryText)),
+              // TextSpan(
+              //     text:
+              //         '${(quote?.fees[asset.symbol] ?? 0).toString()} ${fiat.name}',
+              //     style: TextStyle(color: context.colorScheme.primaryText)),
             ]),
             enableInteractiveSelection: false,
           ),
