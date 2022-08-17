@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:convert/convert.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 import '../db/dao/extension.dart';
 import '../db/mixin_database.dart';
@@ -15,7 +14,7 @@ import '../util/web/web_utils_dummy.dart'
 import 'model/banxa_prices.dart';
 
 const _domain = 'mixin.banxa.com';
-const _sandboxDomain = 'api.banxa-sandbox.com';
+const _sandboxDomain = 'mixin.banxa-sandbox.com';
 const _apiKey = Env.banxaApiKey;
 const _apiSecret = Env.banxaApiSecret;
 
@@ -29,25 +28,24 @@ String _hmac(String message, String secret) {
 
 class BanxaApi {
   BanxaApi() {
-    _dio.options.baseUrl =
-        'https://${kReleaseMode ? _domain : _sandboxDomain}';
+    _dio.options.baseUrl = 'https://$_domain';
     _dio.options.headers['Content-Type'] = 'application/json';
     _dio.interceptors.add(
       InterceptorsWrapper(onRequest: (options, handler) {
-        final nonce = DateTime.now().millisecondsSinceEpoch.toString();
-
-        final method = options.method.toUpperCase();
-        final query = options.path;
-
-        final signature = StringBuffer('$method\n$query\n$nonce');
-
-        if (options.queryParameters.isNotEmpty) {
-          final payload = jsonEncode(options.queryParameters);
-          signature.write('\n$payload');
-        }
-        d('banax request signature: $signature');
-        options.headers['Authorization'] =
-            'Bearer $_apiKey:${_hmac(signature.toString(), _apiSecret)}:$nonce';
+        // final nonce = DateTime.now().millisecondsSinceEpoch.toString();
+        //
+        // final method = options.method.toUpperCase();
+        // final query = options.path;
+        //
+        // final signature = StringBuffer('$method\n$query\n$nonce');
+        //
+        // if (options.queryParameters.isNotEmpty) {
+        //   final payload = jsonEncode(options.queryParameters);
+        //   signature.write('\n$payload');
+        // }
+        // d('banax request signature: $signature ${_hmac(signature.toString(), _apiSecret)}');
+        // options.headers['Authorization'] =
+        //     'Bearer $_apiKey:${_hmac(signature.toString(), _apiSecret)}:$nonce';
         handler.next(options);
       }),
     );
@@ -57,6 +55,27 @@ class BanxaApi {
 
   final _dio = Dio();
 
+  Future<Map<String, dynamic>> _get(
+    String path, {
+    Map<String, dynamic> queryParameters = const {},
+  }) async {
+    var query = path;
+    if (queryParameters.isNotEmpty) {
+      query += '?${Transformer.urlEncodeMap(queryParameters)}';
+    }
+    final nonce = DateTime.now().millisecondsSinceEpoch.toString();
+    final signature = 'GET\n$query\n$nonce';
+    final response = await _dio.get<Map<String, dynamic>>(query,
+        options: Options(headers: {
+          'Authorization':
+              'Bearer $_apiKey:${_hmac(signature, _apiSecret)}:$nonce',
+        }));
+    if (response.data == null) {
+      throw Exception('$path response data is null');
+    }
+    return response.data!;
+  }
+
   // https://docs.banxa.com/reference/get-prices
   // path: /prices
   Future<BanxaPrices> getTokenPrice(
@@ -64,7 +83,7 @@ class BanxaApi {
     String fiatAmount,
     String fiatCurrency,
   ) async {
-    final response = await _dio.get<Map<String, dynamic>>(
+    final response = await _get(
       '/api/prices',
       queryParameters: {
         'source': fiatCurrency,
@@ -73,7 +92,7 @@ class BanxaApi {
         'blockchain': 'ETH',
       },
     );
-    final data = response.data?['data'];
+    final data = response['data'];
     if (data == null) {
       throw Exception('No data');
     }
