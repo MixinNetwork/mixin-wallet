@@ -46,17 +46,14 @@ class MixinDatabase extends _$MixinDatabase {
   final eventBus = DataBaseEventBus();
 
   @override
-  MigrationStrategy get migration => MigrationStrategy(
-        beforeOpen: (_) async {
-          if (executor.dialect == SqlDialect.sqlite) {
-            await customStatement('PRAGMA journal_mode=WAL');
-            await customStatement('PRAGMA foreign_keys=ON');
-            await customStatement('PRAGMA synchronous=NORMAL');
-          }
-        },
-        onUpgrade: (m, from, to) async {
-          d('onUpgrade: $from -> $to');
-          await destructiveFallback.onUpgrade(m, from, to);
+  MigrationStrategy get migration => MigrationStrategy(beforeOpen: (_) async {
+        if (executor.dialect == SqlDialect.sqlite) {
+          await customStatement('PRAGMA journal_mode=WAL');
+          await customStatement('PRAGMA foreign_keys=ON');
+          await customStatement('PRAGMA synchronous=NORMAL');
         }
-      );
+      }, onUpgrade: (m, from, to) async {
+        d('onUpgrade: $from -> $to');
+        await destructiveFallback.onUpgrade(m, from, to);
+      });
 }
