@@ -1246,6 +1246,9 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
   final String? receiver;
   final String? memo;
   final int? confirmations;
+  final String? snapshotHash;
+  final DateTime? snapshotAt;
+  final String? state;
   Snapshot(
       {required this.snapshotId,
       required this.type,
@@ -1258,7 +1261,10 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
       this.sender,
       this.receiver,
       this.memo,
-      this.confirmations});
+      this.confirmations,
+      this.snapshotHash,
+      this.snapshotAt,
+      this.state});
   factory Snapshot.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Snapshot(
@@ -1286,6 +1292,12 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
           .mapFromDatabaseResponse(data['${effectivePrefix}memo']),
       confirmations: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}confirmations']),
+      snapshotHash: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}snapshot_hash']),
+      snapshotAt: Snapshots.$converter1.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}snapshot_at'])),
+      state: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}state']),
     );
   }
   @override
@@ -1320,6 +1332,16 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
     if (!nullToAbsent || confirmations != null) {
       map['confirmations'] = Variable<int?>(confirmations);
     }
+    if (!nullToAbsent || snapshotHash != null) {
+      map['snapshot_hash'] = Variable<String?>(snapshotHash);
+    }
+    if (!nullToAbsent || snapshotAt != null) {
+      final converter = Snapshots.$converter1;
+      map['snapshot_at'] = Variable<int?>(converter.mapToSql(snapshotAt));
+    }
+    if (!nullToAbsent || state != null) {
+      map['state'] = Variable<String?>(state);
+    }
     return map;
   }
 
@@ -1348,6 +1370,14 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
       confirmations: confirmations == null && nullToAbsent
           ? const Value.absent()
           : Value(confirmations),
+      snapshotHash: snapshotHash == null && nullToAbsent
+          ? const Value.absent()
+          : Value(snapshotHash),
+      snapshotAt: snapshotAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(snapshotAt),
+      state:
+          state == null && nullToAbsent ? const Value.absent() : Value(state),
     );
   }
 
@@ -1367,6 +1397,9 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
       receiver: serializer.fromJson<String?>(json['receiver']),
       memo: serializer.fromJson<String?>(json['memo']),
       confirmations: serializer.fromJson<int?>(json['confirmations']),
+      snapshotHash: serializer.fromJson<String?>(json['snapshot_hash']),
+      snapshotAt: serializer.fromJson<DateTime?>(json['snapshot_at']),
+      state: serializer.fromJson<String?>(json['state']),
     );
   }
   @override
@@ -1385,6 +1418,9 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
       'receiver': serializer.toJson<String?>(receiver),
       'memo': serializer.toJson<String?>(memo),
       'confirmations': serializer.toJson<int?>(confirmations),
+      'snapshot_hash': serializer.toJson<String?>(snapshotHash),
+      'snapshot_at': serializer.toJson<DateTime?>(snapshotAt),
+      'state': serializer.toJson<String?>(state),
     };
   }
 
@@ -1400,7 +1436,10 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
           Value<String?> sender = const Value.absent(),
           Value<String?> receiver = const Value.absent(),
           Value<String?> memo = const Value.absent(),
-          Value<int?> confirmations = const Value.absent()}) =>
+          Value<int?> confirmations = const Value.absent(),
+          Value<String?> snapshotHash = const Value.absent(),
+          Value<DateTime?> snapshotAt = const Value.absent(),
+          Value<String?> state = const Value.absent()}) =>
       Snapshot(
         snapshotId: snapshotId ?? this.snapshotId,
         type: type ?? this.type,
@@ -1417,6 +1456,10 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
         memo: memo.present ? memo.value : this.memo,
         confirmations:
             confirmations.present ? confirmations.value : this.confirmations,
+        snapshotHash:
+            snapshotHash.present ? snapshotHash.value : this.snapshotHash,
+        snapshotAt: snapshotAt.present ? snapshotAt.value : this.snapshotAt,
+        state: state.present ? state.value : this.state,
       );
   @override
   String toString() {
@@ -1432,7 +1475,10 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
           ..write('sender: $sender, ')
           ..write('receiver: $receiver, ')
           ..write('memo: $memo, ')
-          ..write('confirmations: $confirmations')
+          ..write('confirmations: $confirmations, ')
+          ..write('snapshotHash: $snapshotHash, ')
+          ..write('snapshotAt: $snapshotAt, ')
+          ..write('state: $state')
           ..write(')'))
         .toString();
   }
@@ -1450,7 +1496,10 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
       sender,
       receiver,
       memo,
-      confirmations);
+      confirmations,
+      snapshotHash,
+      snapshotAt,
+      state);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1466,7 +1515,10 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
           other.sender == this.sender &&
           other.receiver == this.receiver &&
           other.memo == this.memo &&
-          other.confirmations == this.confirmations);
+          other.confirmations == this.confirmations &&
+          other.snapshotHash == this.snapshotHash &&
+          other.snapshotAt == this.snapshotAt &&
+          other.state == this.state);
 }
 
 class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
@@ -1482,6 +1534,9 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
   final Value<String?> receiver;
   final Value<String?> memo;
   final Value<int?> confirmations;
+  final Value<String?> snapshotHash;
+  final Value<DateTime?> snapshotAt;
+  final Value<String?> state;
   const SnapshotsCompanion({
     this.snapshotId = const Value.absent(),
     this.type = const Value.absent(),
@@ -1495,6 +1550,9 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
     this.receiver = const Value.absent(),
     this.memo = const Value.absent(),
     this.confirmations = const Value.absent(),
+    this.snapshotHash = const Value.absent(),
+    this.snapshotAt = const Value.absent(),
+    this.state = const Value.absent(),
   });
   SnapshotsCompanion.insert({
     required String snapshotId,
@@ -1509,6 +1567,9 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
     this.receiver = const Value.absent(),
     this.memo = const Value.absent(),
     this.confirmations = const Value.absent(),
+    this.snapshotHash = const Value.absent(),
+    this.snapshotAt = const Value.absent(),
+    this.state = const Value.absent(),
   })  : snapshotId = Value(snapshotId),
         type = Value(type),
         assetId = Value(assetId),
@@ -1527,6 +1588,9 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
     Expression<String?>? receiver,
     Expression<String?>? memo,
     Expression<int?>? confirmations,
+    Expression<String?>? snapshotHash,
+    Expression<DateTime?>? snapshotAt,
+    Expression<String?>? state,
   }) {
     return RawValuesInsertable({
       if (snapshotId != null) 'snapshot_id': snapshotId,
@@ -1541,6 +1605,9 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
       if (receiver != null) 'receiver': receiver,
       if (memo != null) 'memo': memo,
       if (confirmations != null) 'confirmations': confirmations,
+      if (snapshotHash != null) 'snapshot_hash': snapshotHash,
+      if (snapshotAt != null) 'snapshot_at': snapshotAt,
+      if (state != null) 'state': state,
     });
   }
 
@@ -1556,7 +1623,10 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
       Value<String?>? sender,
       Value<String?>? receiver,
       Value<String?>? memo,
-      Value<int?>? confirmations}) {
+      Value<int?>? confirmations,
+      Value<String?>? snapshotHash,
+      Value<DateTime?>? snapshotAt,
+      Value<String?>? state}) {
     return SnapshotsCompanion(
       snapshotId: snapshotId ?? this.snapshotId,
       type: type ?? this.type,
@@ -1570,6 +1640,9 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
       receiver: receiver ?? this.receiver,
       memo: memo ?? this.memo,
       confirmations: confirmations ?? this.confirmations,
+      snapshotHash: snapshotHash ?? this.snapshotHash,
+      snapshotAt: snapshotAt ?? this.snapshotAt,
+      state: state ?? this.state,
     );
   }
 
@@ -1613,6 +1686,16 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
     if (confirmations.present) {
       map['confirmations'] = Variable<int?>(confirmations.value);
     }
+    if (snapshotHash.present) {
+      map['snapshot_hash'] = Variable<String?>(snapshotHash.value);
+    }
+    if (snapshotAt.present) {
+      final converter = Snapshots.$converter1;
+      map['snapshot_at'] = Variable<int?>(converter.mapToSql(snapshotAt.value));
+    }
+    if (state.present) {
+      map['state'] = Variable<String?>(state.value);
+    }
     return map;
   }
 
@@ -1630,7 +1713,10 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
           ..write('sender: $sender, ')
           ..write('receiver: $receiver, ')
           ..write('memo: $memo, ')
-          ..write('confirmations: $confirmations')
+          ..write('confirmations: $confirmations, ')
+          ..write('snapshotHash: $snapshotHash, ')
+          ..write('snapshotAt: $snapshotAt, ')
+          ..write('state: $state')
           ..write(')'))
         .toString();
   }
@@ -1716,6 +1802,26 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
       type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: '');
+  final VerificationMeta _snapshotHashMeta =
+      const VerificationMeta('snapshotHash');
+  late final GeneratedColumn<String?> snapshotHash = GeneratedColumn<String?>(
+      'snapshot_hash', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
+  final VerificationMeta _snapshotAtMeta = const VerificationMeta('snapshotAt');
+  late final GeneratedColumnWithTypeConverter<DateTime, int?> snapshotAt =
+      GeneratedColumn<int?>('snapshot_at', aliasedName, true,
+              type: const IntType(),
+              requiredDuringInsert: false,
+              $customConstraints: '')
+          .withConverter<DateTime>(Snapshots.$converter1);
+  final VerificationMeta _stateMeta = const VerificationMeta('state');
+  late final GeneratedColumn<String?> state = GeneratedColumn<String?>(
+      'state', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         snapshotId,
@@ -1729,7 +1835,10 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
         sender,
         receiver,
         memo,
-        confirmations
+        confirmations,
+        snapshotHash,
+        snapshotAt,
+        state
       ];
   @override
   String get aliasedName => _alias ?? 'snapshots';
@@ -1801,6 +1910,17 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
           confirmations.isAcceptableOrUnknown(
               data['confirmations']!, _confirmationsMeta));
     }
+    if (data.containsKey('snapshot_hash')) {
+      context.handle(
+          _snapshotHashMeta,
+          snapshotHash.isAcceptableOrUnknown(
+              data['snapshot_hash']!, _snapshotHashMeta));
+    }
+    context.handle(_snapshotAtMeta, const VerificationResult.success());
+    if (data.containsKey('state')) {
+      context.handle(
+          _stateMeta, state.isAcceptableOrUnknown(data['state']!, _stateMeta));
+    }
     return context;
   }
 
@@ -1818,6 +1938,7 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
   }
 
   static TypeConverter<DateTime, int> $converter0 = const MillisDateConverter();
+  static TypeConverter<DateTime, int> $converter1 = const MillisDateConverter();
   @override
   List<String> get customConstraints => const ['PRIMARY KEY(snapshot_id)'];
   @override
@@ -4196,6 +4317,10 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         receiver: row.read<String?>('receiver'),
         memo: row.read<String?>('memo'),
         confirmations: row.read<int?>('confirmations'),
+        snapshotHash: row.read<String?>('snapshot_hash'),
+        snapshotAt:
+            Snapshots.$converter1.mapToDart(row.read<int?>('snapshot_at')),
+        state: row.read<String?>('state'),
         avatarUrl: row.read<String?>('avatar_url'),
         opponentFulName: row.read<String?>('opponent_ful_name'),
         assetSymbol: row.read<String?>('asset_symbol'),
@@ -4446,6 +4571,9 @@ class SnapshotItem {
   final String? receiver;
   final String? memo;
   final int? confirmations;
+  final String? snapshotHash;
+  final DateTime? snapshotAt;
+  final String? state;
   final String? avatarUrl;
   final String? opponentFulName;
   final String? assetSymbol;
@@ -4463,6 +4591,9 @@ class SnapshotItem {
     this.receiver,
     this.memo,
     this.confirmations,
+    this.snapshotHash,
+    this.snapshotAt,
+    this.state,
     this.avatarUrl,
     this.opponentFulName,
     this.assetSymbol,
@@ -4482,6 +4613,9 @@ class SnapshotItem {
       receiver,
       memo,
       confirmations,
+      snapshotHash,
+      snapshotAt,
+      state,
       avatarUrl,
       opponentFulName,
       assetSymbol,
@@ -4502,6 +4636,9 @@ class SnapshotItem {
           other.receiver == this.receiver &&
           other.memo == this.memo &&
           other.confirmations == this.confirmations &&
+          other.snapshotHash == this.snapshotHash &&
+          other.snapshotAt == this.snapshotAt &&
+          other.state == this.state &&
           other.avatarUrl == this.avatarUrl &&
           other.opponentFulName == this.opponentFulName &&
           other.assetSymbol == this.assetSymbol &&
@@ -4521,6 +4658,9 @@ class SnapshotItem {
           ..write('receiver: $receiver, ')
           ..write('memo: $memo, ')
           ..write('confirmations: $confirmations, ')
+          ..write('snapshotHash: $snapshotHash, ')
+          ..write('snapshotAt: $snapshotAt, ')
+          ..write('state: $state, ')
           ..write('avatarUrl: $avatarUrl, ')
           ..write('opponentFulName: $opponentFulName, ')
           ..write('assetSymbol: $assetSymbol, ')

@@ -193,7 +193,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "show": MessageLookupByLibrary.simpleMessage("显示"),
         "slippage": MessageLookupByLibrary.simpleMessage("滑点"),
         "slippageOver": m11,
+        "snapshotHash": MessageLookupByLibrary.simpleMessage("Snapshot hash"),
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
+        "state": MessageLookupByLibrary.simpleMessage("State"),
         "swap": MessageLookupByLibrary.simpleMessage("闪兑"),
         "swapDisclaimer":
             MessageLookupByLibrary.simpleMessage("服务由 MixSwap 提供"),

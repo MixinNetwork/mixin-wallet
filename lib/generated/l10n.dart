@@ -1609,6 +1609,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `State`
+  String get state {
+    return Intl.message(
+      'State',
+      name: 'state',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Snapshot hash`
+  String get snapshotHash {
+    return Intl.message(
+      'Snapshot hash',
+      name: 'snapshotHash',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

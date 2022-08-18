@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart'
     show UserRelationship;
 
+import '../util/logger.dart';
 import 'converter/millis_date_converter.dart';
 import 'converter/user_relationship_converter.dart';
 import 'dao/address_dao.dart';
@@ -40,7 +41,7 @@ class MixinDatabase extends _$MixinDatabase {
   MixinDatabase.connect(DatabaseConnection c) : super.connect(c);
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   final eventBus = DataBaseEventBus();
 
@@ -54,11 +55,8 @@ class MixinDatabase extends _$MixinDatabase {
           }
         },
         onUpgrade: (m, from, to) async {
-          // delete all tables and restart
-          for (final table in allTables) {
-            await m.deleteTable(table.actualTableName);
-            await m.createTable(table);
-          }
-        },
+          d('onUpgrade: $from -> $to');
+          await destructiveFallback.onUpgrade(m, from, to);
+        }
       );
 }
