@@ -4,6 +4,7 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import '../converter/deposit_entry_converter.dart';
 import '../mixin_database.dart';
 import '../util/util.dart';
+import 'extension.dart';
 
 part 'asset_dao.g.dart';
 
@@ -14,7 +15,7 @@ extension AssetConverter on sdk.Asset {
         name: name,
         iconUrl: iconUrl,
         balance: Value(balance),
-        destination: Value(destination),
+        destination: Value(getDestination()),
         tag: Value(tag),
         assetKey: Value(assetKey),
         priceBtc: priceBtc,
@@ -33,7 +34,7 @@ extension AssetConverter on sdk.Asset {
         symbol: Value(symbol),
         name: Value(name),
         iconUrl: Value(iconUrl),
-        destination: Value(destination),
+        destination: Value(getDestination()),
         tag: Value(tag),
         assetKey: Value(assetKey),
         priceBtc: Value(priceBtc),

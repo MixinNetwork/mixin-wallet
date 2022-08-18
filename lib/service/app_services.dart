@@ -356,9 +356,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       await _processPendingDeposit(assetId, ret.data);
     } else {
       final asset = await updateAsset(assetId);
-      assert(asset.destination != null);
+      assert(asset.getDestination() != null);
       await _refreshPendingDeposits(
-          asset.assetId, asset.destination, asset.tag);
+          asset.assetId, asset.getDestination(), asset.tag);
     }
   }
 
