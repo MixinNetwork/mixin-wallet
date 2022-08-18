@@ -26,14 +26,10 @@ extension AssetResultExtension on AssetResult {
 extension AssetExtension on Asset {
   String? getDestination() {
     if (assetId == bitcoin) {
-      final depositEntries = this
-          .depositEntries
-          ?.map((obj) => DepositEntry.fromJson(obj as Map<String, dynamic>))
-          .toList();
       if (depositEntries == null) {
         return null;
       }
-      for (final entry in depositEntries) {
+      for (final entry in depositEntries!) {
         if (entry.properties!.contains('SegWit')) {
           return entry.destination;
         }
