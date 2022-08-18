@@ -7,6 +7,7 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../db/converter/deposit_entry_converter.dart';
+import '../../db/dao/extension.dart';
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
@@ -94,7 +95,8 @@ class _AssetDepositLoader extends HookWidget {
       scheduleMicrotask(() async {
         var asset = await context.appServices.updateAsset(assetId);
         while (!cancel &&
-            (asset.destination == null || asset.destination!.isEmpty)) {
+            (asset.getDestination() == null ||
+                asset.getDestination()!.isEmpty)) {
           // delay 2 seconds to request again if we didn't get the address.
           // https://developers.mixin.one/document/wallet/api/asset
           await Future<void>.delayed(const Duration(milliseconds: 2000));

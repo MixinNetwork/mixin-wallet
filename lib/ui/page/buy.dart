@@ -408,8 +408,7 @@ class _BuyDescription extends HookWidget {
             TextSpan(children: [
               TextSpan(text: context.l10n.transactionFee),
               TextSpan(
-                  text:
-                      '${(quote?.fees[fiat.name] ?? 0).toString()} ${fiat.name}',
+                  text: '${quote?.fees[fiat.name] ?? 0} ${fiat.name}',
                   style: TextStyle(color: context.colorScheme.primaryText)),
             ]),
             enableInteractiveSelection: false,
@@ -419,8 +418,7 @@ class _BuyDescription extends HookWidget {
             TextSpan(children: [
               TextSpan(text: context.l10n.networkFee),
               TextSpan(
-                  text:
-                      '${(quote?.fees[asset.symbol] ?? 0).toString()} ${fiat.name}',
+                  text: '${quote?.fees[asset.symbol] ?? 0} ${fiat.name}',
                   style: TextStyle(color: context.colorScheme.primaryText)),
             ]),
             enableInteractiveSelection: false,

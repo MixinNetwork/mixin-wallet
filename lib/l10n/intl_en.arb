@@ -154,5 +154,7 @@
   "copyLink": "Copy link",
   "requestPaymentGeneratedTips": "A request payment link has been generated, please send it to the specified contact.",
   "requestPaymentAmount": "Request payment amount: {value}",
-  "linkGenerated": "Link generated"
+  "linkGenerated": "Link generated",
+  "state": "State",
+  "snapshotHash": "Snapshot hash"
 }

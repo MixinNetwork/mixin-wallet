@@ -214,7 +214,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "slippage": MessageLookupByLibrary.simpleMessage("Slippage"),
         "slippageOver": m11,
+        "snapshotHash": MessageLookupByLibrary.simpleMessage("Snapshot hash"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
+        "state": MessageLookupByLibrary.simpleMessage("State"),
         "swap": MessageLookupByLibrary.simpleMessage("Swap"),
         "swapDisclaimer": MessageLookupByLibrary.simpleMessage(
             "Services provided by MixSwap"),

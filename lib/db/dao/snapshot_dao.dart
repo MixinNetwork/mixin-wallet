@@ -19,6 +19,9 @@ extension SnapshotConverter on sdk.Snapshot {
         memo: Value(memo),
         confirmations: Value(confirmations),
         traceId: Value(traceId),
+        snapshotHash: Value(snapshotHash),
+        snapshotAt: Value(snapshotAt),
+        state: Value(state),
       );
 }
 

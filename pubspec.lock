@@ -462,12 +462,10 @@ packages:
   mixin_bot_sdk_dart:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "26f3d2d81cd21af626c8b2d5579468403574a74d"
-      resolved-ref: "26f3d2d81cd21af626c8b2d5579468403574a74d"
-      url: "https://github.com/MixinNetwork/mixin_bot_sdk_dart.git"
-    source: git
-    version: "0.2.16"
+      name: mixin_bot_sdk_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.1"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:
@@ -600,7 +598,7 @@ packages:
       name: pointycastle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.6.0"
+    version: "3.6.1"
   pool:
     dependency: transitive
     description:
@@ -965,6 +963,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.1"
+  x25519:
+    dependency: transitive
+    description:
+      name: x25519
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   xdg_directories:
     dependency: transitive
     description:

@@ -96,7 +96,7 @@ class TransferAmountWidget extends HookWidget {
     if (fiatInputMode.value) {
       assert(!asset.priceUsd.isZero);
       equivalent =
-          '${(input.toDecimalWithLocale() / asset.usdUnitPrice).toDecimal(scaleOnInfinitePrecision: 8).toString()}'
+          '${(input.toDecimalWithLocale() / asset.usdUnitPrice).toDecimal(scaleOnInfinitePrecision: 8)}'
           ' ${asset.symbol}';
     } else {
       equivalent =
