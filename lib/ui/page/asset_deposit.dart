@@ -231,10 +231,37 @@ class _AssetDepositBody extends HookWidget {
         ),
         const SizedBox(height: 32),
         if (address != null)
-          _RequestPaymentButton(
-            asset: asset,
-            address: address,
-            tag: tag,
+          Center(
+            child: MixinPrimaryTextButton(
+              onTap: () async {
+                final result = await showMixinBottomSheet<List<String>>(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => RequestPaymentBottomSheet(
+                    asset: asset,
+                    address: address,
+                    tag: tag,
+                  ),
+                );
+                if (result == null || result.isEmpty) {
+                  return;
+                }
+                assert(result.length == 2, 'Invalid result');
+                final amount = result[0];
+                final memo = result[1];
+
+                await showRequestPaymentResultBottomSheet(
+                  context,
+                  asset: asset,
+                  address: address,
+                  tag: tag,
+                  amount: amount,
+                  memo: memo,
+                  recipient: auth!.account.userId,
+                );
+              },
+              text: context.l10n.requestPayment,
+            ),
           ),
         const SizedBox(height: 16),
       ],
@@ -643,53 +670,6 @@ class _NetworkTypeItem extends StatelessWidget {
       ),
     );
   }
-}
-
-class _RequestPaymentButton extends StatelessWidget {
-  const _RequestPaymentButton({
-    Key? key,
-    required this.asset,
-    required this.address,
-    required this.tag,
-  }) : super(key: key);
-
-  final AssetResult asset;
-  final String address;
-  final String? tag;
-
-  @override
-  Widget build(BuildContext context) => Center(
-        child: MixinPrimaryTextButton(
-          onTap: () async {
-            final result = await showMixinBottomSheet<List<String>>(
-              context: context,
-              isScrollControlled: true,
-              builder: (context) => RequestPaymentBottomSheet(
-                asset: asset,
-                address: address,
-                tag: tag,
-              ),
-            );
-            if (result == null || result.isEmpty) {
-              return;
-            }
-            assert(result.length == 2, 'Invalid result');
-            final amount = result[0];
-            final memo = result[1];
-
-            await showRequestPaymentResultBottomSheet(
-              context,
-              asset: asset,
-              address: address,
-              tag: tag,
-              amount: amount,
-              memo: memo,
-              recipient: auth!.account.userId,
-            );
-          },
-          text: context.l10n.requestPayment,
-        ),
-      );
 }
 
 String _getDestinationType(List<String>? properties) {
