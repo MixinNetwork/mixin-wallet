@@ -272,6 +272,16 @@ class _TransactionDetailInfo extends StatelessWidget {
                 title: Text(context.l10n.trace),
                 subtitle: SelectableText(snapshot.traceId ?? ''),
               ),
+            if (snapshot.state != null)
+              TransactionInfoTile(
+                title: Text(context.l10n.state),
+                subtitle: SelectableText(snapshot.state!),
+              ),
+            if (snapshot.snapshotHash != null)
+              TransactionInfoTile(
+                title: Text(context.l10n.snapshotHash),
+                subtitle: SelectableText(snapshot.snapshotHash!),
+              ),
           ],
         ),
       );

@@ -7,6 +7,7 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../db/converter/deposit_entry_converter.dart';
+import '../../db/dao/extension.dart';
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
@@ -94,7 +95,8 @@ class _AssetDepositLoader extends HookWidget {
       scheduleMicrotask(() async {
         var asset = await context.appServices.updateAsset(assetId);
         while (!cancel &&
-            (asset.destination == null || asset.destination!.isEmpty)) {
+            (asset.getDestination() == null ||
+                asset.getDestination()!.isEmpty)) {
           // delay 2 seconds to request again if we didn't get the address.
           // https://developers.mixin.one/document/wallet/api/asset
           await Future<void>.delayed(const Duration(milliseconds: 2000));
@@ -229,10 +231,37 @@ class _AssetDepositBody extends HookWidget {
         ),
         const SizedBox(height: 32),
         if (address != null)
-          _RequestPaymentButton(
-            asset: asset,
-            address: address,
-            tag: tag,
+          Center(
+            child: MixinPrimaryTextButton(
+              onTap: () async {
+                final result = await showMixinBottomSheet<List<String>>(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => RequestPaymentBottomSheet(
+                    asset: asset,
+                    address: address,
+                    tag: tag,
+                  ),
+                );
+                if (result == null || result.isEmpty) {
+                  return;
+                }
+                assert(result.length == 2, 'Invalid result');
+                final amount = result[0];
+                final memo = result[1];
+
+                await showRequestPaymentResultBottomSheet(
+                  context,
+                  asset: asset,
+                  address: address,
+                  tag: tag,
+                  amount: amount,
+                  memo: memo,
+                  recipient: auth!.account.userId,
+                );
+              },
+              text: context.l10n.requestPayment,
+            ),
           ),
         const SizedBox(height: 16),
       ],
@@ -641,53 +670,6 @@ class _NetworkTypeItem extends StatelessWidget {
       ),
     );
   }
-}
-
-class _RequestPaymentButton extends StatelessWidget {
-  const _RequestPaymentButton({
-    Key? key,
-    required this.asset,
-    required this.address,
-    required this.tag,
-  }) : super(key: key);
-
-  final AssetResult asset;
-  final String address;
-  final String? tag;
-
-  @override
-  Widget build(BuildContext context) => Center(
-        child: MixinPrimaryTextButton(
-          onTap: () async {
-            final result = await showMixinBottomSheet<List<String>>(
-              context: context,
-              isScrollControlled: true,
-              builder: (context) => RequestPaymentBottomSheet(
-                asset: asset,
-                address: address,
-                tag: tag,
-              ),
-            );
-            if (result == null || result.isEmpty) {
-              return;
-            }
-            assert(result.length == 2, 'Invalid result');
-            final amount = result[0];
-            final memo = result[1];
-
-            await showRequestPaymentResultBottomSheet(
-              context,
-              asset: asset,
-              address: address,
-              tag: tag,
-              amount: amount,
-              memo: memo,
-              recipient: auth!.account.userId,
-            );
-          },
-          text: context.l10n.requestPayment,
-        ),
-      );
 }
 
 String _getDestinationType(List<String>? properties) {
