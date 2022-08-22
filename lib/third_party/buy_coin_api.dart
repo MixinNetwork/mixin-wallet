@@ -1,19 +1,24 @@
 import '../db/mixin_database.dart';
+import '../util/extension/extension.dart';
 import 'banxa.dart';
 import 'transak.dart';
 
 class Quote {
   Quote({
-    required this.fee,
+    required this.transactionFee,
     required this.sourceAmount,
     required this.destAmount,
     required this.service,
+    required this.networkFee,
+    this.payload,
   });
 
-  final double fee;
+  final String networkFee;
+  final String transactionFee;
   final double sourceAmount;
   final double destAmount;
   final BuyService service;
+  final dynamic payload;
 }
 
 enum BuyService {
@@ -44,23 +49,23 @@ abstract class BuyCoinApi {
   Future<String> generatePayUrl(
     AssetResult asset,
     String userId,
-    String faitCurrency,
-    String faitAmount,
+    String fiatCurrency,
+    String fiatAmount,
   );
 }
 
 class _TransakBuyCoinApiImpl implements BuyCoinApi {
   const _TransakBuyCoinApiImpl();
 
-  // TODO
   @override
   Future<String> generatePayUrl(
     AssetResult asset,
     String userId,
-    String faitCurrency,
-    String faitAmount,
+    String fiatCurrency,
+    String fiatAmount,
   ) async =>
-      TransakApi.instance.generateTransakPayUrl(asset);
+      TransakApi.instance
+          .generateTransakPayUrl(asset, fiatCurrency, fiatAmount);
 
   @override
   Future<Quote> getCurrencyPrice(
@@ -71,7 +76,10 @@ class _TransakBuyCoinApiImpl implements BuyCoinApi {
       fiatCurrency,
     );
     return Quote(
-      fee: result.totalFee,
+      transactionFee:
+          '${result.feeBreakdown.firstWhereOrNull((e) => e?.id == 'transak_fee')?.value ?? 0} $fiatCurrency',
+      networkFee:
+          '${result.feeBreakdown.firstWhereOrNull((e) => e?.id == 'network_fee')?.value ?? 0} ${asset.symbol}',
       sourceAmount: result.fiatAmount,
       destAmount: result.cryptoAmount,
       service: service,
@@ -89,14 +97,14 @@ class _BanxaBuyCoinApiImpl implements BuyCoinApi {
   Future<String> generatePayUrl(
     AssetResult asset,
     String userId,
-    String faitCurrency,
-    String faitAmount,
+    String fiatCurrency,
+    String fiatAmount,
   ) =>
       BanxaApi.instance.createOrder(
         userId,
         asset,
-        faitCurrency,
-        faitAmount,
+        fiatCurrency,
+        fiatAmount,
       );
 
   @override
@@ -107,11 +115,17 @@ class _BanxaBuyCoinApiImpl implements BuyCoinApi {
       fiatAmount,
       fiatCurrency,
     );
+    final price = result.prices.reduce((value, element) =>
+        value.coinAmount.asDecimal > element.coinAmount.asDecimal
+            ? value
+            : element);
     return Quote(
-      fee: double.parse(result.feeAmount),
-      sourceAmount: double.parse(result.fiatAmount),
-      destAmount: double.parse(result.coinAmount),
+      sourceAmount: double.parse(price.fiatAmount),
+      destAmount: double.parse(price.coinAmount),
       service: service,
+      payload: price.paymentMethodId,
+      transactionFee: '${price.feeAmount} $fiatCurrency',
+      networkFee: '${price.networkFee ?? 0} $fiatCurrency',
     );
   }
 

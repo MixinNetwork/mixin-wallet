@@ -12,7 +12,7 @@ class BanxaPricesResult {
   @JsonKey(name: 'spot_price')
   final String spotPrice;
 
-  final BanxaPrices prices;
+  final List<BanxaPrices> prices;
 
   Map<String, dynamic> toJson() => _$BanxaPricesResultToJson(this);
 }
@@ -29,6 +29,7 @@ class BanxaPrices {
     this.fiatAmount,
     this.fiatCode,
     this.feeAmount,
+    this.networkFee,
   );
 
   factory BanxaPrices.fromJson(Map<String, dynamic> json) =>
@@ -41,7 +42,7 @@ class BanxaPrices {
   final String type;
 
   @JsonKey(name: 'spot_price_fee')
-  final int spotPriceFee;
+  final String spotPriceFee;
 
   @JsonKey(name: 'spot_price_including_fee')
   final String spotPriceIncludingFee;
@@ -60,6 +61,9 @@ class BanxaPrices {
 
   @JsonKey(name: 'fee_amount')
   final String feeAmount;
+
+  @JsonKey(name: 'network_fee')
+  final String? networkFee;
 
   Map<String, dynamic> toJson() => _$BanxaPricesToJson(this);
 }

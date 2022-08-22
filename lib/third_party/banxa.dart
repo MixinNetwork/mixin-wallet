@@ -30,25 +30,6 @@ class BanxaApi {
   BanxaApi() {
     _dio.options.baseUrl = 'https://$_domain';
     _dio.options.headers['Content-Type'] = 'application/json';
-    _dio.interceptors.add(
-      InterceptorsWrapper(onRequest: (options, handler) {
-        // final nonce = DateTime.now().millisecondsSinceEpoch.toString();
-        //
-        // final method = options.method.toUpperCase();
-        // final query = options.path;
-        //
-        // final signature = StringBuffer('$method\n$query\n$nonce');
-        //
-        // if (options.queryParameters.isNotEmpty) {
-        //   final payload = jsonEncode(options.queryParameters);
-        //   signature.write('\n$payload');
-        // }
-        // d('banax request signature: $signature ${_hmac(signature.toString(), _apiSecret)}');
-        // options.headers['Authorization'] =
-        //     'Bearer $_apiKey:${_hmac(signature.toString(), _apiSecret)}:$nonce';
-        handler.next(options);
-      }),
-    );
   }
 
   static final instance = BanxaApi();
@@ -76,9 +57,30 @@ class BanxaApi {
     return response.data!;
   }
 
+  Future<Map<String, dynamic>> _post(
+    String query, {
+    Map<String, dynamic> body = const {},
+  }) async {
+    final nonce = DateTime.now().millisecondsSinceEpoch.toString();
+    final payload = jsonEncode(body);
+    final signature = 'POST\n$query\n$nonce\n$payload';
+    final response = await _dio.post<Map<String, dynamic>>(
+      query,
+      options: Options(headers: {
+        'Authorization':
+            'Bearer $_apiKey:${_hmac(signature, _apiSecret)}:$nonce',
+      }),
+      data: payload,
+    );
+    if (response.data == null) {
+      throw Exception('$query response data is null');
+    }
+    return response.data!;
+  }
+
   // https://docs.banxa.com/reference/get-prices
   // path: /prices
-  Future<BanxaPrices> getTokenPrice(
+  Future<BanxaPricesResult> getTokenPrice(
     AssetResult asset,
     String fiatAmount,
     String fiatCurrency,
@@ -97,7 +99,7 @@ class BanxaApi {
       throw Exception('No data');
     }
     final result = BanxaPricesResult.fromJson((data as Map).cast());
-    return result.prices;
+    return result;
   }
 
   // https://docs.banxa.com/reference/create-order
@@ -105,22 +107,23 @@ class BanxaApi {
   Future<String> createOrder(
     String userId,
     AssetResult asset,
-    String faitCurrency,
-    String faitAmount,
+    String fiatCurrency,
+    String fiatAmount,
   ) async {
-    final response = await _dio.post<Map<String, dynamic>>(
+    final response = await _post(
       '/api/orders',
-      data: {
-        'source': faitCurrency,
+      body: {
+        'source': fiatCurrency,
         'target': asset.symbol,
-        'source_amount': faitAmount,
+        'source_amount': fiatAmount,
         'blockchain': 'ETH',
         'wallet_address': asset.getDestination(),
         'return_url_on_success':
             '${locationOrigin()}/#/tokens/${asset.assetId}',
+        'account_reference': userId,
       },
     );
-    final data = response.data?['data'];
+    final data = response['data'];
     if (data == null) {
       throw Exception('No data');
     }

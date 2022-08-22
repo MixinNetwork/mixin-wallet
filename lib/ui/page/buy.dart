@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../db/mixin_database.dart';
-import '../../service/env.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../third_party/buy_coin_api.dart';
 import '../../util/constants.dart';
@@ -15,7 +15,6 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
-import '../../wyre/wyre_client.dart';
 import '../../wyre/wyre_constants.dart';
 import '../../wyre/wyre_vo.dart';
 import '../router/mixin_routes.dart';
@@ -105,56 +104,59 @@ class _Body extends HookWidget {
     final fiat = useState(getWyreFiatList().first);
 
     final inputController = useMemoized(NumberInputController.new);
-    useValueListenable(inputController);
+
+    final inputAmountStream = useValueNotifierConvertSteam(inputController);
 
     final quote = useState(const AsyncSnapshot<Quote>.nothing());
 
     final showLoading = useState(false);
 
     useEffect(() {
-      var canceled = false;
-      scheduleMicrotask(() async {
-        if (inputController.value == '0') {
-          quote.value = const AsyncSnapshot<Quote>.nothing();
-          return;
-        }
-        quote.value = const AsyncSnapshot.waiting();
-        try {
-          final results = await Future.wait([
-            for (final service in BuyService.values)
-              service.api.getCurrencyPrice(
-                asset,
-                inputController.value,
-                fiat.value.name,
-              ),
-          ]);
-
-          assert(() {
-            for (final result in results) {
-              d('api ${result.service} : ${result.fee} ${result.sourceAmount} ${result.destAmount}');
+      final subscription = inputAmountStream
+          .startWith(inputController.value)
+          .distinct()
+          .map((event) {
+            quote.value = const AsyncSnapshot<Quote>.waiting();
+            return event;
+          })
+          .debounceTime(const Duration(milliseconds: 500))
+          .listen((event) async {
+            if (event.trim().isEmpty || event == '0') {
+              quote.value = const AsyncSnapshot<Quote>.nothing();
+              return;
             }
-            return true;
-          }());
+            try {
+              final results = await Future.wait([
+                for (final service in BuyService.values)
+                  service.api.getCurrencyPrice(
+                    asset,
+                    inputController.value,
+                    fiat.value.name,
+                  ),
+              ]);
 
-          final minFee = results.reduce(
-            (value, element) => value.fee < element.fee ? value : element,
-          );
+              assert(() {
+                for (final result in results) {
+                  d('api ${result.service} : ${result.transactionFee} ${result.networkFee} ${result.sourceAmount} ${result.destAmount}');
+                }
+                return true;
+              }());
 
-          if (canceled) {
-            return;
-          }
-          quote.value = AsyncSnapshot.withData(ConnectionState.done, minFee);
-        } catch (error, stacktrace) {
-          // ignore: invariant_booleans
-          if (canceled) {
-            return;
-          }
-          e('get currency price failed: $error $stacktrace');
-          quote.value = AsyncSnapshot.withError(ConnectionState.done, error);
-        }
-      });
-      return () => canceled = true;
-    }, [fiat.value, inputController.value]);
+              final minFee = results.reduce(
+                (value, element) =>
+                    value.destAmount > element.destAmount ? value : element,
+              );
+              quote.value = AsyncSnapshot<Quote>.withData(
+                ConnectionState.done,
+                minFee,
+              );
+            } catch (error, stacktrace) {
+              e('get currency price failed: $error $stacktrace');
+              rethrow;
+            }
+          });
+      return subscription.cancel;
+    }, [fiat.value, inputAmountStream]);
 
     return Stack(
       children: [
@@ -178,11 +180,14 @@ class _Body extends HookWidget {
               ],
             ),
           ),
-          _InputPreview(
-            text: inputController.value,
-            fiat: fiat.value,
-            asset: asset,
-            quote: quote.value,
+          AnimatedBuilder(
+            animation: inputController,
+            builder: (context, child) => _InputPreview(
+              text: inputController.value,
+              fiat: fiat.value,
+              asset: asset,
+              quote: quote.value,
+            ),
           ),
           const SizedBox(height: 35),
           NumberInputWidget(controller: inputController),
@@ -417,10 +422,9 @@ class _BuyDescription extends HookWidget {
           SelectableText.rich(
             TextSpan(children: [
               TextSpan(text: context.l10n.transactionFee),
-              // TextSpan(
-              //     text:
-              //         '${(quote?.fees[fiat.name] ?? 0).toString()} ${fiat.name}',
-              //     style: TextStyle(color: context.colorScheme.primaryText)),
+              TextSpan(
+                  text: '${quote?.transactionFee ?? 0}',
+                  style: TextStyle(color: context.colorScheme.primaryText)),
             ]),
             enableInteractiveSelection: false,
           ),
@@ -428,10 +432,9 @@ class _BuyDescription extends HookWidget {
           SelectableText.rich(
             TextSpan(children: [
               TextSpan(text: context.l10n.networkFee),
-              // TextSpan(
-              //     text:
-              //         '${(quote?.fees[asset.symbol] ?? 0).toString()} ${fiat.name}',
-              //     style: TextStyle(color: context.colorScheme.primaryText)),
+              TextSpan(
+                  text: '${quote?.networkFee ?? 0}',
+                  style: TextStyle(color: context.colorScheme.primaryText)),
             ]),
             enableInteractiveSelection: false,
           ),

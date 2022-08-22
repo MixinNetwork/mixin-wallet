@@ -21,7 +21,11 @@ class TransakApi {
 
   final _dio = Dio();
 
-  String generateTransakPayUrl(AssetResult asset) {
+  String generateTransakPayUrl(
+    AssetResult asset,
+    String fiatCurrency,
+    String fiatAmount,
+  ) {
     final walletAddress = asset.getDestination();
     final uri = Uri.https(
       kReleaseMode ? 'global.transak.com' : 'staging-global.transak.com',
@@ -32,6 +36,8 @@ class TransakApi {
         'walletAddress': walletAddress,
         'networks': 'ethereum',
         'redirectUrl': '${locationOrigin()}/#/tokens/${asset.assetId}',
+        'fiatCurrency': fiatCurrency,
+        'fiatAmount': fiatAmount,
       },
     );
     return uri.toString();
