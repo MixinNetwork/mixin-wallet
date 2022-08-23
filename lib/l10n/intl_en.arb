@@ -156,5 +156,7 @@
   "requestPaymentAmount": "Request payment amount: {value}",
   "linkGenerated": "Link generated",
   "state": "State",
-  "snapshotHash": "Snapshot hash"
+  "snapshotHash": "Snapshot hash",
+  "download": "Download",
+  "downloadMixinMessengerHint": "Don’t have Mixin Messenger?"
 }

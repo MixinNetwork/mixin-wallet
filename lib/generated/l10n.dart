@@ -1629,6 +1629,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Download`
+  String get download {
+    return Intl.message(
+      'Download',
+      name: 'download',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don’t have Mixin Messenger?`
+  String get downloadMixinMessengerHint {
+    return Intl.message(
+      'Don’t have Mixin Messenger?',
+      name: 'downloadMixinMessengerHint',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

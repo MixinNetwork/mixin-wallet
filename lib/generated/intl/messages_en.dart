@@ -132,6 +132,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositing": MessageLookupByLibrary.simpleMessage("Depositing"),
         "dontShowAgain":
             MessageLookupByLibrary.simpleMessage("Don\'t show again"),
+        "download": MessageLookupByLibrary.simpleMessage("Download"),
+        "downloadMixinMessengerHint":
+            MessageLookupByLibrary.simpleMessage("Don’t have Mixin Messenger?"),
         "emptyAmount": MessageLookupByLibrary.simpleMessage("Empty amount"),
         "emptyLabelOrAddress":
             MessageLookupByLibrary.simpleMessage("Empty address or label"),
