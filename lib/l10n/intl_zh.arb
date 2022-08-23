@@ -153,5 +153,7 @@
   "requestPaymentAmount": "请求付款金额: {value}",
   "linkGenerated": "链接已生成",
   "state": "State",
-  "snapshotHash": "Snapshot hash"
+  "snapshotHash": "Snapshot hash",
+  "download": "下载",
+  "downloadMixinMessengerHint": "还未安装 Mixin Messenger?"
 }

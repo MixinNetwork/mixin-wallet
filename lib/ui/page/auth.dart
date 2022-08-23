@@ -2,14 +2,17 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../service/env.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
+import '../../util/mixin_context.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
+import '../widget/text.dart';
 
 class AuthPage extends HookWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -126,18 +129,46 @@ class _AuthBody extends StatelessWidget {
           const SizedBox(height: 56),
           const _AuthorizeButton(),
           const SizedBox(height: 24),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 46),
-            child: SelectableText(
-              context.l10n.authHint,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: context.colorScheme.primaryText.withOpacity(0.3),
+          if (isInMixinApp())
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 46),
+              child: SelectableText(
+                context.l10n.authHint,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: context.colorScheme.primaryText.withOpacity(0.3),
+                ),
+                enableInteractiveSelection: false,
               ),
-              enableInteractiveSelection: false,
+            )
+          else
+            Column(
+              children: [
+                MixinText(
+                  context.l10n.downloadMixinMessengerHint,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: context.colorScheme.primaryText,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                TextButton(
+                  onPressed: () {
+                    launchUrlString('https://mixin.one/mm');
+                  },
+                  child: MixinText(
+                    context.l10n.download,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: context.colorScheme.accent,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
           const SizedBox(height: 40),
         ],
       );

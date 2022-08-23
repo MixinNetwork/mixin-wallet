@@ -25,6 +25,11 @@ Map<String, dynamic> getMixinContext() {
   return const {};
 }
 
+bool isInMixinApp() {
+  final mixinContext = getMixinContext();
+  return mixinContext.isNotEmpty;
+}
+
 Locale? getMixinLocale() {
   final ctx = getMixinContext();
   if (ctx.isEmpty) return null;

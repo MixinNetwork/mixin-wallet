@@ -88,3 +88,16 @@ bool _copyCommand() {
 }
 
 String locationOrigin() => window.location.origin;
+
+bool? _isInAndroidWebView;
+
+bool isInAndroidWebView() => _isInAndroidWebView ??= _checkIsInAndroidWebView();
+
+bool _checkIsInAndroidWebView() {
+  if (defaultTargetPlatform != TargetPlatform.android) {
+    return false;
+  }
+  // https://developer.chrome.com/docs/multidevice/user-agent/#webview_user_agent
+  final userAgent = window.navigator.userAgent;
+  return userAgent.contains('wv');
+}

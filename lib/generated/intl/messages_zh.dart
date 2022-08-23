@@ -118,6 +118,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币。"),
         "depositing": MessageLookupByLibrary.simpleMessage("充值中"),
         "dontShowAgain": MessageLookupByLibrary.simpleMessage("不再提醒"),
+        "download": MessageLookupByLibrary.simpleMessage("下载"),
+        "downloadMixinMessengerHint":
+            MessageLookupByLibrary.simpleMessage("还未安装 Mixin Messenger?"),
         "emptyAmount": MessageLookupByLibrary.simpleMessage("金额不能为空"),
         "emptyLabelOrAddress":
             MessageLookupByLibrary.simpleMessage("地址和标题不能为空"),
