@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../util/constants.dart';
@@ -24,10 +23,8 @@ Future<void> showRequestPaymentResultBottomSheet(
   required String? amount,
   required String recipient,
 }) async {
-  final traceId = const Uuid().v4();
   final uri = Uri.https('mixin.one', 'pay', {
     'amount': amount,
-    'trace': traceId,
     'asset': asset.assetId,
     'recipient': recipient,
     'memo': memo,
