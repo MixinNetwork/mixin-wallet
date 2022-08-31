@@ -63,7 +63,7 @@ class _NoCameraTips extends StatelessWidget {
                 const SizedBox(height: 32),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: const Color(0xFF4B7CDD),
+                      backgroundColor: const Color(0xFF4B7CDD),
                       padding: const EdgeInsets.symmetric(
                         vertical: 16,
                         horizontal: 24,

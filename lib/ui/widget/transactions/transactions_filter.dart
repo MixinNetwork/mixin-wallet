@@ -278,13 +278,13 @@ class _Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: context.colorScheme.primaryText,
+            backgroundColor: context.colorScheme.primaryText,
             padding: const EdgeInsets.symmetric(
               vertical: 16,
               horizontal: 24,
             ),
             minimumSize: const Size(110, 48),
-            onPrimary: context.colorScheme.background,
+            foregroundColor: context.colorScheme.background,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
         onPressed: onTap,

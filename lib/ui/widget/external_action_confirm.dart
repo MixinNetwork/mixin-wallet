@@ -98,13 +98,13 @@ class _ExternalActionConfirmDialog extends HookWidget {
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
-                    primary: context.theme.accent,
+                    backgroundColor: context.theme.accent,
                     padding: const EdgeInsets.symmetric(
                       vertical: 16,
                       horizontal: 24,
                     ),
                     minimumSize: const Size(110, 48),
-                    onPrimary: Colors.white,
+                    foregroundColor: Colors.white,
                     shape: const StadiumBorder()),
                 child: Text(
                   context.l10n.cancel,

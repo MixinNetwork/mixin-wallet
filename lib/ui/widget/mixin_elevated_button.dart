@@ -25,7 +25,7 @@ class MixinElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: primary,
+          backgroundColor: primary,
           elevation: 0.0,
           shape: shape,
           padding: EdgeInsets.zero,

@@ -168,7 +168,7 @@ class _CopyButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: copyUrl,
       style: OutlinedButton.styleFrom(
-        primary: context.colorScheme.primaryText,
+        foregroundColor: context.colorScheme.primaryText,
         padding: const EdgeInsets.symmetric(
           vertical: 16,
           horizontal: 24,
