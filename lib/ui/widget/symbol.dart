@@ -13,7 +13,6 @@ class SymbolIconWithBorder extends StatelessWidget {
     required this.size,
     required this.chainSize,
     this.chainBorder = const BorderSide(color: Colors.white, width: 1),
-    this.symbolBorder = BorderSide.none,
   }) : super(key: key);
 
   final String symbolUrl;
@@ -23,45 +22,32 @@ class SymbolIconWithBorder extends StatelessWidget {
 
   final BorderSide chainBorder;
 
-  final BorderSide symbolBorder;
-
   @override
   Widget build(BuildContext context) => SizedBox.square(
-        dimension: size + symbolBorder.width,
+        dimension: size + chainBorder.width,
         child: Stack(
+          fit: StackFit.expand,
           children: [
-            Positioned.fill(
+            Padding(
+              padding: EdgeInsets.all(chainBorder.width),
+              child: Image.network(symbolUrl),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.symmetric(
-                    vertical: symbolBorder,
-                    horizontal: symbolBorder,
-                  ),
+                  border: Border.fromBorderSide(chainBorder),
                 ),
-                child: Image.network(symbolUrl),
-              ),
-            ),
-            Positioned(
-              left: 0,
-              bottom: 0,
-              child: Transform.translate(
-                offset: Offset(
-                  symbolBorder.width - chainBorder.width,
-                  chainBorder.width - symbolBorder.width,
-                ),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.symmetric(
-                      vertical: chainBorder,
-                      horizontal: chainBorder,
+                child: Padding(
+                  padding: EdgeInsets.all(chainBorder.width),
+                  child: SizedBox.square(
+                    dimension: chainSize,
+                    child: Image.network(
+                      chainUrl ?? '',
+                      width: chainSize,
+                      height: chainSize,
                     ),
-                  ),
-                  child: Image.network(
-                    chainUrl ?? '',
-                    width: chainSize,
-                    height: chainSize,
                   ),
                 ),
               ),
