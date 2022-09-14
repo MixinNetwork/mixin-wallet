@@ -531,19 +531,22 @@ class _QrcodeImage extends StatelessWidget {
               size: 160,
               padding: EdgeInsets.zero,
             ),
-            SymbolIconWithBorder(
-              symbolUrl: asset.iconUrl,
-              chainUrl: asset.chainIconUrl,
-              symbolBorder: BorderSide(
+            Container(
+              padding: const EdgeInsets.all(0.5),
+              decoration: BoxDecoration(
                 color: context.colorScheme.background,
-                width: 2,
+                shape: BoxShape.circle,
               ),
-              chainBorder: BorderSide(
-                color: context.colorScheme.background,
-                width: 1.5,
+              child: SymbolIconWithBorder(
+                symbolUrl: asset.iconUrl,
+                chainUrl: asset.chainIconUrl,
+                chainBorder: BorderSide(
+                  color: context.colorScheme.background,
+                  width: 1.5,
+                ),
+                size: 24,
+                chainSize: 5,
               ),
-              size: 24,
-              chainSize: 5,
             ),
           ],
         ),

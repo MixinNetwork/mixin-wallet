@@ -161,7 +161,6 @@ class _AssetLayout extends StatelessWidget {
           chainUrl: asset.chainIconUrl,
           size: 32,
           chainBorder: const BorderSide(color: Color(0xfff8f8f8), width: 1),
-          symbolBorder: const BorderSide(color: Color(0xfff8f8f8), width: 2),
           chainSize: 8,
         ),
         const SizedBox(width: 10),
