@@ -1,11 +1,11 @@
 import '../converter/millis_date_converter.dart';
 import '../converter/user_relationship_converter.dart';
 
-CREATE TABLE addresses (address_id TEXT NOT NULL, type TEXT NOT NULL, asset_id TEXT NOT NULL, destination TEXT NOT NULL, label TEXT NOT NULL, updated_at INTEGER NOT NULL MAPPED BY `const MillisDateConverter()`, reserve TEXT NOT NULL, fee TEXT NOT NULL, tag TEXT, dust TEXT, PRIMARY KEY(address_id));
+CREATE TABLE addresses (address_id TEXT NOT NULL, type TEXT NOT NULL, asset_id TEXT NOT NULL, destination TEXT NOT NULL, label TEXT NOT NULL, updated_at INTEGER NOT NULL MAPPED BY `const MillisDateConverterNotnull()`, reserve TEXT NOT NULL, fee TEXT NOT NULL, tag TEXT, dust TEXT, PRIMARY KEY(address_id));
 
 CREATE TABLE assets (asset_id TEXT NOT NULL,symbol TEXT NOT NULL,name TEXT NOT NULL,icon_url TEXT NOT NULL,balance TEXT NOT NULL DEFAULT '0',destination TEXT NULL,tag TEXT,price_btc TEXT NOT NULL,price_usd TEXT NOT NULL,chain_id TEXT NOT NULL,change_usd TEXT NOT NULL,change_btc TEXT NOT NULL,confirmations INTEGER NOT NULL,asset_key TEXT, reserve TEXT, deposit_entries TEXT, PRIMARY KEY(asset_id));
 
-CREATE TABLE snapshots (snapshot_id TEXT NOT NULL,type TEXT NOT NULL,asset_id TEXT NOT NULL,amount TEXT NOT NULL,created_at INTEGER NOT NULL MAPPED BY `const MillisDateConverter()`,opponent_id TEXT,trace_id TEXT,transaction_hash TEXT,sender TEXT,receiver TEXT,memo TEXT,confirmations INTEGER,snapshot_hash TEXT,snapshot_at INTEGER MAPPED BY `const MillisDateConverter()`,state TEXT,PRIMARY KEY(snapshot_id));
+CREATE TABLE snapshots (snapshot_id TEXT NOT NULL,type TEXT NOT NULL,asset_id TEXT NOT NULL,amount TEXT NOT NULL,created_at INTEGER NOT NULL MAPPED BY `const MillisDateConverterNotnull()`,opponent_id TEXT,trace_id TEXT,transaction_hash TEXT,sender TEXT,receiver TEXT,memo TEXT,confirmations INTEGER,snapshot_hash TEXT,snapshot_at INTEGER MAPPED BY `const MillisDateConverter()`,state TEXT,PRIMARY KEY(snapshot_id));
 
 CREATE TABLE users (user_id TEXT NOT NULL, identity_number TEXT NOT NULL, relationship TEXT MAPPED BY `const UserRelationshipConverter()`, full_name TEXT, avatar_url TEXT, phone TEXT, is_verified BOOLEAN, created_at INTEGER MAPPED BY `const MillisDateConverter()`, mute_until INTEGER MAPPED BY `const MillisDateConverter()`, has_pin INTEGER, app_id TEXT, biography TEXT, is_scam INTEGER, PRIMARY KEY(user_id) );
 
@@ -32,7 +32,7 @@ CREATE TABLE collectible_token (
   token TEXT NOT NULL,
   mixin_id TEXT NOT NULL,
   nfo TEXT NOT NULL,
-  created_at INTEGER NOT NULL MAPPED BY `const MillisDateConverter()`,
+  created_at INTEGER NOT NULL MAPPED BY `const MillisDateConverterNotnull()`,
   meta_hash TEXT NOT NULL,
   collection_id TEXT NOT NULL,
   PRIMARY KEY(token_id)
@@ -44,6 +44,6 @@ CREATE TABLE collections(
   name TEXT NOT NULL,
   description TEXT NOT NULL,
   icon_url TEXT NOT NULL,
-  created_at INTEGER NOT NULL MAPPED BY `const MillisDateConverter()`,
+  created_at INTEGER NOT NULL MAPPED BY `const MillisDateConverterNotnull()`,
   PRIMARY KEY(collection_id)
 );

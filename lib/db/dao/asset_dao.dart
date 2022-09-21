@@ -26,7 +26,7 @@ extension AssetConverter on sdk.Asset {
         confirmations: confirmations,
         reserve: Value(reserve),
         depositEntries:
-            Value(const DepositEntryConverter().mapToSql(depositEntries)),
+            Value(const DepositEntryConverter().toSql(depositEntries)),
       );
 
   AssetsCompanion get asAssetsCompanionWithoutBalance => AssetsCompanion(
@@ -45,7 +45,7 @@ extension AssetConverter on sdk.Asset {
         confirmations: Value(confirmations),
         reserve: Value(reserve),
         depositEntries:
-            Value(const DepositEntryConverter().mapToSql(depositEntries)),
+            Value(const DepositEntryConverter().toSql(depositEntries)),
       );
 }
 

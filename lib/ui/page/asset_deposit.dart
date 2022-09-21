@@ -144,7 +144,7 @@ class _AssetDepositBody extends HookWidget {
     final depositEntries = useMemoized(
       () =>
           const DepositEntryConverter()
-              .mapToDart(asset.depositEntries)
+              .fromSql(asset.depositEntries)
               ?.reversed
               .toList() ??
           const [],
