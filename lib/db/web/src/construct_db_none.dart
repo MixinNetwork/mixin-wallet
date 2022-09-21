@@ -39,7 +39,7 @@ Future<DriftIsolate> _createMoorIsolate(File dbFile) async {
 void _startBackground(_IsolateStartRequest request) {
   final executor = _openConnection(request.dbFile);
   final moorIsolate = DriftIsolate.inCurrent(
-    () => DatabaseConnection.fromExecutor(executor),
+    () => DatabaseConnection(executor),
   );
   request.sendMoorIsolate.send(moorIsolate);
 }

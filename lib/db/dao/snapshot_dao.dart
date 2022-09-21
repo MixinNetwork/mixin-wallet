@@ -90,7 +90,7 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
   }) =>
       db.snapshotItems(
         (s, u, a) {
-          Expression<bool?> predicate = const Constant(true);
+          Expression<bool> predicate = const Constant(true);
           if (types.isNotEmpty) {
             predicate &= s.type.isIn(types);
           }
@@ -114,7 +114,7 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
   }) =>
       db.snapshotItems(
         (s, u, a) {
-          Expression<bool?> predicate = a.assetId.equals(assetId);
+          var predicate = a.assetId.equals(assetId);
           if (types.isNotEmpty) {
             predicate &= s.type.isIn(types);
           }
@@ -146,7 +146,7 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
           .map((e) => e.snapshotId);
 }
 
-class _AmountSqlExpression extends Expression<dynamic> {
+class _AmountSqlExpression extends Expression<Object> {
   _AmountSqlExpression(this.s);
 
   final Snapshots s;

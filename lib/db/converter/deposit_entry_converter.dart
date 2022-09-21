@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
-class DepositEntryConverter extends TypeConverter<List<DepositEntry>, String> {
+class DepositEntryConverter extends TypeConverter<List<DepositEntry>?, String?> {
   const DepositEntryConverter();
 
   @override
-  List<DepositEntry>? mapToDart(String? fromDb) {
+  List<DepositEntry>? fromSql(String? fromDb) {
     if (fromDb == null) return null;
     final data = json.decode(fromDb) as List<dynamic>;
     return data
@@ -16,7 +16,7 @@ class DepositEntryConverter extends TypeConverter<List<DepositEntry>, String> {
   }
 
   @override
-  String? mapToSql(List<DepositEntry>? value) {
+  String? toSql(List<DepositEntry>? value) {
     if (value == null) return null;
     return json.encode(value);
   }
