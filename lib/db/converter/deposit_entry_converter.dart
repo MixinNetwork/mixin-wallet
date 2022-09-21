@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
-class DepositEntryConverter extends TypeConverter<List<DepositEntry>?, String?> {
+class DepositEntryConverter
+    extends TypeConverter<List<DepositEntry>?, String?> {
   const DepositEntryConverter();
 
   @override
