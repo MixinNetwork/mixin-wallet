@@ -230,7 +230,7 @@ class _AssetDepositBody extends HookWidget {
           ],
         ),
         const SizedBox(height: 32),
-        if (address != null)
+        if (address != null && address.isNotEmpty)
           Center(
             child: MixinPrimaryTextButton(
               onTap: () async {
