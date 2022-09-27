@@ -8,6 +8,7 @@ import 'package:mixswap_sdk_dart/mixswap_sdk_dart.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../db/dao/extension.dart';
 import '../../db/mixin_database.dart';
 import '../../service/mix_swap.dart';
 import '../../util/constants.dart';
@@ -264,6 +265,19 @@ class _Body extends HookWidget {
                             content: Text(context.l10n.emptyAmount)));
                         return;
                       }
+
+                      if (destAsset.value.getDestination().isEmpty ||
+                          sourceAsset.value.getDestination().isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            behavior: SnackBarBehavior.floating,
+                            content:
+                                Text(context.l10n.assetAddressGeneratingTip),
+                          ),
+                        );
+                        return;
+                      }
+
                       if (slippage > supportMaxSlippage) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             behavior: SnackBarBehavior.floating,
