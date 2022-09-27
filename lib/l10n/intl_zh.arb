@@ -155,5 +155,6 @@
   "state": "State",
   "snapshotHash": "Snapshot hash",
   "download": "下载",
-  "downloadMixinMessengerHint": "还未安装 Mixin Messenger?"
+  "downloadMixinMessengerHint": "还未安装 Mixin Messenger?",
+  "assetAddressGeneratingTip": "资产地址正在生成中，请稍后..."
 }

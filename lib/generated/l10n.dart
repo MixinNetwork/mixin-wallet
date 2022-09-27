@@ -1649,6 +1649,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Asset address is being generated, please wait...`
+  String get assetAddressGeneratingTip {
+    return Intl.message(
+      'Asset address is being generated, please wait...',
+      name: 'assetAddressGeneratingTip',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

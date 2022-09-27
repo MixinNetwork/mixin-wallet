@@ -69,6 +69,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "alreadyHidden": m0,
         "alreadyShown": m1,
         "amount": MessageLookupByLibrary.simpleMessage("金额"),
+        "assetAddressGeneratingTip":
+            MessageLookupByLibrary.simpleMessage("资产地址正在生成中，请稍后..."),
         "assetTrending": MessageLookupByLibrary.simpleMessage("热门资产"),
         "assetType": MessageLookupByLibrary.simpleMessage("资产类型"),
         "assets": MessageLookupByLibrary.simpleMessage("资产"),

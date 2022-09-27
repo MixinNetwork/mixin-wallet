@@ -76,6 +76,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "alreadyHidden": m0,
         "alreadyShown": m1,
         "amount": MessageLookupByLibrary.simpleMessage("Amount"),
+        "assetAddressGeneratingTip": MessageLookupByLibrary.simpleMessage(
+            "Asset address is being generated, please wait..."),
         "assetTrending": MessageLookupByLibrary.simpleMessage("Trending"),
         "assetType": MessageLookupByLibrary.simpleMessage("Asset Type"),
         "assets": MessageLookupByLibrary.simpleMessage("Assets"),

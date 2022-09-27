@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../db/dao/extension.dart';
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
@@ -23,9 +24,19 @@ class BuyAssetSelectionBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AssetSelectionListWidget(
         onTap: (asset) async {
-          final url = generateTransakPayUrl(asset);
-          d('PayUrl: $url');
-          await launchUrlString(url);
+          if (asset.getDestination().isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text(context.l10n.assetAddressGeneratingTip),
+              ),
+            );
+          } else {
+            final url = generateTransakPayUrl(asset);
+            d('PayUrl: $url');
+            await launchUrlString(url);
+          }
+          Navigator.of(context).pop();
         },
         source: () async* {
           final assets =

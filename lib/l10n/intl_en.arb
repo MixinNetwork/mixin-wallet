@@ -158,5 +158,6 @@
   "state": "State",
   "snapshotHash": "Snapshot hash",
   "download": "Download",
-  "downloadMixinMessengerHint": "Don’t have Mixin Messenger?"
+  "downloadMixinMessengerHint": "Don’t have Mixin Messenger?",
+  "assetAddressGeneratingTip": "Asset address is being generated, please wait..."
 }
