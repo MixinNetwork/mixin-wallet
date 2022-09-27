@@ -145,7 +145,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 extension _SortAssets on List<AssetResult> {
   void sortBy(AssetSortType sort) {
-    double _assetAmplitude(AssetResult asset) {
+    double assetAmplitude(AssetResult asset) {
       final invalid = sort == AssetSortType.increase
           ? double.negativeInfinity
           : double.infinity;
@@ -160,10 +160,10 @@ extension _SortAssets on List<AssetResult> {
         this.sort((a, b) => b.amountOfUsd.compareTo(a.amountOfUsd));
         break;
       case AssetSortType.decrease:
-        this.sort((a, b) => _assetAmplitude(a).compareTo(_assetAmplitude(b)));
+        this.sort((a, b) => assetAmplitude(a).compareTo(assetAmplitude(b)));
         break;
       case AssetSortType.increase:
-        this.sort((a, b) => _assetAmplitude(b).compareTo(_assetAmplitude(a)));
+        this.sort((a, b) => assetAmplitude(b).compareTo(assetAmplitude(a)));
         break;
     }
   }
@@ -240,14 +240,14 @@ class _TabSwitchBar extends HookWidget implements PreferredSizeWidget {
       initialIndex: selectedTab.index,
     );
     useEffect(() {
-      void _onTabChanged() {
+      void onTabChanged() {
         final params = Map<String, String>.from(context.queryParameters);
         params[kQueryParameterTab] = _Tab.values[controller.index].name;
         context.replace(homeUri.replace(queryParameters: params));
       }
 
-      controller.addListener(_onTabChanged);
-      return () => controller.removeListener(_onTabChanged);
+      controller.addListener(onTabChanged);
+      return () => controller.removeListener(onTabChanged);
     });
     return SizedBox(
       height: 60,

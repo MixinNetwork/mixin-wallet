@@ -67,6 +67,11 @@ dependencies:
       path: packages/web_qrcode
       ref: 7a0703301c6b9b2950f14bb045e2a660c8530c7a
   share_plus: ^4.4.0
+  collection: ^1.16.0
+  convert: ^3.0.2
+  pointycastle: ^3.6.2
+  url_launcher: ^6.1.5
+  async: ^2.9.0
 
 dev_dependencies:
   flutter_test:

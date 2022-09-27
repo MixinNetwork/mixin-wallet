@@ -28,7 +28,7 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
 
   List<Widget> get validActions {
-    final isNotEmpty = actions?.isNotEmpty == true;
+    final isNotEmpty = actions?.isNotEmpty ?? false;
     final ctx = getMixinContext();
     return [
       if (isNotEmpty) ...actions!,
