@@ -249,7 +249,7 @@ class _TransactionDetailInfo extends StatelessWidget {
             TransactionInfoTile(
               title: Text(context.l10n.memo),
               subtitle: Builder(builder: (context) {
-                final emptyMemo = snapshot.memo?.isEmpty != false;
+                final emptyMemo = snapshot.memo?.isEmpty ?? true;
                 return SelectableText(
                   emptyMemo ? '-' : snapshot.memo ?? '-',
                   enableInteractiveSelection: !emptyMemo,

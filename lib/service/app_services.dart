@@ -81,7 +81,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   }
 
   Future<void> login(String oauthCode) async {
-    final response = await client.oauthApi
+    final response = await this
+        .client
+        .oauthApi
         .post(sdk.OauthRequest(Env.clientId, Env.clientSecret, oauthCode));
 
     final scope = response.data.scope;
@@ -91,13 +93,13 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
     final token = response.data.accessToken;
 
-    final _client = sdk.Client(accessToken: token, interceptors: interceptors);
+    final client = sdk.Client(accessToken: token, interceptors: interceptors);
 
-    final mixinResponse = await _client.accountApi.getMe();
+    final mixinResponse = await client.accountApi.getMe();
 
     await setAuth(Auth(accessToken: token, account: mixinResponse.data));
 
-    client = _client;
+    this.client = client;
     await _initDatabase();
     notifyListeners();
   }
@@ -343,7 +345,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     String? assetDestination,
     String? assetTag,
   ) async {
-    if (assetDestination?.isNotEmpty == true) {
+    if (assetDestination?.isNotEmpty ?? false) {
       final ret = await client.assetApi.pendingDeposits(
         assetId,
         destination: assetDestination,
@@ -397,7 +399,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       await mixinDatabase.userDao
           .insertAll(friends.data.map((e) => e.toDbUser()).toList());
     } on DioError catch (e) {
-      if (e.optionMixinError?.isForbidden == true) {
+      if (e.optionMixinError?.isForbidden ?? false) {
         rethrow;
       }
       d('update friends failed: $e');
@@ -418,9 +420,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   @override
   Future<void> dispose() async {
     super.dispose();
-    final __mixinDatabase = _mixinDatabase;
+    final mixinDatabase = _mixinDatabase;
     _mixinDatabase = null;
-    await __mixinDatabase?.close();
+    await mixinDatabase?.close();
   }
 
   @override
@@ -510,7 +512,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       mixinDatabase.collectibleDao.removeNotExist(tokenIds);
       await refreshCollectiblesTokenIfNotExist(tokenIds);
     } on DioError catch (e, s) {
-      if (e.optionMixinError?.isForbidden == true) {
+      if (e.optionMixinError?.isForbidden ?? false) {
         rethrow;
       }
       d('updateCollectibles error: $e, $s');

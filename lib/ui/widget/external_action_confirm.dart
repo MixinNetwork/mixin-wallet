@@ -29,7 +29,7 @@ Future<bool> showAndWaitingExternalAction({
       hint: hint,
     ),
   );
-  return result == true;
+  return result ?? false;
 }
 
 const _kLoopInterval = Duration(seconds: 2);

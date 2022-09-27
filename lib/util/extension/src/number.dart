@@ -72,7 +72,7 @@ extension AssetResultExtension on AssetResult {
 
   Decimal get usdUnitPrice => priceUsd.asDecimal * fiatRate.asDecimal;
 
-  bool get needShowMemo => tag?.isNotEmpty == true;
+  bool get needShowMemo => tag?.isNotEmpty ?? false;
 
   bool get needShowReserve => (int.tryParse(reserve ?? '0') ?? 0) > 0;
 
@@ -108,7 +108,7 @@ extension SnapshotItemExtension on SnapshotItem {
 
 extension AddressExtension on Addresse {
   String displayAddress() {
-    if (tag == null || tag?.isEmpty == true) {
+    if (tag == null || (tag?.isEmpty ?? false)) {
       return '$destination$tag';
     } else {
       return destination;

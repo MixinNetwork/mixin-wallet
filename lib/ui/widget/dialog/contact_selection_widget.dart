@@ -36,7 +36,7 @@ class ContactSelectionBottomSheet extends HookWidget {
       return friends
           .where((e) =>
               e.identityNumber.containsIgnoreCase(filterKeywords.value) ||
-              (e.fullName?.containsIgnoreCase(filterKeywords.value) == true))
+              (e.fullName?.containsIgnoreCase(filterKeywords.value) ?? false))
           .toList();
     }, [filterKeywords.value, friends]);
 
