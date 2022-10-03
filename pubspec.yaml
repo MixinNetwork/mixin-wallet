@@ -70,7 +70,7 @@ dependencies:
   collection: ^1.16.0
   convert: ^3.0.2
   pointycastle: ^3.6.2
-  url_launcher: ^6.1.5
+  url_launcher: ^6.1.6
   async: ^2.9.0
 
 dev_dependencies:
