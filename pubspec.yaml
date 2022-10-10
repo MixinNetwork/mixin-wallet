@@ -45,7 +45,7 @@ dependencies:
   path: ^1.8.0
   dio: ^4.0.0
   drift: ^2.1.0
-  tuple: ^2.0.0
+  tuple: ^2.0.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   ansicolor: ^2.0.1
