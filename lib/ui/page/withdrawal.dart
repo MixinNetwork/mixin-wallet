@@ -73,6 +73,16 @@ class _WithdrawalPage extends HookWidget {
       return subscription.cancel;
     }, [address.value?.addressId]);
 
+    final feeAsset = useMemoizedFuture<AssetResult?>(
+      () async {
+        if (address.value == null) {
+          return null;
+        }
+        return context.appServices.findOrSyncAsset(address.value!.feeAssetId);
+      },
+      keys: [address.value],
+    ).data;
+
     return Scaffold(
       backgroundColor: context.colorScheme.background,
       appBar: MixinAppBar(
@@ -142,11 +152,18 @@ class _WithdrawalPage extends HookWidget {
           ),
           AnimatedSize(
             duration: const Duration(milliseconds: 300),
-            child: Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-              child: _FeeText(asset: asset, address: address.value),
-            ),
+            child: address.value == null
+                ? const SizedBox.shrink()
+                : Container(
+                    alignment: Alignment.centerLeft,
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                    child: _FeeText(
+                      asset: asset,
+                      address: address.value!,
+                      feeAsset: feeAsset,
+                    ),
+                  ),
           ),
           const SizedBox(height: 16),
           const Spacer(),
@@ -154,7 +171,8 @@ class _WithdrawalPage extends HookWidget {
             useListenable(amount);
             return SendButton(
               enable: amount.value.isNotEmpty &&
-                  (address.value != null || user.value != null),
+                  ((address.value != null && feeAsset != null) ||
+                      user.value != null),
               onTap: () async {
                 if (amount.value.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -215,19 +233,21 @@ class _WithdrawalPage extends HookWidget {
 }
 
 class _FeeText extends StatelessWidget {
-  const _FeeText({Key? key, this.address, required this.asset})
-      : super(key: key);
+  const _FeeText({
+    Key? key,
+    required this.address,
+    required this.asset,
+    required this.feeAsset,
+  }) : super(key: key);
 
-  final Addresse? address;
+  final Addresse address;
   final AssetResult asset;
+  final AssetResult? feeAsset;
 
   @override
   Widget build(BuildContext context) {
-    if (address == null) {
-      return const SizedBox();
-    }
-    final reserveVal = double.tryParse(address!.reserve);
-    final dustVal = double.tryParse(address!.dust ?? '0');
+    final reserveVal = double.tryParse(address.reserve);
+    final dustVal = double.tryParse(address.dust ?? '0');
     final showReserve = reserveVal != null && reserveVal > 0;
     final showDust = dustVal != null && dustVal > 0;
 
@@ -239,39 +259,36 @@ class _FeeText extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
         children: [
-          TextSpan(text: '${context.l10n.networkFee} '),
-          TextSpan(
-              text: '${address!.fee} ${asset.chainSymbol}',
+          if (feeAsset != null) ...[
+            TextSpan(text: '${context.l10n.networkFee} '),
+            TextSpan(
+              text: '${address.fee} ${feeAsset!.symbol}',
               style: TextStyle(
                 color: context.theme.text,
                 fontWeight: FontWeight.bold,
-              )),
-          if (showDust)
-            TextSpan(text: '\n${context.l10n.minimumWithdrawal} ')
-          else
-            const TextSpan(),
-          if (showDust)
+              ),
+            ),
+          ],
+          if (showDust) ...[
+            TextSpan(text: '\n${context.l10n.minimumWithdrawal} '),
             TextSpan(
-                text: '${address!.dust} ${asset.symbol}',
-                style: TextStyle(
-                  color: context.theme.text,
-                  fontWeight: FontWeight.bold,
-                ))
-          else
-            const TextSpan(),
-          if (showReserve)
-            TextSpan(text: '\n${context.l10n.minimumReserve} ')
-          else
-            const TextSpan(),
-          if (showReserve)
+              text: '${address.dust} ${asset.symbol}',
+              style: TextStyle(
+                color: context.theme.text,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+          if (showReserve) ...[
+            TextSpan(text: '\n${context.l10n.minimumReserve} '),
             TextSpan(
-                text: '${address!.reserve} ${asset.symbol}',
-                style: TextStyle(
-                  color: context.theme.text,
-                  fontWeight: FontWeight.bold,
-                ))
-          else
-            const TextSpan(),
+              text: '${address.reserve} ${asset.symbol}',
+              style: TextStyle(
+                color: context.theme.text,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ]));
   }
 }
