@@ -472,7 +472,7 @@ packages:
       name: mixin_bot_sdk_dart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.3"
+    version: "0.3.4"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:

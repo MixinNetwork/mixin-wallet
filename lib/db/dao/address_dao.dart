@@ -17,6 +17,7 @@ extension AddressConverter on sdk.Address {
         fee: fee,
         tag: Value(tag),
         dust: Value(dust),
+        feeAssetId: feeAssetId,
       );
 }
 

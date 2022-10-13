@@ -18,6 +18,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
   final String fee;
   final String? tag;
   final String? dust;
+  final String feeAssetId;
   const Addresse(
       {required this.addressId,
       required this.type,
@@ -28,7 +29,8 @@ class Addresse extends DataClass implements Insertable<Addresse> {
       required this.reserve,
       required this.fee,
       this.tag,
-      this.dust});
+      this.dust,
+      required this.feeAssetId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -49,6 +51,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
     if (!nullToAbsent || dust != null) {
       map['dust'] = Variable<String>(dust);
     }
+    map['fee_asset_id'] = Variable<String>(feeAssetId);
     return map;
   }
 
@@ -64,6 +67,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
       fee: Value(fee),
       tag: tag == null && nullToAbsent ? const Value.absent() : Value(tag),
       dust: dust == null && nullToAbsent ? const Value.absent() : Value(dust),
+      feeAssetId: Value(feeAssetId),
     );
   }
 
@@ -81,6 +85,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
       fee: serializer.fromJson<String>(json['fee']),
       tag: serializer.fromJson<String?>(json['tag']),
       dust: serializer.fromJson<String?>(json['dust']),
+      feeAssetId: serializer.fromJson<String>(json['fee_asset_id']),
     );
   }
   @override
@@ -97,6 +102,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
       'fee': serializer.toJson<String>(fee),
       'tag': serializer.toJson<String?>(tag),
       'dust': serializer.toJson<String?>(dust),
+      'fee_asset_id': serializer.toJson<String>(feeAssetId),
     };
   }
 
@@ -110,7 +116,8 @@ class Addresse extends DataClass implements Insertable<Addresse> {
           String? reserve,
           String? fee,
           Value<String?> tag = const Value.absent(),
-          Value<String?> dust = const Value.absent()}) =>
+          Value<String?> dust = const Value.absent(),
+          String? feeAssetId}) =>
       Addresse(
         addressId: addressId ?? this.addressId,
         type: type ?? this.type,
@@ -122,6 +129,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
         fee: fee ?? this.fee,
         tag: tag.present ? tag.value : this.tag,
         dust: dust.present ? dust.value : this.dust,
+        feeAssetId: feeAssetId ?? this.feeAssetId,
       );
   @override
   String toString() {
@@ -135,14 +143,15 @@ class Addresse extends DataClass implements Insertable<Addresse> {
           ..write('reserve: $reserve, ')
           ..write('fee: $fee, ')
           ..write('tag: $tag, ')
-          ..write('dust: $dust')
+          ..write('dust: $dust, ')
+          ..write('feeAssetId: $feeAssetId')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(addressId, type, assetId, destination, label,
-      updatedAt, reserve, fee, tag, dust);
+      updatedAt, reserve, fee, tag, dust, feeAssetId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -156,7 +165,8 @@ class Addresse extends DataClass implements Insertable<Addresse> {
           other.reserve == this.reserve &&
           other.fee == this.fee &&
           other.tag == this.tag &&
-          other.dust == this.dust);
+          other.dust == this.dust &&
+          other.feeAssetId == this.feeAssetId);
 }
 
 class AddressesCompanion extends UpdateCompanion<Addresse> {
@@ -170,6 +180,7 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
   final Value<String> fee;
   final Value<String?> tag;
   final Value<String?> dust;
+  final Value<String> feeAssetId;
   const AddressesCompanion({
     this.addressId = const Value.absent(),
     this.type = const Value.absent(),
@@ -181,6 +192,7 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
     this.fee = const Value.absent(),
     this.tag = const Value.absent(),
     this.dust = const Value.absent(),
+    this.feeAssetId = const Value.absent(),
   });
   AddressesCompanion.insert({
     required String addressId,
@@ -193,6 +205,7 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
     required String fee,
     this.tag = const Value.absent(),
     this.dust = const Value.absent(),
+    required String feeAssetId,
   })  : addressId = Value(addressId),
         type = Value(type),
         assetId = Value(assetId),
@@ -200,7 +213,8 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
         label = Value(label),
         updatedAt = Value(updatedAt),
         reserve = Value(reserve),
-        fee = Value(fee);
+        fee = Value(fee),
+        feeAssetId = Value(feeAssetId);
   static Insertable<Addresse> custom({
     Expression<String>? addressId,
     Expression<String>? type,
@@ -212,6 +226,7 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
     Expression<String>? fee,
     Expression<String>? tag,
     Expression<String>? dust,
+    Expression<String>? feeAssetId,
   }) {
     return RawValuesInsertable({
       if (addressId != null) 'address_id': addressId,
@@ -224,6 +239,7 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
       if (fee != null) 'fee': fee,
       if (tag != null) 'tag': tag,
       if (dust != null) 'dust': dust,
+      if (feeAssetId != null) 'fee_asset_id': feeAssetId,
     });
   }
 
@@ -237,7 +253,8 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
       Value<String>? reserve,
       Value<String>? fee,
       Value<String?>? tag,
-      Value<String?>? dust}) {
+      Value<String?>? dust,
+      Value<String>? feeAssetId}) {
     return AddressesCompanion(
       addressId: addressId ?? this.addressId,
       type: type ?? this.type,
@@ -249,6 +266,7 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
       fee: fee ?? this.fee,
       tag: tag ?? this.tag,
       dust: dust ?? this.dust,
+      feeAssetId: feeAssetId ?? this.feeAssetId,
     );
   }
 
@@ -286,6 +304,9 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
     if (dust.present) {
       map['dust'] = Variable<String>(dust.value);
     }
+    if (feeAssetId.present) {
+      map['fee_asset_id'] = Variable<String>(feeAssetId.value);
+    }
     return map;
   }
 
@@ -301,7 +322,8 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
           ..write('reserve: $reserve, ')
           ..write('fee: $fee, ')
           ..write('tag: $tag, ')
-          ..write('dust: $dust')
+          ..write('dust: $dust, ')
+          ..write('feeAssetId: $feeAssetId')
           ..write(')'))
         .toString();
   }
@@ -374,6 +396,12 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
+  final VerificationMeta _feeAssetIdMeta = const VerificationMeta('feeAssetId');
+  late final GeneratedColumn<String> feeAssetId = GeneratedColumn<String>(
+      'fee_asset_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   @override
   List<GeneratedColumn> get $columns => [
         addressId,
@@ -385,7 +413,8 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
         reserve,
         fee,
         tag,
-        dust
+        dust,
+        feeAssetId
       ];
   @override
   String get aliasedName => _alias ?? 'addresses';
@@ -449,6 +478,14 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
       context.handle(
           _dustMeta, dust.isAcceptableOrUnknown(data['dust']!, _dustMeta));
     }
+    if (data.containsKey('fee_asset_id')) {
+      context.handle(
+          _feeAssetIdMeta,
+          feeAssetId.isAcceptableOrUnknown(
+              data['fee_asset_id']!, _feeAssetIdMeta));
+    } else if (isInserting) {
+      context.missing(_feeAssetIdMeta);
+    }
     return context;
   }
 
@@ -478,6 +515,8 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
           .read(DriftSqlType.string, data['${effectivePrefix}tag']),
       dust: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}dust']),
+      feeAssetId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}fee_asset_id'])!,
     );
   }
 
