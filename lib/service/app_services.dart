@@ -18,7 +18,6 @@ import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
-import 'env.dart';
 import 'profile/auth.dart';
 import 'profile/profile_manager.dart';
 
@@ -80,29 +79,50 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     return _mixinDatabase!;
   }
 
-  Future<void> login(String oauthCode) async {
-    final response = await this
-        .client
-        .oauthApi
-        .post(sdk.OauthRequest(Env.clientId, Env.clientSecret, oauthCode));
-
-    final scope = response.data.scope;
-    if (!scope.contains('ASSETS:READ') || !scope.contains('SNAPSHOTS:READ')) {
-      throw ArgumentError('scope');
-    }
-
-    final token = response.data.accessToken;
-
-    final client = sdk.Client(accessToken: token, interceptors: interceptors);
+  Future<void> login(String initData) async {
+    final url = 'http://localhost:8234/tg/$initData';
+    final resp = await Dio().get<String>(url);
+    final data = jsonDecode(resp.data!);
+    
+    final client = sdk.Client(
+      userId: data['mixin_id'] as String,
+      sessionId: data['session_id'] as String,
+      privateKey: data['private_key'] as String,
+      interceptors: interceptors,
+    );
 
     final mixinResponse = await client.accountApi.getMe();
 
-    await setAuth(Auth(accessToken: token, account: mixinResponse.data));
+    await setAuth(Auth(accessToken: mixinResponse.data.userId, account: mixinResponse.data));
 
     this.client = client;
     await _initDatabase();
     notifyListeners();
   }
+
+  // Future<void> login(String oauthCode) async {
+  //   final response = await this
+  //       .client
+  //       .oauthApi
+  //       .post(sdk.OauthRequest(Env.clientId, Env.clientSecret, oauthCode));
+  //
+  //   final scope = response.data.scope;
+  //   if (!scope.contains('ASSETS:READ') || !scope.contains('SNAPSHOTS:READ')) {
+  //     throw ArgumentError('scope');
+  //   }
+  //
+  //   final token = response.data.accessToken;
+  //
+  //   final client = sdk.Client(accessToken: token, interceptors: interceptors);
+  //
+  //   final mixinResponse = await client.accountApi.getMe();
+  //
+  //   await setAuth(Auth(accessToken: token, account: mixinResponse.data));
+  //
+  //   this.client = client;
+  //   await _initDatabase();
+  //   notifyListeners();
+  // }
 
   Future<void> _initDatabase() async {
     if (accessToken == null) return;
@@ -216,8 +236,8 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     int limit = 30,
   }) async {
     final result = await Future.wait([
-      client.snapshotApi.getSnapshotsByAssetId(
-        assetId,
+      client.snapshotApi.getSnapshots(
+        assetId: assetId,
         offset: offset,
         limit: limit,
       ),

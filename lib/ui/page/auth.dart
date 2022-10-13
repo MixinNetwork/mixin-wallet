@@ -11,6 +11,7 @@ import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/mixin_context.dart';
 import '../../util/r.dart';
+import '../../util/telegram_web_app.dart';
 import '../router/mixin_routes.dart';
 import '../widget/text.dart';
 
@@ -20,19 +21,21 @@ class AuthPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final loading = useState(false);
-    final oauthCode = context.queryParameters['code'];
+    final telegram = Telegram();
+    final initData = telegram.getTgInitData();
 
     useMemoizedFuture(() async {
-      if (oauthCode?.isEmpty ?? true) return;
+      if (initData == null) return;
+
       loading.value = true;
       try {
-        await context.appServices.login(oauthCode!);
+        await context.appServices.login(initData);
         context.replace(homeUri);
       } catch (error, s) {
         e('$error, $s');
         loading.value = false;
       }
-    }, keys: [oauthCode]);
+    }, keys: [telegram]);
 
     return Scaffold(
       backgroundColor: context.colorScheme.background,

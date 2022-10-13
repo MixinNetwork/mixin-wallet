@@ -186,9 +186,11 @@ packages:
   dart_jsonwebtoken:
     dependency: transitive
     description:
-      name: dart_jsonwebtoken
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "31d04c56ca86c2e316c526f9120a74a4de97ed32"
+      resolved-ref: "31d04c56ca86c2e316c526f9120a74a4de97ed32"
+      url: "https://github.com/Tougee/dart_jsonwebtoken"
+    source: git
     version: "2.4.2"
   dart_style:
     dependency: transitive
@@ -451,7 +453,7 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.2.0"
   meta:
     dependency: transitive
     description:
@@ -469,10 +471,12 @@ packages:
   mixin_bot_sdk_dart:
     dependency: "direct main"
     description:
-      name: mixin_bot_sdk_dart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.3"
+      path: "."
+      ref: "2a9d53b172e9b58328fa77b1631048f7f9c03405"
+      resolved-ref: "2a9d53b172e9b58328fa77b1631048f7f9c03405"
+      url: "https://github.com/MixinNetwork/mixin_bot_sdk_dart"
+    source: git
+    version: "0.3.4"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:
@@ -757,7 +761,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.0"
+    version: "1.9.1"
   sprintf:
     dependency: transitive
     description:
@@ -820,7 +824,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.12"
+    version: "0.4.14"
   timing:
     dependency: transitive
     description:
@@ -918,7 +922,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.3"
   very_good_analysis:
     dependency: "direct main"
     description:
