@@ -16,6 +16,7 @@ import '../db/dao/snapshot_dao.dart';
 import '../db/dao/user_dao.dart';
 import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
+import '../thirdy_party/telegram.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
 import 'profile/auth.dart';
@@ -82,26 +83,26 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   }
 
   Future<void> login(String initData) async {
-    final url = 'http://localhost:8234/tg/$initData';
-    final resp = await Dio().get<String>(url);
-    final data = jsonDecode(resp.data!);
-    
+    final data = await TelegramApi.instance.verifyInitData(initData);
+
     final client = sdk.Client(
-      userId: data['mixin_id'] as String,
-      sessionId: data['session_id'] as String,
-      privateKey: data['private_key'] as String,
+      userId: data.mixinId,
+      sessionId: data.sessionId,
+      privateKey: data.privateKey,
       interceptors: interceptors,
     );
 
     final mixinResponse = await client.accountApi.getMe();
-    final account = mixinResponse.data;
 
-    await setAuth(Auth(accessToken: account.userId, account: account));
+    await setAuth(Auth(
+      accessToken: mixinResponse.data.userId,
+      account: mixinResponse.data,
+    ));
     isTelegramBotLogin = true;
 
     Session.instance.pinToken = base64Encode(decryptPinToken(
-      account.pinToken,
-      sdk.decodeBase64(data['private_key'] as String),
+      data.pinToken,
+      sdk.decodeBase64(data.privateKey),
     ));
 
     this.client = client;
