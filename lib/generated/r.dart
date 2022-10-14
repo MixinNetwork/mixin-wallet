@@ -152,6 +152,12 @@ class R {
 
   static const String resourcesSettingSvg = 'resources/setting.svg';
 
+  static const String resourcesToastErrorSvg = 'resources/toast_error.svg';
+
+  static const String resourcesToastSucceedSvg = 'resources/toast_succeed.svg';
+
+  static const String resourcesToastWarningSvg = 'resources/toast_warning.svg';
+
   static const String resourcesTransactionSvg = 'resources/transaction.svg';
 
   static const String resourcesTransactionDepositSvg =

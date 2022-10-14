@@ -13,6 +13,7 @@ Future<void> initStorage() async {
   fixSafariIndexDb();
   await Hive.openBox<dynamic>('profile');
   await Hive.openBox<dynamic>('swap');
+  await Hive.openBox<dynamic>('session');
 }
 
 Auth? get auth => profileBox.get('auth') as Auth?;
@@ -67,6 +68,13 @@ String? get lastSelectedAddress =>
 
 set lastSelectedAddress(String? value) =>
     profileBox.put('lastSelectedAddress', value);
+
+bool get isTelegramBotLogin =>
+    profileBox.get('isTelegramBotLogin') as bool? ?? false;
+
+// ignore: avoid_positional_boolean_parameters
+set isTelegramBotLogin(bool value) =>
+    profileBox.put('isTelegramBotLogin', value);
 
 class _AuthAdapter extends TypeAdapter<Auth> {
   @override

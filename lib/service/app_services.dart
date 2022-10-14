@@ -19,6 +19,7 @@ import '../db/web/construct_db.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
 import 'profile/auth.dart';
+import 'profile/pin_session.dart';
 import 'profile/profile_manager.dart';
 
 class AppServices extends ChangeNotifier with EquatableMixin {
@@ -54,6 +55,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
                 (e.error as sdk.MixinError).code == sdk.authentication) {
               i('api error code is 401 ');
               await setAuth(null);
+              isTelegramBotLogin = false;
               vRouterStateKey.currentState?.to('/auth', isReplacement: true);
             }
             handler.next(e);
@@ -92,8 +94,15 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     );
 
     final mixinResponse = await client.accountApi.getMe();
+    final account = mixinResponse.data;
 
-    await setAuth(Auth(accessToken: mixinResponse.data.userId, account: mixinResponse.data));
+    await setAuth(Auth(accessToken: account.userId, account: account));
+    isTelegramBotLogin = true;
+
+    Session.instance.pinToken = base64Encode(decryptPinToken(
+      account.pinToken,
+      sdk.decodeBase64(data['private_key'] as String),
+    ));
 
     this.client = client;
     await _initDatabase();

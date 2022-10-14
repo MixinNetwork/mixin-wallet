@@ -12,6 +12,7 @@ import '../page/buy.dart';
 import '../page/buy_success.dart';
 import '../page/collectible_detail.dart';
 import '../page/collectibles_collection.dart';
+import '../page/create_pin.dart';
 import '../page/hidden_assets.dart';
 import '../page/home.dart';
 import '../page/not_found.dart';
@@ -45,20 +46,35 @@ const swapDetailPath = '/swap/:id/detail';
 const collectiblesCollectionPath = '/collection/:id';
 const collectiblePath = '/collectible/:id';
 
+const createPinPath = '/create_pin';
+
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VWidget(
         key: const ValueKey('Auth'),
         path: '/auth',
         widget: const AuthPage(),
       ),
+      VWidget(
+        key: const ValueKey('CreatePin'),
+        path: createPinPath,
+        widget: const CreatePinPage(),
+      ),
       VGuard(
           beforeEnter: (redirector) async {
             i('check is login: $isLogin');
-            if (isLogin) {
-              await context.appServices.initServiceFuture;
+            if (!isLogin) {
+              redirector.to('/auth');
               return;
             }
-            redirector.to('/auth');
+            await context.appServices.initServiceFuture;
+            if (isTelegramBotLogin) {
+              final hasPin = auth!.account.hasPin;
+              d('check has pin: $hasPin');
+              if (!hasPin) {
+                redirector.to(createPinPath);
+                return;
+              }
+            }
           },
           stackedRoutes: [
             VWidget(

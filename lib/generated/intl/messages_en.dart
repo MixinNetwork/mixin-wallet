@@ -40,19 +40,38 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m8(value) => "This address only supports ${value}.";
 
-  static String m9(value, value2) => "${value}/${value2} confirmations";
+  static String m9(arg0) =>
+      "ERROR 20124: Insufficient transaction fee. Please make sure your wallet has ${arg0} as fee";
 
-  static String m10(value) => "Request payment amount: ${value}";
+  static String m10(arg0, arg1) =>
+      "ERROR 30102: Invalid address format. Please enter the correct ${arg0} ${arg1} address!";
 
-  static String m11(value) =>
+  static String m11(arg0) =>
+      "ERROR 10006: Please update Mixin(${arg0}) to continue use the service.";
+
+  static String m12(count, arg0) =>
+      "${Intl.plural(count, one: 'ERROR 20119: PIN incorrect. You still have ${arg0} chance. Please wait for 24 hours to retry later.', other: 'ERROR 20119: PIN incorrect. You still have ${arg0} chances. Please wait for 24 hours to retry later.')}";
+
+  static String m13(arg0) => "Server is under maintenance: ${arg0}";
+
+  static String m14(arg0) => "ERROR: ${arg0}";
+
+  static String m15(arg0) => "ERROR: ${arg0}";
+
+  static String m16(value, value2) => "${value}/${value2} confirmations";
+
+  static String m17(value) => "Request payment amount: ${value}";
+
+  static String m18(value) =>
       "Swap with slippage greater than ${value} is not currently supported";
 
-  static String m12(value) => "value now ${value}";
+  static String m19(value) => "value now ${value}";
 
-  static String m13(value) => "value then ${value}";
+  static String m20(value) => "value then ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accessDenied": MessageLookupByLibrary.simpleMessage("Access denied"),
         "addAddress": MessageLookupByLibrary.simpleMessage("Add address"),
         "addAddressLabelHint": MessageLookupByLibrary.simpleMessage(
             "Label (e.g. exchanges, wallets, etc.)"),
@@ -102,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "collectionItemCount": m4,
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
         "completed": MessageLookupByLibrary.simpleMessage("Completed"),
+        "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "contact": MessageLookupByLibrary.simpleMessage("Contact"),
         "contactReadFailed":
             MessageLookupByLibrary.simpleMessage("Failed to read contact list"),
@@ -112,6 +132,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "copyLink": MessageLookupByLibrary.simpleMessage("Copy link"),
         "copyToClipboard":
             MessageLookupByLibrary.simpleMessage("Copied to Clipboard"),
+        "createPin": MessageLookupByLibrary.simpleMessage("Create PIN"),
+        "createPinTips": MessageLookupByLibrary.simpleMessage(
+            "Please create a PIN to protect your assets"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
@@ -142,7 +165,83 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Empty address or label"),
         "eosContractAddress":
             MessageLookupByLibrary.simpleMessage("EOS contract address"),
+        "errorAuthentication": MessageLookupByLibrary.simpleMessage(
+            "ERROR 401: Sign in to continue"),
+        "errorBadData": MessageLookupByLibrary.simpleMessage(
+            "ERROR 10002: The request data has invalid field"),
+        "errorBlockchain": MessageLookupByLibrary.simpleMessage(
+            "ERROR 30100: Blockchain not in sync, please try again later."),
+        "errorConnectionTimeout": MessageLookupByLibrary.simpleMessage(
+            "Network connection timeout, please try again"),
+        "errorFullGroup": MessageLookupByLibrary.simpleMessage(
+            "ERROR 20116: The group chat is full."),
+        "errorInsufficientBalance": MessageLookupByLibrary.simpleMessage(
+            "ERROR 20117: Insufficient balance"),
+        "errorInsufficientTransactionFeeWithAmount": m9,
+        "errorInvalidAddress": m10,
+        "errorInvalidAddressPlain": MessageLookupByLibrary.simpleMessage(
+            "ERROR 30102: Invalid address format."),
+        "errorInvalidCodeTooFrequent": MessageLookupByLibrary.simpleMessage(
+            "ERROR 20129: Send verification code too frequent, please try again later."),
+        "errorInvalidEmergencyContact": MessageLookupByLibrary.simpleMessage(
+            "ERROR 20130: Invalid emergency contact"),
+        "errorInvalidPinFormat": MessageLookupByLibrary.simpleMessage(
+            "ERROR 20118: Invalid PIN format."),
+        "errorNetworkTaskFailed": MessageLookupByLibrary.simpleMessage(
+            "Network connection failed. Check or switch your network and try again"),
         "errorNoCamera": MessageLookupByLibrary.simpleMessage("No camera"),
+        "errorNoPinToken": MessageLookupByLibrary.simpleMessage(
+            "No token, Please log in again and try this feature again."),
+        "errorNotFound":
+            MessageLookupByLibrary.simpleMessage("ERROR 404: Not found"),
+        "errorNotSupportedAudioFormat": MessageLookupByLibrary.simpleMessage(
+            "Not supported audio format, please open by other app."),
+        "errorNumberReachedLimit": MessageLookupByLibrary.simpleMessage(
+            "ERROR 20132: The number has reached the limit."),
+        "errorOldVersion": m11,
+        "errorOpenLocation":
+            MessageLookupByLibrary.simpleMessage("Can\'t find an map app"),
+        "errorPermission": MessageLookupByLibrary.simpleMessage(
+            "Please open the necessary permissions"),
+        "errorPhoneInvalidFormat": MessageLookupByLibrary.simpleMessage(
+            "ERROR 20110: Invalid phone number"),
+        "errorPhoneSmsDelivery": MessageLookupByLibrary.simpleMessage(
+            "ERROR 10003: Failed to deliver SMS"),
+        "errorPhoneVerificationCodeExpired":
+            MessageLookupByLibrary.simpleMessage(
+                "ERROR 20114: Expired phone verification code"),
+        "errorPhoneVerificationCodeInvalid":
+            MessageLookupByLibrary.simpleMessage(
+                "ERROR 20113: Invalid phone verification code"),
+        "errorPinCheckTooManyRequest": MessageLookupByLibrary.simpleMessage(
+            "You have tried more than 5 times, please wait at least 24 hours to try again."),
+        "errorPinIncorrect":
+            MessageLookupByLibrary.simpleMessage("ERROR 20119: PIN incorrect"),
+        "errorPinIncorrectWithTimes": m12,
+        "errorRecaptchaIsInvalid": MessageLookupByLibrary.simpleMessage(
+            "ERROR 10004: Recaptcha is invalid"),
+        "errorServer5xxCode": m13,
+        "errorTooManyRequest": MessageLookupByLibrary.simpleMessage(
+            "ERROR 429: Rate limit exceeded"),
+        "errorTooManyStickers": MessageLookupByLibrary.simpleMessage(
+            "ERROR 20126: Too many stickers"),
+        "errorTooSmallTransferAmount": MessageLookupByLibrary.simpleMessage(
+            "ERROR 20120: Transfer amount is too small"),
+        "errorTooSmallWithdrawAmount": MessageLookupByLibrary.simpleMessage(
+            "ERROR 20127: Withdraw amount too small"),
+        "errorTranscriptForward": MessageLookupByLibrary.simpleMessage(
+            "Please forward all attachments after they have been downloaded"),
+        "errorUnableToOpenMedia": MessageLookupByLibrary.simpleMessage(
+            "Can\'t find an app able to open this media."),
+        "errorUnknownWithCode": m14,
+        "errorUnknownWithMessage": m15,
+        "errorUsedPhone": MessageLookupByLibrary.simpleMessage(
+            "ERROR 20122: This phone number is already associated with another account."),
+        "errorUserInvalidFormat":
+            MessageLookupByLibrary.simpleMessage("Invalid user id"),
+        "errorWithdrawalMemoFormatIncorrect":
+            MessageLookupByLibrary.simpleMessage(
+                "ERROR 20131: Withdrawal memo format incorrect."),
         "fee": MessageLookupByLibrary.simpleMessage("Fee"),
         "filterAll": MessageLookupByLibrary.simpleMessage("All"),
         "filterApply": MessageLookupByLibrary.simpleMessage("Apply"),
@@ -191,7 +290,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidInMixinWarning": MessageLookupByLibrary.simpleMessage(
             "If you have paid via Mixin, please be patient."),
         "pay": MessageLookupByLibrary.simpleMessage("Pay"),
-        "pendingConfirmations": m9,
+        "pendingConfirmations": m16,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
@@ -203,7 +302,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("Deauthorize"),
         "requestPayment":
             MessageLookupByLibrary.simpleMessage("Request payment"),
-        "requestPaymentAmount": m10,
+        "requestPaymentAmount": m17,
         "requestPaymentGeneratedTips": MessageLookupByLibrary.simpleMessage(
             "A request payment link has been generated, please send it to the specified contact."),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
@@ -218,7 +317,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "slippage": MessageLookupByLibrary.simpleMessage("Slippage"),
-        "slippageOver": m11,
+        "slippageOver": m18,
         "snapshotHash": MessageLookupByLibrary.simpleMessage("Snapshot hash"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "state": MessageLookupByLibrary.simpleMessage("State"),
@@ -259,10 +358,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
-        "walletTransactionCurrentValue": m12,
+        "walletTransactionCurrentValue": m19,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
-        "walletTransactionThatTimeValue": m13,
+        "walletTransactionThatTimeValue": m20,
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "This service is provided by Wyre. We act as a conduit only and do not charge additional fees."),
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
