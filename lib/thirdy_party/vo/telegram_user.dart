@@ -17,7 +17,7 @@ class TelegramUser with EquatableMixin {
       _$TelegramUserFromJson(json);
 
   @JsonKey(name: 'user_id')
-  final String userId;
+  final int userId;
 
   @JsonKey(name: 'mixin_id')
   final String mixinId;
