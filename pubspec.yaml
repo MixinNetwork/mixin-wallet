@@ -68,7 +68,7 @@ dependencies:
       ref: 7a0703301c6b9b2950f14bb045e2a660c8530c7a
   share_plus: ^4.5.3
   collection: ^1.16.0
-  convert: ^3.0.2
+  convert: ^3.1.1
   pointycastle: ^3.6.2
   url_launcher: ^6.1.6
   async: ^2.9.0
