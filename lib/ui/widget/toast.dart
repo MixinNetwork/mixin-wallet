@@ -10,7 +10,16 @@ import 'text.dart';
 
 const _kToastDuration = Duration(milliseconds: 2000);
 
-OverlaySupportEntry showLoading() => showOverlay(
+Future<T> computeWithLoading<T>(Future<T> Function() compute) async {
+  final entry = _showLoading();
+  try {
+    return await compute();
+  } finally {
+    entry.dismiss();
+  }
+}
+
+OverlaySupportEntry _showLoading() => showOverlay(
       (context, progress) => Opacity(
         opacity: progress,
         child: Container(

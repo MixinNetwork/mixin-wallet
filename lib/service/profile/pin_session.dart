@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:ed25519_edwards/ed25519_edwards.dart' as ed;
+import 'package:fixnum/fixnum.dart';
 import 'package:hive/hive.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
@@ -35,14 +35,13 @@ class Session {
 
 List<int> decryptPinToken(String serverPublicKey, List<int> privateKey) {
   final bytes = base64Decode(serverPublicKey);
-  final private =
-      sdk.privateKeyToCurve25519(Uint8List.fromList(privateKey));
+  final private = sdk.privateKeyToCurve25519(Uint8List.fromList(privateKey));
   return calculateAgreement(bytes, private);
 }
 
 String? encryptPin(String code) {
   assert(code.isNotEmpty, 'code is empty');
-  final iterator = Session.instance.pinIterator;
+  final iterator = DateTime.now().millisecondsSinceEpoch * 1000000;
   final pinToken = Session.instance.pinToken;
 
   if (pinToken == null) {
@@ -53,11 +52,9 @@ String? encryptPin(String code) {
   d('pinToken: $pinToken');
 
   final pinBytes = Uint8List.fromList(utf8.encode(code));
-  final timeBytes = Uint8List(8);
-  final iteratorBytes = Uint8List(8);
   final nowSec = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-  timeBytes.buffer.asByteData().setUint64(0, nowSec, Endian.little);
-  iteratorBytes.buffer.asByteData().setUint64(0, iterator, Endian.little);
+  final timeBytes = Int64(nowSec).toBytes();
+  final iteratorBytes = Int64(iterator).toBytes();
 
   // pin+time+iterator
   final plaintext = Uint8List.fromList(pinBytes + timeBytes + iteratorBytes);

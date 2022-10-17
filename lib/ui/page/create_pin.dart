@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' hide encryptPin;
@@ -73,17 +71,16 @@ class _PinCreateConfirmButton extends HookWidget {
           ? null
           : () async {
               final pinCode = controller.value;
-              final entry = showLoading();
               try {
-                final account = await context.appServices.client.accountApi
-                    .updatePin(PinRequest(pin: encryptPin(pinCode)!));
-                await setAuth(auth!.copyWith(account: account.data));
-                context.replace(homeUri);
+                await computeWithLoading(() async {
+                  final account = await context.appServices.client.accountApi
+                      .updatePin(PinRequest(pin: encryptPin(pinCode)!));
+                  await setAuth(auth!.copyWith(account: account.data));
+                  context.replace(homeUri);
+                });
               } catch (error, stacktrace) {
                 e('create pin error $error $stacktrace');
                 showErrorToast(error.toDisplayString(context));
-              } finally {
-                entry.dismiss();
               }
             },
       child: Text(

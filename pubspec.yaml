@@ -76,6 +76,7 @@ dependencies:
   url_launcher: ^6.1.6
   async: ^2.9.0
   overlay_support: ^2.0.1
+  fixnum: ^1.0.1
 
 dev_dependencies:
   flutter_test:
