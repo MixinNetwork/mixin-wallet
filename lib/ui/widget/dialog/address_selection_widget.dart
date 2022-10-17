@@ -3,16 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../../db/mixin_database.dart';
+import '../../../service/profile/pin_session.dart';
+import '../../../service/profile/profile_manager.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
+import '../../../util/logger.dart';
 import '../../../util/r.dart';
 import '../address_add_widget.dart';
 import '../external_action_confirm.dart';
 import '../mixin_bottom_sheet.dart';
 import '../search_header_widget.dart';
+import '../toast.dart';
+import 'pin_verify_dalog.dart';
 
 class AddressSelectionWidget extends HookWidget {
   const AddressSelectionWidget({
@@ -122,33 +127,49 @@ class _AddressItem extends StatelessWidget {
         onDismiss: () {
           context.appServices.mixinDatabase.addressDao.deleteAddress(address);
         },
-        confirmDismiss: (direction) {
-          // https: //mixin.one/address?action=delete&asset=xxx&address=xxx
-          final uri = Uri.https('mixin.one', 'address', {
-            'action': 'delete',
-            'asset': address.assetId,
-            'address': address.addressId,
-          });
-
-          return showAndWaitingExternalAction(
-              context: context,
-              uri: uri,
-              hint: Text(context.l10n.delete),
-              action: () async {
-                try {
-                  await context.appServices.client.addressApi
-                      .getAddressById(address.addressId);
-                  return false;
-                } catch (error) {
-                  if (error is DioError) {
-                    final mixinError = error.error as MixinError;
-                    if (mixinError.code == 404) {
-                      return true;
+        confirmDismiss: (direction) async {
+          if (isLoginByCredential) {
+            final api = context.appServices.client.addressApi;
+            final pin = await showPinVerifyDialog(context);
+            if (pin == null) {
+              return false;
+            }
+            try {
+              await computeWithLoading(() =>
+                  api.deleteAddressById(address.addressId, encryptPin(pin)!));
+              return true;
+            } catch (error, stacktrace) {
+              e('delete address error: $error, $stacktrace');
+              showErrorToast(error.toDisplayString(context));
+              return false;
+            }
+          } else {
+            // https: //mixin.one/address?action=delete&asset=xxx&address=xxx
+            final uri = Uri.https('mixin.one', 'address', {
+              'action': 'delete',
+              'asset': address.assetId,
+              'address': address.addressId,
+            });
+            return showAndWaitingExternalAction(
+                context: context,
+                uri: uri,
+                hint: Text(context.l10n.delete),
+                action: () async {
+                  try {
+                    await context.appServices.client.addressApi
+                        .getAddressById(address.addressId);
+                    return false;
+                  } catch (error) {
+                    if (error is DioError) {
+                      final mixinError = error.error as sdk.MixinError;
+                      if (mixinError.code == 404) {
+                        return true;
+                      }
                     }
+                    rethrow;
                   }
-                  rethrow;
-                }
-              });
+                });
+          }
         },
         child: _AddressSelectionItemTile(
           onTap: () => Navigator.pop(context, address),

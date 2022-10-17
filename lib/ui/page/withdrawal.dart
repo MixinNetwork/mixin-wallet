@@ -210,15 +210,18 @@ class _WithdrawalPage extends HookWidget {
                   }
                   final api = context.appServices.client.transferApi;
                   try {
-                    final response = await api.withdrawal(sdk.WithdrawalRequest(
-                      addressId: addressId,
-                      amount: amount.value,
-                      pin: encryptPin(pinCode)!,
-                      traceId: traceId,
-                      memo: memo.value,
-                    ));
-                    await context.appServices.mixinDatabase.snapshotDao
-                        .insertAll([response.data]);
+                    await computeWithLoading(() async {
+                      final response =
+                          await api.withdrawal(sdk.WithdrawalRequest(
+                        addressId: addressId,
+                        amount: amount.value,
+                        pin: encryptPin(pinCode)!,
+                        traceId: traceId,
+                        memo: memo.value,
+                      ));
+                      await context.appServices.mixinDatabase.snapshotDao
+                          .insertAll([response.data]);
+                    });
                     context.pop();
                   } catch (error, stacktrace) {
                     e('withdrawal error, $error $stacktrace');
