@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../generated/r.dart';
+import '../../service/profile/pin_session.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
@@ -18,6 +20,7 @@ import '../widget/dialog/pin_verify_dalog.dart';
 import '../widget/dialog/transfer_destination_selector.dart';
 import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/toast.dart';
 import '../widget/transfer.dart';
 
 class Withdrawal extends HookWidget {
@@ -192,12 +195,37 @@ class _WithdrawalPage extends HookWidget {
                   return;
                 }
 
-                if (isLoginByCredential) {
-                  final pinCode = await showPinVerifyDialog(context);
-                  d('pinCode $pinCode');
-                } else {
-                  final traceId = const Uuid().v4();
+                final traceId = const Uuid().v4();
 
+                if (isLoginByCredential) {
+                  final addressId = address.value?.addressId;
+                  if (addressId == null) {
+                    e('addressId is null');
+                    return;
+                  }
+                  final pinCode = await showPinVerifyDialog(context);
+                  if (pinCode == null) {
+                    i('pin verify failed or canceled');
+                    return;
+                  }
+                  final api = context.appServices.client.transferApi;
+                  try {
+                    final response = await api.withdrawal(sdk.WithdrawalRequest(
+                      addressId: addressId,
+                      amount: amount.value,
+                      pin: encryptPin(pinCode)!,
+                      traceId: traceId,
+                      memo: memo.value,
+                    ));
+                    await context.appServices.mixinDatabase.snapshotDao
+                        .insertAll([response.data]);
+                    context.pop();
+                  } catch (error, stacktrace) {
+                    e('withdrawal error, $error $stacktrace');
+                    showErrorToast(error.toDisplayString(context));
+                    return;
+                  }
+                } else {
                   final Uri uri;
 
                   if (address.value != null) {
