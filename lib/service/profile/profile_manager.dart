@@ -24,7 +24,9 @@ Box<dynamic> get profileBox => Hive.box('profile');
 
 String? get accessToken => auth?.accessToken;
 
-bool get isLogin => accessToken != null;
+bool get isLogin => accessToken != null || auth?.credential != null;
+
+bool get isLoginByCredential => auth?.credential != null;
 
 List<String> get searchAssetHistory =>
     ((profileBox.get('searchAssetHistory') as List<dynamic>?) ?? [])
@@ -68,13 +70,6 @@ String? get lastSelectedAddress =>
 
 set lastSelectedAddress(String? value) =>
     profileBox.put('lastSelectedAddress', value);
-
-bool get isTelegramBotLogin =>
-    profileBox.get('isTelegramBotLogin') as bool? ?? false;
-
-// ignore: avoid_positional_boolean_parameters
-set isTelegramBotLogin(bool value) =>
-    profileBox.put('isTelegramBotLogin', value);
 
 class _AuthAdapter extends TypeAdapter<Auth> {
   @override

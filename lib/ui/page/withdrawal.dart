@@ -192,7 +192,7 @@ class _WithdrawalPage extends HookWidget {
                   return;
                 }
 
-                if (isTelegramBotLogin) {
+                if (isLoginByCredential) {
                   final pinCode = await showPinVerifyDialog(context);
                   d('pinCode $pinCode');
                 } else {

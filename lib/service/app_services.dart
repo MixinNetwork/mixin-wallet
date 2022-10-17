@@ -27,16 +27,27 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   AppServices({
     required this.vRouterStateKey,
   }) {
-    client = sdk.Client(
+    if (isLoginByCredential) {
+      final credential = auth!.credential!;
+      client = sdk.Client(
+        userId: credential.mixinId,
+        sessionId: credential.sessionId,
+        privateKey: credential.privateKey,
+        interceptors: interceptors,
+        httpLogLevel: null,
+      );
+    } else {
+      client = sdk.Client(
         accessToken: accessToken,
         interceptors: interceptors,
-        httpLogLevel: null);
+        httpLogLevel: null,
+      );
+    }
     scheduleMicrotask(() async {
       if (isLogin) {
         try {
           final response = await client.accountApi.getMe();
-          await setAuth(
-              Auth(accessToken: accessToken!, account: response.data));
+          await setAuth(auth!.copyWith(account: response.data));
         } catch (error) {
           d('refresh account failed. $error');
         }
@@ -56,7 +67,6 @@ class AppServices extends ChangeNotifier with EquatableMixin {
                 (e.error as sdk.MixinError).code == sdk.authentication) {
               i('api error code is 401 ');
               await setAuth(null);
-              isTelegramBotLogin = false;
               vRouterStateKey.currentState?.to('/auth', isReplacement: true);
             }
             handler.next(e);
@@ -97,8 +107,8 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     await setAuth(Auth(
       accessToken: mixinResponse.data.userId,
       account: mixinResponse.data,
+      credential: data,
     ));
-    isTelegramBotLogin = true;
 
     Session.instance.pinToken = base64Encode(decryptPinToken(
       data.pinToken,

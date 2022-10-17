@@ -67,7 +67,7 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
               return;
             }
             await context.appServices.initServiceFuture;
-            if (isTelegramBotLogin) {
+            if (isLoginByCredential) {
               final hasPin = auth!.account.hasPin;
               d('check has pin: $hasPin');
               if (!hasPin) {
