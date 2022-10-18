@@ -6,18 +6,15 @@ import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../../db/mixin_database.dart';
-import '../../../service/profile/pin_session.dart';
 import '../../../service/profile/profile_manager.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
-import '../../../util/logger.dart';
 import '../../../util/r.dart';
 import '../address_add_widget.dart';
 import '../external_action_confirm.dart';
 import '../mixin_bottom_sheet.dart';
 import '../search_header_widget.dart';
-import '../toast.dart';
-import 'pin_verify_dalog.dart';
+import 'address_pin_bottom_sheet.dart';
 
 class AddressSelectionWidget extends HookWidget {
   const AddressSelectionWidget({
@@ -127,22 +124,12 @@ class _AddressItem extends StatelessWidget {
         onDismiss: () {
           context.appServices.mixinDatabase.addressDao.deleteAddress(address);
         },
-        confirmDismiss: (direction) async {
+        confirmDismiss: (direction) {
           if (isLoginByCredential) {
-            final api = context.appServices.client.addressApi;
-            final pin = await showPinVerifyDialog(context);
-            if (pin == null) {
-              return false;
-            }
-            try {
-              await computeWithLoading(() =>
-                  api.deleteAddressById(address.addressId, encryptPin(pin)!));
-              return true;
-            } catch (error, stacktrace) {
-              e('delete address error: $error, $stacktrace');
-              showErrorToast(error.toDisplayString(context));
-              return false;
-            }
+            return showDeleteAddressByPinBottomSheet(
+              context,
+              address: address,
+            );
           } else {
             // https: //mixin.one/address?action=delete&asset=xxx&address=xxx
             final uri = Uri.https('mixin.one', 'address', {

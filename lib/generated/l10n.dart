@@ -2123,6 +2123,46 @@ class L10n {
       args: [value],
     );
   }
+
+  /// `Delete {value} address`
+  String deleteWithdrawalAddress(Object value) {
+    return Intl.message(
+      'Delete $value address',
+      name: 'deleteWithdrawalAddress',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Add {value} address`
+  String addWithdrawalAddress(Object value) {
+    return Intl.message(
+      'Add $value address',
+      name: 'addWithdrawalAddress',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Enter PIN to save address`
+  String get addAddressByPinTip {
+    return Intl.message(
+      'Enter PIN to save address',
+      name: 'addAddressByPinTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter PIN to delete address`
+  String get deleteAddressByPinTip {
+    return Intl.message(
+      'Enter PIN to delete address',
+      name: 'deleteAddressByPinTip',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

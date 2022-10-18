@@ -1,11 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mixin_wallet/ui/widget/toast.dart';
 
 import '../../generated/r.dart';
+import '../../service/profile/pin_session.dart';
 import '../../util/extension/extension.dart';
+import '../../util/logger.dart';
 
 const _kPinCodeLength = 6;
+
+void usePinVerificationEffect(PinInputController controller) {
+  final context = useContext();
+  useEffect(() {
+    void onPinInput() {
+      if (!controller.isFull) {
+        return;
+      }
+      computeWithLoading(() async {
+        final pin = controller.value;
+        try {
+          await context.appServices.client.accountApi
+              .verifyPin(encryptPin(pin)!);
+          Navigator.pop(context, pin);
+        } catch (error, stacktrace) {
+          e('verify pin error $error, $stacktrace');
+          controller.clear();
+          showErrorToast(error.toDisplayString(context));
+        }
+      });
+    }
+
+    controller.addListener(onPinInput);
+    return () => controller.removeListener(onPinInput);
+  }, [controller]);
+}
 
 class PinInputController extends ValueNotifier<String> {
   PinInputController() : super('');

@@ -205,5 +205,9 @@
   "errorWithdrawalMemoFormatIncorrect": "ERROR 20131: Withdrawal memo format incorrect.",
   "sendTo": "Send to {value}",
   "withdrawalWithPin": "Withdrawal with PIN",
-  "withdrawalTo": "Withdrawal to {value}"
+  "withdrawalTo": "Withdrawal to {value}",
+  "deleteWithdrawalAddress": "Delete {value} address",
+  "addWithdrawalAddress": "Add {value} address",
+  "addAddressByPinTip": "Enter PIN to save address",
+  "deleteAddressByPinTip": "Enter PIN to delete address"
 }

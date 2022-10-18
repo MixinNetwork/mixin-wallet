@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../db/mixin_database.dart';
-import '../../../service/profile/pin_session.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
-import '../../../util/logger.dart';
 import '../mixin_bottom_sheet.dart';
 import '../pin.dart';
 import '../symbol.dart';
-import '../toast.dart';
 
 /// return: verified succeed pin code. null if canceled.
 Future<String?> showTransferVerifyBottomSheet(
@@ -66,29 +63,7 @@ class _TransferVerifyBottomSheet extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = useMemoized(PinInputController.new);
-    useEffect(() {
-      void onPinInput() {
-        if (!controller.isFull) {
-          return;
-        }
-        computeWithLoading(() async {
-          final pin = controller.value;
-          try {
-            await context.appServices.client.accountApi
-                .verifyPin(encryptPin(pin)!);
-            Navigator.pop(context, pin);
-          } catch (error, stacktrace) {
-            e('verify pin error $error, $stacktrace');
-            controller.clear();
-            showErrorToast(error.toDisplayString(context));
-          }
-        });
-      }
-
-      controller.addListener(onPinInput);
-      return () => controller.removeListener(onPinInput);
-    }, [controller]);
-
+    usePinVerificationEffect(controller);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [

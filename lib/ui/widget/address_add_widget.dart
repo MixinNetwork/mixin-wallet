@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
-import '../../service/profile/pin_session.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
-import '../../util/logger.dart';
 import '../../util/r.dart';
 import 'action_button.dart';
-import 'dialog/pin_verify_dalog.dart';
+import 'dialog/address_pin_bottom_sheet.dart';
 import 'external_action_confirm.dart';
 import 'mixin_bottom_sheet.dart';
 import 'qrcode_scanner.dart';
 import 'round_container.dart';
-import 'toast.dart';
 
 class AddressAddWidget extends HookWidget {
   const AddressAddWidget({Key? key, required this.assetId, this.chainId})
@@ -205,28 +201,15 @@ class AddressAddWidget extends HookWidget {
                 final tag = memoController.text.trim();
 
                 if (isLoginByCredential) {
-                  final api = context.appServices.client.addressApi;
-                  final pin = await showPinVerifyDialog(context);
-                  if (pin == null) {
-                    return;
-                  }
-                  try {
-                    await computeWithLoading(() async {
-                      final response = await api.addAddress(sdk.AddressRequest(
-                        assetId: assetId,
-                        pin: encryptPin(pin)!,
-                        destination: address,
-                        tag: tag,
-                        label: label,
-                      ));
-                      await context.mixinDatabase.addressDao
-                          .insertAllOnConflictUpdate([response.data]);
-                    });
-                    Navigator.pop(context);
-                  } catch (error, stack) {
-                    e('add address error: $error, $stack');
-                    showErrorToast(error.toDisplayString(context));
-                    return;
+                  final succeed = await showAddAddressByPinBottomSheet(
+                    context,
+                    assetId: assetId,
+                    destination: address,
+                    tag: tag,
+                    label: label,
+                  );
+                  if (succeed) {
+                    Navigator.of(context).pop();
                   }
                 } else {
                   final uri = Uri.https('mixin.one', 'address', {
