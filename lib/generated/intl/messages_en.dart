@@ -62,12 +62,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m17(value) => "Request payment amount: ${value}";
 
-  static String m18(value) =>
+  static String m18(value) => "Send to ${value}";
+
+  static String m19(value) =>
       "Swap with slippage greater than ${value} is not currently supported";
 
-  static String m19(value) => "value now ${value}";
+  static String m20(value) => "value now ${value}";
 
-  static String m20(value) => "value then ${value}";
+  static String m21(value) => "value then ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -311,13 +313,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choose a address or contact"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "sendLink": MessageLookupByLibrary.simpleMessage("Send link"),
-        "sendTo": MessageLookupByLibrary.simpleMessage("Send to"),
+        "sendTo": m18,
         "sendToContact":
             MessageLookupByLibrary.simpleMessage("Send to contact"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "slippage": MessageLookupByLibrary.simpleMessage("Slippage"),
-        "slippageOver": m18,
+        "slippageOver": m19,
         "snapshotHash": MessageLookupByLibrary.simpleMessage("Snapshot hash"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "state": MessageLookupByLibrary.simpleMessage("State"),
@@ -358,15 +360,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
-        "walletTransactionCurrentValue": m19,
+        "walletTransactionCurrentValue": m20,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
-        "walletTransactionThatTimeValue": m20,
+        "walletTransactionThatTimeValue": m21,
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "This service is provided by Wyre. We act as a conduit only and do not charge additional fees."),
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
         "withdrawalMemoHint":
             MessageLookupByLibrary.simpleMessage("Memo (Optional)"),
+        "withdrawalWithPin":
+            MessageLookupByLibrary.simpleMessage("Withdrawal with PIN"),
         "wyreServiceStatement":
             MessageLookupByLibrary.simpleMessage("Service statement")
       };

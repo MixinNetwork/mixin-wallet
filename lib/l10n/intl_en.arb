@@ -91,7 +91,6 @@
   "emptyAmount": "Empty amount",
   "noWithdrawalDestinationSelected": "No contact or address selected",
   "emptyLabelOrAddress": "Empty address or label",
-  "sendTo": "Send to",
   "contact": "Contact",
   "sendToContact": "Send to contact",
   "contactSearchHint": "Name, Mixin ID",
@@ -203,5 +202,7 @@
   "errorUnknownWithMessage" : "ERROR: {arg0}",
   "errorUsedPhone" : "ERROR 20122: This phone number is already associated with another account.",
   "errorUserInvalidFormat" : "Invalid user id",
-  "errorWithdrawalMemoFormatIncorrect" : "ERROR 20131: Withdrawal memo format incorrect."
+  "errorWithdrawalMemoFormatIncorrect" : "ERROR 20131: Withdrawal memo format incorrect.",
+  "sendTo": "Send to {value}",
+  "withdrawalWithPin": "Withdrawal with PIN"
 }

@@ -32,7 +32,6 @@ class _PinVerifyDialog extends HookWidget {
         }
         computeWithLoading(() async {
           final pin = controller.value;
-          await Future<dynamic>.delayed(const Duration(milliseconds: 2000));
           try {
             await context.appServices.client.accountApi
                 .verifyPin(encryptPin(pin)!);

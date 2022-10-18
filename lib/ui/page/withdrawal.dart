@@ -16,7 +16,7 @@ import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/avatar.dart';
 import '../widget/buttons.dart';
-import '../widget/dialog/pin_verify_dalog.dart';
+import '../widget/dialog/transfer_bottom_sheet.dart';
 import '../widget/dialog/transfer_destination_selector.dart';
 import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
@@ -203,7 +203,13 @@ class _WithdrawalPage extends HookWidget {
                     e('addressId is null');
                     return;
                   }
-                  final pinCode = await showPinVerifyDialog(context);
+                  final pinCode = await showTransferVerifyBottomSheet(
+                    context,
+                    address: address.value!,
+                    asset: asset,
+                    feeAsset: feeAsset!,
+                    amount: amount.value,
+                  );
                   if (pinCode == null) {
                     i('pin verify failed or canceled');
                     return;

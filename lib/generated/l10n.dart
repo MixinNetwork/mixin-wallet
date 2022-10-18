@@ -970,16 +970,6 @@ class L10n {
     );
   }
 
-  /// `Send to`
-  String get sendTo {
-    return Intl.message(
-      'Send to',
-      name: 'sendTo',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Contact`
   String get contact {
     return Intl.message(
@@ -2099,6 +2089,26 @@ class L10n {
     return Intl.message(
       'ERROR 20131: Withdrawal memo format incorrect.',
       name: 'errorWithdrawalMemoFormatIncorrect',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send to {value}`
+  String sendTo(Object value) {
+    return Intl.message(
+      'Send to $value',
+      name: 'sendTo',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Withdrawal with PIN`
+  String get withdrawalWithPin {
+    return Intl.message(
+      'Withdrawal with PIN',
+      name: 'withdrawalWithPin',
       desc: '',
       args: [],
     );

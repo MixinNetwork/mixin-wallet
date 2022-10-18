@@ -87,7 +87,6 @@
   "emptyAmount": "金额不能为空",
   "noWithdrawalDestinationSelected": "需要选择一个联系人或地址",
   "emptyLabelOrAddress": "地址和标题不能为空",
-  "sendTo": "转出至",
   "contact": "联系人",
   "sendToContact": "转账至联系人",
   "contactSearchHint": "名称, Mixin ID",
@@ -200,5 +199,7 @@
   "errorUnknownWithMessage" : "错误：{arg0}",
   "errorUsedPhone" : "错误 20122：电话号码已经被占用。",
   "errorUserInvalidFormat" : "用户数据不合法",
-  "errorWithdrawalMemoFormatIncorrect" : "错误 20131：提现备注格式不正确"
+  "errorWithdrawalMemoFormatIncorrect" : "错误 20131：提现备注格式不正确",
+  "sendTo": "发送给 {value}",
+  "withdrawalWithPin": "用 PIN 提现"
 }
