@@ -2113,6 +2113,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Withdrawal to {value}`
+  String withdrawalTo(Object value) {
+    return Intl.message(
+      'Withdrawal to $value',
+      name: 'withdrawalTo',
+      desc: '',
+      args: [value],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

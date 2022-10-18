@@ -71,6 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m21(value) => "value then ${value}";
 
+  static String m22(value) => "Withdrawal to ${value}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accessDenied": MessageLookupByLibrary.simpleMessage("Access denied"),
@@ -369,6 +371,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
         "withdrawalMemoHint":
             MessageLookupByLibrary.simpleMessage("Memo (Optional)"),
+        "withdrawalTo": m22,
         "withdrawalWithPin":
             MessageLookupByLibrary.simpleMessage("Withdrawal with PIN"),
         "wyreServiceStatement":

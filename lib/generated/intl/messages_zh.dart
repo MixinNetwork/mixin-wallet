@@ -62,6 +62,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m21(value) => "当时价值 ${value}";
 
+  static String m22(value) => "提现到 ${value}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accessDenied": MessageLookupByLibrary.simpleMessage("禁止访问"),
@@ -331,6 +333,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "本服务由 Wyre 提供。我们仅作为渠道，不额外收取手续费。"),
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),
         "withdrawalMemoHint": MessageLookupByLibrary.simpleMessage("备注 (可选)"),
+        "withdrawalTo": m22,
         "withdrawalWithPin": MessageLookupByLibrary.simpleMessage("用 PIN 提现"),
         "wyreServiceStatement": MessageLookupByLibrary.simpleMessage("服务声明")
       };

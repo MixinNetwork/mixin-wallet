@@ -95,7 +95,7 @@ class _TransferVerifyBottomSheet extends HookWidget {
         const MixinBottomSheetTitle(title: SizedBox.shrink()),
         const SizedBox(height: 10),
         Text(
-          context.l10n.sendTo(address.label),
+          context.l10n.withdrawalTo(address.label),
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
