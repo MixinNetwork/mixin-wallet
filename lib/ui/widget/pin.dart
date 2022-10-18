@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 
+import '../../generated/r.dart';
 import '../../util/extension/extension.dart';
 
 const _kPinCodeLength = 6;
@@ -140,7 +142,7 @@ class _NumPadButton extends HookWidget {
             }
           },
           child: value == -1
-              ? const Icon(Icons.backspace)
+              ? SvgPicture.asset(R.resourcesDeleteArrowSvg)
               : Text(
                   value.toString(),
                   style: TextStyle(
