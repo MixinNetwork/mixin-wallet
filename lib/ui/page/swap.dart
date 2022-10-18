@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:mixswap_sdk_dart/mixswap_sdk_dart.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
@@ -11,20 +12,25 @@ import 'package:uuid/uuid.dart';
 import '../../db/dao/extension.dart';
 import '../../db/mixin_database.dart';
 import '../../service/mix_swap.dart';
+import '../../service/profile/pin_session.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../brightness_theme_data.dart';
 import '../router/mixin_routes.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
+import '../widget/dialog/pin_verify_dalog.dart';
 import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/round_container.dart';
 import '../widget/symbol.dart';
 import '../widget/tip_tile.dart';
+import '../widget/toast.dart';
 
 class Swap extends HookWidget {
   const Swap({Key? key}) : super(key: key);
@@ -289,29 +295,53 @@ class _Body extends HookWidget {
                       final traceId = const Uuid().v4();
                       final memo = buildMixSwapMemo(destAsset.value.assetId);
 
-                      final uri = Uri.https('mixin.one', 'pay', {
-                        'amount': sourceTextController.text,
-                        'trace': traceId,
-                        'asset': sourceAsset.value.assetId,
-                        'recipient': mixSwapUserId,
-                        'memo': memo,
-                      });
+                      if (isLoginByCredential) {
+                        final api = context.appServices.client.transferApi;
+                        final pinCode = await showPinVerifyDialog(context);
+                        if (pinCode == null) {
+                          return;
+                        }
+                        try {
+                          await computeWithLoading(
+                            () => api.pay(sdk.TransferRequest(
+                              assetId: sourceAsset.value.assetId,
+                              amount: sourceTextController.text,
+                              traceId: traceId,
+                              opponentId: mixSwapUserId,
+                              memo: memo,
+                              pin: encryptPin(pinCode),
+                            )),
+                          );
+                        } catch (error, stacktrace) {
+                          e('pay error $error $stacktrace');
+                          showErrorToast(error.toDisplayString(context));
+                          return;
+                        }
+                      } else {
+                        final uri = Uri.https('mixin.one', 'pay', {
+                          'amount': sourceTextController.text,
+                          'trace': traceId,
+                          'asset': sourceAsset.value.assetId,
+                          'recipient': mixSwapUserId,
+                          'memo': memo,
+                        });
 
-                      final ret = await showAndWaitingExternalAction(
-                        context: context,
-                        uri: uri,
-                        action: () => context.appServices
-                            .updateSnapshotByTraceId(traceId: traceId),
-                        hint: Text(context.l10n.waitingActionDone),
-                      );
+                        final ret = await showAndWaitingExternalAction(
+                          context: context,
+                          uri: uri,
+                          action: () => context.appServices
+                              .updateSnapshotByTraceId(traceId: traceId),
+                          hint: Text(context.l10n.waitingActionDone),
+                        );
 
-                      if (ret) {
-                        context.push(swapDetailPath.toUri({'id': traceId}),
-                            queryParameters: {
-                              'source': sourceAsset.value.assetId,
-                              'dest': destAsset.value.assetId,
-                              'amount': sourceTextController.text,
-                            });
+                        if (ret) {
+                          context.push(swapDetailPath.toUri({'id': traceId}),
+                              queryParameters: {
+                                'source': sourceAsset.value.assetId,
+                                'dest': destAsset.value.assetId,
+                                'amount': sourceTextController.text,
+                              });
+                        }
                       }
                     },
                   )),
