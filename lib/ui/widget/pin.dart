@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mixin_wallet/ui/widget/toast.dart';
 
 import '../../generated/r.dart';
 import '../../service/profile/pin_session.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
+import 'toast.dart';
 
 const _kPinCodeLength = 6;
 
