@@ -13,7 +13,7 @@ class TelegramApi {
 
   Future<TelegramUser> verifyInitData(String initData) async {
     final response = await dio.post<Map<String, dynamic>>(
-      'http://localhost:8234/tg',
+      'https://telegram.mixinwallet.com/tg',
       data: {'init_data': initData},
     );
     return TelegramUser.fromJson(response.data!);
