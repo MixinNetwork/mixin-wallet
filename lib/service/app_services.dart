@@ -628,4 +628,27 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Stream<Collection?> collection(String collectionId) =>
       mixinDatabase.collectibleDao.collection(collectionId).watchSingleOrNull();
+
+  Future<int> getPinErrorRemainCount() async {
+    const pinErrorMax = 5;
+    try {
+      final response = await client.accountApi.pinLogs(
+        category: 'PIN_INCORRECT',
+        limit: pinErrorMax,
+      );
+
+      final count = response.data.fold<int>(0, (previousValue, element) {
+        final onDayAgo = DateTime.now().subtract(const Duration(days: 1));
+        if (DateTime.parse(element.createdAt).isAfter(onDayAgo)) {
+          return previousValue + 1;
+        }
+        return previousValue;
+      });
+
+      return pinErrorMax - count;
+    } catch (error, stacktrace) {
+      e('getPinErrorCount error: $error, $stacktrace');
+      return pinErrorMax;
+    }
+  }
 }

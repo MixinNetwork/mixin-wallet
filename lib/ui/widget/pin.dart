@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../generated/r.dart';
 import '../../service/profile/pin_session.dart';
@@ -26,6 +28,22 @@ void usePinVerificationEffect(PinInputController controller) {
         } catch (error, stacktrace) {
           e('verify pin error $error, $stacktrace');
           controller.clear();
+          if (error is DioError) {
+            final mixinError = error.optionMixinError;
+            if (mixinError != null) {
+              if (mixinError.code == sdk.tooManyRequest) {
+                showErrorToast(context.l10n.errorPinCheckTooManyRequest);
+                return;
+              } else if (mixinError.code == sdk.pinIncorrect) {
+                final count =
+                    await context.appServices.getPinErrorRemainCount();
+                showErrorToast(
+                  context.l10n.errorPinIncorrectWithTimes(count, count),
+                );
+                return;
+              }
+            }
+          }
           showErrorToast(error.toDisplayString(context));
         }
       });
