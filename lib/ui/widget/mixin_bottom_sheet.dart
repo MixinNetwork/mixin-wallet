@@ -64,12 +64,18 @@ class MixinBottomSheetTitle extends StatelessWidget {
 }
 
 class BottomSheetCloseButton extends StatelessWidget {
-  const BottomSheetCloseButton({Key? key}) : super(key: key);
+  const BottomSheetCloseButton({
+    Key? key,
+    this.enable = true,
+  }) : super(key: key);
+
+  final bool enable;
 
   @override
   Widget build(BuildContext context) => ActionButton(
         name: R.resourcesCloseSvg,
         size: 24,
+        enable: enable,
         onTap: () {
           Navigator.pop(context);
         },

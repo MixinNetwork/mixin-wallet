@@ -8,6 +8,8 @@ import '../../generated/r.dart';
 import '../../service/profile/pin_session.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
+import 'buttons.dart';
+import 'mixin_bottom_sheet.dart';
 import 'toast.dart';
 
 const _kPinCodeLength = 6;
@@ -199,4 +201,134 @@ class _NumPadButton extends HookWidget {
                 ),
         ),
       );
+}
+
+typedef PinPostVerification = Future<void> Function(
+    BuildContext context, String pin);
+
+class PinVerifyDialogScaffold extends HookWidget {
+  const PinVerifyDialogScaffold({
+    Key? key,
+    required this.header,
+    required this.tip,
+    required this.onVerified,
+    required this.onErrorConfirmed,
+    this.title,
+  }) : super(key: key);
+
+  final Widget? title;
+
+  final Widget header;
+
+  final Widget tip;
+
+  final PinPostVerification onVerified;
+
+  final void Function()? onErrorConfirmed;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = useMemoized(PinInputController.new);
+    final verifying = useState(false);
+    final errorMessage = useState<String?>(null);
+    useEffect(() {
+      Future<void> onPinInput() async {
+        if (!controller.isFull) {
+          return;
+        }
+        final pin = controller.value;
+        verifying.value = true;
+        try {
+          await context.appServices.client.accountApi
+              .verifyPin(encryptPin(pin)!);
+          await onVerified(context, pin);
+        } catch (error, stacktrace) {
+          e('verify pin error $error, $stacktrace');
+          if (error is DioError) {
+            final mixinError = error.optionMixinError;
+            if (mixinError != null) {
+              if (mixinError.code == sdk.tooManyRequest) {
+                errorMessage.value = context.l10n.errorPinCheckTooManyRequest;
+              } else if (mixinError.code == sdk.pinIncorrect) {
+                final count =
+                    await context.appServices.getPinErrorRemainCount();
+                errorMessage.value =
+                    context.l10n.errorPinIncorrectWithTimes(count, count);
+              }
+            }
+          }
+          errorMessage.value ??= error.toDisplayString(context);
+          controller.clear();
+        } finally {
+          verifying.value = false;
+        }
+      }
+
+      controller.addListener(onPinInput);
+      return () => controller.removeListener(onPinInput);
+    }, [controller]);
+
+    final Widget bottom;
+    if (verifying.value) {
+      bottom = SizedBox(
+        height: 100,
+        child: Center(
+          child: SizedBox.square(
+            dimension: 30,
+            child: CircularProgressIndicator(
+              color: context.colorScheme.accent,
+              strokeWidth: 2,
+            ),
+          ),
+        ),
+      );
+    } else if (errorMessage.value != null) {
+      bottom = Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 20),
+          Text(
+            errorMessage.value!,
+            style: TextStyle(
+              color: context.colorScheme.red,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 20),
+          MixinPrimaryTextButton(
+            onTap: () {
+              if (onErrorConfirmed != null) {
+                onErrorConfirmed!();
+                return;
+              }
+              errorMessage.value = null;
+            },
+            text: context.l10n.confirm,
+          ),
+          const SizedBox(height: 32),
+        ],
+      );
+    } else {
+      bottom = PinInputNumPad(controller: controller);
+    }
+    return Column(
+      children: [
+        MixinBottomSheetTitle(
+          title: title ?? const SizedBox.shrink(),
+          action: BottomSheetCloseButton(enable: !verifying.value),
+        ),
+        header,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: PinField(controller: controller),
+        ),
+        tip,
+        const SizedBox(height: 32),
+        AnimatedSize(
+          duration: const Duration(milliseconds: 300),
+          child: bottom,
+        ),
+      ],
+    );
+  }
 }

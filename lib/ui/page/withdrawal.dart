@@ -20,7 +20,6 @@ import '../widget/dialog/transfer_bottom_sheet.dart';
 import '../widget/dialog/transfer_destination_selector.dart';
 import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
-import '../widget/toast.dart';
 import '../widget/transfer.dart';
 
 class Withdrawal extends HookWidget {
@@ -203,36 +202,29 @@ class _WithdrawalPage extends HookWidget {
                     e('addressId is null');
                     return;
                   }
-                  final pinCode = await showTransferVerifyBottomSheet(
+                  final ret = await showTransferVerifyBottomSheet(
                     context,
                     address: address.value!,
                     asset: asset,
                     feeAsset: feeAsset!,
                     amount: amount.value,
-                  );
-                  if (pinCode == null) {
-                    i('pin verify failed or canceled');
-                    return;
-                  }
-                  final api = context.appServices.client.transferApi;
-                  try {
-                    await computeWithLoading(() async {
+                    postVerification: (context, pin) async {
+                      final api = context.appServices.client.transferApi;
                       final response =
                           await api.withdrawal(sdk.WithdrawalRequest(
                         addressId: addressId,
                         amount: amount.value,
-                        pin: encryptPin(pinCode)!,
+                        pin: encryptPin(pin)!,
                         traceId: traceId,
                         memo: memo.value,
                       ));
                       await context.appServices.mixinDatabase.snapshotDao
                           .insertAll([response.data]);
-                    });
+                      Navigator.of(context).pop(true);
+                    },
+                  );
+                  if (ret ?? false) {
                     context.pop();
-                  } catch (error, stacktrace) {
-                    e('withdrawal error, $error $stacktrace');
-                    showErrorToast(error.toDisplayString(context));
-                    return;
                   }
                 } else {
                   final Uri uri;

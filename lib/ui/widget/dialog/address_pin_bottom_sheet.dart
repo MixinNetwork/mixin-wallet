@@ -7,37 +7,29 @@ import '../../../service/profile/pin_session.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
-import '../../../util/logger.dart';
-import '../mixin_bottom_sheet.dart';
 import '../pin.dart';
 import '../symbol.dart';
-import '../toast.dart';
 
 Future<bool> showDeleteAddressByPinBottomSheet(
   BuildContext context, {
   required Addresse address,
 }) async {
-  final api = context.appServices.client.addressApi;
-  final pin = await _showAddressPinBottomSheet(
+  final ret = await _showAddressPinBottomSheet(
     context,
-    assetId: address.assetId,
-    type: _AddressModifyType.delete,
-    address: address.destination,
-    label: address.label,
-    tag: address.tag,
+    content: _AddressPinBottomSheetContent(
+      assetId: address.assetId,
+      type: _AddressModifyType.delete,
+      address: address.destination,
+      label: address.label,
+      tag: address.tag,
+      postVerification: (context, pin) async {
+        final api = context.appServices.client.addressApi;
+        await api.deleteAddressById(address.addressId, encryptPin(pin)!);
+        Navigator.pop(context, true);
+      },
+    ),
   );
-  if (pin == null) {
-    return false;
-  }
-  try {
-    await computeWithLoading(
-        () => api.deleteAddressById(address.addressId, encryptPin(pin)!));
-    return true;
-  } catch (error, stacktrace) {
-    e('delete address error: $error, $stacktrace');
-    showErrorToast(error.toDisplayString(context));
-    return false;
-  }
+  return ret ?? false;
 }
 
 Future<bool> showAddAddressByPinBottomSheet(
@@ -48,35 +40,29 @@ Future<bool> showAddAddressByPinBottomSheet(
   required String? tag,
 }) async {
   final api = context.appServices.client.addressApi;
-  final pin = await _showAddressPinBottomSheet(
+  final ret = await _showAddressPinBottomSheet(
     context,
-    assetId: assetId,
-    type: _AddressModifyType.add,
-    address: destination,
-    label: label,
-    tag: tag,
+    content: _AddressPinBottomSheetContent(
+      assetId: assetId,
+      type: _AddressModifyType.add,
+      address: destination,
+      label: label,
+      tag: tag,
+      postVerification: (context, pin) async {
+        final response = await api.addAddress(sdk.AddressRequest(
+          assetId: assetId,
+          pin: encryptPin(pin)!,
+          destination: destination,
+          tag: tag,
+          label: label,
+        ));
+        await context.mixinDatabase.addressDao
+            .insertAllOnConflictUpdate([response.data]);
+        Navigator.pop(context, true);
+      },
+    ),
   );
-  if (pin == null) {
-    return false;
-  }
-  try {
-    await computeWithLoading(() async {
-      final response = await api.addAddress(sdk.AddressRequest(
-        assetId: assetId,
-        pin: encryptPin(pin)!,
-        destination: destination,
-        tag: tag,
-        label: label,
-      ));
-      await context.mixinDatabase.addressDao
-          .insertAllOnConflictUpdate([response.data]);
-    });
-    return true;
-  } catch (error, stack) {
-    e('add address error: $error, $stack');
-    showErrorToast(error.toDisplayString(context));
-    return false;
-  }
+  return ret ?? false;
 }
 
 enum _AddressModifyType {
@@ -84,41 +70,29 @@ enum _AddressModifyType {
   delete,
 }
 
-Future<String?> _showAddressPinBottomSheet(
+Future<bool?> _showAddressPinBottomSheet(
   BuildContext context, {
-  required String assetId,
-  required _AddressModifyType type,
-  required String address,
-  required String label,
-  required String? tag,
-}) async {
-  final pin = await showModalBottomSheet<String>(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-    isDismissible: false,
-    enableDrag: false,
-    builder: (context) => Column(
-      children: [
-        const Spacer(),
-        Material(
-          color: context.colorScheme.background,
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(topRadius),
+  required Widget content,
+}) =>
+    showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      isDismissible: false,
+      enableDrag: false,
+      builder: (context) => Column(
+        children: [
+          const Spacer(),
+          Material(
+            color: context.colorScheme.background,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(topRadius),
+            ),
+            child: content,
           ),
-          child: _AddressPinBottomSheetContent(
-            assetId: assetId,
-            type: type,
-            address: address,
-            label: label,
-            tag: tag,
-          ),
-        ),
-      ],
-    ),
-  );
-  return pin;
-}
+        ],
+      ),
+    );
 
 class _AddressPinBottomSheetContent extends HookWidget {
   const _AddressPinBottomSheetContent({
@@ -128,6 +102,7 @@ class _AddressPinBottomSheetContent extends HookWidget {
     required this.address,
     required this.label,
     required this.tag,
+    required this.postVerification,
   }) : super(key: key);
 
   final String assetId;
@@ -135,72 +110,56 @@ class _AddressPinBottomSheetContent extends HookWidget {
   final String label;
   final String address;
   final String? tag;
+  final PinPostVerification postVerification;
 
   @override
   Widget build(BuildContext context) {
-    final controller = useMemoized(PinInputController.new);
     final asset = useMemoizedStream(
       () => context.appServices.assetResult(assetId).watchSingleOrNull(),
       keys: [assetId],
     ).data;
-    usePinVerificationEffect(controller);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        MixinBottomSheetTitle(
-          title: Text(
-            type == _AddressModifyType.add
-                ? context.l10n.addWithdrawalAddress(asset?.symbol ?? '')
-                : context.l10n.deleteWithdrawalAddress(asset?.symbol ?? ''),
-          ),
+    return PinVerifyDialogScaffold(
+      title: Text(
+        type == _AddressModifyType.add
+            ? context.l10n.addWithdrawalAddress(asset?.symbol ?? '')
+            : context.l10n.deleteWithdrawalAddress(asset?.symbol ?? ''),
+      ),
+      tip: Text(
+        type == _AddressModifyType.add
+            ? context.l10n.addAddressByPinTip
+            : context.l10n.deleteAddressByPinTip,
+        style: TextStyle(
+          color: context.colorScheme.secondaryText,
+          fontSize: 12,
         ),
-        const SizedBox(height: 20),
-        if (asset != null)
-          SymbolIconWithBorder(
-            symbolUrl: asset.iconUrl,
-            chainUrl: asset.chainIconUrl,
-            size: 70,
-            chainSize: 24,
-          )
-        else
-          const SizedBox(height: 70),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: TextStyle(
-            color: context.colorScheme.primaryText,
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            (tag?.isEmpty ?? true) ? address : '$address$tag',
+      ),
+      header: Column(
+        children: [
+          const SizedBox(height: 20),
+          if (asset != null)
+            SymbolIconWithBorder(
+              symbolUrl: asset.iconUrl,
+              chainUrl: asset.chainIconUrl,
+              size: 70,
+              chainSize: 24,
+            )
+          else
+            const SizedBox(height: 70),
+          const SizedBox(height: 8),
+          Text(
+            label,
             style: TextStyle(
-              color: context.colorScheme.secondaryText,
-              fontSize: 14,
+              color: context.colorScheme.primaryText,
+              fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
-            textAlign: TextAlign.center,
           ),
-        ),
-        const SizedBox(height: 16),
-        PinField(controller: controller),
-        const SizedBox(height: 16),
-        Text(
-          type == _AddressModifyType.add
-              ? context.l10n.addAddressByPinTip
-              : context.l10n.deleteAddressByPinTip,
-          style: TextStyle(
-            color: context.colorScheme.secondaryText,
-            fontSize: 12,
-          ),
-        ),
-        const SizedBox(height: 32),
-        PinInputNumPad(controller: controller),
-      ],
+        ],
+      ),
+      onVerified: postVerification,
+      onErrorConfirmed: () {
+        Navigator.of(context).pop();
+      },
     );
   }
 }

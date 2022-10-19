@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
-import '../mixin_bottom_sheet.dart';
 import '../pin.dart';
 import '../symbol.dart';
 
 /// return: verified succeed pin code. null if canceled.
-Future<String?> showTransferVerifyBottomSheet(
+Future<bool?> showTransferVerifyBottomSheet(
   BuildContext context, {
   required Addresse address,
   required AssetResult asset,
   required AssetResult feeAsset,
   required String amount,
+  required PinPostVerification postVerification,
 }) =>
-    showModalBottomSheet<String>(
+    showModalBottomSheet<bool>(
       context: context,
       builder: (context) => Column(
         children: [
@@ -31,6 +30,7 @@ Future<String?> showTransferVerifyBottomSheet(
               asset: asset,
               feeAsset: feeAsset,
               amount: amount,
+              postVerification: postVerification,
             ),
           ),
         ],
@@ -46,78 +46,76 @@ Future<String?> showTransferVerifyBottomSheet(
       backgroundColor: Colors.transparent,
     );
 
-class _TransferVerifyBottomSheet extends HookWidget {
+class _TransferVerifyBottomSheet extends StatelessWidget {
   const _TransferVerifyBottomSheet({
     Key? key,
     required this.address,
     required this.amount,
     required this.asset,
     required this.feeAsset,
+    required this.postVerification,
   }) : super(key: key);
 
   final Addresse address;
   final String amount;
   final AssetResult asset;
   final AssetResult feeAsset;
+  final PinPostVerification postVerification;
 
   @override
-  Widget build(BuildContext context) {
-    final controller = useMemoized(PinInputController.new);
-    usePinVerificationEffect(controller);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const MixinBottomSheetTitle(title: SizedBox.shrink()),
-        const SizedBox(height: 10),
-        Text(
-          context.l10n.withdrawalTo(address.label),
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: context.colorScheme.primaryText,
-          ),
+  Widget build(BuildContext context) => PinVerifyDialogScaffold(
+        header: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 10),
+            Text(
+              context.l10n.withdrawalTo(address.label),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: context.colorScheme.primaryText,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              address.displayAddress().formatAddress(),
+              style: TextStyle(
+                fontSize: 14,
+                color: context.colorScheme.secondaryText,
+              ),
+            ),
+            const SizedBox(height: 10),
+            SymbolIconWithBorder(
+              symbolUrl: asset.iconUrl,
+              chainUrl: asset.chainIconUrl,
+              size: 70,
+              chainSize: 24,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '${amount.numberFormat()} ${asset.symbol}',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: context.colorScheme.primaryText,
+              ),
+            ),
+            const SizedBox(height: 8),
+            _FeeText(address: address, asset: asset, feeAsset: feeAsset),
+          ],
         ),
-        const SizedBox(height: 8),
-        Text(
-          address.displayAddress().formatAddress(),
-          style: TextStyle(
-            fontSize: 14,
-            color: context.colorScheme.secondaryText,
-          ),
-        ),
-        const SizedBox(height: 10),
-        SymbolIconWithBorder(
-          symbolUrl: asset.iconUrl,
-          chainUrl: asset.chainIconUrl,
-          size: 70,
-          chainSize: 24,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          '${amount.numberFormat()} ${asset.symbol}',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: context.colorScheme.primaryText,
-          ),
-        ),
-        const SizedBox(height: 8),
-        _FeeText(address: address, asset: asset, feeAsset: feeAsset),
-        const SizedBox(height: 20),
-        PinField(controller: controller),
-        const SizedBox(height: 10),
-        Text(
+        tip: Text(
           context.l10n.withdrawalWithPin,
           style: TextStyle(
             fontSize: 14,
             color: context.colorScheme.secondaryText,
           ),
         ),
-        const SizedBox(height: 20),
-        PinInputNumPad(controller: controller),
-      ],
-    );
-  }
+        onVerified: postVerification,
+        onErrorConfirmed: () {
+          Navigator.of(context).pop();
+        },
+      );
 }
 
 class _FeeText extends StatelessWidget {
