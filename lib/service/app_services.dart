@@ -20,6 +20,7 @@ import '../thirdy_party/telegram.dart';
 import '../util/constants.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
+import 'env.dart';
 import 'profile/auth.dart';
 import 'profile/pin_session.dart';
 import 'profile/profile_manager.dart';
@@ -93,7 +94,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     return _mixinDatabase!;
   }
 
-  Future<void> login(String initData) async {
+  Future<void> loginByTelegram(String initData) async {
     final data = await TelegramApi.instance.verifyInitData(initData);
 
     final client = sdk.Client(
@@ -121,29 +122,30 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     notifyListeners();
   }
 
-  // Future<void> login(String oauthCode) async {
-  //   final response = await this
-  //       .client
-  //       .oauthApi
-  //       .post(sdk.OauthRequest(Env.clientId, Env.clientSecret, oauthCode));
-  //
-  //   final scope = response.data.scope;
-  //   if (!scope.contains('ASSETS:READ') || !scope.contains('SNAPSHOTS:READ')) {
-  //     throw ArgumentError('scope');
-  //   }
-  //
-  //   final token = response.data.accessToken;
-  //
-  //   final client = sdk.Client(accessToken: token, interceptors: interceptors);
-  //
-  //   final mixinResponse = await client.accountApi.getMe();
-  //
-  //   await setAuth(Auth(accessToken: token, account: mixinResponse.data));
-  //
-  //   this.client = client;
-  //   await _initDatabase();
-  //   notifyListeners();
-  // }
+  Future<void> loginByMixinAuth(String oauthCode) async {
+    final response = await this
+        .client
+        .oauthApi
+        .post(sdk.OauthRequest(Env.clientId, Env.clientSecret, oauthCode));
+
+    final scope = response.data.scope;
+    if (!scope.contains('ASSETS:READ') || !scope.contains('SNAPSHOTS:READ')) {
+      throw ArgumentError('scope');
+    }
+
+    final token = response.data.accessToken;
+
+    final client = sdk.Client(accessToken: token, interceptors: interceptors);
+
+    final mixinResponse = await client.accountApi.getMe();
+
+    await setAuth(Auth(
+        accessToken: token, account: mixinResponse.data, credential: null));
+
+    this.client = client;
+    await _initDatabase();
+    notifyListeners();
+  }
 
   Future<void> _initDatabase() async {
     if (accessToken == null) return;
