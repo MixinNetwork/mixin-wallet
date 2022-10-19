@@ -17,6 +17,7 @@ import '../db/dao/user_dao.dart';
 import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
 import '../thirdy_party/telegram.dart';
+import '../util/constants.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
 import 'profile/auth.dart';
@@ -174,6 +175,11 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       await mixinDatabase.assetDao.insertAllOnConflictUpdate(fixedAssets);
       await mixinDatabase.fiatDao.insertAllOnConflictUpdate(fiats);
     });
+
+    if (!assets.any((element) => element.assetId == xin)) {
+      // make sure the xin asset is in the database
+      await updateAsset(xin);
+    }
   }
 
   Future<sdk.Asset> updateAsset(String assetId) async {
