@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/native_scroll.dart';
 import '../widget/asset.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
@@ -44,28 +45,31 @@ class _HiddenAssetsList extends HookWidget {
       );
     }
     final data = assets.data!;
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        final item = data[index];
-        return _SwipeToUnHide(
-          key: ValueKey(item.assetId),
-          onDismiss: () {
-            final appServices = context.appServices
-              ..updateAssetHidden(item.assetId, hidden: false);
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(context.l10n.alreadyHidden(item.name)),
-              action: SnackBarAction(
-                label: context.l10n.undo,
-                onPressed: () {
-                  appServices.updateAssetHidden(item.assetId, hidden: true);
-                },
-              ),
-            ));
-          },
-          child: AssetWidget(data: item),
-        );
-      },
-      itemCount: data.length,
+    return NativeScrollBuilder(
+      builder: (context, controller) => ListView.builder(
+        controller: controller,
+        itemBuilder: (context, index) {
+          final item = data[index];
+          return _SwipeToUnHide(
+            key: ValueKey(item.assetId),
+            onDismiss: () {
+              final appServices = context.appServices
+                ..updateAssetHidden(item.assetId, hidden: false);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(context.l10n.alreadyHidden(item.name)),
+                action: SnackBarAction(
+                  label: context.l10n.undo,
+                  onPressed: () {
+                    appServices.updateAssetHidden(item.assetId, hidden: true);
+                  },
+                ),
+              ));
+            },
+            child: AssetWidget(data: item),
+          );
+        },
+        itemCount: data.length,
+      ),
     );
   }
 }

@@ -12,6 +12,7 @@ import '../../service/mix_swap.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
+import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
@@ -150,62 +151,67 @@ class _Body extends StatelessWidget {
   final String traceId;
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-      child: SizedBox(
-          height: MediaQuery.of(context).size.height - 48,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                DefaultTextStyle.merge(
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: context.colorScheme.thirdText,
+  Widget build(BuildContext context) => NativeScrollBuilder(
+        builder: (context, controller) => SingleChildScrollView(
+          controller: controller,
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height - 48,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  DefaultTextStyle.merge(
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: context.colorScheme.thirdText,
+                    ),
+                    child: Text(context.l10n.swapType),
                   ),
-                  child: Text(context.l10n.swapType),
-                ),
-                const SizedBox(height: 12),
-                _AssetLayout(
-                  source: source,
-                  dest: dest,
-                ),
-                const SizedBox(height: 14),
-                Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TransactionInfoTile(
-                          title: Text(context.l10n.transactionPhase),
-                          subtitle: SelectableText(
-                              _getOrderStatus(swapPhase, context))),
-                      TransactionInfoTile(
-                          title: Text(context.l10n.paid),
-                          subtitle: SelectableText(
-                              _subtitle(order?.payAmount, source.symbol)),
-                          subtitleColor:
-                              _subtitleColor(order?.payAmount, context)),
-                      TransactionInfoTile(
-                          title: Text(context.l10n.received),
-                          subtitle: SelectableText(
-                              _subtitle(order?.receiveAmount, dest.symbol)),
-                          subtitleColor:
-                              _subtitleColor(order?.receiveAmount, context)),
-                      TransactionInfoTile(
-                          title: Text(context.l10n.refund),
-                          subtitle: SelectableText(
-                              _subtitle(order?.refundAmount, source.symbol)),
-                          subtitleColor:
-                              _subtitleColor(order?.refundAmount, context)),
-                    ]),
-                const Spacer(),
-                if (swapPhase == SwapPhase.checking ||
-                    swapPhase == SwapPhase.trading)
-                  _BottomLoading(swapPhase: swapPhase),
-              ],
+                  const SizedBox(height: 12),
+                  _AssetLayout(
+                    source: source,
+                    dest: dest,
+                  ),
+                  const SizedBox(height: 14),
+                  Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TransactionInfoTile(
+                            title: Text(context.l10n.transactionPhase),
+                            subtitle: SelectableText(
+                                _getOrderStatus(swapPhase, context))),
+                        TransactionInfoTile(
+                            title: Text(context.l10n.paid),
+                            subtitle: SelectableText(
+                                _subtitle(order?.payAmount, source.symbol)),
+                            subtitleColor:
+                                _subtitleColor(order?.payAmount, context)),
+                        TransactionInfoTile(
+                            title: Text(context.l10n.received),
+                            subtitle: SelectableText(
+                                _subtitle(order?.receiveAmount, dest.symbol)),
+                            subtitleColor:
+                                _subtitleColor(order?.receiveAmount, context)),
+                        TransactionInfoTile(
+                            title: Text(context.l10n.refund),
+                            subtitle: SelectableText(
+                                _subtitle(order?.refundAmount, source.symbol)),
+                            subtitleColor:
+                                _subtitleColor(order?.refundAmount, context)),
+                      ]),
+                  const Spacer(),
+                  if (swapPhase == SwapPhase.checking ||
+                      swapPhase == SwapPhase.trading)
+                    _BottomLoading(swapPhase: swapPhase),
+                ],
+              ),
             ),
-          )));
+          ),
+        ),
+      );
 
   String _getOrderStatus(SwapPhase swapPhase, BuildContext context) {
     if (swapPhase == SwapPhase.checking) {

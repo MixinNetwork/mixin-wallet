@@ -8,6 +8,7 @@ import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
@@ -202,18 +203,21 @@ class _AssetDetailBody extends StatelessWidget {
               ],
             );
           }
-          return CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: _AssetHeader(asset: asset, filter: filter),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) => TransactionItem(item: snapshots[index]),
-                  childCount: snapshots.length,
+          return NativeScrollBuilder(
+            builder: (context, controller) => CustomScrollView(
+              controller: controller,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: _AssetHeader(asset: asset, filter: filter),
                 ),
-              ),
-            ],
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => TransactionItem(item: snapshots[index]),
+                    childCount: snapshots.length,
+                  ),
+                ),
+              ],
+            ),
           );
         },
       );

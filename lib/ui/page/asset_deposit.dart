@@ -13,6 +13,7 @@ import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../../util/web/web_utils_dummy.dart'
     if (dart.library.html) '../../util/web/web_utils.dart';
@@ -183,88 +184,92 @@ class _AssetDepositBody extends HookWidget {
                   })));
     }, [tag]);
 
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      children: [
-        if (usdtAssets.containsKey(asset.assetId))
-          _UsdtChooseLayout(asset: asset),
-        if (depositEntries.length > 1 && asset.assetId == bitcoin)
-          _DepositEntryChooseLayout(
-            asset: asset,
-            entries: depositEntries,
-            onSelected: (entry) => depositEntry.value = entry,
-            selectedAddress: address!,
-          ),
-        if (tag != null && tag.isNotEmpty) _MemoLayout(asset: asset, tag: tag),
-        if (address != null && address.isNotEmpty)
-          _AddressLayout(
-            asset: asset,
-            address: address,
-            showDepositNotice: tag != null && tag.isNotEmpty,
-          )
-        else
-          const _AddressLoadingWidget(),
-        const SizedBox(height: 8),
-        TipListLayout(
-          children: [
-            for (final tip in asset.getTip(context))
-              TipTile(
-                text: tip,
-                foregroundColor: context.colorScheme.thirdText,
-                fontWeight: FontWeight.w600,
-              ),
-            TipTile(
-              text: context.l10n.depositConfirmation(asset.confirmations),
-              highlight: asset.confirmations.toString(),
-              foregroundColor: context.colorScheme.thirdText,
-              fontWeight: FontWeight.w600,
+    return NativeScrollBuilder(
+      builder: (context, controller) => ListView(
+        controller: controller,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        children: [
+          if (usdtAssets.containsKey(asset.assetId))
+            _UsdtChooseLayout(asset: asset),
+          if (depositEntries.length > 1 && asset.assetId == bitcoin)
+            _DepositEntryChooseLayout(
+              asset: asset,
+              entries: depositEntries,
+              onSelected: (entry) => depositEntry.value = entry,
+              selectedAddress: address!,
             ),
-            if (asset.needShowReserve)
+          if (tag != null && tag.isNotEmpty)
+            _MemoLayout(asset: asset, tag: tag),
+          if (address != null && address.isNotEmpty)
+            _AddressLayout(
+              asset: asset,
+              address: address,
+              showDepositNotice: tag != null && tag.isNotEmpty,
+            )
+          else
+            const _AddressLoadingWidget(),
+          const SizedBox(height: 8),
+          TipListLayout(
+            children: [
+              for (final tip in asset.getTip(context))
+                TipTile(
+                  text: tip,
+                  foregroundColor: context.colorScheme.thirdText,
+                  fontWeight: FontWeight.w600,
+                ),
               TipTile(
-                text: context.l10n
-                    .depositReserve('${asset.reserve} ${asset.symbol}'),
-                highlight: '${asset.reserve} ${asset.symbol}',
+                text: context.l10n.depositConfirmation(asset.confirmations),
+                highlight: asset.confirmations.toString(),
                 foregroundColor: context.colorScheme.thirdText,
                 fontWeight: FontWeight.w600,
               ),
-          ],
-        ),
-        const SizedBox(height: 32),
-        if (address != null && address.isNotEmpty)
-          Center(
-            child: MixinPrimaryTextButton(
-              onTap: () async {
-                final result = await showMixinBottomSheet<List<String>>(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) => RequestPaymentBottomSheet(
+              if (asset.needShowReserve)
+                TipTile(
+                  text: context.l10n
+                      .depositReserve('${asset.reserve} ${asset.symbol}'),
+                  highlight: '${asset.reserve} ${asset.symbol}',
+                  foregroundColor: context.colorScheme.thirdText,
+                  fontWeight: FontWeight.w600,
+                ),
+            ],
+          ),
+          const SizedBox(height: 32),
+          if (address != null && address.isNotEmpty)
+            Center(
+              child: MixinPrimaryTextButton(
+                onTap: () async {
+                  final result = await showMixinBottomSheet<List<String>>(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => RequestPaymentBottomSheet(
+                      asset: asset,
+                      address: address,
+                      tag: tag,
+                    ),
+                  );
+                  if (result == null || result.isEmpty) {
+                    return;
+                  }
+                  assert(result.length == 2, 'Invalid result');
+                  final amount = result[0];
+                  final memo = result[1];
+
+                  await showRequestPaymentResultBottomSheet(
+                    context,
                     asset: asset,
                     address: address,
                     tag: tag,
-                  ),
-                );
-                if (result == null || result.isEmpty) {
-                  return;
-                }
-                assert(result.length == 2, 'Invalid result');
-                final amount = result[0];
-                final memo = result[1];
-
-                await showRequestPaymentResultBottomSheet(
-                  context,
-                  asset: asset,
-                  address: address,
-                  tag: tag,
-                  amount: amount,
-                  memo: memo,
-                  recipient: auth!.account.userId,
-                );
-              },
-              text: context.l10n.requestPayment,
+                    amount: amount,
+                    memo: memo,
+                    recipient: auth!.account.userId,
+                  );
+                },
+                text: context.l10n.requestPayment,
+              ),
             ),
-          ),
-        const SizedBox(height: 16),
-      ],
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 }
