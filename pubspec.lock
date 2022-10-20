@@ -184,7 +184,7 @@ packages:
     source: hosted
     version: "3.0.2"
   dart_jsonwebtoken:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       path: "."
       ref: "31d04c56ca86c2e316c526f9120a74a4de97ed32"
@@ -471,12 +471,10 @@ packages:
   mixin_bot_sdk_dart:
     dependency: "direct main"
     description:
-      path: "."
-      ref: fefa5c4d67753ca46f32d90911de16901311c754
-      resolved-ref: fefa5c4d67753ca46f32d90911de16901311c754
-      url: "https://github.com/MixinNetwork/mixin_bot_sdk_dart"
-    source: git
-    version: "0.3.4"
+      name: mixin_bot_sdk_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.5"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:

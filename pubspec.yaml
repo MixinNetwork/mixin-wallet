@@ -32,10 +32,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  mixin_bot_sdk_dart:
-    git:
-      url: https://github.com/MixinNetwork/mixin_bot_sdk_dart
-      ref: fefa5c4d67753ca46f32d90911de16901311c754
+  mixin_bot_sdk_dart: ^0.3.5
   very_good_analysis: ^3.1.0
   intl: ^0.17.0
   json_annotation: ^4.7.0
@@ -92,6 +89,12 @@ dev_dependencies:
       url: https://github.com/techouse/envify.git
       ref: main
       path: envify_generator
+
+dependency_overrides:
+  dart_jsonwebtoken:
+    git:
+      url: https://github.com/Tougee/dart_jsonwebtoken
+      ref: 31d04c56ca86c2e316c526f9120a74a4de97ed32
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
