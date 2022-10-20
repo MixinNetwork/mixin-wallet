@@ -16,26 +16,40 @@ import '../db/dao/snapshot_dao.dart';
 import '../db/dao/user_dao.dart';
 import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
+import '../thirdy_party/telegram.dart';
+import '../util/constants.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
 import 'env.dart';
 import 'profile/auth.dart';
+import 'profile/pin_session.dart';
 import 'profile/profile_manager.dart';
 
 class AppServices extends ChangeNotifier with EquatableMixin {
   AppServices({
     required this.vRouterStateKey,
   }) {
-    client = sdk.Client(
+    if (isLoginByCredential) {
+      final credential = auth!.credential!;
+      client = sdk.Client(
+        userId: credential.mixinId,
+        sessionId: credential.sessionId,
+        privateKey: credential.privateKey,
+        interceptors: interceptors,
+        httpLogLevel: null,
+      );
+    } else {
+      client = sdk.Client(
         accessToken: accessToken,
         interceptors: interceptors,
-        httpLogLevel: null);
+        httpLogLevel: null,
+      );
+    }
     scheduleMicrotask(() async {
       if (isLogin) {
         try {
           final response = await client.accountApi.getMe();
-          await setAuth(
-              Auth(accessToken: accessToken!, account: response.data));
+          await setAuth(auth!.copyWith(account: response.data));
         } catch (error) {
           d('refresh account failed. $error');
         }
@@ -80,7 +94,35 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     return _mixinDatabase!;
   }
 
-  Future<void> login(String oauthCode) async {
+  Future<void> loginByTelegram(String initData) async {
+    final data = await TelegramApi.instance.verifyInitData(initData);
+
+    final client = sdk.Client(
+      userId: data.mixinId,
+      sessionId: data.sessionId,
+      privateKey: data.privateKey,
+      interceptors: interceptors,
+    );
+
+    final mixinResponse = await client.accountApi.getMe();
+
+    await setAuth(Auth(
+      accessToken: mixinResponse.data.userId,
+      account: mixinResponse.data,
+      credential: data,
+    ));
+
+    Session.instance.pinToken = base64Encode(decryptPinToken(
+      data.pinToken,
+      sdk.decodeBase64(data.privateKey),
+    ));
+
+    this.client = client;
+    await _initDatabase();
+    notifyListeners();
+  }
+
+  Future<void> loginByMixinAuth(String oauthCode) async {
     final response = await this
         .client
         .oauthApi
@@ -97,7 +139,8 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
     final mixinResponse = await client.accountApi.getMe();
 
-    await setAuth(Auth(accessToken: token, account: mixinResponse.data));
+    await setAuth(Auth(
+        accessToken: token, account: mixinResponse.data, credential: null));
 
     this.client = client;
     await _initDatabase();
@@ -134,6 +177,11 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       await mixinDatabase.assetDao.insertAllOnConflictUpdate(fixedAssets);
       await mixinDatabase.fiatDao.insertAllOnConflictUpdate(fiats);
     });
+
+    if (!assets.any((element) => element.assetId == xin)) {
+      // make sure the xin asset is in the database
+      await updateAsset(xin);
+    }
   }
 
   Future<sdk.Asset> updateAsset(String assetId) async {
@@ -216,8 +264,8 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     int limit = 30,
   }) async {
     final result = await Future.wait([
-      client.snapshotApi.getSnapshotsByAssetId(
-        assetId,
+      client.snapshotApi.getSnapshots(
+        assetId: assetId,
         offset: offset,
         limit: limit,
       ),
@@ -580,4 +628,27 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Stream<Collection?> collection(String collectionId) =>
       mixinDatabase.collectibleDao.collection(collectionId).watchSingleOrNull();
+
+  Future<int> getPinErrorRemainCount() async {
+    const pinErrorMax = 5;
+    try {
+      final response = await client.accountApi.pinLogs(
+        category: 'PIN_INCORRECT',
+        limit: pinErrorMax,
+      );
+
+      final count = response.data.fold<int>(0, (previousValue, element) {
+        final onDayAgo = DateTime.now().subtract(const Duration(days: 1));
+        if (DateTime.parse(element.createdAt).isAfter(onDayAgo)) {
+          return previousValue + 1;
+        }
+        return previousValue;
+      });
+
+      return pinErrorMax - count;
+    } catch (error, stacktrace) {
+      e('getPinErrorCount error: $error, $stacktrace');
+      return pinErrorMax;
+    }
+  }
 }

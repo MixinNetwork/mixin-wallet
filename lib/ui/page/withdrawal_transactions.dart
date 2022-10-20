@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
+import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';
@@ -151,20 +152,23 @@ class _AddressTransactionsBody extends HookWidget {
         }
         return false;
       },
-      child: ListView.builder(
-        itemCount: snapshots.value.length,
-        itemBuilder: (context, index) {
-          final widget = TransactionItem(
-            item: snapshots.value[index],
-          );
-          if (index == 0) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: widget,
+      child: NativeScrollBuilder(
+        builder: (context, controller) => ListView.builder(
+          controller: controller,
+          itemCount: snapshots.value.length,
+          itemBuilder: (context, index) {
+            final widget = TransactionItem(
+              item: snapshots.value[index],
             );
-          }
-          return widget;
-        },
+            if (index == 0) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: widget,
+              );
+            }
+            return widget;
+          },
+        ),
       ),
     );
   }

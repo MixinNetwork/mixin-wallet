@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -105,18 +107,20 @@ class TransferAmountWidget extends HookWidget {
     }
 
     useEffect(() {
-      if (fiatInputMode.value) {
-        if (controller.text.isEmpty) {
-          amount.value = '';
+      scheduleMicrotask(() {
+        if (fiatInputMode.value) {
+          if (controller.text.isEmpty) {
+            amount.value = '';
+          } else {
+            assert(!asset.priceUsd.isZero);
+            amount.value = (input.toDecimalWithLocale() / asset.usdUnitPrice)
+                .toDecimal(scaleOnInfinitePrecision: 8)
+                .toString();
+          }
         } else {
-          assert(!asset.priceUsd.isZero);
-          amount.value = (input.toDecimalWithLocale() / asset.usdUnitPrice)
-              .toDecimal(scaleOnInfinitePrecision: 8)
-              .toString();
+          amount.value = controller.text;
         }
-      } else {
-        amount.value = controller.text;
-      }
+      });
     }, [controller.value, fiatInputMode.value]);
 
     return Material(

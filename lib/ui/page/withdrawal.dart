@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../generated/r.dart';
+import '../../service/profile/pin_session.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/logger.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/avatar.dart';
 import '../widget/buttons.dart';
+import '../widget/dialog/transfer_bottom_sheet.dart';
 import '../widget/dialog/transfer_destination_selector.dart';
 import '../widget/external_action_confirm.dart';
 import '../widget/mixin_appbar.dart';
@@ -188,39 +193,72 @@ class _WithdrawalPage extends HookWidget {
                       )));
                   return;
                 }
+
                 final traceId = const Uuid().v4();
 
-                final Uri uri;
-
-                if (address.value != null) {
-                  uri = Uri.https('mixin.one', 'withdrawal', {
-                    'asset': asset.assetId,
-                    'address': address.value!.addressId,
-                    'amount': amount.value,
-                    'trace': traceId,
-                    'memo': memo.value,
-                  });
+                if (isLoginByCredential) {
+                  final addressId = address.value?.addressId;
+                  if (addressId == null) {
+                    e('addressId is null');
+                    return;
+                  }
+                  final ret = await showTransferVerifyBottomSheet(
+                    context,
+                    address: address.value!,
+                    asset: asset,
+                    feeAsset: feeAsset!,
+                    amount: amount.value,
+                    postVerification: (context, pin) async {
+                      final api = context.appServices.client.transferApi;
+                      final response =
+                          await api.withdrawal(sdk.WithdrawalRequest(
+                        addressId: addressId,
+                        amount: amount.value,
+                        pin: encryptPin(pin)!,
+                        traceId: traceId,
+                        memo: memo.value,
+                      ));
+                      await context.appServices.mixinDatabase.snapshotDao
+                          .insertAll([response.data]);
+                      Navigator.of(context).pop(true);
+                    },
+                  );
+                  if (ret ?? false) {
+                    context.pop();
+                  }
                 } else {
-                  assert(user.value != null);
-                  uri = Uri.https('mixin.one', 'pay', {
-                    'amount': amount.value,
-                    'trace': traceId,
-                    'asset': asset.assetId,
-                    'recipient': user.value!.userId,
-                    'memo': memo.value,
-                  });
-                }
+                  final Uri uri;
 
-                final succeed = await showAndWaitingExternalAction(
-                  context: context,
-                  uri: uri,
-                  action: () => context.appServices.updateSnapshotByTraceId(
-                    traceId: traceId,
-                  ),
-                  hint: Text(context.l10n.waitingActionDone),
-                );
-                if (succeed) {
-                  context.pop();
+                  if (address.value != null) {
+                    uri = Uri.https('mixin.one', 'withdrawal', {
+                      'asset': asset.assetId,
+                      'address': address.value!.addressId,
+                      'amount': amount.value,
+                      'trace': traceId,
+                      'memo': memo.value,
+                    });
+                  } else {
+                    assert(user.value != null);
+                    uri = Uri.https('mixin.one', 'pay', {
+                      'amount': amount.value,
+                      'trace': traceId,
+                      'asset': asset.assetId,
+                      'recipient': user.value!.userId,
+                      'memo': memo.value,
+                    });
+                  }
+
+                  final succeed = await showAndWaitingExternalAction(
+                    context: context,
+                    uri: uri,
+                    action: () => context.appServices.updateSnapshotByTraceId(
+                      traceId: traceId,
+                    ),
+                    hint: Text(context.l10n.waitingActionDone),
+                  );
+                  if (succeed) {
+                    context.pop();
+                  }
                 }
               },
             );

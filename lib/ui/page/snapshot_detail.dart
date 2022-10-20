@@ -7,6 +7,7 @@ import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/native_scroll.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/symbol.dart';
@@ -65,23 +66,26 @@ class _SnapshotDetailPageBody extends HookWidget {
     if (snapshotItem == null || asset == null) {
       return const SizedBox();
     }
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _SnapshotDetailHeader(
-            snapshot: snapshotItem,
-            asset: asset,
-          ),
-          Container(
-            color: context.colorScheme.surface,
-            height: 10,
-          ),
-          _TransactionDetailInfo(
-            snapshot: snapshotItem,
-            asset: asset,
-          ),
-        ],
+    return NativeScrollBuilder(
+      builder: (context, controller) => SingleChildScrollView(
+        controller: controller,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _SnapshotDetailHeader(
+              snapshot: snapshotItem,
+              asset: asset,
+            ),
+            Container(
+              color: context.colorScheme.surface,
+              height: 10,
+            ),
+            _TransactionDetailInfo(
+              snapshot: snapshotItem,
+              asset: asset,
+            ),
+          ],
+        ),
       ),
     );
   }

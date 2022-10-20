@@ -13,6 +13,7 @@ Future<void> initStorage() async {
   fixSafariIndexDb();
   await Hive.openBox<dynamic>('profile');
   await Hive.openBox<dynamic>('swap');
+  await Hive.openBox<dynamic>('session');
 }
 
 Auth? get auth => profileBox.get('auth') as Auth?;
@@ -23,7 +24,9 @@ Box<dynamic> get profileBox => Hive.box('profile');
 
 String? get accessToken => auth?.accessToken;
 
-bool get isLogin => accessToken != null;
+bool get isLogin => accessToken != null || auth?.credential != null;
+
+bool get isLoginByCredential => auth?.credential != null;
 
 List<String> get searchAssetHistory =>
     ((profileBox.get('searchAssetHistory') as List<dynamic>?) ?? [])

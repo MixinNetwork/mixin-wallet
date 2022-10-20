@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
 import 'action_button.dart';
+import 'dialog/address_pin_bottom_sheet.dart';
 import 'external_action_confirm.dart';
 import 'mixin_bottom_sheet.dart';
 import 'qrcode_scanner.dart';
@@ -197,29 +199,44 @@ class AddressAddWidget extends HookWidget {
                   return;
                 }
                 final tag = memoController.text.trim();
-                final uri = Uri.https('mixin.one', 'address', {
-                  'action': 'add',
-                  'asset': assetId,
-                  'destination': address,
-                  'tag': tag,
-                  'label': label,
-                });
 
-                final succeed = await showAndWaitingExternalAction(
-                  context: context,
-                  uri: uri,
-                  action: () async {
-                    final addressList =
-                        await context.appServices.updateAddresses(assetId);
-                    final index = addressList.indexWhere((e) =>
-                        e.destination.toLowerCase() == address.toLowerCase() &&
-                        e.tag == tag);
-                    return index != -1;
-                  },
-                  hint: Text(context.l10n.waitingActionDone),
-                );
-                if (succeed) {
-                  Navigator.pop(context);
+                if (isLoginByCredential) {
+                  final succeed = await showAddAddressByPinBottomSheet(
+                    context,
+                    assetId: assetId,
+                    destination: address,
+                    tag: tag,
+                    label: label,
+                  );
+                  if (succeed) {
+                    Navigator.of(context).pop();
+                  }
+                } else {
+                  final uri = Uri.https('mixin.one', 'address', {
+                    'action': 'add',
+                    'asset': assetId,
+                    'destination': address,
+                    'tag': tag,
+                    'label': label,
+                  });
+
+                  final succeed = await showAndWaitingExternalAction(
+                    context: context,
+                    uri: uri,
+                    action: () async {
+                      final addressList =
+                          await context.appServices.updateAddresses(assetId);
+                      final index = addressList.indexWhere((e) =>
+                          e.destination.toLowerCase() ==
+                              address.toLowerCase() &&
+                          e.tag == tag);
+                      return index != -1;
+                    },
+                    hint: Text(context.l10n.waitingActionDone),
+                  );
+                  if (succeed) {
+                    Navigator.pop(context);
+                  }
                 }
               },
             ),

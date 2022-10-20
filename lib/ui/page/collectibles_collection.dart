@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/native_scroll.dart';
 import '../router/mixin_routes.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
@@ -168,41 +169,44 @@ class _Body extends HookWidget {
     }
     final collectibles = snapshot.data ?? const [];
     debugPrint('collectibles: $collection $collectibles');
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: _GroupHeader(
-            collection: collection,
-            count: collectibles.length,
+    return NativeScrollBuilder(
+      builder: (context, controller) => CustomScrollView(
+        controller: controller,
+        slivers: [
+          SliverToBoxAdapter(
+            child: _GroupHeader(
+              collection: collection,
+              count: collectibles.length,
+            ),
           ),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          sliver: SliverLayoutBuilder(builder: (context, constraints) {
-            final itemWidth = (constraints.crossAxisExtent - 15) / 2;
-            // temHeight = imageHeight + other height(title, subtitle, padding)
-            // imageHeight = itemWidth - 16.
-            final itemHeight = itemWidth + 44;
-            return SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  if (index >= collectibles.length) {
-                    return null;
-                  }
-                  return _CollectiblesItemTile(item: collectibles[index]);
-                },
-                childCount: collectibles.length,
-              ),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: itemWidth / itemHeight,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 16,
-              ),
-            );
-          }),
-        ),
-      ],
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverLayoutBuilder(builder: (context, constraints) {
+              final itemWidth = (constraints.crossAxisExtent - 15) / 2;
+              // temHeight = imageHeight + other height(title, subtitle, padding)
+              // imageHeight = itemWidth - 16.
+              final itemHeight = itemWidth + 44;
+              return SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    if (index >= collectibles.length) {
+                      return null;
+                    }
+                    return _CollectiblesItemTile(item: collectibles[index]);
+                  },
+                  childCount: collectibles.length,
+                ),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: itemWidth / itemHeight,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 16,
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 }

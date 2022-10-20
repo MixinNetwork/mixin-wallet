@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../util/extension/extension.dart';
+import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';
@@ -75,20 +76,23 @@ class _AllTransactionsBody extends StatelessWidget {
           if (snapshots.isEmpty) {
             return const EmptyTransaction();
           }
-          return ListView.builder(
-            itemCount: snapshots.length,
-            itemBuilder: (context, index) {
-              final widget = TransactionItem(
-                item: snapshots[index],
-              );
-              if (index == 0) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: widget,
+          return NativeScrollBuilder(
+            builder: (context, controller) => ListView.builder(
+              controller: controller,
+              itemCount: snapshots.length,
+              itemBuilder: (context, index) {
+                final widget = TransactionItem(
+                  item: snapshots[index],
                 );
-              }
-              return widget;
-            },
+                if (index == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: widget,
+                  );
+                }
+                return widget;
+              },
+            ),
           );
         },
       );

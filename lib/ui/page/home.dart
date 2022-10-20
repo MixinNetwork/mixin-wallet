@@ -8,6 +8,7 @@ import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
@@ -75,27 +76,30 @@ class Home extends HookWidget {
     return Scaffold(
       backgroundColor: context.theme.background,
       appBar: const _HomeAppBar(),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Header(data: assetList, bitcoin: bitcoinAsset),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 10,
-              color: const Color(0xFFF6F7FA),
+      body: NativeScrollBuilder(
+        builder: (context, controller) => CustomScrollView(
+          controller: controller,
+          slivers: [
+            SliverToBoxAdapter(
+              child: Header(data: assetList, bitcoin: bitcoinAsset),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: _TabSwitchBar(selectedTab: selectedTab),
-          ),
-          if (selectedTab == _Tab.coins) ...[
-            SliverToBoxAdapter(child: AssetHeader(sortType: sortType)),
-            CoinsSliverList(assetList: assetList),
-          ] else ...[
-            const CollectiblesGroupSliverGrid(),
+            SliverToBoxAdapter(
+              child: Container(
+                height: 10,
+                color: const Color(0xFFF6F7FA),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: _TabSwitchBar(selectedTab: selectedTab),
+            ),
+            if (selectedTab == _Tab.coins) ...[
+              SliverToBoxAdapter(child: AssetHeader(sortType: sortType)),
+              CoinsSliverList(assetList: assetList),
+            ] else ...[
+              const CollectiblesGroupSliverGrid(),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

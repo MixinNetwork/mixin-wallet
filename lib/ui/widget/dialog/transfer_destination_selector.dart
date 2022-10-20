@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../db/mixin_database.dart';
+import '../../../service/profile/profile_manager.dart';
 import '../../../util/extension/extension.dart';
 import '../mixin_bottom_sheet.dart';
 import 'address_selection_widget.dart';
@@ -38,32 +39,61 @@ class _TransferDestinationSelectorDialog extends StatelessWidget {
   final dynamic initialSelected;
 
   @override
-  Widget build(BuildContext context) => DefaultTabController(
-        length: 2,
-        child: Column(
-          children: [
-            const _Header(),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  AddressSelectionWidget(
-                    assetId: asset.assetId,
-                    chainId: asset.chainId,
-                    selectedAddress: initialSelected is Addresse
-                        ? initialSelected as Addresse
-                        : null,
-                  ),
-                  ContactSelectionBottomSheet(
-                    selectedUser: initialSelected is User
-                        ? initialSelected as User
-                        : null,
-                  ),
-                ],
+  Widget build(BuildContext context) {
+    final anonymous = auth?.account.identityNumber == '0';
+    if (anonymous) {
+      return Column(
+        children: [
+          SizedBox(
+            height: 72,
+            child: Center(
+              child: Text(
+                context.l10n.address,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+          Expanded(
+            child: AddressSelectionWidget(
+              assetId: asset.assetId,
+              chainId: asset.chainId,
+              selectedAddress: initialSelected is Addresse
+                  ? initialSelected as Addresse
+                  : null,
+            ),
+          ),
+        ],
       );
+    }
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          const _Header(),
+          Expanded(
+            child: TabBarView(
+              children: [
+                AddressSelectionWidget(
+                  assetId: asset.assetId,
+                  chainId: asset.chainId,
+                  selectedAddress: initialSelected is Addresse
+                      ? initialSelected as Addresse
+                      : null,
+                ),
+                ContactSelectionBottomSheet(
+                  selectedUser:
+                      initialSelected is User ? initialSelected as User : null,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _Header extends StatelessWidget {

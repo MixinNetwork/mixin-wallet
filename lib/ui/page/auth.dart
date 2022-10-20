@@ -11,8 +11,10 @@ import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/mixin_context.dart';
 import '../../util/r.dart';
+import '../../util/telegram_web_app.dart';
 import '../router/mixin_routes.dart';
 import '../widget/text.dart';
+import '../widget/toast.dart';
 
 class AuthPage extends HookWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -20,16 +22,28 @@ class AuthPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final loading = useState(false);
+
     final oauthCode = context.queryParameters['code'];
 
     useMemoizedFuture(() async {
-      if (oauthCode?.isEmpty ?? true) return;
+      final tgInitData = Telegram().getTgInitData();
+
+      if ((tgInitData?.isEmpty ?? true) && (oauthCode?.isEmpty ?? true)) {
+        return;
+      }
+
       loading.value = true;
       try {
-        await context.appServices.login(oauthCode!);
+        if (tgInitData?.isNotEmpty ?? false) {
+          d('tgInitData: $tgInitData');
+          await context.appServices.loginByTelegram(tgInitData!);
+        } else {
+          await context.appServices.loginByMixinAuth(oauthCode!);
+        }
         context.replace(homeUri);
       } catch (error, s) {
         e('$error, $s');
+        showErrorToast(error.toDisplayString(context));
         loading.value = false;
       }
     }, keys: [oauthCode]);

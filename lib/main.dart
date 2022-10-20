@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:vrouter/vrouter.dart';
 
@@ -27,7 +28,7 @@ Future<void> main() async {
   }
 
   runZonedGuarded(
-    () => runApp(MyApp()),
+    () => runApp(OverlaySupport.global(child: MyApp())),
     (Object error, StackTrace stack) {
       if (!kLogMode) return;
       e('$error, $stack');
