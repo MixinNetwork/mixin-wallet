@@ -77,6 +77,7 @@ dependencies:
   async: ^2.9.0
   overlay_support: ^2.0.1
   fixnum: ^1.0.1
+  x25519: ^0.1.1
 
 dev_dependencies:
   flutter_test:
