@@ -3,7 +3,10 @@
 import 'dart:html';
 import 'dart:ui' as ui;
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import '../main.dart';
 
 /// https://github.com/tomgilder/native_scroll/blob/main/lib/src/native_scroll_web.dart
 class NativeScrollBuilder extends StatefulWidget {
@@ -19,13 +22,17 @@ class NativeScrollBuilder extends StatefulWidget {
   State<NativeScrollBuilder> createState() => _NativeScrollBuilderState();
 }
 
-class _NativeScrollBuilderState extends State<NativeScrollBuilder> {
+class _NativeScrollBuilderState extends State<NativeScrollBuilder>
+    with RouteAware {
   static int _globalId = 0;
 
   late String _viewId;
   late ScrollController _scrollController;
 
   final _heightDiv = DivElement();
+  final _scrollDiv = DivElement();
+
+  var _isForeground = true;
 
   @override
   void initState() {
@@ -39,7 +46,7 @@ class _NativeScrollBuilderState extends State<NativeScrollBuilder> {
       _viewId,
       // Create a scroll container - this is a <div> with scrolling overflow.
       // When it scroll, the Flutter ScrollController gets updated.
-      (_) => DivElement()
+      (_) => _scrollDiv
         ..id = _viewId
         ..style.overflow = 'scroll'
         ..style.width = '100%'
@@ -48,6 +55,7 @@ class _NativeScrollBuilderState extends State<NativeScrollBuilder> {
         ..onWheel.listen((event) => event.stopPropagation())
         ..onMouseWheel.listen((event) => event.stopPropagation())
         ..onScroll.listen((event) {
+          debugPrint('scroll: ${event.target}');
           final target = event.target! as DivElement;
           _onNativeScroll(target.scrollTop);
         })
@@ -81,8 +89,12 @@ class _NativeScrollBuilderState extends State<NativeScrollBuilder> {
     // This updates a child <div> to have the same height
     // as the scroll contents from Flutter
 
-    final scrollContentsHeight = _scrollController.position.viewportDimension +
-        _scrollController.position.maxScrollExtent;
+    var extent = _scrollController.position.maxScrollExtent;
+    if (extent == 0) {
+      extent = 1;
+    }
+    final scrollContentsHeight =
+        _scrollController.position.viewportDimension + extent;
 
     if (scrollContentsHeight != _lastScrollHeight) {
       _lastScrollHeight = scrollContentsHeight;
@@ -91,20 +103,50 @@ class _NativeScrollBuilderState extends State<NativeScrollBuilder> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route != null) {
+      navigatorObserver.subscribe(this, route);
+    }
+  }
+
+  @override
   void dispose() {
+    navigatorObserver.unsubscribe(this);
     _scrollController.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => Stack(
-        children: [
-          HtmlElementView(viewType: _viewId),
-          ScrollConfiguration(
-            behavior:
-                ScrollConfiguration.of(context).copyWith(scrollbars: false),
-            child: widget.builder(context, _scrollController),
-          ),
-        ],
-      );
+  void didPopNext() {
+    setState(() {
+      _isForeground = true;
+    });
+  }
+
+  @override
+  void didPushNext() {
+    setState(() {
+      _isForeground = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_isForeground) {
+      _scrollDiv.style.display = 'none';
+    } else {
+      _scrollDiv.style.display = null;
+    }
+    return Stack(
+      children: [
+        HtmlElementView(viewType: _viewId),
+        ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+          child: widget.builder(context, _scrollController),
+        ),
+      ],
+    );
+  }
 }
