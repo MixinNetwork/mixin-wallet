@@ -9,6 +9,7 @@ import '../../../db/mixin_database.dart';
 import '../../../service/profile/profile_manager.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
+import '../../../util/native_scroll.dart';
 import '../../../util/r.dart';
 import '../address_add_widget.dart';
 import '../external_action_confirm.dart';
@@ -68,11 +69,14 @@ class AddressSelectionWidget extends HookWidget {
         ),
         const SizedBox(height: 8),
         Expanded(
-          child: ListView.builder(
-            itemCount: filterList.length,
-            itemBuilder: (BuildContext context, int index) => _AddressItem(
-              address: filterList[index],
-              selectedAddressId: selectedAddress?.addressId,
+          child: NativeScrollBuilder(
+            builder: (context, controller) => ListView.builder(
+              controller: controller,
+              itemCount: filterList.length,
+              itemBuilder: (BuildContext context, int index) => _AddressItem(
+                address: filterList[index],
+                selectedAddressId: selectedAddress?.addressId,
+              ),
             ),
           ),
         ),
