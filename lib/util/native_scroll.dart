@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
-import 'dart:async';
 import 'dart:html';
 import 'dart:ui' as ui;
 
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../main.dart';
-import 'logger.dart';
 
 /// https://github.com/tomgilder/native_scroll/blob/main/lib/src/native_scroll_web.dart
 class NativeScrollBuilder extends StatefulWidget {
