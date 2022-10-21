@@ -178,9 +178,15 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       await mixinDatabase.fiatDao.insertAllOnConflictUpdate(fiats);
     });
 
-    if (!assets.any((element) => element.assetId == xin)) {
-      // make sure the xin asset is in the database
-      await updateAsset(xin);
+    const presetAssets = {
+      xin,
+      ethereum,
+    };
+    // make sure the some asset is in the database
+    for (final presetAsset in presetAssets) {
+      if (!assets.any((element) => element.assetId == presetAsset)) {
+        await updateAsset(presetAsset);
+      }
     }
   }
 
