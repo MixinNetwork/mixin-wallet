@@ -10,7 +10,6 @@ import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
-import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../../util/transak.dart';
 import '../../wyre/wyre_constants.dart';
@@ -184,15 +183,12 @@ class AssetSelectionListWidget extends HookWidget {
               )),
           const SizedBox(height: 10),
           Expanded(
-            child: NativeScrollBuilder(
-              builder: (context, controller) => ListView.builder(
-                controller: controller,
-                itemCount: filterList.length,
-                itemBuilder: (BuildContext context, int index) => _Item(
-                  asset: filterList[index],
-                  selectedAssetId: selectedAssetId,
-                  onTap: onTap,
-                ),
+            child: ListView.builder(
+              itemCount: filterList.length,
+              itemBuilder: (BuildContext context, int index) => _Item(
+                asset: filterList[index],
+                selectedAssetId: selectedAssetId,
+                onTap: onTap,
               ),
             ),
           ),

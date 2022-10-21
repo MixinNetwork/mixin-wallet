@@ -10,7 +10,6 @@ import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import 'asset.dart';
@@ -199,14 +198,11 @@ class _SearchAssetList extends HookWidget {
       return const _SearchEmptyLayout();
     }
 
-    return NativeScrollBuilder(
-      builder: (context, controller) => ListView.builder(
-        controller: controller,
-        itemCount: searchList.length,
-        itemBuilder: (BuildContext context, int index) => _Item(
-          data: searchList[index],
-          replaceHistory: true,
-        ),
+    return ListView.builder(
+      itemCount: searchList.length,
+      itemBuilder: (BuildContext context, int index) => _Item(
+        data: searchList[index],
+        replaceHistory: true,
       ),
     );
   }
