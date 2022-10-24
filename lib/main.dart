@@ -18,6 +18,8 @@ import 'util/mixin_context.dart';
 import 'util/web/web_utils_dummy.dart'
     if (dart.library.html) 'util/web/web_utils.dart';
 
+final navigatorObserver = RouteObserver<ModalRoute<dynamic>>();
+
 Future<void> main() async {
   await initStorage();
 
@@ -77,6 +79,7 @@ class _Router extends StatelessWidget {
         key: vRouterStateKey,
         title: 'Mixin Wallet',
         debugShowCheckedModeBanner: false,
+        navigatorObservers: [navigatorObserver],
         localizationsDelegates: const [
           L10n.delegate,
           GlobalMaterialLocalizations.delegate,
