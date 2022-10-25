@@ -540,13 +540,16 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .getSingleOrNull();
   }
 
-  Future<void> updateCollectibles() async {
+  Future<List<sdk.CollectibleOutput>> _loadUnspentTransactionOutputs({
+    String? offset,
+  }) async {
     // hash member id.
-    String hashMemberId() {
+    final members = auth!.account.userId;
+
+    String hashMemberId(String member) {
       try {
-        final userId = auth!.account.userId;
         final bytes =
-            SHA3Digest(256).process(Uint8List.fromList(utf8.encode(userId)));
+            SHA3Digest(256).process(Uint8List.fromList(utf8.encode(member)));
         return hex.encode(bytes);
       } catch (e, s) {
         d('updateCollectibles error: $e, $s');
@@ -554,15 +557,47 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       }
     }
 
+    const threshold = 1;
+    const limit = 500;
+
+    final response = await client.collectibleApi.getOutputs(
+      members: hashMemberId(members),
+      limit: limit,
+      threshold: threshold,
+      offset: offset,
+    );
+
+    final outputs = <sdk.CollectibleOutput>[];
+    for (final output in response.data) {
+      final receivers = List<String>.from(output.receivers)..sort();
+      if (receivers.join() != members) {
+        d('receivers not match: outputId ${output.outputId}');
+        continue;
+      }
+      if (output.receiversThreshold != threshold) {
+        d('threshold not match: ${output.outputId}');
+        continue;
+      }
+      if (output.state == sdk.CollectibleOutput.kStateSpent) {
+        d('state not match: ${output.outputId}');
+        continue;
+      }
+      outputs.add(output);
+    }
+
+    if (response.data.length == limit) {
+      outputs.addAll(await _loadUnspentTransactionOutputs(
+        offset: response.data.last.createdAt,
+      ));
+    }
+    return outputs;
+  }
+
+  Future<void> updateCollectibles() async {
     try {
-      final collectibles = (await client.collectibleApi.getOutputs(
-        members: hashMemberId(),
-        limit: 500,
-        threshold: 1,
-        state: 'unspent',
-      ))
-          .data;
-      final tokenIds = collectibles.map((e) => e.tokenId).toList();
+      final utxos = await _loadUnspentTransactionOutputs();
+      final tokenIds = utxos.map((e) => e.tokenId).toList();
+      await mixinDatabase.collectibleDao.updateOutputs(utxos);
       mixinDatabase.collectibleDao.removeNotExist(tokenIds);
       await refreshCollectiblesTokenIfNotExist(tokenIds);
     } on DioError catch (e, s) {
