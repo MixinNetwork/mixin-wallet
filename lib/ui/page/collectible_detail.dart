@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:decimal/decimal.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
@@ -283,12 +284,24 @@ class _Body extends StatelessWidget {
                         raw,
                       );
                       final codeId = response.data.codeId;
+                      d('url: mixin://codes/$codeId');
                       await showAndWaitingExternalAction(
                         context: context,
-                        uri: Uri.https('mixin.one', 'code/$codeId'),
+                        uri: Uri.parse('mixin://codes/$codeId'),
                         action: () async {
-                          final ret = context.appServices.client.accountApi
-                              .code(codeId);
+                          try {
+                            await context.appServices.client.accountApi
+                                .code(codeId);
+                          } catch (error, stacktrace) {
+                            e('wait action: $error $stacktrace');
+                            if (error is DioError) {
+                              final mixinError = error.error as sdk.MixinError;
+                              if (mixinError.code == 404) {
+                                return true;
+                              }
+                            }
+                            rethrow;
+                          }
                           return true;
                         },
                         hint: Text(context.l10n.waitingActionDone),
