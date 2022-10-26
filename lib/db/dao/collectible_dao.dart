@@ -95,7 +95,21 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
         ..deleteWhere<CollectibleToken, CollectibleTokenData>(
             db.collectibleToken, (token) => token.tokenId.isNotIn(tokenIds))
         ..deleteWhere<CollectibleTokenMeta, CollectibleTokenMetaData>(
-            db.collectibleTokenMeta, (tbl) => tbl.tokenId.isNotIn(tokenIds));
+            db.collectibleTokenMeta, (tbl) => tbl.tokenId.isNotIn(tokenIds))
+        ..deleteWhere<CollectibleOutput, CollectibleOutputData>(
+            db.collectibleOutput, (tbl) => tbl.tokenId.isNotIn(tokenIds));
+    });
+  }
+
+  void removeByTokenId(String tokenId) {
+    batch((batch) {
+      batch
+        ..deleteWhere<CollectibleToken, CollectibleTokenData>(
+            db.collectibleToken, (token) => token.tokenId.equals(tokenId))
+        ..deleteWhere<CollectibleTokenMeta, CollectibleTokenMetaData>(
+            db.collectibleTokenMeta, (tbl) => tbl.tokenId.equals(tokenId))
+        ..deleteWhere<CollectibleOutput, CollectibleOutputData>(
+            db.collectibleOutput, (tbl) => tbl.tokenId.equals(tokenId));
     });
   }
 

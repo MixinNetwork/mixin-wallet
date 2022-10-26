@@ -290,19 +290,28 @@ class _Body extends StatelessWidget {
                         uri: Uri.parse('mixin://codes/$codeId'),
                         action: () async {
                           try {
-                            await context.appServices.client.accountApi
+                            final response = await context
+                                .appServices.client.accountApi
                                 .code(codeId);
+                            final data =
+                                response.data as sdk.CollectibleRequest?;
+                            if (data == null) {
+                              e('failed to get code: $codeId');
+                              return true;
+                            }
+                            if (data.state != 'initial') {
+                              await context.appServices.requestExternalProxy(
+                                method: 'sendrawtransaction',
+                                params: [data.rawTransaction],
+                              );
+                              await context.appServices.updateCollectibles();
+                            }
                           } catch (error, stacktrace) {
                             e('wait action: $error $stacktrace');
-                            if (error is DioError) {
-                              final mixinError = error.error as sdk.MixinError;
-                              if (mixinError.code == 404) {
-                                return true;
-                              }
-                            }
-                            rethrow;
+                            showErrorToast(error.toDisplayString(context));
+                            return true;
                           }
-                          return true;
+                          return false;
                         },
                         hint: Text(context.l10n.waitingActionDone),
                       );

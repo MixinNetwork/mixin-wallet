@@ -17,7 +17,7 @@ Future<bool> showAndWaitingExternalAction({
   required Widget hint,
 }) async {
   if (!await canLaunchUrl(uri)) {
-    return false;
+    e('might can not launch $uri');
   }
   await launchUrl(uri);
   final result = await showDialog<bool>(

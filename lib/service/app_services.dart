@@ -692,4 +692,18 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       return pinErrorMax;
     }
   }
+
+  Future<Map<String, dynamic>> requestExternalProxy({
+    required String method,
+    required List<String> params,
+  }) async {
+    final response = await client.dio.post<Map<String, dynamic>>(
+      '/external/proxy',
+      data: {
+        'method': method,
+        'params': params,
+      },
+    );
+    return response.data!;
+  }
 }
