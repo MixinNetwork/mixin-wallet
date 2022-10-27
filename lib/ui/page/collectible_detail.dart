@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
@@ -166,15 +163,7 @@ class _Body extends StatelessWidget {
                       e('failed to find outputs for token: ${item.tokenId}');
                       return;
                     }
-                    var signed = Decimal.zero;
-                    for (final output in outputs) {
-                      if (output.state == sdk.CollectibleOutput.kStateSigned) {
-                        signed += Decimal.parse(output.amount);
-                      }
-                    }
-                    d('signed: $signed');
-
-                    if (signed > Decimal.zero) {
+                    if (isSignedToken(outputs)) {
                       final utxo = outputs.firstWhereOrNull(
                           (element) => element?.signedTx.isNotEmpty ?? false);
                       if (utxo == null) {
@@ -211,84 +200,25 @@ class _Body extends StatelessWidget {
                       if (user == null) {
                         return;
                       }
-
-                      final txInputs = <dynamic>[];
-                      final txOutputs = <dynamic>[];
-
-                      var inputAmount = Decimal.zero;
-
-                      late CollectibleOutputData utxo;
-                      for (final output in outputs) {
-                        utxo = output;
-                        inputAmount += Decimal.parse(output.amount);
-                        txInputs.add({
-                          'hash': output.transactionHash,
-                          'index': output.outputIndex,
+                      final appServices = context.appServices;
+                      final String codeId;
+                      try {
+                        final response = await computeWithLoading(() async {
+                          final raw = await buildTransaction(
+                            outputs: outputs,
+                            item: item,
+                            user: user,
+                            client: appServices.client,
+                          );
+                          return appServices.client.collectibleApi
+                              .requests(sdk.CollectibleRequestAction.sign, raw);
                         });
-                        if (inputAmount >= Decimal.one) {
-                          break;
-                        }
-                      }
-
-                      if (inputAmount < Decimal.one) {
-                        e('too much');
+                        codeId = response.data.codeId;
+                      } catch (error, stacktrace) {
+                        e('failed to sign collectible: $error $stacktrace');
+                        showErrorToast(error.toDisplayString(context));
                         return;
                       }
-
-                      final tx = {
-                        'version': 2,
-                        'asset': item.mixinId,
-                        'extra': item.nfo,
-                      };
-
-                      final ghostKey = (await context
-                              .appServices.client.outputApi
-                              .loadGhostKeys(
-                        [
-                          sdk.OutputRequest(
-                            receivers: [user.userId],
-                            index: 0,
-                          ),
-                          sdk.OutputRequest(
-                            receivers:
-                                (jsonDecode(utxo.receivers) as List).cast(),
-                            index: 1,
-                          ),
-                        ],
-                      ))
-                          .data;
-
-                      final output = {
-                        'mask': ghostKey[0].mask,
-                        'keys': ghostKey[0].keys,
-                        'amount': '1',
-                        'script': buildThresholdScript(1),
-                      };
-                      txOutputs.add(output);
-                      if (inputAmount > Decimal.one) {
-                        final utxo = outputs.first;
-                        final change = {
-                          'mask': ghostKey[1].mask,
-                          'keys': ghostKey[1].keys,
-                          'amount': (inputAmount - Decimal.one).toString(),
-                          'script':
-                              buildThresholdScript(utxo.receiversThreshold),
-                        };
-                        txOutputs.add(change);
-                      }
-
-                      tx['inputs'] = txInputs;
-                      tx['outputs'] = txOutputs;
-
-                      d('transaction: $tx');
-                      final raw = buildTransaction(tx);
-
-                      final response = await computeWithLoading(() =>
-                          context.appServices.client.collectibleApi.requests(
-                            sdk.CollectibleRequestAction.sign,
-                            raw,
-                          ));
-                      final codeId = response.data.codeId;
                       d('url: mixin://codes/$codeId');
                       final succeed =
                           await showAndWaitingNftTransaction(context, codeId);
@@ -306,15 +236,4 @@ class _Body extends StatelessWidget {
           ),
         ),
       );
-}
-
-String buildThresholdScript(int threshold) {
-  var s = threshold.toRadixString(16);
-  if (s.length == 1) {
-    s = '0$s';
-  }
-  if (s.length > 2) {
-    throw Exception('invalid threshold: $threshold');
-  }
-  return 'fffe$s';
 }
