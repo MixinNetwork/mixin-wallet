@@ -462,13 +462,16 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     }
   }
 
-  Future<User?> getUserById(String id) async {
-    if (id.isEmpty) {
-      return null;
+  Future<List<User>> loadUsersIfNotExist(List<String> ids) async {
+    if (ids.isEmpty) {
+      return const [];
     }
-    final cb = await _checkUsersExistWithReturnInsert([id]);
+    final cb = await _checkUsersExistWithReturnInsert(ids);
     await cb?.call();
-    return mixinDatabase.userDao.userById(id).getSingleOrNull();
+    final list = await mixinDatabase.userDao.userByIds(ids).get();
+    assert(list.length == ids.length,
+        'count not match ${list.length} ${ids.length}');
+    return list;
   }
 
   @override
@@ -706,4 +709,10 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     );
     return response.data!;
   }
+
+  Future<void> sendRawTransaction(String rawTransaction) async =>
+      requestExternalProxy(
+        method: 'sendrawtransaction',
+        params: [rawTransaction],
+      );
 }

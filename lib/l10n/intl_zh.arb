@@ -105,7 +105,7 @@
   "comingSoon": "即将推出",
   "removeAuthorize": "取消授权",
   "noResult": "无结果",
-  "transaction": "转账记录",
+  "transaction": "转账",
   "wyreServiceStatement": "服务声明",
   "wireServiceTip": "本服务由 Wyre 提供。我们仅作为渠道，不额外收取手续费。",
   "dontShowAgain": "不再提醒",
@@ -206,5 +206,10 @@
   "deleteWithdrawalAddress": "删除 {value} 地址",
   "addWithdrawalAddress": "添加 {value} 地址",
   "addAddressByPinTip": "请输入 PIN 来完成添加",
-  "deleteAddressByPinTip": "请输入 PIN 来完成删除"
+  "deleteAddressByPinTip": "请输入 PIN 来完成删除",
+  "submitTransaction": "提交交易",
+  "signTransaction": "签名交易",
+  "rawTransaction": "交易原始值",
+  "receivers": "接收者",
+  "signers": "签名者"
 }

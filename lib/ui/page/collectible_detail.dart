@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:decimal/decimal.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
@@ -15,7 +14,7 @@ import '../../util/transaction.dart';
 import '../router/mixin_routes.dart';
 import '../widget/buttons.dart';
 import '../widget/dialog/contact_selection_widget.dart';
-import '../widget/external_action_confirm.dart';
+import '../widget/dialog/transaction_submit_bottom_sheet.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/toast.dart';
@@ -183,14 +182,21 @@ class _Body extends StatelessWidget {
                         return;
                       }
                       try {
-                        final response = await context
-                            .appServices.client.collectibleApi
-                            .requests(
-                          sdk.CollectibleRequestAction.sign,
-                          utxo.signedTx,
+                        final response = await computeWithLoading(() =>
+                            context.appServices.client.collectibleApi.requests(
+                              sdk.CollectibleRequestAction.sign,
+                              utxo.signedTx,
+                            ));
+                        final succeed = await showTransactionSubmitBottomSheet(
+                          context,
+                          response.data,
+                          utxo,
                         );
-                        final request = response.data;
-                        request.receivers;
+                        if (succeed ?? false) {
+                          await context.mixinDatabase.collectibleDao
+                              .removeByTokenId(item.tokenId);
+                          context.pop();
+                        }
                       } catch (error, stacktrace) {
                         e('failed to sign collectible: $error $stacktrace');
                         showErrorToast(error.toDisplayString(context));
@@ -277,44 +283,20 @@ class _Body extends StatelessWidget {
                       d('transaction: $tx');
                       final raw = buildTransaction(tx);
 
-                      final response = await context
-                          .appServices.client.collectibleApi
-                          .requests(
-                        sdk.CollectibleRequestAction.sign,
-                        raw,
-                      );
+                      final response = await computeWithLoading(() =>
+                          context.appServices.client.collectibleApi.requests(
+                            sdk.CollectibleRequestAction.sign,
+                            raw,
+                          ));
                       final codeId = response.data.codeId;
                       d('url: mixin://codes/$codeId');
-                      await showAndWaitingExternalAction(
-                        context: context,
-                        uri: Uri.parse('mixin://codes/$codeId'),
-                        action: () async {
-                          try {
-                            final response = await context
-                                .appServices.client.accountApi
-                                .code(codeId);
-                            final data =
-                                response.data as sdk.CollectibleRequest?;
-                            if (data == null) {
-                              e('failed to get code: $codeId');
-                              return true;
-                            }
-                            if (data.state != 'initial') {
-                              await context.appServices.requestExternalProxy(
-                                method: 'sendrawtransaction',
-                                params: [data.rawTransaction],
-                              );
-                              await context.appServices.updateCollectibles();
-                            }
-                          } catch (error, stacktrace) {
-                            e('wait action: $error $stacktrace');
-                            showErrorToast(error.toDisplayString(context));
-                            return true;
-                          }
-                          return false;
-                        },
-                        hint: Text(context.l10n.waitingActionDone),
-                      );
+                      final succeed =
+                          await showAndWaitingNftTransaction(context, codeId);
+                      if (succeed) {
+                        context.pop();
+                        await context.mixinDatabase.collectibleDao
+                            .removeByTokenId(item.tokenId);
+                      }
                     }
                   },
                 ),
