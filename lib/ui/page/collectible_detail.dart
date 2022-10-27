@@ -193,8 +193,21 @@ class _Body extends StatelessWidget {
                     } else {
                       final user = await showMixinBottomSheet<User?>(
                         context: context,
-                        builder: (context) => const ContactSelectionBottomSheet(
-                          selectedUser: null,
+                        isScrollControlled: true,
+                        builder: (context) => SizedBox(
+                          height: MediaQuery.of(context).size.height - 100,
+                          child: Column(
+                            children: [
+                              MixinBottomSheetTitle(
+                                title: Text(context.l10n.contact),
+                              ),
+                              const Expanded(
+                                child: ContactSelectionBottomSheet(
+                                  selectedUser: null,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                       if (user == null) {
