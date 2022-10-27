@@ -1,11 +1,15 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
+import '../logger.dart';
+
 class Telegram {
-  Telegram() {
+  Telegram._internal() {
     final telegram = js.context['Telegram'] as js.JsObject;
     webApp = telegram['WebApp'] as js.JsObject;
   }
+
+  static Telegram instance = Telegram._internal();
 
   late js.JsObject webApp;
 
@@ -24,5 +28,14 @@ class Telegram {
       return null;
     }
     return (user as js.JsObject)['id'] as String;
+  }
+
+  void hapticFeedback() {
+    try {
+      (webApp['HapticFeedback'] as js.JsObject)
+          .callMethod('impactOccurred', ['light']);
+    } catch (error, stacktrace) {
+      e('hapticFeedback error $error, $stacktrace');
+    }
   }
 }

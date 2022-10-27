@@ -58,7 +58,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       }
 
       if (isLogin) {
-        final tgInitData = Telegram().getTgInitData();
+        final tgInitData = Telegram.instance.getTgInitData();
         if (tgInitData?.isNotEmpty ?? false) {
           // in telegram web app
           final data = await TelegramApi.instance.verifyInitData(tgInitData!);

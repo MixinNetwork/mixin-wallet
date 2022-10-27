@@ -26,7 +26,7 @@ class AuthPage extends HookWidget {
     final oauthCode = context.queryParameters['code'];
 
     useMemoizedFuture(() async {
-      final tgInitData = Telegram().getTgInitData();
+      final tgInitData = Telegram.instance.getTgInitData();
 
       if ((tgInitData?.isEmpty ?? true) && (oauthCode?.isEmpty ?? true)) {
         return;
