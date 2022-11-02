@@ -12,6 +12,7 @@ TelegramUser _$TelegramUserFromJson(Map<String, dynamic> json) => TelegramUser(
       privateKey: json['private_key'] as String,
       sessionId: json['session_id'] as String,
       pinToken: json['pin_token'] as String,
+      receiverMixinId: json['receiver_mixin_id'] as String?,
     );
 
 Map<String, dynamic> _$TelegramUserToJson(TelegramUser instance) =>
@@ -21,4 +22,5 @@ Map<String, dynamic> _$TelegramUserToJson(TelegramUser instance) =>
       'private_key': instance.privateKey,
       'session_id': instance.sessionId,
       'pin_token': instance.pinToken,
+      'receiver_mixin_id': instance.receiverMixinId,
     };

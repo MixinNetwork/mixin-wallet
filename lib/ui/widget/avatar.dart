@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../util/extension/extension.dart';
 
 import '../brightness_theme_data.dart';
@@ -32,27 +33,40 @@ class Avatar extends StatelessWidget {
       name: name,
     );
 
+    final Widget avatar;
+    if (avatarUrl?.endsWith('.svg') ?? false) {
+      avatar = SvgPicture.network(
+        avatarUrl ?? '',
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        placeholderBuilder: (context) => placeholder,
+      );
+    } else {
+      avatar = Image.network(
+        avatarUrl ?? '',
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        loadingBuilder: (
+          BuildContext context,
+          Widget child,
+          ImageChunkEvent? loadingProgress,
+        ) {
+          if (loadingProgress == null) return child;
+          return placeholder;
+        },
+        errorBuilder: (_, __, ___) => placeholder,
+      );
+    }
+
     return ClipOval(
       child: ColoredBox(
         color: Colors.white,
         child: Padding(
           padding: EdgeInsets.all(borderWidth),
           child: ClipOval(
-            child: Image.network(
-              avatarUrl ?? '',
-              width: size,
-              height: size,
-              fit: BoxFit.cover,
-              loadingBuilder: (
-                BuildContext context,
-                Widget child,
-                ImageChunkEvent? loadingProgress,
-              ) {
-                if (loadingProgress == null) return child;
-                return placeholder;
-              },
-              errorBuilder: (_, __, ___) => placeholder,
-            ),
+            child: avatar,
           ),
         ),
       ),

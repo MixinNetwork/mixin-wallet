@@ -11,6 +11,7 @@ class TelegramUser with EquatableMixin {
     required this.privateKey,
     required this.sessionId,
     required this.pinToken,
+    this.receiverMixinId,
   });
 
   factory TelegramUser.fromJson(Map<String, dynamic> json) =>
@@ -30,6 +31,9 @@ class TelegramUser with EquatableMixin {
 
   @JsonKey(name: 'pin_token')
   final String pinToken;
+
+  @JsonKey(name: 'receiver_mixin_id')
+  final String? receiverMixinId;
 
   Map<String, dynamic> toJson() => _$TelegramUserToJson(this);
 

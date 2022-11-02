@@ -8,10 +8,12 @@ import '../../db/mixin_database.dart';
 import '../../generated/r.dart';
 import '../../service/profile/pin_session.dart';
 import '../../service/profile/profile_manager.dart';
+import '../../thirdy_party/vo/telegram_receiver.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
+import '../../util/web/telegram_web_app.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/avatar.dart';
@@ -55,6 +57,7 @@ class _WithdrawalPage extends HookWidget {
   Widget build(BuildContext context) {
     final address = useState<Addresse?>(null);
     final user = useState<User?>(null);
+    final telegramReceiver = Telegram.instance.getReceiver();
 
     final amount = useValueNotifier('');
     final memo = useValueNotifier('');
@@ -106,7 +109,9 @@ class _WithdrawalPage extends HookWidget {
           ActionButton(
             name: R.resourcesTransactionSvg,
             size: 24,
-            enable: address.value != null || user.value != null,
+            enable: address.value != null ||
+                user.value != null ||
+                telegramReceiver != null,
             onTap: () {
               final parameter = <String, String?>{};
 
@@ -121,8 +126,12 @@ class _WithdrawalPage extends HookWidget {
                 parameter.addAll({
                   'opponent': userValue.userId,
                 });
+              } else if (telegramReceiver != null && auth!.credential != null) {
+                final credential = auth!.credential!;
+                parameter.addAll({
+                  'opponent': credential.receiverMixinId,
+                });
               }
-
               if (parameter.isEmpty) {
                 return;
               }
@@ -139,7 +148,11 @@ class _WithdrawalPage extends HookWidget {
           const SizedBox(height: 20),
           TransferAssetHeader(asset: asset),
           const SizedBox(height: 16),
-          _TransferTarget(address: address, user: user, asset: asset),
+          _TransferTarget(
+              address: address,
+              user: user,
+              telegramReceiver: telegramReceiver,
+              asset: asset),
           const SizedBox(height: 8),
           TransferAmountWidget(amount: amount, asset: asset),
           const SizedBox(height: 8),
@@ -177,7 +190,8 @@ class _WithdrawalPage extends HookWidget {
             return SendButton(
               enable: amount.value.isNotEmpty &&
                   ((address.value != null && feeAsset != null) ||
-                      user.value != null),
+                      user.value != null ||
+                      telegramReceiver != null),
               onTap: () async {
                 if (amount.value.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -337,11 +351,13 @@ class _TransferTarget extends StatelessWidget {
     required this.user,
     required this.address,
     required this.asset,
+    this.telegramReceiver,
   }) : super(key: key);
 
   final ValueNotifier<User?> user;
   final ValueNotifier<Addresse?> address;
   final AssetResult asset;
+  final TelegramReceiver? telegramReceiver;
 
   @override
   Widget build(BuildContext context) {
@@ -434,6 +450,52 @@ class _TransferTarget extends StatelessWidget {
             enableInteractiveSelection: false,
           ),
           const Spacer(flex: 2),
+        ],
+      );
+    } else if (telegramReceiver != null) {
+      final receiver = telegramReceiver!;
+      final name = '${receiver.firstName} ${receiver.lastName}';
+      content = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Avatar(
+              size: 40,
+              avatarUrl: receiver.photoUrl,
+              userId: auth!.credential?.receiverMixinId ??
+                  const Uuid().v5(Uuid.NAMESPACE_NIL, receiver.firstName),
+              borderWidth: 0,
+              name: name),
+          const SizedBox(width: 10),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Spacer(flex: 3),
+                SelectableText(
+                  name.overflow,
+                  enableInteractiveSelection: false,
+                  onTap: onTap,
+                  style: TextStyle(
+                    color: context.colorScheme.primaryText,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const Spacer(flex: 1),
+                SelectableText(
+                  '${receiver.id}',
+                  enableInteractiveSelection: false,
+                  onTap: onTap,
+                  style: TextStyle(
+                    color: context.colorScheme.thirdText,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                const Spacer(flex: 3),
+              ],
+            ),
+          ),
         ],
       );
     } else {

@@ -1,6 +1,7 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../db/web/construct_db.dart';
@@ -10,6 +11,7 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
+import '../../util/web/telegram_web_app.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/avatar.dart';
@@ -37,6 +39,19 @@ class Home extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // assert(context.appServices.databaseInitialized);
+
+    final receiverId = Telegram.instance.getReceiver()?.id;
+    final startParam = Telegram.instance.getStartParam();
+    if (receiverId != null &&
+        startParam != null &&
+        Uuid.isValidUUID(
+          fromString: startParam,
+          validationMode: ValidationMode.nonStrict,
+        )) {
+      context.push(withdrawalPath.toUri({
+        'id': startParam,
+      }));
+    }
 
     useMemoizedFuture(() => context.appServices.updateAssets());
 

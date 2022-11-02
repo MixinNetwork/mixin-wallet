@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../service/profile/profile_manager.dart';
@@ -46,15 +47,32 @@ class _TransferDestinationSelectorDialog extends StatelessWidget {
         children: [
           SizedBox(
             height: 72,
-            child: Center(
-              child: Text(
-                context.l10n.address,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    context.l10n.address,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  TextButton(
+                    onPressed: () {
+                      launchUrlString(
+                          'https://t.me/MixinBot?startattach=${asset.assetId}&choose=users');
+                    },
+                    child: Text(
+                      context.l10n.contact,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                ]),
           ),
           Expanded(
             child: AddressSelectionWidget(
