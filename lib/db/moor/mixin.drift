@@ -47,3 +47,22 @@ CREATE TABLE collections(
   created_at INTEGER NOT NULL MAPPED BY `const MillisDateConverterNotnull()`,
   PRIMARY KEY(collection_id)
 );
+
+CREATE TABLE collectible_output(
+  user_id TEXT NOT NULL,
+  output_id TEXT NOT NULL,
+  token_id TEXT NOT NULL,
+  transaction_hash TEXT NOT NULL,
+  output_index INTEGER NOT NULL,
+  amount TEXT NOT NULL,
+  senders_threshold INTEGER NOT NULL,
+  senders TEXT NOT NULL,
+  receivers_threshold INTEGER NOT NULL,
+  receivers TEXT NOT NULL,
+  state TEXT NOT NULL,
+  created_at INTEGER NOT NULL MAPPED BY `const MillisDateConverterNotnull()`,
+  updated_at INTEGER NOT NULL MAPPED BY `const MillisDateConverterNotnull()`,
+  signed_by TEXT NOT NULL,
+  signed_tx TEXT NOT NULL,
+  PRIMARY KEY(output_id)
+);

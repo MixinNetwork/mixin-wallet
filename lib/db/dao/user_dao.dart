@@ -36,6 +36,9 @@ class UserDao extends DatabaseAccessor<MixinDatabase> with _$UserDaoMixin {
   SimpleSelectStatement<Users, User> userById(String userId) =>
       select(db.users)..where((tbl) => tbl.userId.equals(userId));
 
+  SimpleSelectStatement<Users, User> userByIds(List<String> userIds) =>
+      select(db.users)..where((tbl) => tbl.userId.isIn(userIds));
+
   Selectable<String> findExistsUsers(List<String> userIds) =>
       (select(db.users)..where((tbl) => tbl.userId.isIn(userIds)))
           .map((u) => u.userId);

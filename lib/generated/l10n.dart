@@ -2163,6 +2163,56 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Submit Transaction`
+  String get submitTransaction {
+    return Intl.message(
+      'Submit Transaction',
+      name: 'submitTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign Transaction`
+  String get signTransaction {
+    return Intl.message(
+      'Sign Transaction',
+      name: 'signTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Raw Transaction`
+  String get rawTransaction {
+    return Intl.message(
+      'Raw Transaction',
+      name: 'rawTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Receivers`
+  String get receivers {
+    return Intl.message(
+      'Receivers',
+      name: 'receivers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Signers`
+  String get signers {
+    return Intl.message(
+      'Signers',
+      name: 'signers',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

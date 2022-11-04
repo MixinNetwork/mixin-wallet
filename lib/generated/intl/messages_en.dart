@@ -306,10 +306,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "pay": MessageLookupByLibrary.simpleMessage("Pay"),
         "pendingConfirmations": m18,
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
+        "rawTransaction":
+            MessageLookupByLibrary.simpleMessage("Raw Transaction"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "received": MessageLookupByLibrary.simpleMessage("Received"),
+        "receivers": MessageLookupByLibrary.simpleMessage("Receivers"),
         "recentSearches":
             MessageLookupByLibrary.simpleMessage("Recent searches"),
         "refund": MessageLookupByLibrary.simpleMessage("Refund"),
@@ -330,11 +333,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Send to contact"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
+        "signTransaction":
+            MessageLookupByLibrary.simpleMessage("Sign Transaction"),
+        "signers": MessageLookupByLibrary.simpleMessage("Signers"),
         "slippage": MessageLookupByLibrary.simpleMessage("Slippage"),
         "slippageOver": m21,
         "snapshotHash": MessageLookupByLibrary.simpleMessage("Snapshot hash"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "state": MessageLookupByLibrary.simpleMessage("State"),
+        "submitTransaction":
+            MessageLookupByLibrary.simpleMessage("Submit Transaction"),
         "swap": MessageLookupByLibrary.simpleMessage("Swap"),
         "swapDisclaimer": MessageLookupByLibrary.simpleMessage(
             "Services provided by MixSwap"),

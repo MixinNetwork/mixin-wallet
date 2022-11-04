@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../db/mixin_database.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/logger.dart';
 import '../../util/native_scroll.dart';
+import '../../util/transaction.dart';
 import '../router/mixin_routes.dart';
 import '../widget/buttons.dart';
+import '../widget/dialog/contact_selection_widget.dart';
+import '../widget/dialog/transaction_submit_bottom_sheet.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/mixin_bottom_sheet.dart';
+import '../widget/toast.dart';
 
 class CollectibleDetail extends HookWidget {
   const CollectibleDetail({Key? key}) : super(key: key);
@@ -146,9 +154,113 @@ class _Body extends StatelessWidget {
                     color: context.colorScheme.secondaryText,
                   ),
                 ),
+                if (!isLoginByCredential)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 60, bottom: 32),
+                    child: _SendButton(item: item),
+                  ),
               ],
             ),
           ),
         ),
+      );
+}
+
+class _SendButton extends StatelessWidget {
+  const _SendButton({
+    Key? key,
+    required this.item,
+  }) : super(key: key);
+
+  final CollectibleItem item;
+
+  @override
+  Widget build(BuildContext context) => SendButton(
+        enable: true,
+        onTap: () async {
+          final outputs = await context.mixinDatabase.collectibleDao
+              .getOutputsByTokenId(item.tokenId);
+          if (outputs.isEmpty) {
+            e('failed to find outputs for token: ${item.tokenId}');
+            return;
+          }
+          if (isSignedToken(outputs)) {
+            final utxo = outputs.firstWhereOrNull(
+                (element) => element?.signedTx.isNotEmpty ?? false);
+            if (utxo == null) {
+              e('failed to find valid output: $outputs');
+              return;
+            }
+            try {
+              final response = await computeWithLoading(
+                  () => context.appServices.client.collectibleApi.requests(
+                        sdk.CollectibleRequestAction.sign,
+                        utxo.signedTx,
+                      ));
+              final succeed = await showTransactionSubmitBottomSheet(
+                context,
+                response.data,
+                utxo,
+              );
+              if (succeed ?? false) {
+                await context.mixinDatabase.collectibleDao
+                    .removeByTokenId(item.tokenId);
+                context.pop();
+              }
+            } catch (error, stacktrace) {
+              e('failed to sign collectible: $error $stacktrace');
+              showErrorToast(error.toDisplayString(context));
+            }
+          } else {
+            final user = await showMixinBottomSheet<User?>(
+              context: context,
+              isScrollControlled: true,
+              builder: (context) => SizedBox(
+                height: MediaQuery.of(context).size.height - 100,
+                child: Column(
+                  children: [
+                    MixinBottomSheetTitle(
+                      title: Text(context.l10n.contact),
+                    ),
+                    const Expanded(
+                      child: ContactSelectionBottomSheet(
+                        selectedUser: null,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+            if (user == null) {
+              return;
+            }
+            final appServices = context.appServices;
+            final String codeId;
+            try {
+              final response = await computeWithLoading(() async {
+                final raw = await buildTransaction(
+                  outputs: outputs,
+                  item: item,
+                  user: user,
+                  client: appServices.client,
+                );
+                return appServices.client.collectibleApi
+                    .requests(sdk.CollectibleRequestAction.sign, raw);
+              });
+              codeId = response.data.codeId;
+            } catch (error, stacktrace) {
+              e('failed to sign collectible: $error $stacktrace');
+              showErrorToast(error.toDisplayString(context));
+              return;
+            }
+            d('url: mixin://codes/$codeId');
+            final succeed = await showAndWaitingNftTransaction(context, codeId);
+            if (succeed) {
+              context.pop();
+              await context.mixinDatabase.collectibleDao
+                  .removeByTokenId(item.tokenId);
+            }
+          }
+        },
       );
 }

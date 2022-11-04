@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
@@ -93,9 +95,21 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
         ..deleteWhere<CollectibleToken, CollectibleTokenData>(
             db.collectibleToken, (token) => token.tokenId.isNotIn(tokenIds))
         ..deleteWhere<CollectibleTokenMeta, CollectibleTokenMetaData>(
-            db.collectibleTokenMeta, (tbl) => tbl.tokenId.isNotIn(tokenIds));
+            db.collectibleTokenMeta, (tbl) => tbl.tokenId.isNotIn(tokenIds))
+        ..deleteWhere<CollectibleOutput, CollectibleOutputData>(
+            db.collectibleOutput, (tbl) => tbl.tokenId.isNotIn(tokenIds));
     });
   }
+
+  Future<void> removeByTokenId(String tokenId) => batch((batch) {
+        batch
+          ..deleteWhere<CollectibleToken, CollectibleTokenData>(
+              db.collectibleToken, (token) => token.tokenId.equals(tokenId))
+          ..deleteWhere<CollectibleTokenMeta, CollectibleTokenMetaData>(
+              db.collectibleTokenMeta, (tbl) => tbl.tokenId.equals(tokenId))
+          ..deleteWhere<CollectibleOutput, CollectibleOutputData>(
+              db.collectibleOutput, (tbl) => tbl.tokenId.equals(tokenId));
+      });
 
   Future<int> insertCollection(sdk.CollectibleCollection collection) =>
       db.into(db.collections).insertOnConflictUpdate(
@@ -112,4 +126,41 @@ class CollectibleDao extends DatabaseAccessor<MixinDatabase>
   Selectable<Collection> collection(String collectionId) =>
       db.select(db.collections)
         ..where((tbl) => tbl.collectionId.equals(collectionId));
+
+  Future<void> updateOutputs(List<sdk.CollectibleOutput> outputs) =>
+      batch((batch) {
+        batch
+          // clear outputs table
+          ..deleteWhere(db.collectibleOutput, (tbl) => const Constant(true))
+          ..insertAllOnConflictUpdate(
+            db.collectibleOutput,
+            outputs.map(
+              (output) => CollectibleOutputCompanion.insert(
+                userId: output.userId,
+                outputId: output.outputId,
+                tokenId: output.tokenId,
+                transactionHash: output.transactionHash,
+                outputIndex: output.outputIndex,
+                amount: output.amount,
+                sendersThreshold: output.sendersThreshold,
+                senders: jsonEncode(output.senders),
+                receiversThreshold: output.receiversThreshold,
+                receivers: jsonEncode(output.receivers),
+                state: output.state,
+                createdAt: DateTime.parse(output.createdAt),
+                updatedAt: DateTime.parse(output.updatedAt),
+                signedBy: output.signedBy,
+                signedTx: output.signedTx,
+              ),
+            ),
+          );
+      });
+
+  Future<List<CollectibleOutputData>> getOutputsByTokenId(String tokenId) =>
+      (db.select(db.collectibleOutput)
+            ..where((tbl) => tbl.tokenId.equals(tokenId))
+            ..orderBy([
+              (tbl) => OrderingTerm.desc(tbl.createdAt),
+            ]))
+          .get();
 }

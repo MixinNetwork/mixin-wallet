@@ -8,6 +8,7 @@ import '../../../service/env.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
+import '../../../util/native_scroll.dart';
 import '../avatar.dart';
 import '../search_header_widget.dart';
 
@@ -44,11 +45,14 @@ class ContactSelectionBottomSheet extends HookWidget {
     if (updateResult.hasError) {
       body = const _UnauthorizedWidget();
     } else {
-      body = ListView.builder(
-        itemCount: filterList.length,
-        itemBuilder: (BuildContext context, int index) => _UserItem(
-          user: filterList[index],
-          selectedUserId: selectedUser?.userId,
+      body = NativeScrollBuilder(
+        builder: (context, controller) => ListView.builder(
+          controller: controller,
+          itemCount: filterList.length,
+          itemBuilder: (BuildContext context, int index) => _UserItem(
+            user: filterList[index],
+            selectedUserId: selectedUser?.userId,
+          ),
         ),
       );
     }

@@ -209,5 +209,10 @@
   "deleteWithdrawalAddress": "Delete {value} address",
   "addWithdrawalAddress": "Add {value} address",
   "addAddressByPinTip": "Enter PIN to save address",
-  "deleteAddressByPinTip": "Enter PIN to delete address"
+  "deleteAddressByPinTip": "Enter PIN to delete address",
+  "submitTransaction": "Submit Transaction",
+  "signTransaction": "Sign Transaction",
+  "rawTransaction": "Raw Transaction",
+  "receivers": "Receivers",
+  "signers": "Signers"
 }

@@ -4163,6 +4163,711 @@ class Collections extends Table with TableInfo<Collections, Collection> {
   bool get dontWriteConstraints => true;
 }
 
+class CollectibleOutputData extends DataClass
+    implements Insertable<CollectibleOutputData> {
+  final String userId;
+  final String outputId;
+  final String tokenId;
+  final String transactionHash;
+  final int outputIndex;
+  final String amount;
+  final int sendersThreshold;
+  final String senders;
+  final int receiversThreshold;
+  final String receivers;
+  final String state;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String signedBy;
+  final String signedTx;
+  const CollectibleOutputData(
+      {required this.userId,
+      required this.outputId,
+      required this.tokenId,
+      required this.transactionHash,
+      required this.outputIndex,
+      required this.amount,
+      required this.sendersThreshold,
+      required this.senders,
+      required this.receiversThreshold,
+      required this.receivers,
+      required this.state,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.signedBy,
+      required this.signedTx});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['output_id'] = Variable<String>(outputId);
+    map['token_id'] = Variable<String>(tokenId);
+    map['transaction_hash'] = Variable<String>(transactionHash);
+    map['output_index'] = Variable<int>(outputIndex);
+    map['amount'] = Variable<String>(amount);
+    map['senders_threshold'] = Variable<int>(sendersThreshold);
+    map['senders'] = Variable<String>(senders);
+    map['receivers_threshold'] = Variable<int>(receiversThreshold);
+    map['receivers'] = Variable<String>(receivers);
+    map['state'] = Variable<String>(state);
+    {
+      final converter = CollectibleOutput.$converter0;
+      map['created_at'] = Variable<int>(converter.toSql(createdAt));
+    }
+    {
+      final converter = CollectibleOutput.$converter1;
+      map['updated_at'] = Variable<int>(converter.toSql(updatedAt));
+    }
+    map['signed_by'] = Variable<String>(signedBy);
+    map['signed_tx'] = Variable<String>(signedTx);
+    return map;
+  }
+
+  CollectibleOutputCompanion toCompanion(bool nullToAbsent) {
+    return CollectibleOutputCompanion(
+      userId: Value(userId),
+      outputId: Value(outputId),
+      tokenId: Value(tokenId),
+      transactionHash: Value(transactionHash),
+      outputIndex: Value(outputIndex),
+      amount: Value(amount),
+      sendersThreshold: Value(sendersThreshold),
+      senders: Value(senders),
+      receiversThreshold: Value(receiversThreshold),
+      receivers: Value(receivers),
+      state: Value(state),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      signedBy: Value(signedBy),
+      signedTx: Value(signedTx),
+    );
+  }
+
+  factory CollectibleOutputData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CollectibleOutputData(
+      userId: serializer.fromJson<String>(json['user_id']),
+      outputId: serializer.fromJson<String>(json['output_id']),
+      tokenId: serializer.fromJson<String>(json['token_id']),
+      transactionHash: serializer.fromJson<String>(json['transaction_hash']),
+      outputIndex: serializer.fromJson<int>(json['output_index']),
+      amount: serializer.fromJson<String>(json['amount']),
+      sendersThreshold: serializer.fromJson<int>(json['senders_threshold']),
+      senders: serializer.fromJson<String>(json['senders']),
+      receiversThreshold: serializer.fromJson<int>(json['receivers_threshold']),
+      receivers: serializer.fromJson<String>(json['receivers']),
+      state: serializer.fromJson<String>(json['state']),
+      createdAt: serializer.fromJson<DateTime>(json['created_at']),
+      updatedAt: serializer.fromJson<DateTime>(json['updated_at']),
+      signedBy: serializer.fromJson<String>(json['signed_by']),
+      signedTx: serializer.fromJson<String>(json['signed_tx']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'user_id': serializer.toJson<String>(userId),
+      'output_id': serializer.toJson<String>(outputId),
+      'token_id': serializer.toJson<String>(tokenId),
+      'transaction_hash': serializer.toJson<String>(transactionHash),
+      'output_index': serializer.toJson<int>(outputIndex),
+      'amount': serializer.toJson<String>(amount),
+      'senders_threshold': serializer.toJson<int>(sendersThreshold),
+      'senders': serializer.toJson<String>(senders),
+      'receivers_threshold': serializer.toJson<int>(receiversThreshold),
+      'receivers': serializer.toJson<String>(receivers),
+      'state': serializer.toJson<String>(state),
+      'created_at': serializer.toJson<DateTime>(createdAt),
+      'updated_at': serializer.toJson<DateTime>(updatedAt),
+      'signed_by': serializer.toJson<String>(signedBy),
+      'signed_tx': serializer.toJson<String>(signedTx),
+    };
+  }
+
+  CollectibleOutputData copyWith(
+          {String? userId,
+          String? outputId,
+          String? tokenId,
+          String? transactionHash,
+          int? outputIndex,
+          String? amount,
+          int? sendersThreshold,
+          String? senders,
+          int? receiversThreshold,
+          String? receivers,
+          String? state,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? signedBy,
+          String? signedTx}) =>
+      CollectibleOutputData(
+        userId: userId ?? this.userId,
+        outputId: outputId ?? this.outputId,
+        tokenId: tokenId ?? this.tokenId,
+        transactionHash: transactionHash ?? this.transactionHash,
+        outputIndex: outputIndex ?? this.outputIndex,
+        amount: amount ?? this.amount,
+        sendersThreshold: sendersThreshold ?? this.sendersThreshold,
+        senders: senders ?? this.senders,
+        receiversThreshold: receiversThreshold ?? this.receiversThreshold,
+        receivers: receivers ?? this.receivers,
+        state: state ?? this.state,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        signedBy: signedBy ?? this.signedBy,
+        signedTx: signedTx ?? this.signedTx,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('CollectibleOutputData(')
+          ..write('userId: $userId, ')
+          ..write('outputId: $outputId, ')
+          ..write('tokenId: $tokenId, ')
+          ..write('transactionHash: $transactionHash, ')
+          ..write('outputIndex: $outputIndex, ')
+          ..write('amount: $amount, ')
+          ..write('sendersThreshold: $sendersThreshold, ')
+          ..write('senders: $senders, ')
+          ..write('receiversThreshold: $receiversThreshold, ')
+          ..write('receivers: $receivers, ')
+          ..write('state: $state, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('signedBy: $signedBy, ')
+          ..write('signedTx: $signedTx')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      userId,
+      outputId,
+      tokenId,
+      transactionHash,
+      outputIndex,
+      amount,
+      sendersThreshold,
+      senders,
+      receiversThreshold,
+      receivers,
+      state,
+      createdAt,
+      updatedAt,
+      signedBy,
+      signedTx);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CollectibleOutputData &&
+          other.userId == this.userId &&
+          other.outputId == this.outputId &&
+          other.tokenId == this.tokenId &&
+          other.transactionHash == this.transactionHash &&
+          other.outputIndex == this.outputIndex &&
+          other.amount == this.amount &&
+          other.sendersThreshold == this.sendersThreshold &&
+          other.senders == this.senders &&
+          other.receiversThreshold == this.receiversThreshold &&
+          other.receivers == this.receivers &&
+          other.state == this.state &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.signedBy == this.signedBy &&
+          other.signedTx == this.signedTx);
+}
+
+class CollectibleOutputCompanion
+    extends UpdateCompanion<CollectibleOutputData> {
+  final Value<String> userId;
+  final Value<String> outputId;
+  final Value<String> tokenId;
+  final Value<String> transactionHash;
+  final Value<int> outputIndex;
+  final Value<String> amount;
+  final Value<int> sendersThreshold;
+  final Value<String> senders;
+  final Value<int> receiversThreshold;
+  final Value<String> receivers;
+  final Value<String> state;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> signedBy;
+  final Value<String> signedTx;
+  const CollectibleOutputCompanion({
+    this.userId = const Value.absent(),
+    this.outputId = const Value.absent(),
+    this.tokenId = const Value.absent(),
+    this.transactionHash = const Value.absent(),
+    this.outputIndex = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.sendersThreshold = const Value.absent(),
+    this.senders = const Value.absent(),
+    this.receiversThreshold = const Value.absent(),
+    this.receivers = const Value.absent(),
+    this.state = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.signedBy = const Value.absent(),
+    this.signedTx = const Value.absent(),
+  });
+  CollectibleOutputCompanion.insert({
+    required String userId,
+    required String outputId,
+    required String tokenId,
+    required String transactionHash,
+    required int outputIndex,
+    required String amount,
+    required int sendersThreshold,
+    required String senders,
+    required int receiversThreshold,
+    required String receivers,
+    required String state,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String signedBy,
+    required String signedTx,
+  })  : userId = Value(userId),
+        outputId = Value(outputId),
+        tokenId = Value(tokenId),
+        transactionHash = Value(transactionHash),
+        outputIndex = Value(outputIndex),
+        amount = Value(amount),
+        sendersThreshold = Value(sendersThreshold),
+        senders = Value(senders),
+        receiversThreshold = Value(receiversThreshold),
+        receivers = Value(receivers),
+        state = Value(state),
+        createdAt = Value(createdAt),
+        updatedAt = Value(updatedAt),
+        signedBy = Value(signedBy),
+        signedTx = Value(signedTx);
+  static Insertable<CollectibleOutputData> custom({
+    Expression<String>? userId,
+    Expression<String>? outputId,
+    Expression<String>? tokenId,
+    Expression<String>? transactionHash,
+    Expression<int>? outputIndex,
+    Expression<String>? amount,
+    Expression<int>? sendersThreshold,
+    Expression<String>? senders,
+    Expression<int>? receiversThreshold,
+    Expression<String>? receivers,
+    Expression<String>? state,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<String>? signedBy,
+    Expression<String>? signedTx,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (outputId != null) 'output_id': outputId,
+      if (tokenId != null) 'token_id': tokenId,
+      if (transactionHash != null) 'transaction_hash': transactionHash,
+      if (outputIndex != null) 'output_index': outputIndex,
+      if (amount != null) 'amount': amount,
+      if (sendersThreshold != null) 'senders_threshold': sendersThreshold,
+      if (senders != null) 'senders': senders,
+      if (receiversThreshold != null) 'receivers_threshold': receiversThreshold,
+      if (receivers != null) 'receivers': receivers,
+      if (state != null) 'state': state,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (signedBy != null) 'signed_by': signedBy,
+      if (signedTx != null) 'signed_tx': signedTx,
+    });
+  }
+
+  CollectibleOutputCompanion copyWith(
+      {Value<String>? userId,
+      Value<String>? outputId,
+      Value<String>? tokenId,
+      Value<String>? transactionHash,
+      Value<int>? outputIndex,
+      Value<String>? amount,
+      Value<int>? sendersThreshold,
+      Value<String>? senders,
+      Value<int>? receiversThreshold,
+      Value<String>? receivers,
+      Value<String>? state,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<String>? signedBy,
+      Value<String>? signedTx}) {
+    return CollectibleOutputCompanion(
+      userId: userId ?? this.userId,
+      outputId: outputId ?? this.outputId,
+      tokenId: tokenId ?? this.tokenId,
+      transactionHash: transactionHash ?? this.transactionHash,
+      outputIndex: outputIndex ?? this.outputIndex,
+      amount: amount ?? this.amount,
+      sendersThreshold: sendersThreshold ?? this.sendersThreshold,
+      senders: senders ?? this.senders,
+      receiversThreshold: receiversThreshold ?? this.receiversThreshold,
+      receivers: receivers ?? this.receivers,
+      state: state ?? this.state,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      signedBy: signedBy ?? this.signedBy,
+      signedTx: signedTx ?? this.signedTx,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (outputId.present) {
+      map['output_id'] = Variable<String>(outputId.value);
+    }
+    if (tokenId.present) {
+      map['token_id'] = Variable<String>(tokenId.value);
+    }
+    if (transactionHash.present) {
+      map['transaction_hash'] = Variable<String>(transactionHash.value);
+    }
+    if (outputIndex.present) {
+      map['output_index'] = Variable<int>(outputIndex.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<String>(amount.value);
+    }
+    if (sendersThreshold.present) {
+      map['senders_threshold'] = Variable<int>(sendersThreshold.value);
+    }
+    if (senders.present) {
+      map['senders'] = Variable<String>(senders.value);
+    }
+    if (receiversThreshold.present) {
+      map['receivers_threshold'] = Variable<int>(receiversThreshold.value);
+    }
+    if (receivers.present) {
+      map['receivers'] = Variable<String>(receivers.value);
+    }
+    if (state.present) {
+      map['state'] = Variable<String>(state.value);
+    }
+    if (createdAt.present) {
+      final converter = CollectibleOutput.$converter0;
+      map['created_at'] = Variable<int>(converter.toSql(createdAt.value));
+    }
+    if (updatedAt.present) {
+      final converter = CollectibleOutput.$converter1;
+      map['updated_at'] = Variable<int>(converter.toSql(updatedAt.value));
+    }
+    if (signedBy.present) {
+      map['signed_by'] = Variable<String>(signedBy.value);
+    }
+    if (signedTx.present) {
+      map['signed_tx'] = Variable<String>(signedTx.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CollectibleOutputCompanion(')
+          ..write('userId: $userId, ')
+          ..write('outputId: $outputId, ')
+          ..write('tokenId: $tokenId, ')
+          ..write('transactionHash: $transactionHash, ')
+          ..write('outputIndex: $outputIndex, ')
+          ..write('amount: $amount, ')
+          ..write('sendersThreshold: $sendersThreshold, ')
+          ..write('senders: $senders, ')
+          ..write('receiversThreshold: $receiversThreshold, ')
+          ..write('receivers: $receivers, ')
+          ..write('state: $state, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('signedBy: $signedBy, ')
+          ..write('signedTx: $signedTx')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class CollectibleOutput extends Table
+    with TableInfo<CollectibleOutput, CollectibleOutputData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  CollectibleOutput(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _outputIdMeta = const VerificationMeta('outputId');
+  late final GeneratedColumn<String> outputId = GeneratedColumn<String>(
+      'output_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _tokenIdMeta = const VerificationMeta('tokenId');
+  late final GeneratedColumn<String> tokenId = GeneratedColumn<String>(
+      'token_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _transactionHashMeta =
+      const VerificationMeta('transactionHash');
+  late final GeneratedColumn<String> transactionHash = GeneratedColumn<String>(
+      'transaction_hash', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _outputIndexMeta =
+      const VerificationMeta('outputIndex');
+  late final GeneratedColumn<int> outputIndex = GeneratedColumn<int>(
+      'output_index', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  late final GeneratedColumn<String> amount = GeneratedColumn<String>(
+      'amount', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _sendersThresholdMeta =
+      const VerificationMeta('sendersThreshold');
+  late final GeneratedColumn<int> sendersThreshold = GeneratedColumn<int>(
+      'senders_threshold', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _sendersMeta = const VerificationMeta('senders');
+  late final GeneratedColumn<String> senders = GeneratedColumn<String>(
+      'senders', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _receiversThresholdMeta =
+      const VerificationMeta('receiversThreshold');
+  late final GeneratedColumn<int> receiversThreshold = GeneratedColumn<int>(
+      'receivers_threshold', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _receiversMeta = const VerificationMeta('receivers');
+  late final GeneratedColumn<String> receivers = GeneratedColumn<String>(
+      'receivers', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _stateMeta = const VerificationMeta('state');
+  late final GeneratedColumn<String> state = GeneratedColumn<String>(
+      'state', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  late final GeneratedColumnWithTypeConverter<DateTime, int> createdAt =
+      GeneratedColumn<int>('created_at', aliasedName, false,
+              type: DriftSqlType.int,
+              requiredDuringInsert: true,
+              $customConstraints: 'NOT NULL')
+          .withConverter<DateTime>(CollectibleOutput.$converter0);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  late final GeneratedColumnWithTypeConverter<DateTime, int> updatedAt =
+      GeneratedColumn<int>('updated_at', aliasedName, false,
+              type: DriftSqlType.int,
+              requiredDuringInsert: true,
+              $customConstraints: 'NOT NULL')
+          .withConverter<DateTime>(CollectibleOutput.$converter1);
+  final VerificationMeta _signedByMeta = const VerificationMeta('signedBy');
+  late final GeneratedColumn<String> signedBy = GeneratedColumn<String>(
+      'signed_by', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _signedTxMeta = const VerificationMeta('signedTx');
+  late final GeneratedColumn<String> signedTx = GeneratedColumn<String>(
+      'signed_tx', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  @override
+  List<GeneratedColumn> get $columns => [
+        userId,
+        outputId,
+        tokenId,
+        transactionHash,
+        outputIndex,
+        amount,
+        sendersThreshold,
+        senders,
+        receiversThreshold,
+        receivers,
+        state,
+        createdAt,
+        updatedAt,
+        signedBy,
+        signedTx
+      ];
+  @override
+  String get aliasedName => _alias ?? 'collectible_output';
+  @override
+  String get actualTableName => 'collectible_output';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<CollectibleOutputData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('output_id')) {
+      context.handle(_outputIdMeta,
+          outputId.isAcceptableOrUnknown(data['output_id']!, _outputIdMeta));
+    } else if (isInserting) {
+      context.missing(_outputIdMeta);
+    }
+    if (data.containsKey('token_id')) {
+      context.handle(_tokenIdMeta,
+          tokenId.isAcceptableOrUnknown(data['token_id']!, _tokenIdMeta));
+    } else if (isInserting) {
+      context.missing(_tokenIdMeta);
+    }
+    if (data.containsKey('transaction_hash')) {
+      context.handle(
+          _transactionHashMeta,
+          transactionHash.isAcceptableOrUnknown(
+              data['transaction_hash']!, _transactionHashMeta));
+    } else if (isInserting) {
+      context.missing(_transactionHashMeta);
+    }
+    if (data.containsKey('output_index')) {
+      context.handle(
+          _outputIndexMeta,
+          outputIndex.isAcceptableOrUnknown(
+              data['output_index']!, _outputIndexMeta));
+    } else if (isInserting) {
+      context.missing(_outputIndexMeta);
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('senders_threshold')) {
+      context.handle(
+          _sendersThresholdMeta,
+          sendersThreshold.isAcceptableOrUnknown(
+              data['senders_threshold']!, _sendersThresholdMeta));
+    } else if (isInserting) {
+      context.missing(_sendersThresholdMeta);
+    }
+    if (data.containsKey('senders')) {
+      context.handle(_sendersMeta,
+          senders.isAcceptableOrUnknown(data['senders']!, _sendersMeta));
+    } else if (isInserting) {
+      context.missing(_sendersMeta);
+    }
+    if (data.containsKey('receivers_threshold')) {
+      context.handle(
+          _receiversThresholdMeta,
+          receiversThreshold.isAcceptableOrUnknown(
+              data['receivers_threshold']!, _receiversThresholdMeta));
+    } else if (isInserting) {
+      context.missing(_receiversThresholdMeta);
+    }
+    if (data.containsKey('receivers')) {
+      context.handle(_receiversMeta,
+          receivers.isAcceptableOrUnknown(data['receivers']!, _receiversMeta));
+    } else if (isInserting) {
+      context.missing(_receiversMeta);
+    }
+    if (data.containsKey('state')) {
+      context.handle(
+          _stateMeta, state.isAcceptableOrUnknown(data['state']!, _stateMeta));
+    } else if (isInserting) {
+      context.missing(_stateMeta);
+    }
+    context.handle(_createdAtMeta, const VerificationResult.success());
+    context.handle(_updatedAtMeta, const VerificationResult.success());
+    if (data.containsKey('signed_by')) {
+      context.handle(_signedByMeta,
+          signedBy.isAcceptableOrUnknown(data['signed_by']!, _signedByMeta));
+    } else if (isInserting) {
+      context.missing(_signedByMeta);
+    }
+    if (data.containsKey('signed_tx')) {
+      context.handle(_signedTxMeta,
+          signedTx.isAcceptableOrUnknown(data['signed_tx']!, _signedTxMeta));
+    } else if (isInserting) {
+      context.missing(_signedTxMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {outputId};
+  @override
+  CollectibleOutputData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CollectibleOutputData(
+      userId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      outputId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}output_id'])!,
+      tokenId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}token_id'])!,
+      transactionHash: attachedDatabase.options.types.read(
+          DriftSqlType.string, data['${effectivePrefix}transaction_hash'])!,
+      outputIndex: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}output_index'])!,
+      amount: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}amount'])!,
+      sendersThreshold: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}senders_threshold'])!,
+      senders: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}senders'])!,
+      receiversThreshold: attachedDatabase.options.types.read(
+          DriftSqlType.int, data['${effectivePrefix}receivers_threshold'])!,
+      receivers: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}receivers'])!,
+      state: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}state'])!,
+      createdAt: CollectibleOutput.$converter0.fromSql(attachedDatabase
+          .options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}created_at'])!),
+      updatedAt: CollectibleOutput.$converter1.fromSql(attachedDatabase
+          .options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!),
+      signedBy: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}signed_by'])!,
+      signedTx: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}signed_tx'])!,
+    );
+  }
+
+  @override
+  CollectibleOutput createAlias(String alias) {
+    return CollectibleOutput(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DateTime, int> $converter0 =
+      const MillisDateConverterNotnull();
+  static TypeConverter<DateTime, int> $converter1 =
+      const MillisDateConverterNotnull();
+  @override
+  List<String> get customConstraints => const ['PRIMARY KEY(output_id)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 abstract class _$MixinDatabase extends GeneratedDatabase {
   _$MixinDatabase(QueryExecutor e) : super(e);
   _$MixinDatabase.connect(DatabaseConnection c) : super.connect(c);
@@ -4176,6 +4881,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
       CollectibleTokenMeta(this);
   late final CollectibleToken collectibleToken = CollectibleToken(this);
   late final Collections collections = Collections(this);
+  late final CollectibleOutput collectibleOutput = CollectibleOutput(this);
   late final AddressDao addressDao = AddressDao(this as MixinDatabase);
   late final AssetDao assetDao = AssetDao(this as MixinDatabase);
   late final SnapshotDao snapshotDao = SnapshotDao(this as MixinDatabase);
@@ -4426,7 +5132,8 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         assetsExtra,
         collectibleTokenMeta,
         collectibleToken,
-        collections
+        collections,
+        collectibleOutput
       ];
 }
 
