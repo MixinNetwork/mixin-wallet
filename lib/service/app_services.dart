@@ -20,6 +20,8 @@ import '../thirdy_party/telegram.dart';
 import '../util/constants.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
+import '../util/web/telegram_web_app_dummy.dart'
+    if (dart.library.html) '../util/web/telegram_web_app.dart';
 import 'env.dart';
 import 'profile/auth.dart';
 import 'profile/pin_session.dart';
@@ -46,12 +48,29 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       );
     }
     scheduleMicrotask(() async {
-      if (isLogin) {
+      Future<void> refreshAccount() async {
         try {
           final response = await client.accountApi.getMe();
           await setAuth(auth!.copyWith(account: response.data));
         } catch (error) {
           d('refresh account failed. $error');
+        }
+      }
+
+      if (isLogin) {
+        final tgInitData = Telegram.instance.getTgInitData();
+        if (tgInitData?.isNotEmpty ?? false) {
+          // in telegram web app
+          final data = await TelegramApi.instance.verifyInitData(tgInitData!);
+          if (data.mixinId == auth!.account.userId) {
+            await refreshAccount();
+          } else {
+            await loginByTelegram(tgInitData, user: data);
+            _initCompleter.complete();
+            return;
+          }
+        } else {
+          await refreshAccount();
         }
       }
       await _initDatabase();
@@ -94,8 +113,8 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     return _mixinDatabase!;
   }
 
-  Future<void> loginByTelegram(String initData) async {
-    final data = await TelegramApi.instance.verifyInitData(initData);
+  Future<void> loginByTelegram(String initData, {TelegramUser? user}) async {
+    final data = user ?? await TelegramApi.instance.verifyInitData(initData);
 
     final client = sdk.Client(
       userId: data.mixinId,

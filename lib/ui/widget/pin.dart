@@ -8,6 +8,8 @@ import '../../generated/r.dart';
 import '../../service/profile/pin_session.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
+import '../../util/web/telegram_web_app_dummy.dart'
+    if (dart.library.html) '../../util/web/telegram_web_app.dart';
 import 'buttons.dart';
 import 'mixin_bottom_sheet.dart';
 import 'toast.dart';
@@ -189,6 +191,7 @@ class _NumPadButton extends HookWidget {
             } else {
               controller.append(value);
             }
+            Telegram.instance.hapticFeedback();
           },
           child: value == -1
               ? SvgPicture.asset(R.resourcesDeleteArrowSvg)
