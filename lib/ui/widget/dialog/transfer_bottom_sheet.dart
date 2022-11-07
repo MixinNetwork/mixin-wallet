@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../db/mixin_database.dart';
+import '../../../thirdy_party/vo/telegram_receiver.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
 import '../pin.dart';
@@ -9,11 +10,12 @@ import '../symbol.dart';
 /// return: verified succeed pin code. null if canceled.
 Future<bool?> showTransferVerifyBottomSheet(
   BuildContext context, {
-  required Addresse address,
   required AssetResult asset,
-  required AssetResult feeAsset,
   required String amount,
   required PinPostVerification postVerification,
+  Addresse? address,
+  TelegramReceiver? receiver,
+  AssetResult? feeAsset,
 }) =>
     showModalBottomSheet<bool>(
       context: context,
@@ -27,6 +29,7 @@ Future<bool?> showTransferVerifyBottomSheet(
             ),
             child: _TransferVerifyBottomSheet(
               address: address,
+              receiver: receiver,
               asset: asset,
               feeAsset: feeAsset,
               amount: amount,
@@ -49,73 +52,86 @@ Future<bool?> showTransferVerifyBottomSheet(
 class _TransferVerifyBottomSheet extends StatelessWidget {
   const _TransferVerifyBottomSheet({
     Key? key,
-    required this.address,
     required this.amount,
     required this.asset,
-    required this.feeAsset,
     required this.postVerification,
+    this.address,
+    this.receiver,
+    this.feeAsset,
   }) : super(key: key);
 
-  final Addresse address;
+  final Addresse? address;
+  final TelegramReceiver? receiver;
   final String amount;
   final AssetResult asset;
-  final AssetResult feeAsset;
+  final AssetResult? feeAsset;
   final PinPostVerification postVerification;
 
   @override
-  Widget build(BuildContext context) => PinVerifyDialogScaffold(
-        header: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 10),
-            Text(
-              context.l10n.withdrawalTo(address.label),
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: context.colorScheme.primaryText,
-              ),
+  Widget build(BuildContext context) {
+    assert((address != null && feeAsset != null) || receiver != null);
+    return PinVerifyDialogScaffold(
+      header: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 10),
+          Text(
+            address != null
+                ? context.l10n.withdrawalTo(address!.label)
+                : context.l10n
+                    .transferTo('${receiver!.firstName} ${receiver?.lastName}'),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: context.colorScheme.primaryText,
             ),
-            const SizedBox(height: 8),
-            Text(
-              address.displayAddress().formatAddress(),
-              style: TextStyle(
-                fontSize: 14,
-                color: context.colorScheme.secondaryText,
-              ),
-            ),
-            const SizedBox(height: 10),
-            SymbolIconWithBorder(
-              symbolUrl: asset.iconUrl,
-              chainUrl: asset.chainIconUrl,
-              size: 70,
-              chainSize: 24,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '${amount.numberFormat()} ${asset.symbol}',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: context.colorScheme.primaryText,
-              ),
-            ),
-            const SizedBox(height: 8),
-            _FeeText(address: address, asset: asset, feeAsset: feeAsset),
-          ],
-        ),
-        tip: Text(
-          context.l10n.withdrawalWithPin,
-          style: TextStyle(
-            fontSize: 14,
-            color: context.colorScheme.secondaryText,
           ),
+          const SizedBox(height: 8),
+          Text(
+            address?.displayAddress().formatAddress() ??
+                receiver!.id.toString(),
+            style: TextStyle(
+              fontSize: 14,
+              color: context.colorScheme.secondaryText,
+            ),
+          ),
+          const SizedBox(height: 10),
+          SymbolIconWithBorder(
+            symbolUrl: asset.iconUrl,
+            chainUrl: asset.chainIconUrl,
+            size: 70,
+            chainSize: 24,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '${amount.numberFormat()} ${asset.symbol}',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: context.colorScheme.primaryText,
+            ),
+          ),
+          const SizedBox(height: 8),
+          if (address != null) ...[
+            _FeeText(address: address!, asset: asset, feeAsset: feeAsset!)
+          ],
+        ],
+      ),
+      tip: Text(
+        address != null
+            ? context.l10n.withdrawalWithPin
+            : context.l10n.transferWithPin,
+        style: TextStyle(
+          fontSize: 14,
+          color: context.colorScheme.secondaryText,
         ),
-        onVerified: postVerification,
-        onErrorConfirmed: () {
-          Navigator.of(context).pop();
-        },
-      );
+      ),
+      onVerified: postVerification,
+      onErrorConfirmed: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
 }
 
 class _FeeText extends StatelessWidget {

@@ -71,11 +71,13 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m21(value) =>
       "Swap with slippage greater than ${value} is not currently supported";
 
-  static String m22(value) => "value now ${value}";
+  static String m22(value) => "Transfer to ${value}";
 
-  static String m23(value) => "value then ${value}";
+  static String m23(value) => "value now ${value}";
 
-  static String m24(value) => "Withdrawal to ${value}";
+  static String m24(value) => "value then ${value}";
+
+  static String m25(value) => "Withdrawal to ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -368,20 +370,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
         "transferDetail":
             MessageLookupByLibrary.simpleMessage("Transfer details"),
+        "transferTo": m22,
+        "transferWithPin":
+            MessageLookupByLibrary.simpleMessage("Transfer with PIN"),
         "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
         "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
-        "walletTransactionCurrentValue": m22,
+        "walletTransactionCurrentValue": m23,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
-        "walletTransactionThatTimeValue": m23,
+        "walletTransactionThatTimeValue": m24,
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "This service is provided by Wyre. We act as a conduit only and do not charge additional fees."),
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
         "withdrawalMemoHint":
             MessageLookupByLibrary.simpleMessage("Memo (Optional)"),
-        "withdrawalTo": m24,
+        "withdrawalTo": m25,
         "withdrawalWithPin":
             MessageLookupByLibrary.simpleMessage("Withdrawal with PIN"),
         "wyreServiceStatement":

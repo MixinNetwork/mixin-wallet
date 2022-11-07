@@ -12,7 +12,6 @@ import '../../thirdy_party/vo/telegram_receiver.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/logger.dart';
 import '../../util/web/telegram_web_app.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
@@ -132,6 +131,7 @@ class _WithdrawalPage extends HookWidget {
                   'opponent': credential.receiverMixinId,
                 });
               }
+
               if (parameter.isEmpty) {
                 return;
               }
@@ -199,7 +199,9 @@ class _WithdrawalPage extends HookWidget {
                       content: Text(context.l10n.emptyAmount)));
                   return;
                 }
-                if (address.value == null && user.value == null) {
+                if (address.value == null &&
+                    user.value == null &&
+                    telegramReceiver == null) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       behavior: SnackBarBehavior.floating,
                       content: Text(
@@ -212,33 +214,55 @@ class _WithdrawalPage extends HookWidget {
 
                 if (isLoginByCredential) {
                   final addressId = address.value?.addressId;
-                  if (addressId == null) {
-                    e('addressId is null');
-                    return;
-                  }
-                  final ret = await showTransferVerifyBottomSheet(
-                    context,
-                    address: address.value!,
-                    asset: asset,
-                    feeAsset: feeAsset!,
-                    amount: amount.value,
-                    postVerification: (context, pin) async {
-                      final api = context.appServices.client.transferApi;
-                      final response =
-                          await api.withdrawal(sdk.WithdrawalRequest(
-                        addressId: addressId,
-                        amount: amount.value,
-                        pin: encryptPin(pin)!,
-                        traceId: traceId,
-                        memo: memo.value,
-                      ));
-                      await context.appServices.mixinDatabase.snapshotDao
-                          .insertAll([response.data]);
-                      Navigator.of(context).pop(true);
-                    },
-                  );
-                  if (ret ?? false) {
-                    context.pop();
+                  if (addressId != null) {
+                    final ret = await showTransferVerifyBottomSheet(
+                      context,
+                      address: address.value,
+                      asset: asset,
+                      feeAsset: feeAsset,
+                      amount: amount.value,
+                      postVerification: (context, pin) async {
+                        final api = context.appServices.client.transferApi;
+                        final response =
+                            await api.withdrawal(sdk.WithdrawalRequest(
+                          addressId: addressId,
+                          amount: amount.value,
+                          pin: encryptPin(pin)!,
+                          traceId: traceId,
+                          memo: memo.value,
+                        ));
+                        await context.appServices.mixinDatabase.snapshotDao
+                            .insertAll([response.data]);
+                        Navigator.of(context).pop(true);
+                      },
+                    );
+                    if (ret ?? false) {
+                      context.pop();
+                    }
+                  } else if (telegramReceiver != null) {
+                    final ret = await showTransferVerifyBottomSheet(
+                      context,
+                      receiver: telegramReceiver,
+                      asset: asset,
+                      amount: amount.value,
+                      postVerification: (context, pin) async {
+                        final api = context.appServices.client.transferApi;
+                        final response = await api.transfer(sdk.TransferRequest(
+                          assetId: asset.assetId,
+                          amount: amount.value,
+                          opponentId: auth!.credential?.receiverMixinId,
+                          pin: encryptPin(pin),
+                          traceId: traceId,
+                          memo: memo.value,
+                        ));
+                        await context.appServices.mixinDatabase.snapshotDao
+                            .insertAll([response.data]);
+                        Navigator.of(context).pop(true);
+                      },
+                    );
+                    if (ret ?? false) {
+                      context.pop();
+                    }
                   }
                 } else {
                   final Uri uri;

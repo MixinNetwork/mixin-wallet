@@ -62,11 +62,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m21(value) => "暂不支持滑点大于 ${value} 的闪兑";
 
-  static String m22(value) => "价值 ${value}";
+  static String m22(value) => "转账给 ${value}";
 
-  static String m23(value) => "当时价值 ${value}";
+  static String m23(value) => "价值 ${value}";
 
-  static String m24(value) => "提现到 ${value}";
+  static String m24(value) => "当时价值 ${value}";
+
+  static String m25(value) => "提现到 ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -332,18 +334,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsType": MessageLookupByLibrary.simpleMessage("交易类型"),
         "transfer": MessageLookupByLibrary.simpleMessage("转账"),
         "transferDetail": MessageLookupByLibrary.simpleMessage("交易详情"),
+        "transferTo": m22,
+        "transferWithPin": MessageLookupByLibrary.simpleMessage("用 PIN 转账"),
         "undo": MessageLookupByLibrary.simpleMessage("撤销"),
         "unpaid": MessageLookupByLibrary.simpleMessage("未支付"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),
-        "walletTransactionCurrentValue": m22,
+        "walletTransactionCurrentValue": m23,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),
-        "walletTransactionThatTimeValue": m23,
+        "walletTransactionThatTimeValue": m24,
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "本服务由 Wyre 提供。我们仅作为渠道，不额外收取手续费。"),
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),
         "withdrawalMemoHint": MessageLookupByLibrary.simpleMessage("备注 (可选)"),
-        "withdrawalTo": m24,
+        "withdrawalTo": m25,
         "withdrawalWithPin": MessageLookupByLibrary.simpleMessage("用 PIN 提现"),
         "wyreServiceStatement": MessageLookupByLibrary.simpleMessage("服务声明")
       };

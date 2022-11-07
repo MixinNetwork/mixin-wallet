@@ -2114,11 +2114,31 @@ class L10n {
     );
   }
 
+  /// `Transfer with PIN`
+  String get transferWithPin {
+    return Intl.message(
+      'Transfer with PIN',
+      name: 'transferWithPin',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Withdrawal to {value}`
   String withdrawalTo(Object value) {
     return Intl.message(
       'Withdrawal to $value',
       name: 'withdrawalTo',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Transfer to {value}`
+  String transferTo(Object value) {
+    return Intl.message(
+      'Transfer to $value',
+      name: 'transferTo',
       desc: '',
       args: [value],
     );
