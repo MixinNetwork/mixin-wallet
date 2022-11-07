@@ -137,9 +137,10 @@ Future<bool> showAndWaitingNftTransaction(
             return true;
           }
         } catch (error, stacktrace) {
+          // multisigs might be cancelled
           e('wait action: $error $stacktrace');
           showErrorToast(error.toDisplayString(context));
-          return true;
+          rethrow;
         }
         return false;
       },
