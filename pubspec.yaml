@@ -53,7 +53,7 @@ dependencies:
   rxdart: ^0.27.6
   qr_flutter: ^4.0.0
   vrouter: ^1.2.0+5
-  uuid: ^3.0.4
+  uuid: ^3.0.7
   envify:
     git:
       url: https://github.com/techouse/envify.git
