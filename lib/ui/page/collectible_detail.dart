@@ -61,10 +61,7 @@ class CollectibleDetail extends HookWidget {
     }
     return _CollectibleDetailScaffold(
       item: collectible,
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: _Body(item: collectible),
-      ),
+      child: _Body(item: collectible),
     );
   }
 }
@@ -114,48 +111,51 @@ class _Body extends StatelessWidget {
           controller: controller,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 500),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(13),
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: Image.network(item.mediaUrl ?? ''),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: double.infinity),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(13),
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Image.network(item.mediaUrl ?? ''),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                SelectableText(
-                  item.name ?? '',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: context.colorScheme.primaryText,
+                  const SizedBox(height: 20),
+                  SelectableText(
+                    item.name ?? '',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: context.colorScheme.primaryText,
+                    ),
+                    maxLines: 1,
                   ),
-                  maxLines: 1,
-                ),
-                const SizedBox(height: 6),
-                SelectableText(
-                  '#${item.token}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: context.colorScheme.thirdText,
+                  const SizedBox(height: 6),
+                  SelectableText(
+                    '#${item.token}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: context.colorScheme.thirdText,
+                    ),
+                    maxLines: 1,
                   ),
-                  maxLines: 1,
-                ),
-                const SizedBox(height: 12),
-                SelectableText(
-                  item.description ?? '',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: context.colorScheme.secondaryText,
+                  const SizedBox(height: 12),
+                  SelectableText(
+                    item.description ?? '',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: context.colorScheme.secondaryText,
+                    ),
                   ),
-                ),
-                if (!isLoginByCredential) _SendButton(item: item),
-              ],
+                  if (!isLoginByCredential) _SendButton(item: item),
+                ],
+              ),
             ),
           ),
         ),
