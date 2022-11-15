@@ -61,10 +61,7 @@ class CollectibleDetail extends HookWidget {
     }
     return _CollectibleDetailScaffold(
       item: collectible,
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: _Body(item: collectible),
-      ),
+      child: _Body(item: collectible),
     );
   }
 }
@@ -114,59 +111,58 @@ class _Body extends StatelessWidget {
           controller: controller,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 500),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(13),
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: Image.network(item.mediaUrl ?? ''),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: double.infinity),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(13),
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Image.network(item.mediaUrl ?? ''),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                SelectableText(
-                  item.name ?? '',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: context.colorScheme.primaryText,
+                  const SizedBox(height: 20),
+                  SelectableText(
+                    item.name ?? '',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: context.colorScheme.primaryText,
+                    ),
+                    maxLines: 1,
                   ),
-                  maxLines: 1,
-                ),
-                const SizedBox(height: 6),
-                SelectableText(
-                  '#${item.token}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: context.colorScheme.thirdText,
+                  const SizedBox(height: 6),
+                  SelectableText(
+                    '#${item.token}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: context.colorScheme.thirdText,
+                    ),
+                    maxLines: 1,
                   ),
-                  maxLines: 1,
-                ),
-                const SizedBox(height: 12),
-                SelectableText(
-                  item.description ?? '',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: context.colorScheme.secondaryText,
+                  const SizedBox(height: 12),
+                  SelectableText(
+                    item.description ?? '',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: context.colorScheme.secondaryText,
+                    ),
                   ),
-                ),
-                if (!isLoginByCredential)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 60, bottom: 32),
-                    child: _SendButton(item: item),
-                  ),
-              ],
+                  if (!isLoginByCredential) _SendButton(item: item),
+                ],
+              ),
             ),
           ),
         ),
       );
 }
 
-class _SendButton extends StatelessWidget {
+class _SendButton extends HookWidget {
   const _SendButton({
     Key? key,
     required this.item,
@@ -175,7 +171,20 @@ class _SendButton extends StatelessWidget {
   final CollectibleItem item;
 
   @override
-  Widget build(BuildContext context) => SendButton(
+  Widget build(BuildContext context) {
+    final outputs = useMemoizedFuture(
+      () => context.mixinDatabase.collectibleDao
+          .getOutputsByTokenId(item.tokenId),
+      keys: [item.tokenId],
+    ).data;
+
+    if (outputs == null || outputs.isEmpty) {
+      // the nft is not belong to current user.
+      return const SizedBox.shrink();
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 60, bottom: 32),
+      child: SendButton(
         enable: true,
         onTap: () async {
           final outputs = await context.mixinDatabase.collectibleDao
@@ -262,5 +271,7 @@ class _SendButton extends StatelessWidget {
             }
           }
         },
-      );
+      ),
+    );
+  }
 }
