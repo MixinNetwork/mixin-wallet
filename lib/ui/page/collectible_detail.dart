@@ -154,11 +154,7 @@ class _Body extends StatelessWidget {
                     color: context.colorScheme.secondaryText,
                   ),
                 ),
-                if (!isLoginByCredential)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 60, bottom: 32),
-                    child: _SendButton(item: item),
-                  ),
+                if (!isLoginByCredential) _SendButton(item: item),
               ],
             ),
           ),
@@ -166,7 +162,7 @@ class _Body extends StatelessWidget {
       );
 }
 
-class _SendButton extends StatelessWidget {
+class _SendButton extends HookWidget {
   const _SendButton({
     Key? key,
     required this.item,
@@ -175,7 +171,20 @@ class _SendButton extends StatelessWidget {
   final CollectibleItem item;
 
   @override
-  Widget build(BuildContext context) => SendButton(
+  Widget build(BuildContext context) {
+    final outputs = useMemoizedFuture(
+      () => context.mixinDatabase.collectibleDao
+          .getOutputsByTokenId(item.tokenId),
+      keys: [item.tokenId],
+    ).data;
+
+    if (outputs == null || outputs.isEmpty) {
+      // the nft is not belong to current user.
+      return const SizedBox.shrink();
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 60, bottom: 32),
+      child: SendButton(
         enable: true,
         onTap: () async {
           final outputs = await context.mixinDatabase.collectibleDao
@@ -262,5 +271,7 @@ class _SendButton extends StatelessWidget {
             }
           }
         },
-      );
+      ),
+    );
+  }
 }
