@@ -283,7 +283,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rawTransaction": MessageLookupByLibrary.simpleMessage("交易原始值"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),
         "rebate": MessageLookupByLibrary.simpleMessage("退款"),
-        "receive": MessageLookupByLibrary.simpleMessage("接受"),
+        "receive": MessageLookupByLibrary.simpleMessage("接收"),
         "received": MessageLookupByLibrary.simpleMessage("获得"),
         "receivers": MessageLookupByLibrary.simpleMessage("接收者"),
         "recentSearches": MessageLookupByLibrary.simpleMessage("最近搜索"),
