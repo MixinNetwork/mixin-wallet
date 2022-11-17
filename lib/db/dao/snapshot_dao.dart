@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../mixin_database.dart';
+import '../util/util.dart';
 
 part 'snapshot_dao.g.dart';
 
@@ -84,7 +85,7 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
 
   Selectable<SnapshotItem> allSnapshots({
     int? offset,
-    int limit = 30,
+    int? limit = 30,
     bool orderByAmount = false,
     List<String> types = const [],
   }) =>
@@ -101,7 +102,7 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
           if (!orderByAmount) OrderingTerm.desc(s.createdAt),
           OrderingTerm.desc(s.snapshotId),
         ]),
-        (s, u, a) => Limit(limit, offset),
+        (s, u, a) => limit == null ? maxLimit : Limit(limit, offset),
       );
 
   Selectable<SnapshotItem> snapshots(

@@ -30,6 +30,8 @@ class R {
 
   static const String resourcesDownRedSvg = 'resources/down_red.svg';
 
+  static const String resourcesDownloadSvg = 'resources/download.svg';
+
   static const String resourcesEmptyTransactionGreySvg =
       'resources/empty_transaction_grey.svg';
 

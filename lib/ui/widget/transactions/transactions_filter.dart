@@ -61,6 +61,15 @@ class SnapshotFilter extends Equatable {
 
   @override
   List<Object?> get props => [sortBy, filterBy];
+
+  SnapshotFilter copyWith({
+    SortBy? sortBy,
+    FilterBy? filterBy,
+  }) =>
+      SnapshotFilter(
+        sortBy ?? this.sortBy,
+        filterBy ?? this.filterBy,
+      );
 }
 
 class _SortBottomSheetDialog extends HookWidget {
