@@ -94,18 +94,9 @@ class _AllTransactionsBody extends StatelessWidget {
             builder: (context, controller) => ListView.builder(
               controller: controller,
               itemCount: snapshots.length,
-              itemBuilder: (context, index) {
-                final widget = TransactionItem(
-                  item: snapshots[index],
-                );
-                if (index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: widget,
-                  );
-                }
-                return widget;
-              },
+              itemBuilder: (context, index) => TransactionItem(
+                item: snapshots[index],
+              ),
             ),
           );
         },
@@ -119,16 +110,26 @@ class _FilterDropdownMenus extends StatelessWidget {
   final ValueNotifier<SnapshotFilter> filter;
 
   @override
-  Widget build(BuildContext context) => Wrap(
-        alignment: WrapAlignment.start,
+  Widget build(BuildContext context) => Row(
         children: [
+          const SizedBox(width: 20),
+          Text(
+            '${context.l10n.sortBy}:',
+            style: TextStyle(
+              color: context.colorScheme.secondaryText,
+              fontSize: 12,
+            ),
+          ),
+          const SizedBox(width: 8),
           DropdownButton<SortBy>(
             value: filter.value.sortBy,
-            iconSize: 30,
             icon: SvgPicture.asset(
               R.resourcesIcArrowDownSvg,
-              color: context.colorScheme.primaryText,
+              width: 24,
+              height: 24,
             ),
+            style: TextStyle(color: context.colorScheme.primaryText),
+            isDense: true,
             items: [
               DropdownMenuItem(
                 value: SortBy.time,
@@ -142,12 +143,24 @@ class _FilterDropdownMenus extends StatelessWidget {
             onChanged: (value) =>
                 filter.value = filter.value.copyWith(sortBy: value),
           ),
+          const SizedBox(width: 20),
+          Text(
+            '${context.l10n.filterBy}:',
+            style: TextStyle(
+              color: context.colorScheme.secondaryText,
+              fontSize: 12,
+            ),
+          ),
+          const SizedBox(width: 8),
           DropdownButton<FilterBy>(
             value: filter.value.filterBy,
             icon: SvgPicture.asset(
               R.resourcesIcArrowDownSvg,
-              color: context.colorScheme.primaryText,
+              width: 24,
+              height: 24,
             ),
+            style: TextStyle(color: context.colorScheme.primaryText),
+            isDense: true,
             items: [
               DropdownMenuItem(
                 value: FilterBy.all,
@@ -181,9 +194,11 @@ class _FilterDropdownMenus extends StatelessWidget {
             onChanged: (value) =>
                 filter.value = filter.value.copyWith(filterBy: value),
           ),
+          const Spacer(),
           ActionButton(
             name: R.resourcesDownloadSvg,
             size: 24,
+            padding: const EdgeInsets.all(4),
             onTap: () async {
               d('export filter to svg');
               await computeWithLoading(() async {
@@ -242,6 +257,7 @@ class _FilterDropdownMenus extends StatelessWidget {
               });
             },
           ),
+          const SizedBox(width: 12),
         ],
       );
 }
