@@ -2213,6 +2213,76 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Export transactions data`
+  String get exportTransactionsData {
+    return Intl.message(
+      'Export transactions data',
+      name: 'exportTransactionsData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `date range`
+  String get dateRange {
+    return Intl.message(
+      'date range',
+      name: 'dateRange',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last 7 days`
+  String get lastSevenDays {
+    return Intl.message(
+      'Last 7 days',
+      name: 'lastSevenDays',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last 30 days`
+  String get lastThirtyDays {
+    return Intl.message(
+      'Last 30 days',
+      name: 'lastThirtyDays',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last 90 days`
+  String get lastNinetyDays {
+    return Intl.message(
+      'Last 90 days',
+      name: 'lastNinetyDays',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Custom date range`
+  String get customDateRange {
+    return Intl.message(
+      'Custom date range',
+      name: 'customDateRange',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export`
+  String get export {
+    return Intl.message(
+      'Export',
+      name: 'export',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

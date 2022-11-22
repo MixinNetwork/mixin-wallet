@@ -214,5 +214,12 @@
   "signTransaction": "Sign Transaction",
   "rawTransaction": "Raw Transaction",
   "receivers": "Receivers",
-  "signers": "Signers"
+  "signers": "Signers",
+  "exportTransactionsData": "Export transactions data",
+  "dateRange": "date range",
+  "lastSevenDays": "Last 7 days",
+  "lastThirtyDays": "Last 30 days",
+  "lastNinetyDays": "Last 90 days",
+  "customDateRange": "Custom date range",
+  "export": "Export"
 }

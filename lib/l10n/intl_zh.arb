@@ -211,5 +211,12 @@
   "signTransaction": "签名交易",
   "rawTransaction": "交易原始值",
   "receivers": "接收者",
-  "signers": "签名者"
+  "signers": "签名者",
+  "exportTransactionsData": "导出交易数据",
+  "dateRange": "日期范围",
+  "lastSevenDays": "最近 7 天",
+  "lastThirtyDays": "最近 30 天",
+  "lastNinetyDays": "最近 90 天",
+  "customDateRange": "自定义日期范围",
+  "export": "导出"
 }

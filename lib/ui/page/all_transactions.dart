@@ -14,6 +14,7 @@ import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';
+import '../widget/dialog/export_snapshots_csv_bottom_sheet.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/toast.dart';
 import '../widget/transactions/transaction_list.dart';
@@ -41,19 +42,69 @@ class AllTransactions extends HookWidget {
         backgroundColor: context.colorScheme.background,
         actions: [
           ActionButton(
-            name: R.resourcesFilterSvg,
+            name: R.resourcesDownloadSvg,
             size: 24,
             onTap: () async {
-              final selection = await showFilterBottomSheetDialog(
-                context,
-                initial: filter.value,
-              );
-              if (selection == null) {
-                return;
-              }
-              filter.value = selection;
+              await showExportSnapshotsCsvBottomSheet(context);
+              return;
+
+              d('export filter to svg');
+              await computeWithLoading(() async {
+                final snapshots = await context.mixinDatabase.snapshotDao
+                    .allSnapshots(
+                      orderByAmount: filter.value.sortBy == SortBy.amount,
+                      types: filter.value.filterBy.snapshotTypes,
+                      limit: null,
+                    )
+                    .get();
+
+                if (snapshots.isEmpty) {
+                  showErrorToast(context.l10n.noTransaction);
+                  return;
+                }
+
+                final header = [
+                  'asset',
+                  'snapshotId',
+                  'type',
+                  'amount',
+                  'confirmation',
+                  'date',
+                  'memo',
+                  'traceId',
+                  'state',
+                  'snapshotHash',
+                ];
+
+                final table = [
+                  header,
+                  ...snapshots.map((e) => [
+                        e.assetSymbol,
+                        e.snapshotId,
+                        e.type,
+                        '${e.isPositive ? '+' : ''}${e.amount}',
+                        if (e.type == SnapshotType.pending)
+                          '${e.confirmations ?? 0}/${e.assetConfirmations ?? 0}'
+                        else
+                          '',
+                        e.createdAt.toIso8601String(),
+                        e.memo,
+                        e.traceId ?? '',
+                        e.state ?? '',
+                        e.snapshotHash ?? '',
+                      ]),
+                ];
+                final csv = const ListToCsvConverter().convert(table);
+                final fileName =
+                    'transactions_${filter.value.sortBy.name}_${filter.value.filterBy.name}.csv';
+                await FileSaver.instance.saveFile(
+                  fileName,
+                  Uint8List.fromList(utf8.encode(csv)),
+                  'csv',
+                );
+              });
             },
-          )
+          ),
         ],
       ),
       body: Column(
@@ -128,7 +179,10 @@ class _FilterDropdownMenus extends StatelessWidget {
               width: 24,
               height: 24,
             ),
-            style: TextStyle(color: context.colorScheme.primaryText),
+            style: TextStyle(
+              color: context.colorScheme.primaryText,
+              fontSize: 12,
+            ),
             isDense: true,
             items: [
               DropdownMenuItem(
@@ -159,7 +213,10 @@ class _FilterDropdownMenus extends StatelessWidget {
               width: 24,
               height: 24,
             ),
-            style: TextStyle(color: context.colorScheme.primaryText),
+            style: TextStyle(
+              color: context.colorScheme.primaryText,
+              fontSize: 12,
+            ),
             isDense: true,
             items: [
               DropdownMenuItem(
@@ -194,70 +251,6 @@ class _FilterDropdownMenus extends StatelessWidget {
             onChanged: (value) =>
                 filter.value = filter.value.copyWith(filterBy: value),
           ),
-          const Spacer(),
-          ActionButton(
-            name: R.resourcesDownloadSvg,
-            size: 24,
-            padding: const EdgeInsets.all(4),
-            onTap: () async {
-              d('export filter to svg');
-              await computeWithLoading(() async {
-                final snapshots = await context.mixinDatabase.snapshotDao
-                    .allSnapshots(
-                      orderByAmount: filter.value.sortBy == SortBy.amount,
-                      types: filter.value.filterBy.snapshotTypes,
-                      limit: null,
-                    )
-                    .get();
-
-                if (snapshots.isEmpty) {
-                  showErrorToast(context.l10n.noTransaction);
-                  return;
-                }
-
-                final header = [
-                  'asset',
-                  'snapshotId',
-                  'type',
-                  'amount',
-                  'confirmation',
-                  'date',
-                  'memo',
-                  'traceId',
-                  'state',
-                  'snapshotHash',
-                ];
-
-                final table = [
-                  header,
-                  ...snapshots.map((e) => [
-                        e.assetSymbol,
-                        e.snapshotId,
-                        e.type,
-                        '${e.isPositive ? '+' : ''}${e.amount}',
-                        if (e.type == SnapshotType.pending)
-                          '${e.confirmations ?? 0}/${e.assetConfirmations ?? 0}'
-                        else
-                          '',
-                        e.createdAt.toIso8601String(),
-                        e.memo,
-                        e.traceId ?? '',
-                        e.state ?? '',
-                        e.snapshotHash ?? '',
-                      ]),
-                ];
-                final csv = const ListToCsvConverter().convert(table);
-                final fileName =
-                    'transactions_${filter.value.sortBy.name}_${filter.value.filterBy.name}.csv';
-                await FileSaver.instance.saveFile(
-                  fileName,
-                  Uint8List.fromList(utf8.encode(csv)),
-                  'csv',
-                );
-              });
-            },
-          ),
-          const SizedBox(width: 12),
         ],
       );
 }

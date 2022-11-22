@@ -132,7 +132,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "createPin": MessageLookupByLibrary.simpleMessage("创建 PIN"),
         "createPinTips":
             MessageLookupByLibrary.simpleMessage("创建 PIN 以保护您的账户安全"),
+        "customDateRange": MessageLookupByLibrary.simpleMessage("自定义日期范围"),
         "date": MessageLookupByLibrary.simpleMessage("日期"),
+        "dateRange": MessageLookupByLibrary.simpleMessage("日期范围"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
         "deleteAddressByPinTip":
             MessageLookupByLibrary.simpleMessage("请输入 PIN 来完成删除"),
@@ -233,6 +235,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("用户数据不合法"),
         "errorWithdrawalMemoFormatIncorrect":
             MessageLookupByLibrary.simpleMessage("错误 20131：提现备注格式不正确"),
+        "export": MessageLookupByLibrary.simpleMessage("导出"),
+        "exportTransactionsData":
+            MessageLookupByLibrary.simpleMessage("导出交易数据"),
         "fee": MessageLookupByLibrary.simpleMessage("手续费"),
         "filterAll": MessageLookupByLibrary.simpleMessage("全部"),
         "filterApply": MessageLookupByLibrary.simpleMessage("应用"),
@@ -245,6 +250,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "hide": MessageLookupByLibrary.simpleMessage("隐藏"),
         "hideSmallAssets": MessageLookupByLibrary.simpleMessage("隐藏小额资产"),
         "incomplete": MessageLookupByLibrary.simpleMessage("未完成"),
+        "lastNinetyDays": MessageLookupByLibrary.simpleMessage("最近 90 天"),
+        "lastSevenDays": MessageLookupByLibrary.simpleMessage("最近 7 天"),
+        "lastThirtyDays": MessageLookupByLibrary.simpleMessage("最近 30 天"),
         "linkGenerated": MessageLookupByLibrary.simpleMessage("链接已生成"),
         "memo": MessageLookupByLibrary.simpleMessage("Memo(备注)"),
         "memoHint": MessageLookupByLibrary.simpleMessage("备注（Memo）"),

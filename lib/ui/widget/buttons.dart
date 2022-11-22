@@ -179,14 +179,16 @@ class MixinPrimaryTextButton extends StatelessWidget {
     Key? key,
     required this.onTap,
     required this.text,
+    this.enable = true,
   }) : super(key: key);
 
   final VoidCallback onTap;
   final String text;
+  final bool enable;
 
   @override
   Widget build(BuildContext context) => ElevatedButton(
-        onPressed: onTap,
+        onPressed: enable ? onTap : null,
         style: ElevatedButton.styleFrom(
           backgroundColor: context.colorScheme.primaryText,
           padding: const EdgeInsets.symmetric(
@@ -199,7 +201,7 @@ class MixinPrimaryTextButton extends StatelessWidget {
         ),
         child: SelectableText(
           text,
-          onTap: onTap,
+          onTap: enable ? onTap : null,
           enableInteractiveSelection: false,
           style: const TextStyle(
             fontSize: 16,
