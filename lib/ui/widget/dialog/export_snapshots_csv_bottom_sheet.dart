@@ -198,110 +198,107 @@ class _DateRangeWidget extends StatelessWidget {
   final ValueNotifier<DateTimeRange?> customDateRange;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-        height: 56,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(width: 20),
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Text(
-                context.l10n.dateRange,
-                style: TextStyle(
-                  fontSize: 16,
-                  height: 1,
-                  color: context.colorScheme.thirdText,
-                ),
+  Widget build(BuildContext context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(width: 20),
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: Text(
+              context.l10n.dateRange,
+              style: TextStyle(
+                fontSize: 16,
+                height: 1,
+                color: context.colorScheme.thirdText,
               ),
             ),
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                DropdownButton<_DateRange>(
-                  value: dateRange.value,
-                  borderRadius: BorderRadius.circular(4),
-                  icon: SvgPicture.asset(
-                    R.resourcesIcArrowDownSvg,
-                    width: 24,
-                    height: 24,
+          ),
+          const SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              DropdownButton<_DateRange>(
+                value: dateRange.value,
+                borderRadius: BorderRadius.circular(4),
+                icon: SvgPicture.asset(
+                  R.resourcesIcArrowDownSvg,
+                  width: 24,
+                  height: 24,
+                ),
+                style: TextStyle(
+                  color: context.colorScheme.primaryText,
+                  fontSize: 16,
+                ),
+                items: [
+                  DropdownMenuItem(
+                    value: _DateRange.lastSevenDays,
+                    child: Text(context.l10n.lastSevenDays),
                   ),
-                  style: TextStyle(
-                    color: context.colorScheme.primaryText,
-                    fontSize: 16,
+                  DropdownMenuItem(
+                    value: _DateRange.lastThirtyDays,
+                    child: Text(context.l10n.lastThirtyDays),
                   ),
-                  items: [
-                    DropdownMenuItem(
-                      value: _DateRange.lastSevenDays,
-                      child: Text(context.l10n.lastSevenDays),
-                    ),
-                    DropdownMenuItem(
-                      value: _DateRange.lastThirtyDays,
-                      child: Text(context.l10n.lastThirtyDays),
-                    ),
-                    DropdownMenuItem(
-                      value: _DateRange.lastNinetyDays,
-                      child: Text(context.l10n.lastNinetyDays),
-                    ),
-                    DropdownMenuItem(
-                      value: _DateRange.custom,
-                      child: Text(context.l10n.customDateRange),
-                    ),
-                  ],
-                  onChanged: (value) async {
-                    if (value == _DateRange.custom) {
-                      final range = await showCalendarDatePicker2Dialog(
-                        context: context,
-                        config: CalendarDatePicker2WithActionButtonsConfig(
-                          firstDate: DateTime(2016),
-                          lastDate: DateTime.now(),
-                          calendarType: CalendarDatePicker2Type.range,
-                          selectedDayHighlightColor: context.colorScheme.accent,
-                          lastMonthIcon: SvgPicture.asset(
+                  DropdownMenuItem(
+                    value: _DateRange.lastNinetyDays,
+                    child: Text(context.l10n.lastNinetyDays),
+                  ),
+                  DropdownMenuItem(
+                    value: _DateRange.custom,
+                    child: Text(context.l10n.customDateRange),
+                  ),
+                ],
+                onChanged: (value) async {
+                  if (value == _DateRange.custom) {
+                    final range = await showCalendarDatePicker2Dialog(
+                      context: context,
+                      config: CalendarDatePicker2WithActionButtonsConfig(
+                        firstDate: DateTime(2016),
+                        lastDate: DateTime.now(),
+                        calendarType: CalendarDatePicker2Type.range,
+                        selectedDayHighlightColor: context.colorScheme.accent,
+                        lastMonthIcon: SvgPicture.asset(
+                          R.resourcesBackBlackSvg,
+                          width: 24,
+                          height: 24,
+                        ),
+                        nextMonthIcon: RotatedBox(
+                          quarterTurns: 2,
+                          child: SvgPicture.asset(
                             R.resourcesBackBlackSvg,
                             width: 24,
                             height: 24,
                           ),
-                          nextMonthIcon: RotatedBox(
-                            quarterTurns: 2,
-                            child: SvgPicture.asset(
-                              R.resourcesBackBlackSvg,
-                              width: 24,
-                              height: 24,
-                            ),
-                          ),
                         ),
-                        dialogSize: const Size(320, 400),
-                      );
-                      if (range == null || range.length < 2) {
-                        return;
-                      }
-                      customDateRange.value = DateTimeRange(
-                        start: range[0]!,
-                        end: range[1]!,
-                      );
-                    } else {
-                      customDateRange.value = null;
+                      ),
+                      dialogSize: const Size(320, 400),
+                    );
+                    if (range == null || range.length < 2) {
+                      return;
                     }
-                    dateRange.value = value!;
-                  },
-                ),
-                if (customDateRange.value != null)
-                  Text(
-                    '${DateFormat.yMMMMd().format(customDateRange.value!.start.toLocal())} - '
-                    '${DateFormat.yMMMMd().format(customDateRange.value!.end.toLocal())}',
-                    style: TextStyle(
-                      fontSize: 16,
-                      height: 1,
-                      color: context.colorScheme.primaryText,
-                    ),
+                    customDateRange.value = DateTimeRange(
+                      start: range[0]!,
+                      end: range[1]!,
+                    );
+                  } else {
+                    customDateRange.value = null;
+                  }
+                  dateRange.value = value!;
+                },
+              ),
+              if (customDateRange.value != null)
+                Text(
+                  '${DateFormat.yMMMMd().format(customDateRange.value!.start.toLocal())} - '
+                  '${DateFormat.yMMMMd().format(customDateRange.value!.end.toLocal())}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    height: 1,
+                    color: context.colorScheme.primaryText,
                   ),
-              ],
-            ),
-          ],
-        ),
+                ),
+            ],
+          ),
+        ],
       );
 }
 
