@@ -101,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "address": MessageLookupByLibrary.simpleMessage("Address"),
         "addressSearchHint":
             MessageLookupByLibrary.simpleMessage("Label, Address"),
+        "allAssets": MessageLookupByLibrary.simpleMessage("All assets"),
         "allTransactions":
             MessageLookupByLibrary.simpleMessage("All Transactions"),
         "alreadyHidden": m1,

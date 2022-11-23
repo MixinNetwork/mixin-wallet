@@ -221,5 +221,6 @@
   "lastThirtyDays": "Last 30 days",
   "lastNinetyDays": "Last 90 days",
   "customDateRange": "Custom date range",
-  "export": "Export"
+  "export": "Export",
+  "allAssets": "All assets"
 }

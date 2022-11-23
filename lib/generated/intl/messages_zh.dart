@@ -93,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "addWithdrawalAddress": m0,
         "address": MessageLookupByLibrary.simpleMessage("地址"),
         "addressSearchHint": MessageLookupByLibrary.simpleMessage("标题，地址"),
+        "allAssets": MessageLookupByLibrary.simpleMessage("所有币种"),
         "allTransactions": MessageLookupByLibrary.simpleMessage("所有交易"),
         "alreadyHidden": m1,
         "alreadyShown": m2,

@@ -8,13 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
+import '../../../db/mixin_database.dart';
 import '../../../generated/r.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/logger.dart';
+import '../action_button.dart';
+import '../asset_selection_list_widget.dart';
 import '../buttons.dart';
 import '../mixin_bottom_sheet.dart';
+import '../symbol.dart';
+import '../text.dart';
 import '../toast.dart';
 import '../transactions/transactions_filter.dart';
 
@@ -62,12 +67,14 @@ class _ExportSnapshotsBottomSheet extends HookWidget {
     final filterBy = useState(FilterBy.all);
     final dateRange = useState(_DateRange.lastSevenDays);
     final customDateRange = useState<DateTimeRange?>(null);
+    final asset = useState<AssetResult?>(null);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MixinBottomSheetTitle(
           title: Text(context.l10n.exportTransactionsData),
         ),
+        _AssetsFilter(asset: asset),
         _FilterWidget(filterBy: filterBy),
         _DateRangeWidget(
           dateRange: dateRange,
@@ -90,11 +97,19 @@ class _ExportSnapshotsBottomSheet extends HookWidget {
                 // load transactions to local
                 var offset = endDateTime.toIso8601String();
                 while (true) {
-                  final snapshots =
-                      await context.appServices.updateAllSnapshots(
-                    offset: offset,
-                    limit: 100,
-                  );
+                  final List<sdk.Snapshot> snapshots;
+                  if (asset.value != null) {
+                    snapshots = await context.appServices.updateAssetSnapshots(
+                      asset.value!.assetId,
+                      offset: offset,
+                      limit: 100,
+                    );
+                  } else {
+                    snapshots = await context.appServices.updateAllSnapshots(
+                      offset: offset,
+                      limit: 100,
+                    );
+                  }
                   if (snapshots.isEmpty) {
                     break;
                   }
@@ -108,6 +123,7 @@ class _ExportSnapshotsBottomSheet extends HookWidget {
                   startDateTime.startOfDay,
                   endDateTime.endOfDay,
                   types: filterBy.value.snapshotTypes,
+                  assetId: asset.value?.assetId,
                 );
 
                 if (snapshots.isEmpty) {
@@ -116,7 +132,7 @@ class _ExportSnapshotsBottomSheet extends HookWidget {
                 }
 
                 final header = [
-                  'asset',
+                  'symbol',
                   'snapshotId',
                   'type',
                   'amount',
@@ -135,7 +151,7 @@ class _ExportSnapshotsBottomSheet extends HookWidget {
                         e.snapshotId,
                         e.type,
                         '${e.isPositive ? '+' : ''}${e.amount}',
-                        if (e.type == SnapshotType.pending)
+                        if (e.type == sdk.SnapshotType.pending)
                           '${e.confirmations ?? 0}/${e.assetConfirmations ?? 0}'
                         else
                           '',
@@ -176,107 +192,110 @@ class _DateRangeWidget extends StatelessWidget {
   final ValueNotifier<DateTimeRange?> customDateRange;
 
   @override
-  Widget build(BuildContext context) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(width: 20),
-          Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: Text(
-              context.l10n.dateRange,
-              style: TextStyle(
-                fontSize: 16,
-                height: 1,
-                color: context.colorScheme.thirdText,
+  Widget build(BuildContext context) => SizedBox(
+        height: 56,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(width: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text(
+                context.l10n.dateRange,
+                style: TextStyle(
+                  fontSize: 16,
+                  height: 1,
+                  color: context.colorScheme.thirdText,
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              DropdownButton<_DateRange>(
-                value: dateRange.value,
-                borderRadius: BorderRadius.circular(4),
-                icon: SvgPicture.asset(
-                  R.resourcesIcArrowDownSvg,
-                  width: 24,
-                  height: 24,
-                ),
-                style: TextStyle(
-                  color: context.colorScheme.primaryText,
-                  fontSize: 16,
-                ),
-                items: [
-                  DropdownMenuItem(
-                    value: _DateRange.lastSevenDays,
-                    child: Text(context.l10n.lastSevenDays),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                DropdownButton<_DateRange>(
+                  value: dateRange.value,
+                  borderRadius: BorderRadius.circular(4),
+                  icon: SvgPicture.asset(
+                    R.resourcesIcArrowDownSvg,
+                    width: 24,
+                    height: 24,
                   ),
-                  DropdownMenuItem(
-                    value: _DateRange.lastThirtyDays,
-                    child: Text(context.l10n.lastThirtyDays),
+                  style: TextStyle(
+                    color: context.colorScheme.primaryText,
+                    fontSize: 16,
                   ),
-                  DropdownMenuItem(
-                    value: _DateRange.lastNinetyDays,
-                    child: Text(context.l10n.lastNinetyDays),
-                  ),
-                  DropdownMenuItem(
-                    value: _DateRange.custom,
-                    child: Text(context.l10n.customDateRange),
-                  ),
-                ],
-                onChanged: (value) async {
-                  if (value == _DateRange.custom) {
-                    final range = await showCalendarDatePicker2Dialog(
-                      context: context,
-                      config: CalendarDatePicker2WithActionButtonsConfig(
-                        firstDate: DateTime(2016),
-                        lastDate: DateTime.now(),
-                        calendarType: CalendarDatePicker2Type.range,
-                        selectedDayHighlightColor: context.colorScheme.accent,
-                        lastMonthIcon: SvgPicture.asset(
-                          R.resourcesBackBlackSvg,
-                          width: 24,
-                          height: 24,
-                        ),
-                        nextMonthIcon: RotatedBox(
-                          quarterTurns: 2,
-                          child: SvgPicture.asset(
+                  items: [
+                    DropdownMenuItem(
+                      value: _DateRange.lastSevenDays,
+                      child: Text(context.l10n.lastSevenDays),
+                    ),
+                    DropdownMenuItem(
+                      value: _DateRange.lastThirtyDays,
+                      child: Text(context.l10n.lastThirtyDays),
+                    ),
+                    DropdownMenuItem(
+                      value: _DateRange.lastNinetyDays,
+                      child: Text(context.l10n.lastNinetyDays),
+                    ),
+                    DropdownMenuItem(
+                      value: _DateRange.custom,
+                      child: Text(context.l10n.customDateRange),
+                    ),
+                  ],
+                  onChanged: (value) async {
+                    if (value == _DateRange.custom) {
+                      final range = await showCalendarDatePicker2Dialog(
+                        context: context,
+                        config: CalendarDatePicker2WithActionButtonsConfig(
+                          firstDate: DateTime(2016),
+                          lastDate: DateTime.now(),
+                          calendarType: CalendarDatePicker2Type.range,
+                          selectedDayHighlightColor: context.colorScheme.accent,
+                          lastMonthIcon: SvgPicture.asset(
                             R.resourcesBackBlackSvg,
                             width: 24,
                             height: 24,
                           ),
+                          nextMonthIcon: RotatedBox(
+                            quarterTurns: 2,
+                            child: SvgPicture.asset(
+                              R.resourcesBackBlackSvg,
+                              width: 24,
+                              height: 24,
+                            ),
+                          ),
                         ),
-                      ),
-                      dialogSize: const Size(320, 400),
-                    );
-                    if (range == null || range.length < 2) {
-                      return;
+                        dialogSize: const Size(320, 400),
+                      );
+                      if (range == null || range.length < 2) {
+                        return;
+                      }
+                      customDateRange.value = DateTimeRange(
+                        start: range[0]!,
+                        end: range[1]!,
+                      );
+                    } else {
+                      customDateRange.value = null;
                     }
-                    customDateRange.value = DateTimeRange(
-                      start: range[0]!,
-                      end: range[1]!,
-                    );
-                  } else {
-                    customDateRange.value = null;
-                  }
-                  dateRange.value = value!;
-                },
-              ),
-              if (customDateRange.value != null)
-                Text(
-                  '${DateFormat.yMMMMd().format(customDateRange.value!.start.toLocal())} - '
-                  '${DateFormat.yMMMMd().format(customDateRange.value!.end.toLocal())}',
-                  style: TextStyle(
-                    fontSize: 16,
-                    height: 1,
-                    color: context.colorScheme.primaryText,
-                  ),
+                    dateRange.value = value!;
+                  },
                 ),
-            ],
-          ),
-        ],
+                if (customDateRange.value != null)
+                  Text(
+                    '${DateFormat.yMMMMd().format(customDateRange.value!.start.toLocal())} - '
+                    '${DateFormat.yMMMMd().format(customDateRange.value!.end.toLocal())}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      height: 1,
+                      color: context.colorScheme.primaryText,
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
       );
 }
 
@@ -346,5 +365,138 @@ class _FilterWidget extends StatelessWidget {
             onChanged: (value) => filterBy.value = value!,
           ),
         ],
+      );
+}
+
+class _AssetsFilter extends StatelessWidget {
+  const _AssetsFilter({
+    Key? key,
+    required this.asset,
+  }) : super(key: key);
+
+  final ValueNotifier<AssetResult?> asset;
+
+  @override
+  Widget build(BuildContext context) {
+    final assetItem = asset.value;
+
+    Future<void> handleSelection() async {
+      final selected = await showAssetSelectionBottomSheet(
+        context: context,
+        initialSelected: assetItem?.assetId,
+      );
+      if (selected == null) {
+        return;
+      }
+      asset.value = selected;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          const SizedBox(width: 20),
+          MixinText(
+            context.l10n.assets,
+            style: TextStyle(
+              fontSize: 16,
+              color: context.colorScheme.thirdText,
+            ),
+          ),
+          const SizedBox(width: 10),
+          if (assetItem == null)
+            _NoAssetFilterWidget(onTap: handleSelection)
+          else
+            _AssetItemWidget(
+              asset: assetItem,
+              onClear: () {
+                asset.value = null;
+              },
+              onTap: handleSelection,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AssetItemWidget extends StatelessWidget {
+  const _AssetItemWidget({
+    Key? key,
+    required this.asset,
+    required this.onClear,
+    required this.onTap,
+  }) : super(key: key);
+
+  final AssetResult asset;
+
+  final VoidCallback onClear;
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        children: [
+          InkWell(
+            borderRadius: BorderRadius.circular(4),
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              child: Row(
+                children: [
+                  SymbolIconWithBorder(
+                    symbolUrl: asset.iconUrl,
+                    chainUrl: asset.chainIconUrl,
+                    size: 24,
+                    chainSize: 10,
+                  ),
+                  const SizedBox(width: 10),
+                  MixinText(
+                    asset.name,
+                    style: TextStyle(
+                      color: context.colorScheme.primaryText,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  SvgPicture.asset(R.resourcesIcArrowDownSvg),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: 4),
+          ActionButton(
+            name: R.resourcesCloseSvg,
+            onTap: onClear,
+          ),
+        ],
+      );
+}
+
+class _NoAssetFilterWidget extends StatelessWidget {
+  const _NoAssetFilterWidget({Key? key, required this.onTap}) : super(key: key);
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+        borderRadius: BorderRadius.circular(4),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+          child: Row(
+            children: [
+              MixinText(
+                context.l10n.allAssets,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: context.colorScheme.primaryText,
+                ),
+              ),
+              const SizedBox(width: 4),
+              SvgPicture.asset(R.resourcesIcArrowDownSvg),
+            ],
+          ),
+        ),
       );
 }

@@ -110,12 +110,16 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
     DateTime start,
     DateTime end, {
     List<String> types = const [],
+    String? assetId,
   }) async {
     final snapshots = await db.snapshotItems(
       (s, u, a) {
         Expression<bool> predicate = const Constant(true);
         if (types.isNotEmpty) {
           predicate &= s.type.isIn(types);
+        }
+        if (assetId != null) {
+          predicate &= s.assetId.equals(assetId);
         }
         return predicate &
             s.createdAt.isBetweenValues(

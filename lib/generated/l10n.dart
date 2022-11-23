@@ -2283,6 +2283,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `All assets`
+  String get allAssets {
+    return Intl.message(
+      'All assets',
+      name: 'allAssets',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

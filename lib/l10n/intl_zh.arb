@@ -218,5 +218,6 @@
   "lastThirtyDays": "最近 30 天",
   "lastNinetyDays": "最近 90 天",
   "customDateRange": "自定义日期范围",
-  "export": "导出"
+  "export": "导出",
+  "allAssets": "所有币种"
 }
