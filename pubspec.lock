@@ -116,9 +116,11 @@ packages:
   calendar_date_picker2:
     dependency: "direct main"
     description:
-      name: calendar_date_picker2
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "69b1d268a63e628565574b50b3b2b64591ac0dbb"
+      resolved-ref: "69b1d268a63e628565574b50b3b2b64591ac0dbb"
+      url: "https://github.com/boyan01/calendar_date_picker2.git"
+    source: git
     version: "0.3.1"
   characters:
     dependency: transitive

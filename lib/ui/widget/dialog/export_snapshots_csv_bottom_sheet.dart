@@ -270,6 +270,23 @@ class _DateRangeWidget extends StatelessWidget {
                             height: 24,
                           ),
                         ),
+                        toggleIcon: SvgPicture.asset(
+                          R.resourcesIcArrowDownSvg,
+                          width: 24,
+                          height: 24,
+                        ),
+                        okButton: MixinText(
+                          context.l10n.confirm,
+                          style: TextStyle(
+                            color: context.colorScheme.accent,
+                          ),
+                        ),
+                        cancelButton: MixinText(
+                          context.l10n.cancel,
+                          style: TextStyle(
+                            color: context.colorScheme.secondaryText,
+                          ),
+                        ),
                       ),
                       dialogSize: const Size(320, 400),
                     );
