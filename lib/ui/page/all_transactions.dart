@@ -1,22 +1,14 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
-import 'package:csv/csv.dart';
-import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../util/extension/extension.dart';
-import '../../util/logger.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';
 import '../widget/dialog/export_snapshots_csv_bottom_sheet.dart';
 import '../widget/mixin_appbar.dart';
-import '../widget/toast.dart';
 import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
 
@@ -111,7 +103,7 @@ class _FilterDropdownMenus extends StatelessWidget {
             '${context.l10n.sortBy}:',
             style: TextStyle(
               color: context.colorScheme.secondaryText,
-              fontSize: 12,
+              fontSize: 14,
             ),
           ),
           const SizedBox(width: 8),
@@ -124,7 +116,7 @@ class _FilterDropdownMenus extends StatelessWidget {
             ),
             style: TextStyle(
               color: context.colorScheme.primaryText,
-              fontSize: 12,
+              fontSize: 14,
             ),
             isDense: true,
             items: [
@@ -145,7 +137,7 @@ class _FilterDropdownMenus extends StatelessWidget {
             '${context.l10n.filterBy}:',
             style: TextStyle(
               color: context.colorScheme.secondaryText,
-              fontSize: 12,
+              fontSize: 14,
             ),
           ),
           const SizedBox(width: 8),
@@ -158,7 +150,7 @@ class _FilterDropdownMenus extends StatelessWidget {
             ),
             style: TextStyle(
               color: context.colorScheme.primaryText,
-              fontSize: 12,
+              fontSize: 14,
             ),
             isDense: true,
             items: [
