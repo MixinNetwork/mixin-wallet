@@ -163,8 +163,14 @@ class _ExportSnapshotsBottomSheet extends HookWidget {
                       ]),
                 ];
                 final csv = const ListToCsvConverter().convert(table);
-                final fileName = 'transactions_${filterBy.value.name}_'
-                    '${DateFormat('yyyy_MM_dd').format(startDateTime)}_'
+                var fileName = 'transactions_';
+                if (filterBy.value != FilterBy.all) {
+                  fileName += '${filterBy.value.name}_';
+                }
+                if (asset.value != null) {
+                  fileName += '${asset.value!.symbol}_';
+                }
+                fileName += '${DateFormat('yyyy_MM_dd').format(startDateTime)}_'
                     '${DateFormat('yyyy_MM_dd').format(endDateTime)}.csv';
                 await FileSaver.instance.saveFile(
                   fileName,
