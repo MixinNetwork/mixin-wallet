@@ -283,7 +283,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .insertAll(users.data.map((user) => user.toDbUser()).toList());
   }
 
-  Future<void> updateAssetSnapshots(
+  Future<List<sdk.Snapshot>> updateAssetSnapshots(
     String assetId, {
     String? offset,
     int limit = 30,
@@ -309,6 +309,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         insertAsset?.call(),
       ].where((element) => element != null).cast<Future<void>>());
     });
+    return response.data;
   }
 
   Future<List<SnapshotItem>> getSnapshots({
@@ -347,7 +348,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     });
   }
 
-  Future<void> updateAllSnapshots({
+  Future<List<sdk.Snapshot>> updateAllSnapshots({
     String? offset,
     String? opponent,
     int limit = 30,
@@ -369,6 +370,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         ...closures.map((e) => e?.call())
       ].whereNotNull());
     });
+    return snapshots;
   }
 
   Future<void> updateSnapshotById({required String snapshotId}) async {

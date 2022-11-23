@@ -5,12 +5,32 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../main.dart';
+import '../service/profile/profile_manager.dart';
+
+class NativeScrollBuilder extends HookWidget {
+  const NativeScrollBuilder({Key? key, required this.builder})
+      : super(key: key);
+
+  final Widget Function(BuildContext context, ScrollController controller)
+      builder;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = useScrollController();
+    if (isLoginByCredential) {
+      return _NativeScrollBuilder(builder: builder);
+    } else {
+      return builder(context, controller);
+    }
+  }
+}
 
 /// https://github.com/tomgilder/native_scroll/blob/main/lib/src/native_scroll_web.dart
-class NativeScrollBuilder extends StatefulWidget {
-  const NativeScrollBuilder({
+class _NativeScrollBuilder extends StatefulWidget {
+  const _NativeScrollBuilder({
     Key? key,
     required this.builder,
   }) : super(key: key);
@@ -19,10 +39,10 @@ class NativeScrollBuilder extends StatefulWidget {
       builder;
 
   @override
-  State<NativeScrollBuilder> createState() => _NativeScrollBuilderState();
+  State<_NativeScrollBuilder> createState() => _NativeScrollBuilderState();
 }
 
-class _NativeScrollBuilderState extends State<NativeScrollBuilder>
+class _NativeScrollBuilderState extends State<_NativeScrollBuilder>
     with RouteAware {
   static int _globalId = 0;
 

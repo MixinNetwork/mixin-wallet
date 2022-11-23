@@ -75,6 +75,12 @@ dependencies:
   overlay_support: ^2.1.0
   fixnum: ^1.0.1
   x25519: ^0.1.1
+  csv: ^5.0.1
+  file_saver: ^0.1.1
+  calendar_date_picker2:
+    git:
+      url: https://github.com/boyan01/calendar_date_picker2.git
+      ref: 69b1d268a63e628565574b50b3b2b64591ac0dbb
 
 dev_dependencies:
   flutter_test:

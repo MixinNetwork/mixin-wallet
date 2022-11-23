@@ -101,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "address": MessageLookupByLibrary.simpleMessage("Address"),
         "addressSearchHint":
             MessageLookupByLibrary.simpleMessage("Label, Address"),
+        "allAssets": MessageLookupByLibrary.simpleMessage("All assets"),
         "allTransactions":
             MessageLookupByLibrary.simpleMessage("All Transactions"),
         "alreadyHidden": m1,
@@ -146,7 +147,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "createPin": MessageLookupByLibrary.simpleMessage("Create PIN"),
         "createPinTips": MessageLookupByLibrary.simpleMessage(
             "Please create a PIN to protect your assets"),
+        "customDateRange":
+            MessageLookupByLibrary.simpleMessage("Custom date range"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
+        "dateRange": MessageLookupByLibrary.simpleMessage("date range"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deleteAddressByPinTip":
             MessageLookupByLibrary.simpleMessage("Enter PIN to delete address"),
@@ -256,6 +260,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "errorWithdrawalMemoFormatIncorrect":
             MessageLookupByLibrary.simpleMessage(
                 "ERROR 20131: Withdrawal memo format incorrect."),
+        "export": MessageLookupByLibrary.simpleMessage("Export"),
+        "exportTransactionsData":
+            MessageLookupByLibrary.simpleMessage("Export transactions data"),
         "fee": MessageLookupByLibrary.simpleMessage("Fee"),
         "filterAll": MessageLookupByLibrary.simpleMessage("All"),
         "filterApply": MessageLookupByLibrary.simpleMessage("Apply"),
@@ -269,6 +276,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "hideSmallAssets":
             MessageLookupByLibrary.simpleMessage("Hide small assets"),
         "incomplete": MessageLookupByLibrary.simpleMessage("Incomplete"),
+        "lastNinetyDays": MessageLookupByLibrary.simpleMessage("Last 90 days"),
+        "lastSevenDays": MessageLookupByLibrary.simpleMessage("Last 7 days"),
+        "lastThirtyDays": MessageLookupByLibrary.simpleMessage("Last 30 days"),
         "linkGenerated": MessageLookupByLibrary.simpleMessage("Link generated"),
         "memo": MessageLookupByLibrary.simpleMessage("Memo"),
         "memoHint": MessageLookupByLibrary.simpleMessage("Memo"),
