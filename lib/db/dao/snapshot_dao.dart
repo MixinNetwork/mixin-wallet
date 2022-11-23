@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
+import '../converter/millis_date_converter.dart';
 import '../mixin_database.dart';
 import '../util/util.dart';
 
@@ -104,6 +105,32 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
         ]),
         (s, u, a) => limit == null ? maxLimit : Limit(limit, offset),
       );
+
+  Future<List<SnapshotItem>> allSnapshotsInDateTimeRange(
+    DateTime start,
+    DateTime end, {
+    List<String> types = const [],
+  }) async {
+    final snapshots = await db.snapshotItems(
+      (s, u, a) {
+        Expression<bool> predicate = const Constant(true);
+        if (types.isNotEmpty) {
+          predicate &= s.type.isIn(types);
+        }
+        return predicate &
+            s.createdAt.isBetweenValues(
+              const MillisDateConverterNotnull().toSql(start),
+              const MillisDateConverterNotnull().toSql(end),
+            );
+      },
+      (s, u, a) => OrderBy([
+        OrderingTerm.desc(s.createdAt),
+        OrderingTerm.desc(s.snapshotId),
+      ]),
+      (s, u, a) => maxLimit,
+    ).get();
+    return snapshots;
+  }
 
   Selectable<SnapshotItem> snapshots(
     String assetId, {

@@ -1,13 +1,21 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:csv/csv.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../../generated/r.dart';
 import '../../../util/extension/extension.dart';
+import '../../../util/logger.dart';
 import '../buttons.dart';
 import '../mixin_bottom_sheet.dart';
+import '../toast.dart';
 import '../transactions/transactions_filter.dart';
 
 Future<void> showExportSnapshotsCsvBottomSheet(BuildContext context) async {
@@ -22,6 +30,28 @@ enum _DateRange {
   lastThirtyDays,
   lastNinetyDays,
   custom,
+}
+
+extension _DateRangeExt on _DateRange {
+  DateTime get startDate {
+    final now = DateTime.now();
+    switch (this) {
+      case _DateRange.lastSevenDays:
+        return now.subtract(const Duration(days: 7));
+      case _DateRange.lastThirtyDays:
+        return now.subtract(const Duration(days: 30));
+      case _DateRange.lastNinetyDays:
+        return now.subtract(const Duration(days: 90));
+      case _DateRange.custom:
+        return now;
+    }
+  }
+}
+
+extension _DateTimeExt on DateTime {
+  DateTime get startOfDay => DateTime(year, month, day);
+
+  DateTime get endOfDay => DateTime(year, month, day, 23, 59, 59);
 }
 
 class _ExportSnapshotsBottomSheet extends HookWidget {
@@ -202,7 +232,70 @@ class _ExportSnapshotsBottomSheet extends HookWidget {
         Center(
           child: MixinPrimaryTextButton(
             text: context.l10n.export,
-            onTap: () {},
+            onTap: () async {
+              d('export filter to svg');
+
+              final startDateTime =
+                  (customDateRange.value?.start ?? dateRange.value.startDate)
+                      .toLocal();
+              final endDateTime =
+                  (customDateRange.value?.end ?? DateTime.now()).toLocal();
+
+              await computeWithLoading(() async {
+                final snapshots = await context.mixinDatabase.snapshotDao
+                    .allSnapshotsInDateTimeRange(
+                  startDateTime.startOfDay,
+                  endDateTime.endOfDay,
+                  types: filterBy.value.snapshotTypes,
+                );
+
+                if (snapshots.isEmpty) {
+                  showErrorToast(context.l10n.noTransaction);
+                  return;
+                }
+
+                final header = [
+                  'asset',
+                  'snapshotId',
+                  'type',
+                  'amount',
+                  'confirmation',
+                  'date',
+                  'memo',
+                  'traceId',
+                  'state',
+                  'snapshotHash',
+                ];
+
+                final table = [
+                  header,
+                  ...snapshots.map((e) => [
+                        e.assetSymbol,
+                        e.snapshotId,
+                        e.type,
+                        '${e.isPositive ? '+' : ''}${e.amount}',
+                        if (e.type == SnapshotType.pending)
+                          '${e.confirmations ?? 0}/${e.assetConfirmations ?? 0}'
+                        else
+                          '',
+                        e.createdAt.toIso8601String(),
+                        e.memo,
+                        e.traceId ?? '',
+                        e.state ?? '',
+                        e.snapshotHash ?? '',
+                      ]),
+                ];
+                final csv = const ListToCsvConverter().convert(table);
+                final fileName = 'transactions_${filterBy.value.name}_'
+                    '${DateFormat('yyyy_MM_dd').format(startDateTime)}_'
+                    '${DateFormat('yyyy_MM_dd').format(endDateTime)}.csv';
+                await FileSaver.instance.saveFile(
+                  fileName,
+                  Uint8List.fromList(utf8.encode(csv)),
+                  'csv',
+                );
+              });
+            },
           ),
         ),
         const SizedBox(height: 32),

@@ -46,63 +46,6 @@ class AllTransactions extends HookWidget {
             size: 24,
             onTap: () async {
               await showExportSnapshotsCsvBottomSheet(context);
-              return;
-
-              d('export filter to svg');
-              await computeWithLoading(() async {
-                final snapshots = await context.mixinDatabase.snapshotDao
-                    .allSnapshots(
-                      orderByAmount: filter.value.sortBy == SortBy.amount,
-                      types: filter.value.filterBy.snapshotTypes,
-                      limit: null,
-                    )
-                    .get();
-
-                if (snapshots.isEmpty) {
-                  showErrorToast(context.l10n.noTransaction);
-                  return;
-                }
-
-                final header = [
-                  'asset',
-                  'snapshotId',
-                  'type',
-                  'amount',
-                  'confirmation',
-                  'date',
-                  'memo',
-                  'traceId',
-                  'state',
-                  'snapshotHash',
-                ];
-
-                final table = [
-                  header,
-                  ...snapshots.map((e) => [
-                        e.assetSymbol,
-                        e.snapshotId,
-                        e.type,
-                        '${e.isPositive ? '+' : ''}${e.amount}',
-                        if (e.type == SnapshotType.pending)
-                          '${e.confirmations ?? 0}/${e.assetConfirmations ?? 0}'
-                        else
-                          '',
-                        e.createdAt.toIso8601String(),
-                        e.memo,
-                        e.traceId ?? '',
-                        e.state ?? '',
-                        e.snapshotHash ?? '',
-                      ]),
-                ];
-                final csv = const ListToCsvConverter().convert(table);
-                final fileName =
-                    'transactions_${filter.value.sortBy.name}_${filter.value.filterBy.name}.csv';
-                await FileSaver.instance.saveFile(
-                  fileName,
-                  Uint8List.fromList(utf8.encode(csv)),
-                  'csv',
-                );
-              });
             },
           ),
         ],
