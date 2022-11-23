@@ -347,7 +347,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     });
   }
 
-  Future<void> updateAllSnapshots({
+  Future<List<sdk.Snapshot>> updateAllSnapshots({
     String? offset,
     String? opponent,
     int limit = 30,
@@ -369,6 +369,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         ...closures.map((e) => e?.call())
       ].whereNotNull());
     });
+    return snapshots;
   }
 
   Future<void> updateSnapshotById({required String snapshotId}) async {

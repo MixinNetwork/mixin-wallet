@@ -241,7 +241,23 @@ class _ExportSnapshotsBottomSheet extends HookWidget {
               final endDateTime =
                   (customDateRange.value?.end ?? DateTime.now()).toLocal();
 
-              await computeWithLoading(() async {
+              await runWithLoading(() async {
+                // load transactions to local
+                var offset = endDateTime.toIso8601String();
+                while (true) {
+                  final snapshots =
+                      await context.appServices.updateAllSnapshots(
+                    offset: offset,
+                    limit: 100,
+                  );
+                  if (snapshots.isEmpty) {
+                    break;
+                  }
+                  if (snapshots.last.createdAt.isBefore(startDateTime)) {
+                    break;
+                  }
+                  offset = snapshots.last.createdAt.toIso8601String();
+                }
                 final snapshots = await context.mixinDatabase.snapshotDao
                     .allSnapshotsInDateTimeRange(
                   startDateTime.startOfDay,

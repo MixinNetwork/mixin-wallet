@@ -6,6 +6,7 @@ import 'package:overlay_support/overlay_support.dart';
 
 import '../../generated/r.dart';
 import '../../util/extension/extension.dart';
+import '../../util/logger.dart';
 import 'text.dart';
 
 const _kToastDuration = Duration(milliseconds: 2000);
@@ -14,6 +15,27 @@ Future<T> computeWithLoading<T>(Future<T> Function() compute) async {
   final entry = _showLoading();
   try {
     return await compute();
+  } finally {
+    entry.dismiss();
+  }
+}
+
+Future<void> runWithLoading(
+  Future<void> Function() run, {
+  bool handleError = true,
+}) async {
+  final entry = _showLoading();
+  try {
+    await run();
+  } catch (error, stacktrace) {
+    e('runWithLoading $error $stacktrace');
+    if (!handleError) {
+      rethrow;
+    }
+    _showToast(
+      R.resourcesToastSucceedSvg,
+      error.toDisplayString,
+    );
   } finally {
     entry.dismiss();
   }
@@ -40,7 +62,7 @@ OverlaySupportEntry _showLoading() => showOverlay(
 void showSuccessToast(String title, [String? message]) {
   _showToast(
     R.resourcesToastSucceedSvg,
-    title,
+    (context) => title,
     message,
   );
 }
@@ -48,7 +70,7 @@ void showSuccessToast(String title, [String? message]) {
 void showWarningToast(String title, [String? message]) {
   _showToast(
     R.resourcesToastWarningSvg,
-    title,
+    (context) => title,
     message,
   );
 }
@@ -56,18 +78,22 @@ void showWarningToast(String title, [String? message]) {
 void showErrorToast(String title, [String? message]) {
   _showToast(
     R.resourcesToastErrorSvg,
-    title,
+    (context) => title,
     message,
   );
 }
 
-void _showToast(String assetName, String title, [String? message]) {
+void _showToast(
+  String assetName,
+  String Function(BuildContext context) titleBuilder, [
+  String? message,
+]) {
   showOverlay(
     (context, progress) => Opacity(
       opacity: progress,
       child: _MixinToast(
         assetName: assetName,
-        title: title,
+        title: titleBuilder(context),
         message: message,
       ),
     ),
