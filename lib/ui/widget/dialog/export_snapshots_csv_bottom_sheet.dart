@@ -136,12 +136,16 @@ class _ExportSnapshotsBottomSheet extends HookWidget {
                   'snapshotId',
                   'type',
                   'amount',
+                  'sender',
+                  'receiver',
                   'confirmation',
+                  'transactionHash',
                   'date',
                   'memo',
                   'traceId',
                   'state',
                   'snapshotHash',
+                  'opponentId',
                 ];
 
                 final table = [
@@ -151,15 +155,19 @@ class _ExportSnapshotsBottomSheet extends HookWidget {
                         e.snapshotId,
                         e.type,
                         '${e.isPositive ? '+' : ''}${e.amount}',
+                        e.sender ?? '',
+                        e.receiver ?? '',
                         if (e.type == sdk.SnapshotType.pending)
                           '${e.confirmations ?? 0}/${e.assetConfirmations ?? 0}'
                         else
                           '',
+                        e.transactionHash ?? '',
                         e.createdAt.toIso8601String(),
                         e.memo,
                         e.traceId ?? '',
                         e.state ?? '',
                         e.snapshotHash ?? '',
+                        e.opponentId ?? '',
                       ]),
                 ];
                 final csv = const ListToCsvConverter().convert(table);
