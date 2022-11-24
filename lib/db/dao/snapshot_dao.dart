@@ -107,11 +107,12 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
       );
 
   Future<List<SnapshotItem>> allSnapshotsInDateTimeRange(
-    DateTime start,
-    DateTime end, {
-    List<String> types = const [],
-    String? assetId,
-  }) async {
+      {List<String> types = const [],
+      String? assetId,
+      int? offset,
+      int? limit,
+      DateTime? start,
+      DateTime? end}) async {
     final snapshots = await db.snapshotItems(
       (s, u, a) {
         Expression<bool> predicate = const Constant(true);
@@ -121,17 +122,21 @@ class SnapshotDao extends DatabaseAccessor<MixinDatabase>
         if (assetId != null) {
           predicate &= s.assetId.equals(assetId);
         }
-        return predicate &
-            s.createdAt.isBetweenValues(
-              const MillisDateConverterNotnull().toSql(start),
-              const MillisDateConverterNotnull().toSql(end),
-            );
+        if (start != null) {
+          predicate &= s.createdAt.isBiggerOrEqualValue(
+              const MillisDateConverterNotnull().toSql(start));
+        }
+        if (end != null) {
+          predicate &= s.createdAt.isSmallerOrEqualValue(
+              const MillisDateConverterNotnull().toSql(end));
+        }
+        return predicate;
       },
       (s, u, a) => OrderBy([
         OrderingTerm.desc(s.createdAt),
         OrderingTerm.desc(s.snapshotId),
       ]),
-      (s, u, a) => maxLimit,
+      (s, u, a) => limit == null ? maxLimit : Limit(limit, offset),
     ).get();
     return snapshots;
   }

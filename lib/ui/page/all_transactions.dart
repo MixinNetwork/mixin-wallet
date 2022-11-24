@@ -73,14 +73,29 @@ class _AllTransactionsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) => TransactionListBuilder(
         key: ValueKey(filter),
-        loadMoreItemDb: (offset, limit) => context.mixinDatabase.snapshotDao
-            .allSnapshots(
-                offset: offset,
-                limit: limit,
-                types: filter.filterBy.snapshotTypes)
-            .get(),
-        refreshSnapshots: (offset, limit) => context.appServices
-            .updateAllSnapshots(offset: offset, limit: limit),
+        loadMoreItemDb: (offset, limit) {
+          final range = filter.range.range;
+          return context.mixinDatabase.snapshotDao.allSnapshotsInDateTimeRange(
+            offset: offset,
+            limit: limit,
+            types: filter.filterBy.snapshotTypes,
+            assetId: filter.asset?.assetId,
+            start: range?.start,
+            end: range?.end,
+          );
+        },
+        refreshSnapshots: (offset, limit) {
+          final asset = filter.asset;
+          if (asset != null) {
+            return context.appServices.updateAssetSnapshots(
+              asset.assetId,
+              limit: limit,
+              offset: offset,
+            );
+          }
+          return context.appServices
+              .updateAllSnapshots(offset: offset, limit: limit);
+        },
         builder: (context, snapshots) {
           if (snapshots.isEmpty) {
             return const EmptyTransaction();

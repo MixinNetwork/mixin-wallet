@@ -120,8 +120,8 @@ class _ExportSnapshotsBottomSheet extends HookWidget {
                 }
                 final snapshots = await context.mixinDatabase.snapshotDao
                     .allSnapshotsInDateTimeRange(
-                  startDateTime.startOfDay,
-                  endDateTime.endOfDay,
+                  start: startDateTime.startOfDay,
+                  end: endDateTime.endOfDay,
                   types: filterBy.value.snapshotTypes,
                   assetId: asset.value?.assetId,
                 );
