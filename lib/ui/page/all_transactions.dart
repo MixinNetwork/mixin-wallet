@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +9,10 @@ import 'package:intl/intl.dart';
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
+import '../../util/hook.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
+import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
@@ -19,15 +23,65 @@ import '../widget/text.dart';
 import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
 
+extension _AllTransactionsFilter on BuildContext {
+  void updateFilter(TransactionFilter filter) {
+    final range = filter.range.range;
+    replace(transactionsUri.replace(queryParameters: {
+      'filterBy': filter.filterBy.name,
+      'rangeType': filter.range.type.name,
+      if (filter.range.type == DateRangeType.custom) ...{
+        'start': range!.start.toIso8601String(),
+        'end': range.end.toIso8601String(),
+      },
+      if (filter.asset != null) 'asset': filter.asset!.assetId,
+    }));
+  }
+}
+
 class AllTransactions extends HookWidget {
   const AllTransactions({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final filter = useState(const TransactionFilter(
-      filterBy: FilterBy.all,
-      range: DateRange.all(),
-    ));
+    final filterBy = useQueryParameter('filterBy', path: transactionsUri.path);
+    final rangeType =
+        useQueryParameter('rangeType', path: transactionsUri.path);
+    final start = useQueryParameter('start', path: transactionsUri.path);
+    final end = useQueryParameter('end', path: transactionsUri.path);
+    final assetId = useQueryParameter('asset', path: transactionsUri.path);
+
+    final filter = useMemoized(() {
+      final type =
+          DateRangeType.values.byNameOrNull(rangeType) ?? DateRangeType.all;
+      final DateRange range;
+      switch (type) {
+        case DateRangeType.all:
+          range = const DateRange.all();
+          break;
+        case DateRangeType.lastSevenDays:
+          range = const DateRange.lastSevenDays();
+          break;
+        case DateRangeType.lastThirtyDays:
+          range = const DateRange.lastThirtyDays();
+          break;
+        case DateRangeType.lastNinetyDays:
+          range = const DateRange.lastNinetyDays();
+          break;
+        case DateRangeType.custom:
+          final startDate = DateTime.tryParse(start);
+          final endDate = DateTime.tryParse(end);
+          if (startDate != null && endDate != null) {
+            range = DateRange.custom(startDate, endDate);
+          } else {
+            range = const DateRange.all();
+          }
+          break;
+      }
+      return TransactionFilter(
+        filterBy: FilterBy.values.byNameOrNull(filterBy) ?? FilterBy.all,
+        range: range,
+      );
+    }, [filterBy, rangeType, start, end, assetId]);
     return Scaffold(
       backgroundColor: context.colorScheme.background,
       appBar: MixinAppBar(
@@ -55,7 +109,7 @@ class AllTransactions extends HookWidget {
       body: Column(
         children: [
           _FilterDropdownMenus(filter: filter),
-          Expanded(child: _AllTransactionsBody(filter: filter.value)),
+          Expanded(child: _AllTransactionsBody(filter: filter)),
         ],
       ),
     );
@@ -106,6 +160,11 @@ class _AllTransactionsBody extends StatelessWidget {
               itemCount: snapshots.length,
               itemBuilder: (context, index) => TransactionItem(
                 item: snapshots[index],
+                onTap: () {
+                  context.push(transactionsSnapshotDetailPath.toUri(
+                    {'id': snapshots[index].snapshotId},
+                  ));
+                },
               ),
             ),
           );
@@ -117,7 +176,7 @@ class _FilterDropdownMenus extends StatelessWidget {
   const _FilterDropdownMenus({Key? key, required this.filter})
       : super(key: key);
 
-  final ValueNotifier<TransactionFilter> filter;
+  final TransactionFilter filter;
 
   @override
   Widget build(BuildContext context) => Wrap(
@@ -132,7 +191,7 @@ class _FilterDropdownMenus extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           DropdownButton<FilterBy>(
-            value: filter.value.filterBy,
+            value: filter.filterBy,
             icon: SvgPicture.asset(
               R.resourcesIcArrowDownSvg,
               width: 24,
@@ -174,7 +233,7 @@ class _FilterDropdownMenus extends StatelessWidget {
               ),
             ],
             onChanged: (value) =>
-                filter.value = filter.value.copyWith(filterBy: value),
+                context.updateFilter(filter.copyWith(filterBy: value)),
           ),
           _DateTimeFilterWidget(filter: filter),
           _AssetsFilterWidget(filter: filter),
@@ -280,11 +339,11 @@ class _DateTimeFilterWidget extends StatelessWidget {
     Key? key,
     required this.filter,
   }) : super(key: key);
-  final ValueNotifier<TransactionFilter> filter;
+  final TransactionFilter filter;
 
   @override
   Widget build(BuildContext context) {
-    final dateRange = filter.value.range;
+    final dateRange = filter.range;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: PopupMenuButton<DateRangeType>(
@@ -314,23 +373,23 @@ class _DateTimeFilterWidget extends StatelessWidget {
         onSelected: (item) async {
           switch (item) {
             case DateRangeType.all:
-              filter.value = filter.value.copyWith(
-                range: const DateRange.all(),
+              context.updateFilter(
+                filter.copyWith(range: const DateRange.all()),
               );
               break;
             case DateRangeType.lastSevenDays:
-              filter.value = filter.value.copyWith(
-                range: const DateRange.lastSevenDays(),
+              context.updateFilter(
+                filter.copyWith(range: const DateRange.lastSevenDays()),
               );
               break;
             case DateRangeType.lastThirtyDays:
-              filter.value = filter.value.copyWith(
-                range: const DateRange.lastThirtyDays(),
+              context.updateFilter(
+                filter.copyWith(range: const DateRange.lastThirtyDays()),
               );
               break;
             case DateRangeType.lastNinetyDays:
-              filter.value = filter.value.copyWith(
-                range: const DateRange.lastNinetyDays(),
+              context.updateFilter(
+                filter.copyWith(range: const DateRange.lastNinetyDays()),
               );
               break;
             case DateRangeType.custom:
@@ -377,8 +436,8 @@ class _DateTimeFilterWidget extends StatelessWidget {
               if (range == null || range.length < 2) {
                 return;
               }
-              filter.value = filter.value.copyWith(
-                range: DateRange.custom(range[0]!, range[1]!),
+              context.updateFilter(
+                filter.copyWith(range: DateRange.custom(range[0]!, range[1]!)),
               );
               break;
           }
@@ -429,11 +488,11 @@ class _DateTimeFilterWidget extends StatelessWidget {
 class _AssetsFilterWidget extends StatelessWidget {
   const _AssetsFilterWidget({Key? key, required this.filter}) : super(key: key);
 
-  final ValueNotifier<TransactionFilter> filter;
+  final TransactionFilter filter;
 
   @override
   Widget build(BuildContext context) {
-    final assetItem = filter.value.asset;
+    final assetItem = filter.asset;
 
     Future<void> handleSelection() async {
       final selected = await showAssetSelectionBottomSheet(
@@ -443,9 +502,7 @@ class _AssetsFilterWidget extends StatelessWidget {
       if (selected == null) {
         return;
       }
-      filter.value = filter.value.copyWith(
-        asset: selected,
-      );
+      context.updateFilter(filter.copyWith(asset: selected));
     }
 
     return Padding(
@@ -467,7 +524,7 @@ class _AssetsFilterWidget extends StatelessWidget {
             _AssetItemWidget(
               asset: assetItem,
               onClear: () {
-                filter.value = filter.value.removeAsset();
+                context.updateFilter(filter.removeAsset());
               },
               onTap: handleSelection,
             ),
