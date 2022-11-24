@@ -10,9 +10,11 @@ import '../../util/extension/extension.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../widget/action_button.dart';
+import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
 import '../widget/dialog/export_snapshots_csv_bottom_sheet.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/symbol.dart';
 import '../widget/text.dart';
 import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
@@ -160,6 +162,7 @@ class _FilterDropdownMenus extends StatelessWidget {
                 filter.value = filter.value.copyWith(filterBy: value),
           ),
           _DateTimeFilterWidget(filter: filter),
+          _AssetsFilterWidget(filter: filter),
         ],
       );
 }
@@ -252,6 +255,9 @@ class TransactionFilter extends Equatable {
         range: range ?? this.range,
         asset: asset ?? this.asset,
       );
+
+  TransactionFilter removeAsset() =>
+      TransactionFilter(filterBy: filterBy, range: range);
 }
 
 class _DateTimeFilterWidget extends StatelessWidget {
@@ -403,4 +409,136 @@ class _DateTimeFilterWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class _AssetsFilterWidget extends StatelessWidget {
+  const _AssetsFilterWidget({Key? key, required this.filter}) : super(key: key);
+
+  final ValueNotifier<TransactionFilter> filter;
+
+  @override
+  Widget build(BuildContext context) {
+    final assetItem = filter.value.asset;
+
+    Future<void> handleSelection() async {
+      final selected = await showAssetSelectionBottomSheet(
+        context: context,
+        initialSelected: assetItem?.assetId,
+      );
+      if (selected == null) {
+        return;
+      }
+      filter.value = filter.value.copyWith(
+        asset: selected,
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          const SizedBox(width: 20),
+          MixinText(
+            context.l10n.assets,
+            style: TextStyle(
+              fontSize: 16,
+              color: context.colorScheme.thirdText,
+            ),
+          ),
+          const SizedBox(width: 10),
+          if (assetItem == null)
+            _NoAssetFilterWidget(onTap: handleSelection)
+          else
+            _AssetItemWidget(
+              asset: assetItem,
+              onClear: () {
+                filter.value = filter.value.removeAsset();
+              },
+              onTap: handleSelection,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NoAssetFilterWidget extends StatelessWidget {
+  const _NoAssetFilterWidget({Key? key, required this.onTap}) : super(key: key);
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+        borderRadius: BorderRadius.circular(4),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+          child: Row(
+            children: [
+              MixinText(
+                context.l10n.allAssets,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: context.colorScheme.primaryText,
+                ),
+              ),
+              const SizedBox(width: 4),
+              SvgPicture.asset(R.resourcesIcArrowDownSvg),
+            ],
+          ),
+        ),
+      );
+}
+
+class _AssetItemWidget extends StatelessWidget {
+  const _AssetItemWidget({
+    Key? key,
+    required this.asset,
+    required this.onClear,
+    required this.onTap,
+  }) : super(key: key);
+
+  final AssetResult asset;
+
+  final VoidCallback onClear;
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        children: [
+          InkWell(
+            borderRadius: BorderRadius.circular(4),
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              child: Row(
+                children: [
+                  SymbolIconWithBorder(
+                    symbolUrl: asset.iconUrl,
+                    chainUrl: asset.chainIconUrl,
+                    size: 24,
+                    chainSize: 10,
+                  ),
+                  const SizedBox(width: 10),
+                  MixinText(
+                    asset.name,
+                    style: TextStyle(
+                      color: context.colorScheme.primaryText,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  SvgPicture.asset(R.resourcesIcArrowDownSvg),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: 4),
+          ActionButton(
+            name: R.resourcesCloseSvg,
+            onTap: onClear,
+          ),
+        ],
+      );
 }
