@@ -298,6 +298,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No collectibles found"),
         "noCollectionFound":
             MessageLookupByLibrary.simpleMessage("No collection found"),
+        "noLimit": MessageLookupByLibrary.simpleMessage("No limit"),
         "noResult": MessageLookupByLibrary.simpleMessage("NO RESULT"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "noWithdrawalDestinationSelected": MessageLookupByLibrary.simpleMessage(

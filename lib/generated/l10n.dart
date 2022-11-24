@@ -2293,6 +2293,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `No limit`
+  String get noLimit {
+    return Intl.message(
+      'No limit',
+      name: 'noLimit',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {
