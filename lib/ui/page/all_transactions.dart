@@ -33,7 +33,7 @@ extension _AllTransactionsFilter on BuildContext {
         'start': range!.start.toIso8601String(),
         'end': range.end.toIso8601String(),
       },
-      if (filter.asset != null) 'asset': filter.asset!.assetId,
+      if (filter.assetId != null) 'asset': filter.assetId,
     }));
   }
 }
@@ -80,6 +80,7 @@ class AllTransactions extends HookWidget {
       return TransactionFilter(
         filterBy: FilterBy.values.byNameOrNull(filterBy) ?? FilterBy.all,
         range: range,
+        assetId: assetId.isEmpty ? null : assetId,
       );
     }, [filterBy, rangeType, start, end, assetId]);
     return Scaffold(
@@ -133,16 +134,15 @@ class _AllTransactionsBody extends StatelessWidget {
             offset: offset,
             limit: limit,
             types: filter.filterBy.snapshotTypes,
-            assetId: filter.asset?.assetId,
+            assetId: filter.assetId,
             start: range?.start,
             end: range?.end,
           );
         },
         refreshSnapshots: (offset, limit) {
-          final asset = filter.asset;
-          if (asset != null) {
+          if (filter.assetId != null) {
             return context.appServices.updateAssetSnapshots(
-              asset.assetId,
+              filter.assetId!,
               limit: limit,
               offset: offset,
             );
@@ -309,25 +309,25 @@ class TransactionFilter extends Equatable {
   const TransactionFilter({
     required this.filterBy,
     required this.range,
-    this.asset,
+    this.assetId,
   });
 
   final FilterBy filterBy;
   final DateRange range;
-  final AssetResult? asset;
+  final String? assetId;
 
   @override
-  List<Object?> get props => [filterBy, range, asset];
+  List<Object?> get props => [filterBy, range, assetId];
 
   TransactionFilter copyWith({
     FilterBy? filterBy,
     DateRange? range,
-    AssetResult? asset,
+    String? assetId,
   }) =>
       TransactionFilter(
         filterBy: filterBy ?? this.filterBy,
         range: range ?? this.range,
-        asset: asset ?? this.asset,
+        assetId: assetId ?? this.assetId,
       );
 
   TransactionFilter removeAsset() =>
@@ -485,24 +485,35 @@ class _DateTimeFilterWidget extends StatelessWidget {
   }
 }
 
-class _AssetsFilterWidget extends StatelessWidget {
-  const _AssetsFilterWidget({Key? key, required this.filter}) : super(key: key);
+class _AssetsFilterWidget extends HookWidget {
+  const _AssetsFilterWidget({
+    Key? key,
+    required this.filter,
+  }) : super(key: key);
 
   final TransactionFilter filter;
 
   @override
   Widget build(BuildContext context) {
-    final assetItem = filter.asset;
+    final asset = useMemoizedFuture(
+      () async {
+        if (filter.assetId == null) {
+          return null;
+        }
+        return context.appServices.findOrSyncAsset(filter.assetId!);
+      },
+      keys: [filter.assetId],
+    ).data;
 
     Future<void> handleSelection() async {
       final selected = await showAssetSelectionBottomSheet(
         context: context,
-        initialSelected: assetItem?.assetId,
+        initialSelected: filter.assetId,
       );
       if (selected == null) {
         return;
       }
-      context.updateFilter(filter.copyWith(asset: selected));
+      context.updateFilter(filter.copyWith(assetId: selected.assetId));
     }
 
     return Padding(
@@ -518,11 +529,11 @@ class _AssetsFilterWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          if (assetItem == null)
+          if (asset == null)
             _NoAssetFilterWidget(onTap: handleSelection)
           else
             _AssetItemWidget(
-              asset: assetItem,
+              asset: asset,
               onClear: () {
                 context.updateFilter(filter.removeAsset());
               },
