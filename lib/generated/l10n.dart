@@ -2303,6 +2303,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Clear conditions`
+  String get clearConditions {
+    return Intl.message(
+      'Clear conditions',
+      name: 'clearConditions',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

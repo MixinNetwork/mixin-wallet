@@ -223,5 +223,6 @@
   "customDateRange": "Custom date range",
   "export": "Export",
   "allAssets": "All assets",
-  "noLimit": "No limit"
+  "noLimit": "No limit",
+  "clearConditions": "Clear conditions"
 }

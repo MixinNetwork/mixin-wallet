@@ -1,26 +1,31 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:csv/csv.dart';
 import 'package:equatable/equatable.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/logger.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
-import '../widget/action_button.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
-import '../widget/dialog/export_snapshots_csv_bottom_sheet.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/symbol.dart';
 import '../widget/text.dart';
+import '../widget/toast.dart';
 import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
 
@@ -98,15 +103,6 @@ class AllTransactions extends HookWidget {
           enableInteractiveSelection: false,
         ),
         backgroundColor: context.colorScheme.background,
-        actions: [
-          ActionButton(
-            name: R.resourcesDownloadSvg,
-            size: 24,
-            onTap: () async {
-              await showExportSnapshotsCsvBottomSheet(context);
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -196,10 +192,39 @@ class _FilterDropdownMenus extends StatelessWidget {
               _AssetsFilterWidget(filter: filter),
               _TransactionTypeFilterWidget(filter: filter),
               _DateTimeFilterWidget(filter: filter),
+              _ClearConditionsButton(filter: filter),
+              _ExportButton(filter: filter),
             ],
           ),
         ),
       );
+}
+
+class _ClearConditionsButton extends StatelessWidget {
+  const _ClearConditionsButton({
+    Key? key,
+    required this.filter,
+  }) : super(key: key);
+
+  final TransactionFilter filter;
+
+  @override
+  Widget build(BuildContext context) {
+    if (filter.filterBy == FilterBy.all &&
+        filter.range.type == DateRangeType.all &&
+        filter.assetId == null) {
+      return const SizedBox.shrink();
+    }
+    return TextButton(
+      onPressed: () {
+        context.updateFilter(const TransactionFilter(
+          filterBy: FilterBy.all,
+          range: DateRange.all(),
+        ));
+      },
+      child: MixinText(context.l10n.clearConditions),
+    );
+  }
 }
 
 class _TransactionTypeFilterWidget extends StatelessWidget {
@@ -669,4 +694,120 @@ class _FilterPopupMenuWidget<T> extends HookWidget {
       ),
     );
   }
+}
+
+class _ExportButton extends StatelessWidget {
+  const _ExportButton({Key? key, required this.filter}) : super(key: key);
+
+  final TransactionFilter filter;
+
+  @override
+  Widget build(BuildContext context) => TextButton(
+        onPressed: () async {
+          d('export filter to svg');
+          final range = filter.range.range;
+          final asset = filter.assetId == null
+              ? null
+              : await context.appServices.findOrSyncAsset(filter.assetId!);
+          await runWithLoading(() async {
+            // load transactions to local
+            var offset = range?.end.toIso8601String();
+            while (true) {
+              final List<sdk.Snapshot> snapshots;
+              const limit = 100;
+              if (asset != null) {
+                snapshots = await context.appServices.updateAssetSnapshots(
+                  asset.assetId,
+                  offset: offset,
+                  limit: limit,
+                );
+              } else {
+                snapshots = await context.appServices.updateAllSnapshots(
+                  offset: offset,
+                  limit: limit,
+                );
+              }
+              if (snapshots.isEmpty || snapshots.length < limit) {
+                break;
+              }
+              if (range != null &&
+                  snapshots.last.createdAt.isBefore(range.start)) {
+                break;
+              }
+              offset = snapshots.last.createdAt.toIso8601String();
+            }
+            final snapshots = await context.mixinDatabase.snapshotDao
+                .allSnapshotsInDateTimeRange(
+              start: range?.start,
+              end: range?.end,
+              types: filter.filterBy.snapshotTypes,
+              assetId: asset?.assetId,
+            );
+
+            if (snapshots.isEmpty) {
+              showErrorToast(context.l10n.noTransaction);
+              return;
+            }
+
+            final header = [
+              'symbol',
+              'snapshotId',
+              'type',
+              'amount',
+              'sender',
+              'receiver',
+              'confirmation',
+              'transactionHash',
+              'date',
+              'memo',
+              'traceId',
+              'state',
+              'snapshotHash',
+              'opponentId',
+            ];
+
+            final table = [
+              header,
+              ...snapshots.map((e) => [
+                    e.assetSymbol,
+                    e.snapshotId,
+                    e.type,
+                    '${e.isPositive ? '+' : ''}${e.amount}',
+                    e.sender ?? '',
+                    e.receiver ?? '',
+                    if (e.type == sdk.SnapshotType.pending)
+                      '${e.confirmations ?? 0}/${e.assetConfirmations ?? 0}'
+                    else
+                      '',
+                    e.transactionHash ?? '',
+                    e.createdAt.toIso8601String(),
+                    e.memo,
+                    e.traceId ?? '',
+                    e.state ?? '',
+                    e.snapshotHash ?? '',
+                    e.opponentId ?? '',
+                  ]),
+            ];
+            final csv = const ListToCsvConverter().convert(table);
+            var fileName = 'transactions_';
+            if (filter.filterBy != FilterBy.all) {
+              fileName += '${filter.filterBy.name}_';
+            }
+            if (asset != null) {
+              fileName += '${asset.symbol}_';
+            }
+            if (range != null) {
+              fileName += '${DateFormat('yyyy_MM_dd').format(range.start)}_';
+              fileName += '${DateFormat('yyyy_MM_dd').format(range.end)}_';
+            }
+            fileName += '.csv';
+            await FileSaver.instance.saveFile(
+              fileName,
+              Uint8List.fromList(utf8.encode(csv)),
+              'csv',
+            );
+          });
+        },
+        child: MixinText(context.l10n.export),
+      );
 }

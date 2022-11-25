@@ -220,5 +220,6 @@
   "customDateRange": "自定义日期范围",
   "export": "导出",
   "allAssets": "所有币种",
-  "noLimit": "不限"
+  "noLimit": "不限",
+  "clearConditions": "清除条件"
 }

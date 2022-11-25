@@ -127,6 +127,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Services provided by https://sendwyre.com"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
+        "clearConditions":
+            MessageLookupByLibrary.simpleMessage("Clear conditions"),
         "coins": MessageLookupByLibrary.simpleMessage("Coins"),
         "collectiblesReadFailed":
             MessageLookupByLibrary.simpleMessage("Failed to read collectibles"),

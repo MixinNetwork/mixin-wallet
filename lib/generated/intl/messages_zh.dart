@@ -115,6 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "购买服务由 https://sendwyre.com 提供"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
+        "clearConditions": MessageLookupByLibrary.simpleMessage("清除条件"),
         "coins": MessageLookupByLibrary.simpleMessage("代币"),
         "collectiblesReadFailed":
             MessageLookupByLibrary.simpleMessage("读取 NFT 失败"),
