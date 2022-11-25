@@ -18,6 +18,7 @@ import '../router/mixin_routes.dart';
 import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 import 'symbol.dart';
+import 'text.dart';
 
 class BuyAssetSelectionBottomSheet extends StatelessWidget {
   const BuyAssetSelectionBottomSheet({Key? key}) : super(key: key);
@@ -25,6 +26,9 @@ class BuyAssetSelectionBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AssetSelectionListWidget(
         onTap: (asset) async {
+          if (asset == null) {
+            return;
+          }
           if (asset.getDestination().isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -87,6 +91,7 @@ class AssetSelectionListWidget extends HookWidget {
     this.source,
     this.ignoreAssets = const {},
     this.useSearchApi = false,
+    this.hasNullChoose = false,
     required this.onCancelPressed,
   }) : super(key: key);
 
@@ -101,6 +106,9 @@ class AssetSelectionListWidget extends HookWidget {
   final bool useSearchApi;
 
   final VoidCallback onCancelPressed;
+
+  /// Show a null choose item in the list.
+  final bool hasNullChoose;
 
   @override
   Widget build(BuildContext context) {
@@ -187,12 +195,30 @@ class AssetSelectionListWidget extends HookWidget {
             child: NativeScrollBuilder(
               builder: (context, controller) => ListView.builder(
                 controller: controller,
-                itemCount: filterList.length,
-                itemBuilder: (BuildContext context, int index) => _Item(
-                  asset: filterList[index],
-                  selectedAssetId: selectedAssetId,
-                  onTap: onTap,
-                ),
+                itemCount:
+                    hasNullChoose ? filterList.length + 1 : filterList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  if (!hasNullChoose) {
+                    return _Item(
+                      asset: filterList[index],
+                      selectedAssetId: selectedAssetId,
+                      onTap: onTap,
+                    );
+                  } else {
+                    if (index == 0) {
+                      return _NoChooseItem(
+                        onTap: () => onTap(null),
+                        selected: selectedAssetId == null,
+                      );
+                    } else {
+                      return _Item(
+                        asset: filterList[index - 1],
+                        selectedAssetId: selectedAssetId,
+                        onTap: onTap,
+                      );
+                    }
+                  }
+                },
               ),
             ),
           ),
@@ -200,6 +226,38 @@ class AssetSelectionListWidget extends HookWidget {
       ),
     );
   }
+}
+
+class _NoChooseItem extends StatelessWidget {
+  const _NoChooseItem({
+    Key? key,
+    required this.onTap,
+    required this.selected,
+  }) : super(key: key);
+
+  final VoidCallback onTap;
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) => Material(
+      color: context.theme.background,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          height: 56,
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+          child: Row(children: [
+            const SizedBox(width: 52),
+            MixinText(context.l10n.noLimit),
+            const Spacer(),
+            if (selected)
+              Align(
+                alignment: Alignment.centerRight,
+                child: SvgPicture.asset(R.resourcesIcCheckSvg),
+              ),
+          ]),
+        ),
+      ));
 }
 
 class _Item extends StatelessWidget {
@@ -268,4 +326,4 @@ class _Item extends StatelessWidget {
       ));
 }
 
-typedef AssetSelectCallback = void Function(AssetResult);
+typedef AssetSelectCallback = void Function(AssetResult?);

@@ -18,6 +18,7 @@ import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
 import '../widget/dialog/export_snapshots_csv_bottom_sheet.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/mixin_bottom_sheet.dart';
 import '../widget/symbol.dart';
 import '../widget/text.dart';
 import '../widget/transactions/transaction_list.dart';
@@ -506,14 +507,33 @@ class _AssetsFilterWidget extends HookWidget {
     ).data;
 
     Future<void> handleSelection() async {
-      final selected = await showAssetSelectionBottomSheet(
+      const itemNullChoose = Object();
+
+      final selected = await showMixinBottomSheet<dynamic>(
         context: context,
-        initialSelected: filter.assetId,
+        isScrollControlled: true,
+        builder: (context) => AssetSelectionListWidget(
+          selectedAssetId: filter.assetId,
+          hasNullChoose: true,
+          onTap: (asset) {
+            if (asset == null) {
+              Navigator.pop(context, itemNullChoose);
+              return;
+            }
+            Navigator.pop(context, asset.assetId);
+          },
+          onCancelPressed: () => Navigator.pop(context),
+        ),
       );
       if (selected == null) {
         return;
       }
-      context.updateFilter(filter.copyWith(assetId: selected.assetId));
+      if (selected == itemNullChoose) {
+        context.updateFilter(filter.removeAsset());
+      } else {
+        assert(selected is String, 'selected is $selected');
+        context.updateFilter(filter.copyWith(assetId: selected as String));
+      }
     }
 
     return Padding(
@@ -534,9 +554,6 @@ class _AssetsFilterWidget extends HookWidget {
           else
             _AssetItemWidget(
               asset: asset,
-              onClear: () {
-                context.updateFilter(filter.removeAsset());
-              },
               onTap: handleSelection,
             ),
         ],
@@ -577,13 +594,10 @@ class _AssetItemWidget extends StatelessWidget {
   const _AssetItemWidget({
     Key? key,
     required this.asset,
-    required this.onClear,
     required this.onTap,
   }) : super(key: key);
 
   final AssetResult asset;
-
-  final VoidCallback onClear;
 
   final VoidCallback onTap;
 
@@ -616,12 +630,7 @@ class _AssetItemWidget extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-          const SizedBox(width: 4),
-          ActionButton(
-            name: R.resourcesCloseSvg,
-            onTap: onClear,
-          ),
+          )
         ],
       );
 }
