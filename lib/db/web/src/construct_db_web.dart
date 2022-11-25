@@ -10,7 +10,7 @@ import '../../mixin_database.dart';
 Future<MixinDatabase> constructDb(String _) async => MixinDatabase(
       WebDatabase.withStorage(
         await DriftWebStorage.indexedDbIfSupported('mixin'),
-        logStatements: !kReleaseMode,
+        logStatements: false,
       ),
     );
 
