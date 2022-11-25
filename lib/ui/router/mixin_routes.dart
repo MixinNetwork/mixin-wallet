@@ -35,6 +35,7 @@ const assetDetailPath = '/tokens/:id';
 const assetDepositPath = '/tokens/:id/deposit';
 const snapshotDetailPath = '/snapshots/:id';
 final transactionsUri = Uri(path: '/transactions');
+const transactionsSnapshotDetailPath = '/transactions/snapshots/:id';
 final hiddenAssetsUri = Uri(path: '/hiddenAssets');
 const settingPath = '/setting';
 const buyChoosePath = '/buy';
@@ -124,6 +125,13 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                         key: const ValueKey('Transactions'),
                         path: transactionsUri.toString(),
                         widget: const AllTransactions(),
+                        stackedRoutes: [
+                          VWidget(
+                            key: const ValueKey('TransactionsSnapshotDetail'),
+                            path: transactionsSnapshotDetailPath,
+                            widget: const SnapshotDetail(),
+                          ),
+                        ],
                       ),
                       VWidget(
                         key: const ValueKey('HiddenAssets'),

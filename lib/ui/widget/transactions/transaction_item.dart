@@ -14,13 +14,20 @@ import '../../../util/r.dart';
 import '../../router/mixin_routes.dart';
 import '../asset.dart';
 import '../avatar.dart';
+import '../text.dart';
 
 const kTransactionItemHeight = 72.0;
 
 class TransactionItem extends HookWidget {
-  const TransactionItem({Key? key, required this.item}) : super(key: key);
+  const TransactionItem({
+    Key? key,
+    required this.item,
+    this.onTap,
+  }) : super(key: key);
 
   final SnapshotItem item;
+
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +38,13 @@ class TransactionItem extends HookWidget {
             keys: [this.item.snapshotId]).data ??
         this.item;
 
-    void onTap() =>
-        context.push(snapshotDetailPath.toUri({'id': item.snapshotId}));
+    void onTap() {
+      if (this.onTap != null) {
+        this.onTap!();
+        return;
+      }
+      context.push(snapshotDetailPath.toUri({'id': item.snapshotId}));
+    }
 
     final isPositive = item.isPositive;
     return InkWell(
@@ -96,14 +108,12 @@ class TransactionItem extends HookWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              SelectableText(
+              MixinText(
                 item.assetSymbol ?? '',
                 style: TextStyle(
                   fontSize: 14,
                   color: context.colorScheme.primaryText,
                 ),
-                enableInteractiveSelection: false,
-                onTap: onTap,
               ),
               const SizedBox(width: 16),
             ],

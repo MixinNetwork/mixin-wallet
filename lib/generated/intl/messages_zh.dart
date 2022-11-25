@@ -115,6 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "购买服务由 https://sendwyre.com 提供"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
+        "clearConditions": MessageLookupByLibrary.simpleMessage("清除条件"),
         "coins": MessageLookupByLibrary.simpleMessage("代币"),
         "collectiblesReadFailed":
             MessageLookupByLibrary.simpleMessage("读取 NFT 失败"),
@@ -271,6 +272,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No collectibles found"),
         "noCollectionFound":
             MessageLookupByLibrary.simpleMessage("No collection found"),
+        "noLimit": MessageLookupByLibrary.simpleMessage("不限"),
         "noResult": MessageLookupByLibrary.simpleMessage("无结果"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "noWithdrawalDestinationSelected":
@@ -346,6 +348,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsType": MessageLookupByLibrary.simpleMessage("交易类型"),
         "transfer": MessageLookupByLibrary.simpleMessage("转账"),
         "transferDetail": MessageLookupByLibrary.simpleMessage("交易详情"),
+        "type": MessageLookupByLibrary.simpleMessage("类型"),
         "undo": MessageLookupByLibrary.simpleMessage("撤销"),
         "unpaid": MessageLookupByLibrary.simpleMessage("未支付"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),

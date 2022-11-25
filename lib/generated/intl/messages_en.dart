@@ -127,6 +127,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Services provided by https://sendwyre.com"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
+        "clearConditions":
+            MessageLookupByLibrary.simpleMessage("Clear conditions"),
         "coins": MessageLookupByLibrary.simpleMessage("Coins"),
         "collectiblesReadFailed":
             MessageLookupByLibrary.simpleMessage("Failed to read collectibles"),
@@ -298,6 +300,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No collectibles found"),
         "noCollectionFound":
             MessageLookupByLibrary.simpleMessage("No collection found"),
+        "noLimit": MessageLookupByLibrary.simpleMessage("No limit"),
         "noResult": MessageLookupByLibrary.simpleMessage("NO RESULT"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "noWithdrawalDestinationSelected": MessageLookupByLibrary.simpleMessage(
@@ -386,6 +389,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
         "transferDetail":
             MessageLookupByLibrary.simpleMessage("Transfer details"),
+        "type": MessageLookupByLibrary.simpleMessage("Type"),
         "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
         "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
         "waitingActionDone":

@@ -395,7 +395,10 @@ class _AssetItem extends HookWidget {
         context: context,
         isScrollControlled: true,
         builder: (context) => AssetSelectionListWidget(
-          onTap: (AssetResult assetResult) async {
+          onTap: (AssetResult? assetResult) async {
+            if (assetResult == null) {
+              return;
+            }
             asset.value = assetResult;
             if (readOnly) {
               await setDestAssetId(assetResult.assetId);

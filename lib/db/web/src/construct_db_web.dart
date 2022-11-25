@@ -3,14 +3,13 @@
 import 'dart:html';
 
 import 'package:drift/web.dart';
-import 'package:flutter/foundation.dart';
 
 import '../../mixin_database.dart';
 
 Future<MixinDatabase> constructDb(String _) async => MixinDatabase(
       WebDatabase.withStorage(
         await DriftWebStorage.indexedDbIfSupported('mixin'),
-        logStatements: !kReleaseMode,
+        logStatements: false,
       ),
     );
 
