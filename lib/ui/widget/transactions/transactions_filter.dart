@@ -51,6 +51,25 @@ extension FilterBySnapshots on FilterBy {
         return const [SnapshotType.raw];
     }
   }
+
+  String l10n(BuildContext context) {
+    switch (this) {
+      case FilterBy.all:
+        return context.l10n.filterAll;
+      case FilterBy.transfer:
+        return context.l10n.transfer;
+      case FilterBy.deposit:
+        return context.l10n.deposit;
+      case FilterBy.withdrawal:
+        return context.l10n.withdrawal;
+      case FilterBy.fee:
+        return context.l10n.fee;
+      case FilterBy.rebate:
+        return context.l10n.rebate;
+      case FilterBy.raw:
+        return context.l10n.raw;
+    }
+  }
 }
 
 class SnapshotFilter extends Equatable {

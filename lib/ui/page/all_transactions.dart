@@ -180,65 +180,70 @@ class _FilterDropdownMenus extends StatelessWidget {
   final TransactionFilter filter;
 
   @override
-  Widget build(BuildContext context) => Wrap(
-        children: [
-          const SizedBox(width: 20),
-          Text(
-            '${context.l10n.filterBy}:',
-            style: TextStyle(
-              color: context.colorScheme.secondaryText,
-              fontSize: 14,
+  Widget build(BuildContext context) => ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxWidth: double.infinity,
+          minWidth: double.infinity,
+        ),
+        child: Wrap(
+          runSpacing: 20,
+          runAlignment: WrapAlignment.start,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 10,
+          children: [
+            _AssetsFilterWidget(filter: filter),
+            _TransactionTypeFilterWidget(filter: filter),
+            _DateTimeFilterWidget(filter: filter),
+          ],
+        ),
+      );
+}
+
+class _TransactionTypeFilterWidget extends StatelessWidget {
+  const _TransactionTypeFilterWidget({
+    Key? key,
+    required this.filter,
+  }) : super(key: key);
+
+  final TransactionFilter filter;
+
+  @override
+  Widget build(BuildContext context) => _FilterPopupMenuWidget<FilterBy>(
+        itemBuilder: (context) => [
+          for (final type in FilterBy.values)
+            PopupMenuItem(
+              value: type,
+              child: Text(type.l10n(context)),
             ),
-          ),
-          const SizedBox(width: 8),
-          DropdownButton<FilterBy>(
-            value: filter.filterBy,
-            icon: SvgPicture.asset(
+        ],
+        onSelected: (filterBy) =>
+            context.updateFilter(filter.copyWith(filterBy: filterBy)),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '${context.l10n.filterBy}:',
+              style: TextStyle(
+                color: context.colorScheme.secondaryText,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              filter.filterBy.l10n(context),
+              style: TextStyle(
+                color: context.colorScheme.primaryText,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(width: 10),
+            SvgPicture.asset(
               R.resourcesIcArrowDownSvg,
               width: 24,
               height: 24,
             ),
-            style: TextStyle(
-              color: context.colorScheme.primaryText,
-              fontSize: 14,
-            ),
-            isDense: true,
-            items: [
-              DropdownMenuItem(
-                value: FilterBy.all,
-                child: Text(context.l10n.filterAll),
-              ),
-              DropdownMenuItem(
-                value: FilterBy.transfer,
-                child: Text(context.l10n.transfer),
-              ),
-              DropdownMenuItem(
-                value: FilterBy.deposit,
-                child: Text(context.l10n.deposit),
-              ),
-              DropdownMenuItem(
-                value: FilterBy.withdrawal,
-                child: Text(context.l10n.withdrawal),
-              ),
-              DropdownMenuItem(
-                value: FilterBy.fee,
-                child: Text(context.l10n.fee),
-              ),
-              DropdownMenuItem(
-                value: FilterBy.rebate,
-                child: Text(context.l10n.rebate),
-              ),
-              DropdownMenuItem(
-                value: FilterBy.raw,
-                child: Text(context.l10n.raw),
-              ),
-            ],
-            onChanged: (value) =>
-                context.updateFilter(filter.copyWith(filterBy: value)),
-          ),
-          _DateTimeFilterWidget(filter: filter),
-          _AssetsFilterWidget(filter: filter),
-        ],
+          ],
+        ),
       );
 }
 
@@ -247,7 +252,24 @@ enum DateRangeType {
   lastSevenDays,
   lastThirtyDays,
   lastNinetyDays,
-  custom,
+  custom
+}
+
+extension DateRangeTypeExtension on DateRangeType {
+  String l10n(BuildContext context) {
+    switch (this) {
+      case DateRangeType.all:
+        return context.l10n.noLimit;
+      case DateRangeType.lastSevenDays:
+        return context.l10n.lastSevenDays;
+      case DateRangeType.lastThirtyDays:
+        return context.l10n.lastThirtyDays;
+      case DateRangeType.lastNinetyDays:
+        return context.l10n.lastNinetyDays;
+      case DateRangeType.custom:
+        return context.l10n.customDateRange;
+    }
+  }
 }
 
 class DateRange with EquatableMixin {
@@ -345,141 +367,115 @@ class _DateTimeFilterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateRange = filter.range;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: PopupMenuButton<DateRangeType>(
-        position: PopupMenuPosition.under,
-        itemBuilder: (BuildContext context) => [
+    return _FilterPopupMenuWidget<DateRangeType>(
+      itemBuilder: (BuildContext context) => [
+        for (final type in DateRangeType.values)
           PopupMenuItem(
-            value: DateRangeType.all,
-            child: MixinText(context.l10n.noLimit),
+            value: type,
+            child: Text(type.l10n(context)),
           ),
-          PopupMenuItem(
-            value: DateRangeType.lastSevenDays,
-            child: MixinText(context.l10n.lastSevenDays),
-          ),
-          PopupMenuItem(
-            value: DateRangeType.lastThirtyDays,
-            child: MixinText(context.l10n.lastThirtyDays),
-          ),
-          PopupMenuItem(
-            value: DateRangeType.lastNinetyDays,
-            child: MixinText(context.l10n.lastNinetyDays),
-          ),
-          PopupMenuItem(
-            value: DateRangeType.custom,
-            child: MixinText(context.l10n.customDateRange),
-          ),
-        ],
-        onSelected: (item) async {
-          switch (item) {
-            case DateRangeType.all:
-              context.updateFilter(
-                filter.copyWith(range: const DateRange.all()),
-              );
-              break;
-            case DateRangeType.lastSevenDays:
-              context.updateFilter(
-                filter.copyWith(range: const DateRange.lastSevenDays()),
-              );
-              break;
-            case DateRangeType.lastThirtyDays:
-              context.updateFilter(
-                filter.copyWith(range: const DateRange.lastThirtyDays()),
-              );
-              break;
-            case DateRangeType.lastNinetyDays:
-              context.updateFilter(
-                filter.copyWith(range: const DateRange.lastNinetyDays()),
-              );
-              break;
-            case DateRangeType.custom:
-              final range = await showCalendarDatePicker2Dialog(
-                context: context,
-                config: CalendarDatePicker2WithActionButtonsConfig(
-                  firstDate: DateTime(2016),
-                  lastDate: DateTime.now(),
-                  calendarType: CalendarDatePicker2Type.range,
-                  selectedDayHighlightColor: context.colorScheme.accent,
-                  lastMonthIcon: SvgPicture.asset(
+      ],
+      onSelected: (item) async {
+        switch (item) {
+          case DateRangeType.all:
+            context.updateFilter(
+              filter.copyWith(range: const DateRange.all()),
+            );
+            break;
+          case DateRangeType.lastSevenDays:
+            context.updateFilter(
+              filter.copyWith(range: const DateRange.lastSevenDays()),
+            );
+            break;
+          case DateRangeType.lastThirtyDays:
+            context.updateFilter(
+              filter.copyWith(range: const DateRange.lastThirtyDays()),
+            );
+            break;
+          case DateRangeType.lastNinetyDays:
+            context.updateFilter(
+              filter.copyWith(range: const DateRange.lastNinetyDays()),
+            );
+            break;
+          case DateRangeType.custom:
+            final range = await showCalendarDatePicker2Dialog(
+              context: context,
+              config: CalendarDatePicker2WithActionButtonsConfig(
+                firstDate: DateTime(2016),
+                lastDate: DateTime.now(),
+                calendarType: CalendarDatePicker2Type.range,
+                selectedDayHighlightColor: context.colorScheme.accent,
+                lastMonthIcon: SvgPicture.asset(
+                  R.resourcesBackBlackSvg,
+                  width: 24,
+                  height: 24,
+                ),
+                nextMonthIcon: RotatedBox(
+                  quarterTurns: 2,
+                  child: SvgPicture.asset(
                     R.resourcesBackBlackSvg,
                     width: 24,
                     height: 24,
                   ),
-                  nextMonthIcon: RotatedBox(
-                    quarterTurns: 2,
-                    child: SvgPicture.asset(
-                      R.resourcesBackBlackSvg,
-                      width: 24,
-                      height: 24,
-                    ),
-                  ),
-                  toggleIcon: SvgPicture.asset(
-                    R.resourcesIcArrowDownSvg,
-                    width: 24,
-                    height: 24,
-                  ),
-                  okButton: MixinText(
-                    context.l10n.confirm,
-                    style: TextStyle(
-                      color: context.colorScheme.accent,
-                    ),
-                  ),
-                  cancelButton: MixinText(
-                    context.l10n.cancel,
-                    style: TextStyle(
-                      color: context.colorScheme.secondaryText,
-                    ),
+                ),
+                toggleIcon: SvgPicture.asset(
+                  R.resourcesIcArrowDownSvg,
+                  width: 24,
+                  height: 24,
+                ),
+                okButton: MixinText(
+                  context.l10n.confirm,
+                  style: TextStyle(
+                    color: context.colorScheme.accent,
                   ),
                 ),
-                dialogSize: const Size(320, 400),
-              );
-              if (range == null || range.length < 2) {
-                return;
-              }
-              context.updateFilter(
-                filter.copyWith(range: DateRange.custom(range[0]!, range[1]!)),
-              );
-              break;
-          }
-        },
-        child: DefaultTextStyle.merge(
-          style: TextStyle(
-            fontSize: 16,
-            color: context.colorScheme.primaryText,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(width: 20),
+                cancelButton: MixinText(
+                  context.l10n.cancel,
+                  style: TextStyle(
+                    color: context.colorScheme.secondaryText,
+                  ),
+                ),
+              ),
+              dialogSize: const Size(320, 400),
+            );
+            if (range == null || range.length < 2) {
+              return;
+            }
+            context.updateFilter(
+              filter.copyWith(range: DateRange.custom(range[0]!, range[1]!)),
+            );
+            break;
+        }
+      },
+      child: DefaultTextStyle.merge(
+        style: TextStyle(
+          fontSize: 16,
+          color: context.colorScheme.primaryText,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MixinText(
+              context.l10n.date,
+              style: TextStyle(
+                color: context.colorScheme.thirdText,
+              ),
+            ),
+            const SizedBox(width: 10),
+            if (dateRange.type == DateRangeType.custom)
               MixinText(
-                context.l10n.date,
-                style: TextStyle(
-                  color: context.colorScheme.thirdText,
-                ),
-              ),
-              const SizedBox(width: 10),
-              if (dateRange.type == DateRangeType.all)
-                MixinText(context.l10n.noLimit)
-              else if (dateRange.type == DateRangeType.custom)
-                MixinText(
-                  '${DateFormat.yMMMMd().format(dateRange.range!.start.toLocal())} - '
-                  '${DateFormat.yMMMMd().format(dateRange.range!.end.toLocal())}',
-                )
-              else if (dateRange.type == DateRangeType.lastSevenDays)
-                MixinText(context.l10n.lastSevenDays)
-              else if (dateRange.type == DateRangeType.lastThirtyDays)
-                MixinText(context.l10n.lastThirtyDays)
-              else if (dateRange.type == DateRangeType.lastNinetyDays)
-                MixinText(context.l10n.lastNinetyDays),
-              const SizedBox(width: 10),
-              SvgPicture.asset(
-                R.resourcesIcArrowDownSvg,
-                width: 24,
-                height: 24,
-              ),
-            ],
-          ),
+                '${DateFormat.yMMMMd().format(dateRange.range!.start.toLocal())} - '
+                '${DateFormat.yMMMMd().format(dateRange.range!.end.toLocal())}',
+              )
+            else
+              MixinText(dateRange.type.l10n(context)),
+            const SizedBox(width: 10),
+            SvgPicture.asset(
+              R.resourcesIcArrowDownSvg,
+              width: 24,
+              height: 24,
+            ),
+          ],
         ),
       ),
     );
@@ -539,6 +535,7 @@ class _AssetsFilterWidget extends HookWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(width: 20),
           MixinText(
@@ -633,4 +630,68 @@ class _AssetItemWidget extends StatelessWidget {
           )
         ],
       );
+}
+
+class _FilterPopupMenuWidget<T> extends HookWidget {
+  const _FilterPopupMenuWidget({
+    Key? key,
+    required this.itemBuilder,
+    required this.child,
+    this.onCanceled,
+    this.onSelected,
+  }) : super(key: key);
+
+  final PopupMenuItemBuilder<T> itemBuilder;
+
+  final Widget child;
+
+  final PopupMenuCanceled? onCanceled;
+
+  final PopupMenuItemSelected<T>? onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final isMounted = useIsMounted();
+    return InkWell(
+      borderRadius: BorderRadius.circular(8),
+      onTap: () async {
+        const padding = EdgeInsets.all(8.0);
+        final popupMenuTheme = PopupMenuTheme.of(context);
+        final button = context.findRenderObject()! as RenderBox;
+        final overlay = Navigator.of(context)
+            .overlay!
+            .context
+            .findRenderObject()! as RenderBox;
+        final offset = Offset(0.0, button.size.height - (padding.vertical / 2));
+        final position = RelativeRect.fromRect(
+          Rect.fromPoints(
+            button.localToGlobal(offset, ancestor: overlay),
+            button.localToGlobal(button.size.bottomRight(Offset.zero) + offset,
+                ancestor: overlay),
+          ),
+          Offset.zero & overlay.size,
+        );
+        final item = await showMenu<T?>(
+          context: context,
+          elevation: popupMenuTheme.elevation,
+          items: itemBuilder(context),
+          position: position,
+          shape: popupMenuTheme.shape,
+          color: popupMenuTheme.color,
+        );
+        if (!isMounted()) {
+          return;
+        }
+        if (item == null) {
+          onCanceled?.call();
+          return;
+        }
+        onSelected?.call(item);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: child,
+      ),
+    );
+  }
 }
