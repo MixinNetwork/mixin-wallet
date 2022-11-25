@@ -348,6 +348,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transactionsType": MessageLookupByLibrary.simpleMessage("交易类型"),
         "transfer": MessageLookupByLibrary.simpleMessage("转账"),
         "transferDetail": MessageLookupByLibrary.simpleMessage("交易详情"),
+        "type": MessageLookupByLibrary.simpleMessage("类型"),
         "undo": MessageLookupByLibrary.simpleMessage("撤销"),
         "unpaid": MessageLookupByLibrary.simpleMessage("未支付"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),

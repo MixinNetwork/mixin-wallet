@@ -224,5 +224,6 @@
   "export": "Export",
   "allAssets": "All assets",
   "noLimit": "No limit",
-  "clearConditions": "Clear conditions"
+  "clearConditions": "Clear conditions",
+  "type": "Type"
 }

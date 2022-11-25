@@ -250,7 +250,7 @@ class _TransactionTypeFilterWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '${context.l10n.filterBy}:',
+              context.l10n.type,
               style: TextStyle(
                 color: context.colorScheme.secondaryText,
                 fontSize: 16,

@@ -389,6 +389,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
         "transferDetail":
             MessageLookupByLibrary.simpleMessage("Transfer details"),
+        "type": MessageLookupByLibrary.simpleMessage("Type"),
         "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
         "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
         "waitingActionDone":

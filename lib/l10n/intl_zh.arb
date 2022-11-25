@@ -221,5 +221,6 @@
   "export": "导出",
   "allAssets": "所有币种",
   "noLimit": "不限",
-  "clearConditions": "清除条件"
+  "clearConditions": "清除条件",
+  "type": "类型"
 }
