@@ -248,7 +248,7 @@ class _NoChooseItem extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
           child: Row(children: [
             const SizedBox(width: 52),
-            MixinText(context.l10n.noLimit),
+            MixinText(context.l10n.allAssets),
             const Spacer(),
             if (selected)
               Align(

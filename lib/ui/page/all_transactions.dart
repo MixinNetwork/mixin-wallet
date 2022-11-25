@@ -185,16 +185,19 @@ class _FilterDropdownMenus extends StatelessWidget {
           maxWidth: double.infinity,
           minWidth: double.infinity,
         ),
-        child: Wrap(
-          runSpacing: 20,
-          runAlignment: WrapAlignment.start,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          spacing: 10,
-          children: [
-            _AssetsFilterWidget(filter: filter),
-            _TransactionTypeFilterWidget(filter: filter),
-            _DateTimeFilterWidget(filter: filter),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Wrap(
+            runSpacing: 8,
+            runAlignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 2,
+            children: [
+              _AssetsFilterWidget(filter: filter),
+              _TransactionTypeFilterWidget(filter: filter),
+              _DateTimeFilterWidget(filter: filter),
+            ],
+          ),
         ),
       );
 }
@@ -532,101 +535,73 @@ class _AssetsFilterWidget extends HookWidget {
       }
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(width: 20),
-          MixinText(
-            context.l10n.assets,
-            style: TextStyle(
-              fontSize: 16,
-              color: context.colorScheme.thirdText,
+    return InkWell(
+      onTap: handleSelection,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MixinText(
+              context.l10n.assets,
+              style: TextStyle(
+                fontSize: 16,
+                color: context.colorScheme.thirdText,
+              ),
             ),
-          ),
-          const SizedBox(width: 10),
-          if (asset == null)
-            _NoAssetFilterWidget(onTap: handleSelection)
-          else
-            _AssetItemWidget(
-              asset: asset,
-              onTap: handleSelection,
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _NoAssetFilterWidget extends StatelessWidget {
-  const _NoAssetFilterWidget({Key? key, required this.onTap}) : super(key: key);
-
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => InkWell(
-        borderRadius: BorderRadius.circular(4),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          child: Row(
-            children: [
+            const SizedBox(width: 10),
+            if (asset == null)
               MixinText(
                 context.l10n.allAssets,
                 style: TextStyle(
                   fontSize: 16,
                   color: context.colorScheme.primaryText,
                 ),
-              ),
-              const SizedBox(width: 4),
-              SvgPicture.asset(R.resourcesIcArrowDownSvg),
-            ],
-          ),
+              )
+            else
+              _AssetItemWidget(asset: asset),
+            const SizedBox(width: 10),
+            SvgPicture.asset(
+              R.resourcesIcArrowDownSvg,
+              width: 24,
+              height: 24,
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }
 
 class _AssetItemWidget extends StatelessWidget {
   const _AssetItemWidget({
     Key? key,
     required this.asset,
-    required this.onTap,
   }) : super(key: key);
 
   final AssetResult asset;
 
-  final VoidCallback onTap;
-
   @override
   Widget build(BuildContext context) => Row(
         children: [
-          InkWell(
-            borderRadius: BorderRadius.circular(4),
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-              child: Row(
-                children: [
-                  SymbolIconWithBorder(
-                    symbolUrl: asset.iconUrl,
-                    chainUrl: asset.chainIconUrl,
-                    size: 24,
-                    chainSize: 10,
-                  ),
-                  const SizedBox(width: 10),
-                  MixinText(
-                    asset.name,
-                    style: TextStyle(
-                      color: context.colorScheme.primaryText,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  SvgPicture.asset(R.resourcesIcArrowDownSvg),
-                ],
+          Row(
+            children: [
+              SymbolIconWithBorder(
+                symbolUrl: asset.iconUrl,
+                chainUrl: asset.chainIconUrl,
+                size: 24,
+                chainSize: 10,
               ),
-            ),
+              const SizedBox(width: 10),
+              MixinText(
+                asset.name,
+                style: TextStyle(
+                  color: context.colorScheme.primaryText,
+                  fontSize: 16,
+                ),
+              )
+            ],
           )
         ],
       );
