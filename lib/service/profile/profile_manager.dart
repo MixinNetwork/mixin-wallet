@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../util/web/web_utils_dummy.dart'
-    if (dart.library.html) '../../util/web/web_utils.dart';
+import '../../util/web/web_utils.dart';
 import 'auth.dart';
 
 Future<void> initStorage() async {

@@ -15,8 +15,7 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
-import '../../util/web/web_utils_dummy.dart'
-    if (dart.library.html) '../../util/web/web_utils.dart';
+import '../../util/web/web_utils.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';

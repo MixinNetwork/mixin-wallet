@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../util/web/web_utils_dummy.dart'
-    if (dart.library.html) '../../util/web/web_utils.dart';
+import '../../util/web/web_utils.dart';
 
 /// flutter has wrong text layout on Android WebView.
 /// https://github.com/flutter/flutter/issues/86776

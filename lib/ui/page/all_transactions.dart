@@ -18,6 +18,7 @@ import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
+import '../../util/web/web_utils.dart';
 import '../router/mixin_routes.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
@@ -704,6 +705,10 @@ class _ExportButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => TextButton(
         onPressed: () async {
+          if (isInWebView()) {
+            showErrorToast(context.l10n.warningExportInWebView);
+            return;
+          }
           d('export filter to svg');
           final range = filter.range.range;
           final asset = filter.assetId == null

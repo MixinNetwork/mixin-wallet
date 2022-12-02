@@ -11,3 +11,5 @@ String? getFallbackFontFamily() => null;
 String locationOrigin() => 'https://mixinwallet.com';
 
 bool isInAndroidWebView() => false;
+
+bool isInWebView() => false;

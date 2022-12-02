@@ -398,6 +398,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
         "walletTransactionThatTimeValue": m23,
+        "warningExportInWebView": MessageLookupByLibrary.simpleMessage(
+            "Exporting data in webview is not supported, please open in browser."),
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "This service is provided by Wyre. We act as a conduit only and do not charge additional fees."),
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
