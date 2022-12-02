@@ -356,6 +356,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),
         "walletTransactionThatTimeValue": m23,
+        "warningExportInWebView": MessageLookupByLibrary.simpleMessage(
+            "当前处于 WebView 中，无法导出数据。请使用浏览器打开。"),
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "本服务由 Wyre 提供。我们仅作为渠道，不额外收取手续费。"),
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),

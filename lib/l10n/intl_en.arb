@@ -225,5 +225,6 @@
   "allAssets": "All assets",
   "noLimit": "No limit",
   "clearConditions": "Clear conditions",
-  "type": "Type"
+  "type": "Type",
+  "warningExportInWebView": "Exporting data in webview is not supported, please open in browser."
 }

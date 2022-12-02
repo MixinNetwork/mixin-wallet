@@ -2323,6 +2323,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Exporting data in webview is not supported, please open in browser.`
+  String get warningExportInWebView {
+    return Intl.message(
+      'Exporting data in webview is not supported, please open in browser.',
+      name: 'warningExportInWebView',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

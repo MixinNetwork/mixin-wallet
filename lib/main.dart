@@ -15,8 +15,7 @@ import 'ui/widget/brightness_observer.dart';
 import 'util/l10n.dart';
 import 'util/logger.dart';
 import 'util/mixin_context.dart';
-import 'util/web/web_utils_dummy.dart'
-    if (dart.library.html) 'util/web/web_utils.dart';
+import 'util/web/web_utils.dart';
 
 final navigatorObserver = RouteObserver<ModalRoute<dynamic>>();
 
