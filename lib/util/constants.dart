@@ -34,4 +34,5 @@ const chainNetworks = {
   '1949e683-6a08-49e2-b087-d6b72398588f': 'BEP-20',
   '25dabac5-056a-48ff-b9f9-f67395dc407c': 'TRC-20',
   '6cfe566e-4aad-470b-8c9a-2fd35b49c68d': 'EOS',
+  'b7938396-3f94-4e0a-9179-d3440718156f': 'Polygon',
 };
