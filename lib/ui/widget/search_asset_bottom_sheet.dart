@@ -14,8 +14,10 @@ import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import 'asset.dart';
+import 'chain_network_label.dart';
 import 'search_header_widget.dart';
 import 'symbol.dart';
+import 'text.dart';
 
 class SearchAssetBottomSheet extends HookWidget {
   const SearchAssetBottomSheet({Key? key}) : super(key: key);
@@ -257,18 +259,24 @@ class _Item extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      SelectableText(
-                        data.symbol.overflow,
-                        style: TextStyle(
-                          color: context.theme.text,
-                          fontSize: 16,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        maxLines: 1,
-                        onTap: onTap,
-                        enableInteractiveSelection: false,
+                      Row(
+                        children: [
+                          Flexible(
+                            child: MixinText(
+                              data.symbol.overflow,
+                              style: TextStyle(
+                                color: context.theme.text,
+                                fontSize: 16,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              maxLines: 1,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          ChainNetworkLabel(chainId: data.chainId),
+                        ],
                       ),
-                      SelectableText(
+                      MixinText(
                         data.name.overflow,
                         style: TextStyle(
                           color: context.theme.secondaryText,
@@ -276,8 +284,6 @@ class _Item extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         maxLines: 1,
-                        onTap: onTap,
-                        enableInteractiveSelection: false,
                       ),
                     ],
                   ),
