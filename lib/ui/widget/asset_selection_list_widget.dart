@@ -15,6 +15,7 @@ import '../../util/r.dart';
 import '../../util/transak.dart';
 import '../../wyre/wyre_constants.dart';
 import '../router/mixin_routes.dart';
+import 'chain_network_label.dart';
 import 'mixin_bottom_sheet.dart';
 import 'search_header_widget.dart';
 import 'symbol.dart';
@@ -298,12 +299,20 @@ class _Item extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      asset.name.overflow,
-                      style: TextStyle(
-                        color: context.theme.text,
-                        fontSize: 16,
-                      ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: MixinText(
+                            asset.name.overflow,
+                            style: TextStyle(
+                              color: context.theme.text,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        ChainNetworkLabel(chainId: asset.chainId),
+                      ],
                     ),
                     const SizedBox(height: 4),
                     Text(
