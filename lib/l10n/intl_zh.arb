@@ -223,5 +223,6 @@
   "noLimit": "不限",
   "clearConditions": "清除条件",
   "type": "类型",
-  "warningExportInWebView": "当前处于 WebView 中，无法导出数据。请使用浏览器打开。"
+  "warningExportInWebView": "当前处于 WebView 中，无法导出数据。请使用浏览器打开。",
+  "currency": "货币"
 }

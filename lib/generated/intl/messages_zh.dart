@@ -134,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "createPin": MessageLookupByLibrary.simpleMessage("创建 PIN"),
         "createPinTips":
             MessageLookupByLibrary.simpleMessage("创建 PIN 以保护您的账户安全"),
+        "currency": MessageLookupByLibrary.simpleMessage("货币"),
         "customDateRange": MessageLookupByLibrary.simpleMessage("自定义日期范围"),
         "date": MessageLookupByLibrary.simpleMessage("日期"),
         "dateRange": MessageLookupByLibrary.simpleMessage("日期范围"),

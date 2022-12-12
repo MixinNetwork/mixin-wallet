@@ -50,3 +50,5 @@ env.g.dart
 /dist
 
 .fvm
+
+/lib/generated/r.preview.dart
