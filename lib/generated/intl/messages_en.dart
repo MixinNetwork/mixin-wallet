@@ -149,6 +149,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "createPin": MessageLookupByLibrary.simpleMessage("Create PIN"),
         "createPinTips": MessageLookupByLibrary.simpleMessage(
             "Please create a PIN to protect your assets"),
+        "currency": MessageLookupByLibrary.simpleMessage("Currency"),
         "customDateRange":
             MessageLookupByLibrary.simpleMessage("Custom date range"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),

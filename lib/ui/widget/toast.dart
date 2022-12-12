@@ -20,22 +20,24 @@ Future<T> computeWithLoading<T>(Future<T> Function() compute) async {
   }
 }
 
-Future<void> runWithLoading(
+Future<bool> runWithLoading(
   Future<void> Function() run, {
   bool handleError = true,
 }) async {
   final entry = _showLoading();
   try {
     await run();
+    return true;
   } catch (error, stacktrace) {
     e('runWithLoading $error $stacktrace');
     if (!handleError) {
       rethrow;
     }
     _showToast(
-      R.resourcesToastSucceedSvg,
+      R.resourcesToastErrorSvg,
       error.toDisplayString,
     );
+    return false;
   } finally {
     entry.dismiss();
   }

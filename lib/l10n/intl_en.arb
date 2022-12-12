@@ -226,5 +226,6 @@
   "noLimit": "No limit",
   "clearConditions": "Clear conditions",
   "type": "Type",
-  "warningExportInWebView": "Exporting data in webview is not supported, please open in browser."
+  "warningExportInWebView": "Exporting data in webview is not supported, please open in browser.",
+  "currency": "Currency"
 }

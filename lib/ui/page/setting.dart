@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
+import 'package:mixin_wallet/util/logger.dart';
 
 import '../../generated/r.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../router/mixin_routes.dart';
 import '../widget/buttons.dart';
+import '../widget/dialog/currency_bottom_sheet.dart';
 import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/toast.dart';
 
 class Setting extends StatelessWidget {
   const Setting({Key? key}) : super(key: key);
@@ -64,8 +68,52 @@ class _SettingsBody extends HookWidget {
             activeColor: const Color(0xff333333),
             onChanged: (bool value) => isSmallAssetsHidden.value = value,
           ),
-        )
+        ),
+        const SizedBox(height: 10),
+        if (isLoginByCredential) const _CurrencyItem(),
       ],
+    );
+  }
+}
+
+class _CurrencyItem extends HookWidget {
+  const _CurrencyItem({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final currency = useState(auth!.account.fiatCurrency);
+    return MenuItemWidget(
+      topRounded: true,
+      bottomRounded: true,
+      title: Text(context.l10n.currency),
+      trailing: Text(
+        currency.value,
+        style: TextStyle(
+          color: context.colorScheme.secondaryText,
+          fontSize: 12,
+        ),
+      ),
+      onTap: () async {
+        d('currency: $currency');
+        final selected = await showCurrencyBottomSheet(
+          context,
+          selectedCurrency: currency.value,
+        );
+        if (selected == null) {
+          return;
+        }
+        final succeed = await runWithLoading(() async {
+          final account = await context.appServices.client.accountApi
+              .update(AccountUpdateRequest(fiatCurrency: selected.name));
+          await setAuth(auth?.copyWith(account: account.data));
+        });
+        if (!succeed) {
+          return;
+        }
+        currency.value = selected.name;
+      },
     );
   }
 }
