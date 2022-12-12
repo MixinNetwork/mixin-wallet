@@ -52,7 +52,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   ansicolor: ^2.0.1
-  decimal: ^2.3.0
+  decimal: ^2.3.2
   rxdart: ^0.27.6
   qr_flutter: ^4.0.0
   vrouter: ^1.2.0+5
