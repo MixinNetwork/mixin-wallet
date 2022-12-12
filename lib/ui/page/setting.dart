@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
-import 'package:mixin_wallet/util/logger.dart';
 
 import '../../generated/r.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
+import '../../util/logger.dart';
 import '../router/mixin_routes.dart';
 import '../widget/buttons.dart';
 import '../widget/dialog/currency_bottom_sheet.dart';
@@ -106,7 +106,7 @@ class _CurrencyItem extends HookWidget {
         }
         final succeed = await runWithLoading(() async {
           final account = await context.appServices.client.accountApi
-              .update(AccountUpdateRequest(fiatCurrency: selected.name));
+              .preferences(AccountUpdateRequest(fiatCurrency: selected.name));
           await setAuth(auth?.copyWith(account: account.data));
         });
         if (!succeed) {

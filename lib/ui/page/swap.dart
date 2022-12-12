@@ -303,7 +303,7 @@ class _Body extends HookWidget {
                         }
                         try {
                           await computeWithLoading(
-                            () => api.pay(sdk.TransferRequest(
+                            () => api.pay(sdk.PaymentRequest(
                               assetId: sourceAsset.value.assetId,
                               amount: sourceTextController.text,
                               traceId: traceId,

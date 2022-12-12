@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../generated/r.dart';
 import '../../../util/extension/extension.dart';
+import '../../../util/native_scroll.dart';
 import '../mixin_bottom_sheet.dart';
 import '../text.dart';
 
@@ -58,42 +59,45 @@ class CurrencyBottomSheetDialog extends StatelessWidget {
         children: [
           MixinBottomSheetTitle(title: Text(context.l10n.currency)),
           Expanded(
-            child: ListView.builder(
-              itemCount: currencyItems.length,
-              itemBuilder: (context, index) {
-                final item = currencyItems[index];
-                return InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop(item);
-                  },
-                  child: SizedBox(
-                    height: 72,
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 20),
-                        Image.asset(
-                          item.flag,
-                          width: 42,
-                          height: 42,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: MixinText(
-                            '${item.name} (${item.symbol})',
-                            style: TextStyle(
-                              color: context.colorScheme.primaryText,
-                              fontSize: 16,
+            child: NativeScrollBuilder(
+              builder: (context, controller) => ListView.builder(
+                controller: controller,
+                itemCount: currencyItems.length,
+                itemBuilder: (context, index) {
+                  final item = currencyItems[index];
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop(item);
+                    },
+                    child: SizedBox(
+                      height: 72,
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 20),
+                          Image.asset(
+                            item.flag,
+                            width: 42,
+                            height: 42,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: MixinText(
+                              '${item.name} (${item.symbol})',
+                              style: TextStyle(
+                                color: context.colorScheme.primaryText,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
-                        ),
-                        if (selectedCurrency == item.name)
-                          SvgPicture.asset(R.resourcesIcCheckSvg),
-                        const SizedBox(width: 20),
-                      ],
+                          if (selectedCurrency == item.name)
+                            SvgPicture.asset(R.resourcesIcCheckSvg),
+                          const SizedBox(width: 20),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ],
