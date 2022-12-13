@@ -118,10 +118,7 @@ class AssetSelectionListWidget extends HookWidget {
             return source!.call();
           }
           return context.appServices.assetResults().watch().map((event) => event
-            ..removeWhere((element) => ignoreAssets.contains(element.assetId))
-            ..sort(
-              (a, b) => b.amountOfUsd.compareTo(a.amountOfUsd),
-            ));
+            ..removeWhere((element) => ignoreAssets.contains(element.assetId)));
         }, keys: [ignoreAssets, source]).data ??
         const [];
 

@@ -98,7 +98,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   final GlobalKey<VRouterState> vRouterStateKey;
   late sdk.Client client;
 
-  final _initCompleter = Completer();
+  final _initCompleter = Completer<void>();
 
   // ignore: strict_raw_type
   Future? get initServiceFuture => _initCompleter.future;
