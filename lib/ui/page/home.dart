@@ -166,7 +166,6 @@ extension _SortAssets on List<AssetResult> {
 
     switch (sort) {
       case AssetSortType.amount:
-        this.sort((a, b) => b.amountOfUsd.compareTo(a.amountOfUsd));
         break;
       case AssetSortType.decrease:
         this.sort((a, b) => assetAmplitude(a).compareTo(assetAmplitude(b)));

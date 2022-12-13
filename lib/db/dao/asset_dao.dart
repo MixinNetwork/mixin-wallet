@@ -13,9 +13,11 @@ AssetResults$orderBy defaultOrderBy = (asset, _, __, f) {
   final priceUsd = '${asset.aliasedName}.${asset.priceUsd.$name}';
 
   return OrderBy([
-    OrderingTerm.desc(CustomExpression('$balance * $priceUsd')),
-    OrderingTerm.desc(asset.balance),
-    OrderingTerm.desc(asset.priceUsd),
+    OrderingTerm.desc(CustomExpression('''
+    CASE WHEN $balance > 0 THEN $balance * $priceUsd END
+    ''')),
+    OrderingTerm.desc(asset.balance.cast<double>()),
+    OrderingTerm.desc(asset.priceUsd.cast<double>()),
   ]);
 };
 
