@@ -8,6 +8,19 @@ import 'extension.dart';
 
 part 'asset_dao.g.dart';
 
+AssetResults$orderBy defaultOrderBy = (asset, _, __, f) {
+  final balance = '${asset.aliasedName}.${asset.balance.$name}';
+  final priceUsd = '${asset.aliasedName}.${asset.priceUsd.$name}';
+
+  return OrderBy([
+    OrderingTerm.desc(CustomExpression('''
+    CASE WHEN $balance > 0 THEN $balance * $priceUsd END
+    ''')),
+    OrderingTerm.desc(asset.balance.cast<double>()),
+    OrderingTerm.desc(asset.priceUsd.cast<double>()),
+  ]);
+};
+
 extension AssetConverter on sdk.Asset {
   AssetsCompanion get asAssetsCompanion => AssetsCompanion.insert(
         assetId: assetId,
@@ -86,7 +99,7 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
   Selectable<AssetResult> assetResults(String currentFiat) => db.assetResults(
         currentFiat,
         (asset, _, ae, f) => ignoreWhere,
-        (_, __, ___, f) => ignoreOrderBy,
+        defaultOrderBy,
         (_, __, ___, f) => maxLimit,
       );
 
@@ -94,7 +107,7 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
       db.assetResults(
         currentFiat,
         (asset, _, ae, f) => ae.hidden.isNull() | ae.hidden.equals(false),
-        (_, __, ___, f) => ignoreOrderBy,
+        defaultOrderBy,
         (_, __, ___, f) => maxLimit,
       );
 
@@ -103,7 +116,7 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
       db.assetResults(
         currentFiat,
         (asset, _, __, f) => asset.assetId.isIn(assetIds),
-        (_, __, ___, f) => ignoreOrderBy,
+        defaultOrderBy,
         (_, __, ___, f) => maxLimit,
       );
 

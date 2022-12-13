@@ -166,7 +166,15 @@ extension _SortAssets on List<AssetResult> {
 
     switch (sort) {
       case AssetSortType.amount:
-        this.sort((a, b) => b.amountOfUsd.compareTo(a.amountOfUsd));
+        this.sort((a, b) {
+          var result = b.amountOfUsd.compareTo(a.amountOfUsd);
+          if (result != 0) return result;
+          result = b.balance.asDecimal.compareTo(a.balance.asDecimal);
+          if (result != 0) return result;
+          result = b.priceUsd.asDecimal.compareTo(a.priceUsd.asDecimal);
+          if (result != 0) return result;
+          return 0;
+        });
         break;
       case AssetSortType.decrease:
         this.sort((a, b) => assetAmplitude(a).compareTo(assetAmplitude(b)));
