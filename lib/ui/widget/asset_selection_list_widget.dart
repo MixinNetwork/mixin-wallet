@@ -308,7 +308,7 @@ class _Item extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 4),
-                        ChainNetworkLabel(chainId: asset.chainId),
+                        ChainNetworkLabel(asset: asset),
                       ],
                     ),
                     const SizedBox(height: 4),

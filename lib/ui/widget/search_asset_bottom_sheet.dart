@@ -273,7 +273,7 @@ class _Item extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 4),
-                          ChainNetworkLabel(chainId: data.chainId),
+                          ChainNetworkLabel(asset: data),
                         ],
                       ),
                       MixinText(
