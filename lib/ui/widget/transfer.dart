@@ -224,11 +224,11 @@ extension _NumberFormat on String {
     } catch (e) {
       // ignore.
     }
-    // if we can not parse the string, retry parse with locale.
-    // for example: 1,23 in fr meanings 1.23 in en.
-    final locale = getMixinLocaleOrPlatformLocale();
-    final numberFormat = NumberFormat.decimalPattern(locale.toString());
     try {
+      // if we can not parse the string, retry parse with locale.
+      // for example: 1,23 in fr meanings 1.23 in en.
+      final locale = getMixinLocaleOrPlatformLocale();
+      final numberFormat = NumberFormat.decimalPattern(locale.toString());
       return Decimal.parse(numberFormat.parse(this).toString());
     } catch (e) {
       return Decimal.zero;
