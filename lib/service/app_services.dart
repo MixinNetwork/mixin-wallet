@@ -24,7 +24,6 @@ import '../util/web/telegram_web_app_dummy.dart'
     if (dart.library.html) '../util/web/telegram_web_app.dart';
 import 'env.dart';
 import 'profile/auth.dart';
-import 'profile/pin_session.dart';
 import 'profile/profile_manager.dart';
 
 class AppServices extends ChangeNotifier with EquatableMixin {
@@ -129,11 +128,6 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       accessToken: mixinResponse.data.userId,
       account: mixinResponse.data,
       credential: data,
-    ));
-
-    Session.instance.pinToken = base64Encode(decryptPinToken(
-      data.pinToken,
-      sdk.decodeBase64(data.privateKey),
     ));
 
     this.client = client;
