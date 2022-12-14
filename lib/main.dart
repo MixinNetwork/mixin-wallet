@@ -12,6 +12,7 @@ import 'service/profile/profile_manager.dart';
 import 'ui/brightness_theme_data.dart';
 import 'ui/router/mixin_routes.dart';
 import 'ui/widget/brightness_observer.dart';
+import 'ui/widget/error_widget.dart';
 import 'util/l10n.dart';
 import 'util/logger.dart';
 import 'util/mixin_context.dart';
@@ -27,6 +28,8 @@ Future<void> main() async {
   if (mixinLocale != null) {
     await L10n.delegate.load(mixinLocale);
   }
+
+  ErrorWidget.builder = MixinErrorWidget.defaultErrorWidgetBuilder;
 
   runZonedGuarded(
     () => runApp(OverlaySupport.global(child: MyApp())),
