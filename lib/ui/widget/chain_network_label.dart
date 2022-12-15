@@ -12,6 +12,11 @@ const _chainNetworks = {
   'b7938396-3f94-4e0a-9179-d3440718156f': 'Polygon',
 };
 
+const _bepChainIds = {
+  '17f78d7c-ed96-40ff-980c-5dc62fecbc85',
+  '1949e683-6a08-49e2-b087-d6b72398588f'
+};
+
 @visibleForTesting
 bool isDigitsOnly(String? text) {
   if (text == null) {
@@ -23,7 +28,7 @@ bool isDigitsOnly(String? text) {
 
 extension _AssetExt on AssetResult {
   String? get chainNetworkLabel {
-    if (chainId == assetId) {
+    if (chainId == assetId && !_bepChainIds.contains(chainId)) {
       return null;
     }
 
