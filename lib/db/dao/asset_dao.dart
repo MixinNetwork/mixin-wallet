@@ -106,7 +106,11 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
   Selectable<AssetResult> assetResultsNotHidden(String currentFiat) =>
       db.assetResults(
         currentFiat,
-        (asset, _, ae, f) => ae.hidden.isNull() | ae.hidden.equals(false),
+        (asset, _, ae, f) =>
+            (ae.hidden.isNull() | ae.hidden.equals(false)) &
+            ((asset.balance.isNotNull() &
+                    asset.balance.isNotIn(const ['0', '0.0'])) |
+                asset.assetId.equalsExp(asset.chainId)),
         defaultOrderBy,
         (_, __, ___, f) => maxLimit,
       );
