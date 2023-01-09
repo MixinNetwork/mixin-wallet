@@ -290,11 +290,15 @@ class PinVerifyDialogScaffold extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 20),
-          Text(
-            errorMessage.value!,
-            style: TextStyle(
-              color: context.colorScheme.red,
-              fontSize: 14,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              errorMessage.value!,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: context.colorScheme.red,
+                fontSize: 14,
+              ),
             ),
           ),
           const SizedBox(height: 20),

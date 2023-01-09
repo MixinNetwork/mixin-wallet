@@ -22,6 +22,9 @@ extension ErrorExtenstion on Object {
       final mixinError = (this as DioError).optionMixinError;
       if (mixinError != null) {
         return mixinError.toDisplayString(context);
+      } else {
+        return context.l10n
+            .errorUnknownWithMessage((this as DioError).error.toString());
       }
     }
     return context.l10n.errorUnknownWithMessage(toString());
