@@ -145,7 +145,7 @@ class _FeeText extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            '${context.l10n.networkFee} ${feeAsset.balance.numberFormat()} ${feeAsset.symbol}',
+            '${context.l10n.networkFee} ${address.fee} ${feeAsset.symbol}',
           ),
           if (showDust)
             Padding(
