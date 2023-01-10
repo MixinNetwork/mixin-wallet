@@ -2343,6 +2343,226 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Logs`
+  String get logs {
+    return Intl.message(
+      'Logs',
+      name: 'logs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No logs`
+  String get noLogs {
+    return Intl.message(
+      'No logs',
+      name: 'noLogs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PIN incorrect`
+  String get pinIncorrect {
+    return Intl.message(
+      'PIN incorrect',
+      name: 'pinIncorrect',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify`
+  String get verify {
+    return Intl.message(
+      'Verify',
+      name: 'verify',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Raw transfer`
+  String get rawTransfer {
+    return Intl.message(
+      'Raw transfer',
+      name: 'rawTransfer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PIN creation`
+  String get pinCreation {
+    return Intl.message(
+      'PIN creation',
+      name: 'pinCreation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your PIN has been created`
+  String get youPinHasBeenCreated {
+    return Intl.message(
+      'Your PIN has been created',
+      name: 'youPinHasBeenCreated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PIN change`
+  String get pinChange {
+    return Intl.message(
+      'PIN change',
+      name: 'pinChange',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Emergency contact`
+  String get emergencyContact {
+    return Intl.message(
+      'Emergency contact',
+      name: 'emergencyContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change emergency contact`
+  String get changeEmergencyContact {
+    return Intl.message(
+      'Change emergency contact',
+      name: 'changeEmergencyContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number change`
+  String get phoneNumberChange {
+    return Intl.message(
+      'Phone number change',
+      name: 'phoneNumberChange',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in`
+  String get signIn {
+    return Intl.message(
+      'Sign in',
+      name: 'signIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in with phone number`
+  String get signInWithPhoneNumber {
+    return Intl.message(
+      'Sign in with phone number',
+      name: 'signInWithPhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in with emergency contact`
+  String get signInWithEmergencyContact {
+    return Intl.message(
+      'Sign in with emergency contact',
+      name: 'signInWithEmergencyContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in desktop app`
+  String get signInDesktopApp {
+    return Intl.message(
+      'Sign in desktop app',
+      name: 'signInDesktopApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change phone number`
+  String get changePhoneNumber {
+    return Intl.message(
+      'Change phone number',
+      name: 'changePhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Multisig transaction`
+  String get multisigTransaction {
+    return Intl.message(
+      'Multisig transaction',
+      name: 'multisigTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Revoke multisig transaction`
+  String get revokeMultisigTransaction {
+    return Intl.message(
+      'Revoke multisig transaction',
+      name: 'revokeMultisigTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete address`
+  String get deleteAddress {
+    return Intl.message(
+      'Delete address',
+      name: 'deleteAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add emergency contact`
+  String get addEmergencyContact {
+    return Intl.message(
+      'Add emergency contact',
+      name: 'addEmergencyContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete emergency contact`
+  String get deleteEmergencyContact {
+    return Intl.message(
+      'Delete emergency contact',
+      name: 'deleteEmergencyContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View emergency contact`
+  String get viewEmergencyContact {
+    return Intl.message(
+      'View emergency contact',
+      name: 'viewEmergencyContact',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

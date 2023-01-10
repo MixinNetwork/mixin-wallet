@@ -90,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Mixin 不支持提现到"),
         "addAddressTagAction":
             MessageLookupByLibrary.simpleMessage("点击不使用标签（Tag）"),
+        "addEmergencyContact": MessageLookupByLibrary.simpleMessage("添加紧急联系人"),
         "addWithdrawalAddress": m0,
         "address": MessageLookupByLibrary.simpleMessage("地址"),
         "addressSearchHint": MessageLookupByLibrary.simpleMessage("标题，地址"),
@@ -115,6 +116,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "购买服务由 https://sendwyre.com 提供"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "chain": MessageLookupByLibrary.simpleMessage("所属公链"),
+        "changeEmergencyContact":
+            MessageLookupByLibrary.simpleMessage("修改紧急联系人"),
+        "changePhoneNumber": MessageLookupByLibrary.simpleMessage("修改手机号码"),
         "clearConditions": MessageLookupByLibrary.simpleMessage("清除条件"),
         "coins": MessageLookupByLibrary.simpleMessage("代币"),
         "collectiblesReadFailed":
@@ -139,8 +143,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "date": MessageLookupByLibrary.simpleMessage("日期"),
         "dateRange": MessageLookupByLibrary.simpleMessage("日期范围"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
+        "deleteAddress": MessageLookupByLibrary.simpleMessage("删除地址"),
         "deleteAddressByPinTip":
             MessageLookupByLibrary.simpleMessage("请输入 PIN 来完成删除"),
+        "deleteEmergencyContact":
+            MessageLookupByLibrary.simpleMessage("删除紧急联系人"),
         "deleteWithdrawalAddress": m6,
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
         "depositConfirmation": m7,
@@ -163,6 +170,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "download": MessageLookupByLibrary.simpleMessage("下载"),
         "downloadMixinMessengerHint":
             MessageLookupByLibrary.simpleMessage("还未安装 Mixin Messenger?"),
+        "emergencyContact": MessageLookupByLibrary.simpleMessage("紧急联系人"),
         "emptyAmount": MessageLookupByLibrary.simpleMessage("金额不能为空"),
         "emptyLabelOrAddress":
             MessageLookupByLibrary.simpleMessage("地址和标题不能为空"),
@@ -257,12 +265,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastSevenDays": MessageLookupByLibrary.simpleMessage("最近 7 天"),
         "lastThirtyDays": MessageLookupByLibrary.simpleMessage("最近 30 天"),
         "linkGenerated": MessageLookupByLibrary.simpleMessage("链接已生成"),
+        "logs": MessageLookupByLibrary.simpleMessage("日志"),
         "memo": MessageLookupByLibrary.simpleMessage("Memo(备注)"),
         "memoHint": MessageLookupByLibrary.simpleMessage("备注（Memo）"),
         "minerFee": MessageLookupByLibrary.simpleMessage("挖矿手续费"),
         "minimumReserve": MessageLookupByLibrary.simpleMessage("最少保留数量："),
         "minimumWithdrawal": MessageLookupByLibrary.simpleMessage("最小提现数量："),
         "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin 钱包"),
+        "multisigTransaction": MessageLookupByLibrary.simpleMessage("多重签名交易"),
         "networkFee": MessageLookupByLibrary.simpleMessage("网络手续费："),
         "networkFeeTip": MessageLookupByLibrary.simpleMessage(
             "由第三方服务商收取。直接支付给以太坊矿工以保证以太坊上交易完成。网络费根据即时市场状况变动。"),
@@ -274,6 +284,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noCollectionFound":
             MessageLookupByLibrary.simpleMessage("No collection found"),
         "noLimit": MessageLookupByLibrary.simpleMessage("不限"),
+        "noLogs": MessageLookupByLibrary.simpleMessage("暂无日志"),
         "noResult": MessageLookupByLibrary.simpleMessage("无结果"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("暂无转账记录"),
         "noWithdrawalDestinationSelected":
@@ -291,6 +302,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("如果您已经支付成功，请耐心等待，无需再次支付"),
         "pay": MessageLookupByLibrary.simpleMessage("支付"),
         "pendingConfirmations": m18,
+        "phoneNumberChange": MessageLookupByLibrary.simpleMessage("修改手机号码"),
+        "pinChange": MessageLookupByLibrary.simpleMessage("修改 PIN"),
+        "pinCreation": MessageLookupByLibrary.simpleMessage("创建 PIN"),
+        "pinIncorrect": MessageLookupByLibrary.simpleMessage("PIN 不正确"),
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "rawTransaction": MessageLookupByLibrary.simpleMessage("交易原始值"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),
@@ -305,6 +320,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "requestPaymentAmount": m19,
         "requestPaymentGeneratedTips":
             MessageLookupByLibrary.simpleMessage("请求付款链接已生成，请发送给指定联系人。"),
+        "revokeMultisigTransaction":
+            MessageLookupByLibrary.simpleMessage("撤销多重签名交易"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
         "selectContactOrAddress":
@@ -315,6 +332,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendToContact": MessageLookupByLibrary.simpleMessage("转账至联系人"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "show": MessageLookupByLibrary.simpleMessage("显示"),
+        "signIn": MessageLookupByLibrary.simpleMessage("登录"),
+        "signInDesktopApp": MessageLookupByLibrary.simpleMessage("登录桌面端"),
+        "signInWithEmergencyContact":
+            MessageLookupByLibrary.simpleMessage("使用紧急联系人登录"),
+        "signInWithPhoneNumber":
+            MessageLookupByLibrary.simpleMessage("使用手机号码登录"),
         "signTransaction": MessageLookupByLibrary.simpleMessage("签名交易"),
         "signers": MessageLookupByLibrary.simpleMessage("签名者"),
         "slippage": MessageLookupByLibrary.simpleMessage("滑点"),
@@ -352,6 +375,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "type": MessageLookupByLibrary.simpleMessage("类型"),
         "undo": MessageLookupByLibrary.simpleMessage("撤销"),
         "unpaid": MessageLookupByLibrary.simpleMessage("未支付"),
+        "verify": MessageLookupByLibrary.simpleMessage("验证"),
+        "viewEmergencyContact": MessageLookupByLibrary.simpleMessage("查看紧急联系人"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),
         "walletTransactionCurrentValue": m22,
         "walletTransactionThatTimeNoValue":
@@ -365,6 +390,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "withdrawalMemoHint": MessageLookupByLibrary.simpleMessage("备注 (可选)"),
         "withdrawalTo": m24,
         "withdrawalWithPin": MessageLookupByLibrary.simpleMessage("用 PIN 提现"),
-        "wyreServiceStatement": MessageLookupByLibrary.simpleMessage("服务声明")
+        "wyreServiceStatement": MessageLookupByLibrary.simpleMessage("服务声明"),
+        "youPinHasBeenCreated":
+            MessageLookupByLibrary.simpleMessage("你的 PIN 已创建")
       };
 }

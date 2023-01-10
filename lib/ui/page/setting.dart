@@ -71,6 +71,13 @@ class _SettingsBody extends HookWidget {
         ),
         const SizedBox(height: 10),
         if (isLoginByCredential) const _CurrencyItem(),
+        if (isLoginByCredential)
+          MenuItemWidget(
+            title: Text(context.l10n.logs),
+            topRounded: false,
+            bottomRounded: true,
+            onTap: () => context.push(pinLogsPath),
+          ),
       ],
     );
   }
@@ -86,7 +93,7 @@ class _CurrencyItem extends HookWidget {
     final currency = useState(auth!.account.fiatCurrency);
     return MenuItemWidget(
       topRounded: true,
-      bottomRounded: true,
+      bottomRounded: false,
       title: Text(context.l10n.currency),
       trailing: Text(
         currency.value,

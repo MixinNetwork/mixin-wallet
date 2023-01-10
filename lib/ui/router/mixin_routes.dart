@@ -16,6 +16,7 @@ import '../page/create_pin.dart';
 import '../page/hidden_assets.dart';
 import '../page/home.dart';
 import '../page/not_found.dart';
+import '../page/pin_logs.dart';
 import '../page/setting.dart';
 import '../page/snapshot_detail.dart';
 import '../page/swap.dart';
@@ -48,6 +49,7 @@ const collectiblesCollectionPath = '/collection/:id';
 const collectiblePath = '/collectible/:id';
 
 const createPinPath = '/create_pin';
+const pinLogsPath = '$settingPath/pin_logs';
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VWidget(
@@ -137,6 +139,11 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                         key: const ValueKey('HiddenAssets'),
                         path: hiddenAssetsUri.toString(),
                         widget: const HiddenAssets(),
+                      ),
+                      VWidget(
+                        key: const ValueKey('PinLogs'),
+                        path: pinLogsPath,
+                        widget: const PinLogs(),
                       ),
                     ],
                   ),
