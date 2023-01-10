@@ -97,6 +97,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "addAddressNotSupportTip": MessageLookupByLibrary.simpleMessage(
             "Mixin does not support withdrawal to the"),
         "addAddressTagAction": MessageLookupByLibrary.simpleMessage("No Tag"),
+        "addEmergencyContact":
+            MessageLookupByLibrary.simpleMessage("Add emergency contact"),
         "addWithdrawalAddress": m0,
         "address": MessageLookupByLibrary.simpleMessage("Address"),
         "addressSearchHint":
@@ -127,6 +129,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Services provided by https://sendwyre.com"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chain": MessageLookupByLibrary.simpleMessage("Chain"),
+        "changeEmergencyContact":
+            MessageLookupByLibrary.simpleMessage("Change emergency contact"),
+        "changePhoneNumber":
+            MessageLookupByLibrary.simpleMessage("Change phone number"),
         "clearConditions":
             MessageLookupByLibrary.simpleMessage("Clear conditions"),
         "coins": MessageLookupByLibrary.simpleMessage("Coins"),
@@ -155,8 +161,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "dateRange": MessageLookupByLibrary.simpleMessage("date range"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "deleteAddress": MessageLookupByLibrary.simpleMessage("Delete address"),
         "deleteAddressByPinTip":
             MessageLookupByLibrary.simpleMessage("Enter PIN to delete address"),
+        "deleteEmergencyContact":
+            MessageLookupByLibrary.simpleMessage("Delete emergency contact"),
         "deleteWithdrawalAddress": m6,
         "deposit": MessageLookupByLibrary.simpleMessage("Deposit"),
         "depositConfirmation": m7,
@@ -181,6 +190,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "download": MessageLookupByLibrary.simpleMessage("Download"),
         "downloadMixinMessengerHint":
             MessageLookupByLibrary.simpleMessage("Don’t have Mixin Messenger?"),
+        "emergencyContact":
+            MessageLookupByLibrary.simpleMessage("Emergency contact"),
         "emptyAmount": MessageLookupByLibrary.simpleMessage("Empty amount"),
         "emptyLabelOrAddress":
             MessageLookupByLibrary.simpleMessage("Empty address or label"),
@@ -283,6 +294,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastSevenDays": MessageLookupByLibrary.simpleMessage("Last 7 days"),
         "lastThirtyDays": MessageLookupByLibrary.simpleMessage("Last 30 days"),
         "linkGenerated": MessageLookupByLibrary.simpleMessage("Link generated"),
+        "logs": MessageLookupByLibrary.simpleMessage("Logs"),
         "memo": MessageLookupByLibrary.simpleMessage("Memo"),
         "memoHint": MessageLookupByLibrary.simpleMessage("Memo"),
         "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
@@ -291,6 +303,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "minimumWithdrawal":
             MessageLookupByLibrary.simpleMessage("Minimum withdrawal:"),
         "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin Wallet"),
+        "multisigTransaction":
+            MessageLookupByLibrary.simpleMessage("Multisig transaction"),
         "networkFee": MessageLookupByLibrary.simpleMessage("Network fee:"),
         "networkFeeTip": MessageLookupByLibrary.simpleMessage(
             "Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions."),
@@ -302,6 +316,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noCollectionFound":
             MessageLookupByLibrary.simpleMessage("No collection found"),
         "noLimit": MessageLookupByLibrary.simpleMessage("No limit"),
+        "noLogs": MessageLookupByLibrary.simpleMessage("No logs"),
         "noResult": MessageLookupByLibrary.simpleMessage("NO RESULT"),
         "noTransaction": MessageLookupByLibrary.simpleMessage("NO TRANSACTION"),
         "noWithdrawalDestinationSelected": MessageLookupByLibrary.simpleMessage(
@@ -319,9 +334,15 @@ class MessageLookup extends MessageLookupByLibrary {
             "If you have paid via Mixin, please be patient."),
         "pay": MessageLookupByLibrary.simpleMessage("Pay"),
         "pendingConfirmations": m18,
+        "phoneNumberChange":
+            MessageLookupByLibrary.simpleMessage("Phone number change"),
+        "pinChange": MessageLookupByLibrary.simpleMessage("PIN change"),
+        "pinCreation": MessageLookupByLibrary.simpleMessage("PIN creation"),
+        "pinIncorrect": MessageLookupByLibrary.simpleMessage("PIN incorrect"),
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "rawTransaction":
             MessageLookupByLibrary.simpleMessage("Raw Transaction"),
+        "rawTransfer": MessageLookupByLibrary.simpleMessage("Raw transfer"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
@@ -336,6 +357,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "requestPaymentAmount": m19,
         "requestPaymentGeneratedTips": MessageLookupByLibrary.simpleMessage(
             "A request payment link has been generated, please send it to the specified contact."),
+        "revokeMultisigTransaction":
+            MessageLookupByLibrary.simpleMessage("Revoke multisig transaction"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "selectContactOrAddress":
@@ -347,6 +370,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Send to contact"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
+        "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
+        "signInDesktopApp":
+            MessageLookupByLibrary.simpleMessage("Sign in desktop app"),
+        "signInWithEmergencyContact": MessageLookupByLibrary.simpleMessage(
+            "Sign in with emergency contact"),
+        "signInWithPhoneNumber":
+            MessageLookupByLibrary.simpleMessage("Sign in with phone number"),
         "signTransaction":
             MessageLookupByLibrary.simpleMessage("Sign Transaction"),
         "signers": MessageLookupByLibrary.simpleMessage("Signers"),
@@ -393,6 +423,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "type": MessageLookupByLibrary.simpleMessage("Type"),
         "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
         "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
+        "verify": MessageLookupByLibrary.simpleMessage("Verify"),
+        "viewEmergencyContact":
+            MessageLookupByLibrary.simpleMessage("View emergency contact"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
         "walletTransactionCurrentValue": m22,
@@ -410,6 +443,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "withdrawalWithPin":
             MessageLookupByLibrary.simpleMessage("Withdrawal with PIN"),
         "wyreServiceStatement":
-            MessageLookupByLibrary.simpleMessage("Service statement")
+            MessageLookupByLibrary.simpleMessage("Service statement"),
+        "youPinHasBeenCreated":
+            MessageLookupByLibrary.simpleMessage("Your PIN has been created")
       };
 }
