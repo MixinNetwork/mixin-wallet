@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
 import '../mixin_bottom_sheet.dart';
 import '../pin.dart';
 
 /// return: verified succeed pin code. null if canceled.
 Future<String?> showPinVerifyDialog(BuildContext context) =>
-    showMixinBottomSheet<String>(
+    showModalBottomSheet<String>(
       context: context,
-      builder: (context) => SizedBox(
-        height: MediaQuery.of(context).size.height - 70,
-        child: const _PinVerifyDialog(),
+      builder: (context) => SingleChildScrollView(
+        child: Material(
+          color: context.colorScheme.background,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(topRadius),
+          ),
+          child: const _PinVerifyDialog(),
+        ),
+      ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(topRadius),
+        ),
       ),
       isScrollControlled: true,
+      isDismissible: false,
+      enableDrag: false,
+      backgroundColor: Colors.transparent,
     );
 
 class _PinVerifyDialog extends HookWidget {
@@ -25,20 +39,12 @@ class _PinVerifyDialog extends HookWidget {
     usePinVerificationEffect(controller);
     return Column(
       children: [
-        SizedBox(
-          height: 72,
-          child: Center(
-            child: Text(
-              context.l10n.address,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
+        MixinBottomSheetTitle(
+          title: Text(context.l10n.verify),
+          action: const BottomSheetCloseButton(),
         ),
         PinField(controller: controller),
-        const Spacer(),
+        const SizedBox(height: 32),
         PinInputNumPad(controller: controller),
       ],
     );

@@ -17,23 +17,20 @@ Future<bool?> showTransferVerifyBottomSheet(
 }) =>
     showModalBottomSheet<bool>(
       context: context,
-      builder: (context) => Column(
-        children: [
-          const Spacer(),
-          Material(
-            color: context.colorScheme.background,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(topRadius),
-            ),
-            child: _TransferVerifyBottomSheet(
-              address: address,
-              asset: asset,
-              feeAsset: feeAsset,
-              amount: amount,
-              postVerification: postVerification,
-            ),
+      builder: (context) => SingleChildScrollView(
+        child: Material(
+          color: context.colorScheme.background,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(topRadius),
           ),
-        ],
+          child: _TransferVerifyBottomSheet(
+            address: address,
+            asset: asset,
+            feeAsset: feeAsset,
+            amount: amount,
+            postVerification: postVerification,
+          ),
+        ),
       ),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
