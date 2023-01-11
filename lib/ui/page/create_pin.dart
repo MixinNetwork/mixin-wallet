@@ -34,22 +34,31 @@ class CreatePinPage extends HookWidget {
           _PinCreateConfirmButton(controller: pinInputController),
         ],
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          Text(
-            context.l10n.createPinTips,
-            style: TextStyle(
-              color: context.colorScheme.primaryText,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
+      body: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Text(
+                    context.l10n.createPinTips,
+                    style: TextStyle(
+                      color: context.colorScheme.primaryText,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 80),
+                  PinField(controller: pinInputController),
+                  const Spacer(),
+                  PinInputNumPad(controller: pinInputController),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 80),
-          PinField(controller: pinInputController),
-          const Spacer(),
-          PinInputNumPad(controller: pinInputController),
-        ],
+        ),
       ),
     );
   }

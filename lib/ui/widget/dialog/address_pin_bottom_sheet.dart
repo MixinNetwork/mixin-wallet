@@ -80,17 +80,14 @@ Future<bool?> _showAddressPinBottomSheet(
       backgroundColor: Colors.transparent,
       isDismissible: false,
       enableDrag: false,
-      builder: (context) => Column(
-        children: [
-          const Spacer(),
-          Material(
-            color: context.colorScheme.background,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(topRadius),
-            ),
-            child: content,
+      builder: (context) => SingleChildScrollView(
+        child: Material(
+          color: context.colorScheme.background,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(topRadius),
           ),
-        ],
+          child: content,
+        ),
       ),
     );
 
