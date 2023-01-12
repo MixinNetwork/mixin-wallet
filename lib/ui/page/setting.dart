@@ -86,8 +86,10 @@ class _SettingsBody extends HookWidget {
           topRounded: true,
           bottomRounded: true,
           onTap: () async {
-            final result = await Telegram.instance.showScanQrPopup();
-            showSuccessToast(result ?? 'no result');
+            Telegram.instance.showScanQrPopup((result) {
+              showSuccessToast(result);
+              return true;
+            });
           },
         )
       ],

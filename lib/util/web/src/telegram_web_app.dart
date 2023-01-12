@@ -39,13 +39,11 @@ class Telegram {
     }
   }
 
-  Future<String?> showScanQrPopup() async {
+  void showScanQrPopup(bool Function(String result) callback) {
     try {
-      final result = webApp['showScanQrPopup'];
-      return result as String?;
+      webApp.callMethod('showScanQrPopup', [null, js.allowInterop(callback)]);
     } catch (error, stacktrace) {
       e('showScanQrPopup error $error, $stacktrace');
-      return null;
     }
   }
 
