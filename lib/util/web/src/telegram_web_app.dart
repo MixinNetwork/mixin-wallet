@@ -1,6 +1,7 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
+import '../../../ui/widget/toast.dart';
 import '../../logger.dart';
 
 class Telegram {
@@ -44,6 +45,7 @@ class Telegram {
       webApp.callMethod('showScanQrPopup', [null, js.allowInterop(callback)]);
     } catch (error, stacktrace) {
       e('showScanQrPopup error $error, $stacktrace');
+      showErrorToast('showScanQrPopup error $error $stacktrace');
     }
   }
 
