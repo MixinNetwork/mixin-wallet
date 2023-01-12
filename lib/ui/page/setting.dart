@@ -82,11 +82,22 @@ class _SettingsBody extends HookWidget {
         Text('platform: ${Telegram.instance.platform}'),
         Text('version: ${Telegram.instance.version}'),
         MenuItemWidget(
-          title: Text(context.l10n.logs),
+          title: const Text('a'),
           topRounded: true,
+          bottomRounded: false,
+          onTap: () async {
+            Telegram.instance.showScanQrPopup('hello', (result) {
+              showSuccessToast(result);
+              return true;
+            });
+          },
+        ),
+        MenuItemWidget(
+          title: const Text('b'),
+          topRounded: false,
           bottomRounded: true,
           onTap: () async {
-            Telegram.instance.showScanQrPopup((result) {
+            Telegram.instance.showScanQrPopup('hello', (result) {
               showSuccessToast(result);
               return true;
             });

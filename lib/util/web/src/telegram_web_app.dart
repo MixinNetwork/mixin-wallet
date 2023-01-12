@@ -40,9 +40,10 @@ class Telegram {
     }
   }
 
-  void showScanQrPopup(bool Function(String result) callback) {
+  void showScanQrPopup(String? text, bool Function(String result) callback) {
     try {
-      webApp.callMethod('showScanQrPopup', [null, js.allowInterop(callback)]);
+      final params = js.JsObject.jsify({'text': text});
+      webApp.callMethod('showScanQrPopup', [params, js.allowInterop(callback)]);
     } catch (error, stacktrace) {
       wtf('showScanQrPopup error $error, $stacktrace');
       showErrorToast('showScanQrPopup error $error $stacktrace');
