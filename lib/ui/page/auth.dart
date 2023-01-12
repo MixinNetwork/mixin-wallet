@@ -11,7 +11,7 @@ import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/mixin_context.dart';
 import '../../util/r.dart';
-import '../../util/web/telegram_web_app.dart';
+import '../../util/web/src/telegram_web_app.dart';
 import '../router/mixin_routes.dart';
 import '../widget/text.dart';
 import '../widget/toast.dart';
