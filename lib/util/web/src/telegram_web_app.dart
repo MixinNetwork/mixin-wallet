@@ -39,17 +39,19 @@ class Telegram {
     }
   }
 
-  void showScanQrPopup(String? text, bool Function(String result) callback) {
+  bool showScanQrPopup(String? text, bool Function(String result) callback) {
     try {
       final function = webApp['showScanQrPopup'] as js.JsFunction?;
       if (function == null) {
         wtf('showScanQrPopup is null');
-        return;
+        return false;
       }
       final params = js.JsObject.jsify({'text': text});
       function.apply([params, js.allowInterop(callback)], thisArg: webApp);
+      return true;
     } catch (error, stacktrace) {
       wtf('showScanQrPopup error $error, $stacktrace');
+      return false;
     }
   }
 
