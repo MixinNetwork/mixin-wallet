@@ -1,6 +1,7 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
+import '../../extension/extension.dart';
 import '../../logger.dart';
 import '../../version.dart';
 
@@ -62,4 +63,10 @@ class Telegram {
   String get platform => webApp['platform'] as String;
 
   String get version => webApp['version'] as String;
+
+  bool get isMobilePlatform {
+    final platform = this.platform;
+    return platform.equalsIgnoreCase('android') ||
+        platform.equalsIgnoreCase('ios');
+  }
 }
