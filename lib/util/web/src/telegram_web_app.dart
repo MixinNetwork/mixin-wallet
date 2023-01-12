@@ -39,7 +39,7 @@ class Telegram {
     }
   }
 
-  bool showScanQrPopup(String? text, bool Function(String result) callback) {
+  bool showScanQrPopup(String text, bool Function(String result) callback) {
     try {
       final function = webApp['showScanQrPopup'] as js.JsFunction?;
       if (function == null) {
@@ -53,6 +53,24 @@ class Telegram {
       wtf('showScanQrPopup error $error, $stacktrace');
       return false;
     }
+  }
+
+  bool isVersionGreaterOrEqual(String version) {
+    final currentVersionParts = this.version.split('.');
+    final versionParts = version.split('.');
+    for (var i = 0; i < versionParts.length; i++) {
+      final currentVersionPart = int.tryParse(currentVersionParts[i]);
+      final vPart = int.tryParse(versionParts[i]);
+      if (currentVersionPart == null || vPart == null) {
+        return false;
+      }
+      if (currentVersionPart > vPart) {
+        return true;
+      } else if (currentVersionPart < vPart) {
+        return false;
+      }
+    }
+    return false;
   }
 
   String get platform => webApp['platform'] as String;
