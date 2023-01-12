@@ -7,6 +7,7 @@ import '../../generated/r.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
+import '../../util/native_scroll.dart';
 import '../../util/web/telegram_web_app.dart';
 import '../router/mixin_routes.dart';
 import '../widget/buttons.dart';
@@ -43,67 +44,72 @@ class _SettingsBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final hideSmallAssets = useValueListenable(isSmallAssetsHidden);
-    return Column(
-      children: [
-        const SizedBox(height: 24),
-        MenuItemWidget(
-          topRounded: true,
-          leading: SvgPicture.asset(R.resourcesAllTransactionsSvg),
-          title: Text(context.l10n.allTransactions),
-          onTap: () => context.push(transactionsUri),
+    return NativeScrollBuilder(
+      builder: (context, controller) => SingleChildScrollView(
+        controller: controller,
+        child: Column(
+          children: [
+            const SizedBox(height: 24),
+            MenuItemWidget(
+              topRounded: true,
+              leading: SvgPicture.asset(R.resourcesAllTransactionsSvg),
+              title: Text(context.l10n.allTransactions),
+              onTap: () => context.push(transactionsUri),
+            ),
+            MenuItemWidget(
+              bottomRounded: true,
+              leading: SvgPicture.asset(R.resourcesHiddenSvg),
+              title: Text(context.l10n.hiddenAssets),
+              onTap: () => context.push(hiddenAssetsUri),
+            ),
+            const SizedBox(height: 10),
+            MenuItemWidget(
+              topRounded: true,
+              bottomRounded: true,
+              title: Text(context.l10n.hideSmallAssets),
+              leading: SvgPicture.asset(R.resourcesHideAssetsSvg),
+              trailing: Switch(
+                value: hideSmallAssets,
+                activeColor: const Color(0xff333333),
+                onChanged: (bool value) => isSmallAssetsHidden.value = value,
+              ),
+            ),
+            const SizedBox(height: 10),
+            if (isLoginByCredential) const _CurrencyItem(),
+            if (isLoginByCredential)
+              MenuItemWidget(
+                title: Text(context.l10n.logs),
+                topRounded: false,
+                bottomRounded: true,
+                onTap: () => context.push(pinLogsPath),
+              ),
+            Text('platform: ${Telegram.instance.platform}'),
+            Text('version: ${Telegram.instance.version}'),
+            MenuItemWidget(
+              title: const Text('a'),
+              topRounded: true,
+              bottomRounded: false,
+              onTap: () async {
+                Telegram.instance.showScanQrPopup('', (result) {
+                  showSuccessToast(result);
+                  return true;
+                });
+              },
+            ),
+            MenuItemWidget(
+              title: const Text('b'),
+              topRounded: false,
+              bottomRounded: true,
+              onTap: () async {
+                Telegram.instance.showScanQrPopup('hello', (result) {
+                  showSuccessToast(result);
+                  return true;
+                });
+              },
+            )
+          ],
         ),
-        MenuItemWidget(
-          bottomRounded: true,
-          leading: SvgPicture.asset(R.resourcesHiddenSvg),
-          title: Text(context.l10n.hiddenAssets),
-          onTap: () => context.push(hiddenAssetsUri),
-        ),
-        const SizedBox(height: 10),
-        MenuItemWidget(
-          topRounded: true,
-          bottomRounded: true,
-          title: Text(context.l10n.hideSmallAssets),
-          leading: SvgPicture.asset(R.resourcesHideAssetsSvg),
-          trailing: Switch(
-            value: hideSmallAssets,
-            activeColor: const Color(0xff333333),
-            onChanged: (bool value) => isSmallAssetsHidden.value = value,
-          ),
-        ),
-        const SizedBox(height: 10),
-        if (isLoginByCredential) const _CurrencyItem(),
-        if (isLoginByCredential)
-          MenuItemWidget(
-            title: Text(context.l10n.logs),
-            topRounded: false,
-            bottomRounded: true,
-            onTap: () => context.push(pinLogsPath),
-          ),
-        Text('platform: ${Telegram.instance.platform}'),
-        Text('version: ${Telegram.instance.version}'),
-        MenuItemWidget(
-          title: const Text('a'),
-          topRounded: true,
-          bottomRounded: false,
-          onTap: () async {
-            Telegram.instance.showScanQrPopup('', (result) {
-              showSuccessToast(result);
-              return true;
-            });
-          },
-        ),
-        MenuItemWidget(
-          title: const Text('b'),
-          topRounded: false,
-          bottomRounded: true,
-          onTap: () async {
-            Telegram.instance.showScanQrPopup('hello', (result) {
-              showSuccessToast(result);
-              return true;
-            });
-          },
-        )
-      ],
+      ),
     );
   }
 }
