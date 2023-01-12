@@ -8,7 +8,6 @@ import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../../util/native_scroll.dart';
-import '../../util/web/telegram_web_app.dart';
 import '../router/mixin_routes.dart';
 import '../widget/buttons.dart';
 import '../widget/dialog/currency_bottom_sheet.dart';
@@ -83,30 +82,6 @@ class _SettingsBody extends HookWidget {
                 bottomRounded: true,
                 onTap: () => context.push(pinLogsPath),
               ),
-            Text('platform: ${Telegram.instance.platform}'),
-            Text('version: ${Telegram.instance.version}'),
-            MenuItemWidget(
-              title: const Text('a'),
-              topRounded: true,
-              bottomRounded: false,
-              onTap: () async {
-                Telegram.instance.showScanQrPopup('', (result) {
-                  showSuccessToast(result);
-                  return true;
-                });
-              },
-            ),
-            MenuItemWidget(
-              title: const Text('b'),
-              topRounded: false,
-              bottomRounded: true,
-              onTap: () async {
-                Telegram.instance.showScanQrPopup('hello', (result) {
-                  showSuccessToast(result);
-                  return true;
-                });
-              },
-            )
           ],
         ),
       ),

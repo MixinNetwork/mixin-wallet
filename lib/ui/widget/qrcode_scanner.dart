@@ -14,7 +14,9 @@ import 'mixin_appbar.dart';
 Future<String?> scanTextFromQrcode({
   required BuildContext context,
 }) async {
-  if (isLoginByCredential && Telegram.instance.isVersionGreaterOrEqual('6.4')) {
+  if (isLoginByCredential &&
+      Telegram.instance.isMobilePlatform &&
+      Telegram.instance.isVersionGreaterOrEqual('6.4')) {
     // if current is telegram web app, try to use telegram native qr code scanner.
     final completer = Completer<String?>();
     Telegram.instance.showScanQrPopup('', (result) {
