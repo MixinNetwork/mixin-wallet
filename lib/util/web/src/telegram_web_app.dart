@@ -2,6 +2,7 @@
 import 'dart:js' as js;
 
 import '../../logger.dart';
+import '../../version.dart';
 
 class Telegram {
   Telegram._internal() {
@@ -55,23 +56,8 @@ class Telegram {
     }
   }
 
-  bool isVersionGreaterOrEqual(String version) {
-    final currentVersionParts = this.version.split('.');
-    final versionParts = version.split('.');
-    for (var i = 0; i < versionParts.length; i++) {
-      final currentVersionPart = int.tryParse(currentVersionParts[i]);
-      final vPart = int.tryParse(versionParts[i]);
-      if (currentVersionPart == null || vPart == null) {
-        return false;
-      }
-      if (currentVersionPart > vPart) {
-        return true;
-      } else if (currentVersionPart < vPart) {
-        return false;
-      }
-    }
-    return false;
-  }
+  bool isVersionGreaterOrEqual(String version) =>
+      isCurrentVersionGreaterOrEqualThan(this.version, version);
 
   String get platform => webApp['platform'] as String;
 
