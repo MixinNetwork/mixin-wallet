@@ -44,7 +44,7 @@ class Telegram {
     try {
       webApp.callMethod('showScanQrPopup', [null, js.allowInterop(callback)]);
     } catch (error, stacktrace) {
-      e('showScanQrPopup error $error, $stacktrace');
+      wtf('showScanQrPopup error $error, $stacktrace');
       showErrorToast('showScanQrPopup error $error $stacktrace');
     }
   }
