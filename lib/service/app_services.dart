@@ -20,8 +20,7 @@ import '../thirdy_party/telegram.dart';
 import '../util/constants.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
-import '../util/web/telegram_web_app_dummy.dart'
-    if (dart.library.html) '../util/web/telegram_web_app.dart';
+import '../util/web/telegram_web_app.dart';
 import 'env.dart';
 import 'profile/auth.dart';
 import 'profile/profile_manager.dart';

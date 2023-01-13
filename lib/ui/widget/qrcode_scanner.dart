@@ -1,15 +1,31 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:web_qrcode/web_qrcode.dart';
 
+import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
+import '../../util/web/telegram_web_app.dart';
 import 'buttons.dart';
 import 'mixin_appbar.dart';
 
 Future<String?> scanTextFromQrcode({
   required BuildContext context,
 }) async {
+  if (isLoginByCredential &&
+      Telegram.instance.isMobilePlatform &&
+      Telegram.instance.isVersionGreaterOrEqual('6.4')) {
+    // if current is telegram web app, try to use telegram native qr code scanner.
+    final completer = Completer<String?>();
+    Telegram.instance.showScanQrPopup('', (result) {
+      completer.complete(result);
+      return true;
+    });
+    return completer.future;
+  }
+
   final cameras = <String>[];
   try {
     cameras.addAll(await getCameras());

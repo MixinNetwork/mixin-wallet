@@ -5,7 +5,7 @@ import 'dart:html';
 import 'package:flutter/foundation.dart';
 
 import '../../mixin_context.dart';
-import '../telegram_web_app.dart';
+import 'telegram_web_app.dart';
 
 void fixSafariIndexDb() {
   // fix safari indexedDb bug: https://bugs.webkit.org/show_bug.cgi?id=226547

@@ -44,12 +44,10 @@ void i(String message) {
 }
 
 void w(String message) {
-  if (!kLogMode) return;
   print(_warningPen('$_warningPrefix $message'));
 }
 
 void e(String message) {
-  if (!kLogMode) return;
   print(_errorPen('$_errorPrefix $message'));
 }
 
