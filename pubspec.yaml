@@ -73,7 +73,7 @@ dependencies:
   collection: ^1.16.0
   convert: ^3.1.1
   pointycastle: ^3.6.2
-  url_launcher: ^6.1.6
+  url_launcher: ^6.1.8
   async: ^2.9.0
   overlay_support: ^2.1.0
   fixnum: ^1.0.1
