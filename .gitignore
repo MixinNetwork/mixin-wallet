@@ -52,3 +52,4 @@ env.g.dart
 .fvm
 
 /lib/generated/r.preview.dart
+\lib/generated\r.preview.dart
