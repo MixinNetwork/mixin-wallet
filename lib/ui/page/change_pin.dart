@@ -199,17 +199,20 @@ class _PinInputLayout extends HookWidget {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                  child: MixinText(
-                    message,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: context.colorScheme.primaryText,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 100),
+                    child: MixinText(
+                      message,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: context.colorScheme.primaryText,
+                      ),
                     ),
                   ),
                 ),
-                const Spacer(flex: 3),
                 PinField(controller: pinInputController),
-                const Spacer(flex: 7),
+                const Spacer(),
                 PinInputNumPad(controller: pinInputController),
               ],
             ),
