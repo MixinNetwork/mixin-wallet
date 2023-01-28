@@ -520,7 +520,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Future<void> updateTopAssetIds() async {
     final list = (await client.assetApi.getTopAssets()).data;
-    // todo update, now balance always 0
+    // TODO(unknown): update, now balance always 0
     // unawaited(mixinDatabase.assetDao.insertAllOnConflictUpdate(list));
     final assetIds = list.map((e) => e.assetId).toList();
     replaceTopAssetIds(assetIds);
