@@ -55,28 +55,27 @@ class ChangePin extends HookWidget {
             }
           },
         ),
-        title: Center(
-          child: Column(
-            children: [
-              MixinText(
-                title,
-                style: TextStyle(
-                  color: context.colorScheme.primaryText,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+        title: Column(
+          children: [
+            MixinText(
+              title,
+              style: TextStyle(
+                color: context.colorScheme.primaryText,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
               ),
-              MixinText(
-                '${step.value.index + 1}/${_ChangePinStep.values.length}',
-                style: TextStyle(
-                  color: context.colorScheme.secondaryText,
-                  fontSize: 12,
-                  fontWeight: FontWeight.normal,
-                ),
+            ),
+            MixinText(
+              '${step.value.index + 1}/${_ChangePinStep.values.length}',
+              style: TextStyle(
+                color: context.colorScheme.secondaryText,
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+        centerTitle: true,
         actions: [
           if (step.value != _ChangePinStep.verifyOldPin)
             _StepCircle(step: step.value.index),
