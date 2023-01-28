@@ -132,12 +132,15 @@ class _PinInputLayout extends HookWidget {
         break;
     }
 
+    final newPin = useRef<String>('');
+
     useEffect(() {
       pinInputController.clear();
+      if (step.value == _ChangePinStep.createNewPin) {
+        newPin.value = '';
+      }
       return null;
     }, [step.value]);
-
-    final newPin = useRef<String>('');
 
     useEffect(() {
       void onConfirmNewPinFailed() {
@@ -157,6 +160,30 @@ class _PinInputLayout extends HookWidget {
             });
             break;
           case _ChangePinStep.createNewPin:
+            bool validatePin() {
+              final pin = pinInputController.value;
+              if (pin == '123456') {
+                showErrorToast(context.l10n.pinUnsafe);
+                return false;
+              }
+              // ensure number kind large than 2
+              final numberKind = <String>{};
+
+              for (final c in pin.characters) {
+                numberKind.add(c);
+              }
+              if (numberKind.length <= 2) {
+                showErrorToast(context.l10n.pinUnsafe);
+                return false;
+              }
+              return true;
+            }
+
+            if (!validatePin()) {
+              pinInputController.clear();
+              return;
+            }
+
             newPin.value = pinInputController.value;
             step.value = _ChangePinStep.confirmNewPin1;
             break;
@@ -212,7 +239,11 @@ class _PinInputLayout extends HookWidget {
                   ),
                 ),
                 PinField(controller: pinInputController),
-                const Spacer(),
+                Expanded(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 32),
+                  ),
+                ),
                 PinInputNumPad(controller: pinInputController),
               ],
             ),
