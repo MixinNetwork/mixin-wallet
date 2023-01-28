@@ -77,8 +77,7 @@ class ChangePin extends HookWidget {
         ),
         centerTitle: true,
         actions: [
-          if (step.value != _ChangePinStep.verifyOldPin)
-            _StepCircle(step: step.value.index),
+          _StepCircle(step: step.value.index),
         ],
         backgroundColor: context.colorScheme.background,
       ),
@@ -221,28 +220,39 @@ class _PinInputLayout extends HookWidget {
   }
 }
 
-class _StepCircle extends StatelessWidget {
+class _StepCircle extends HookWidget {
   const _StepCircle({Key? key, required this.step}) : super(key: key);
 
   final int step;
 
   @override
-  Widget build(BuildContext context) => Container(
-        width: 24,
-        height: 24,
-        decoration: BoxDecoration(
-          color: context.colorScheme.accent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Center(
-          child: MixinText(
-            '$step',
-            style: TextStyle(
-              color: context.colorScheme.primaryText,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
+  Widget build(BuildContext context) {
+    const progressMax = 5;
+
+    final controller = useAnimationController(
+      duration: const Duration(milliseconds: 300),
+      initialValue: step / progressMax,
+    );
+    useEffect(() {
+      controller.animateTo(step / progressMax, curve: Curves.easeInOut);
+      return null;
+    }, [step]);
+
+    useListenable(controller);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Center(
+        child: SizedBox(
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 4,
+            value: controller.value,
+            color: context.colorScheme.accent,
           ),
         ),
-      );
+      ),
+    );
+  }
 }
