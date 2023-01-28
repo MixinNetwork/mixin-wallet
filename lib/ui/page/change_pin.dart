@@ -83,6 +83,7 @@ class ChangePin extends HookWidget {
         ],
         backgroundColor: context.colorScheme.background,
       ),
+      backgroundColor: context.colorScheme.background,
       body: _PinInputLayout(
         step: step,
         doCreateNewPin: () {},
@@ -189,14 +190,34 @@ class _PinInputLayout extends HookWidget {
       return () => pinInputController.removeListener(onPinInput);
     }, [pinInputController]);
 
-    return Column(
-      children: [
-        Text(message),
-        const SizedBox(height: 80),
-        PinField(controller: pinInputController),
-        const Spacer(),
-        PinInputNumPad(controller: pinInputController),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraints.maxHeight),
+          child: IntrinsicHeight(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  child: MixinText(
+                    message,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: context.colorScheme.primaryText,
+                    ),
+                  ),
+                ),
+                const Spacer(flex: 3),
+                PinField(controller: pinInputController),
+                const Spacer(flex: 7),
+                PinInputNumPad(controller: pinInputController),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
