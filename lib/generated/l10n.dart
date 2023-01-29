@@ -2644,20 +2644,20 @@ class L10n {
     );
   }
 
-  /// `It\'s rare to see a third confirmation somewhere else, so please remember the PIN is unrecoverable if lost.`
+  /// `It's rare to see a third confirmation somewhere else, so please remember the PIN is unrecoverable if lost.`
   String get thirdPinConfirmHint {
     return Intl.message(
-      'It\\\'s rare to see a third confirmation somewhere else, so please remember the PIN is unrecoverable if lost.',
+      'It\'s rare to see a third confirmation somewhere else, so please remember the PIN is unrecoverable if lost.',
       name: 'thirdPinConfirmHint',
       desc: '',
       args: [],
     );
   }
 
-  /// `Yes, there is a fourth PIN confirmation, and I promise it\'s the last one to ensure you have remembered your PIN. The PIN is unrecoverable if lost.`
+  /// `Yes, there is a fourth PIN confirmation, and I promise it's the last one to ensure you have remembered your PIN. The PIN is unrecoverable if lost.`
   String get fourthPinConfirmHint {
     return Intl.message(
-      'Yes, there is a fourth PIN confirmation, and I promise it\\\'s the last one to ensure you have remembered your PIN. The PIN is unrecoverable if lost.',
+      'Yes, there is a fourth PIN confirmation, and I promise it\'s the last one to ensure you have remembered your PIN. The PIN is unrecoverable if lost.',
       name: 'fourthPinConfirmHint',
       desc: '',
       args: [],

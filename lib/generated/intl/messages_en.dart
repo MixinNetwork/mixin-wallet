@@ -289,7 +289,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterBy": MessageLookupByLibrary.simpleMessage("FILTER BY"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("Filter"),
         "fourthPinConfirmHint": MessageLookupByLibrary.simpleMessage(
-            "Yes, there is a fourth PIN confirmation, and I promise it\\\'s the last one to ensure you have remembered your PIN. The PIN is unrecoverable if lost."),
+            "Yes, there is a fourth PIN confirmation, and I promise it\'s the last one to ensure you have remembered your PIN. The PIN is unrecoverable if lost."),
         "from": MessageLookupByLibrary.simpleMessage("From"),
         "goPay": MessageLookupByLibrary.simpleMessage("Go pay"),
         "gotIt": MessageLookupByLibrary.simpleMessage("Got it"),
@@ -416,7 +416,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
         "tagHint": MessageLookupByLibrary.simpleMessage("Tag"),
         "thirdPinConfirmHint": MessageLookupByLibrary.simpleMessage(
-            "It\\\'s rare to see a third confirmation somewhere else, so please remember the PIN is unrecoverable if lost."),
+            "It\'s rare to see a third confirmation somewhere else, so please remember the PIN is unrecoverable if lost."),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
         "to": MessageLookupByLibrary.simpleMessage("To"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
