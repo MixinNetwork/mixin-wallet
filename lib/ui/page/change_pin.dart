@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../service/profile/pin_session.dart';
+import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../widget/buttons.dart';
@@ -86,15 +87,7 @@ class ChangePin extends HookWidget {
         backgroundColor: context.colorScheme.background,
       ),
       backgroundColor: context.colorScheme.background,
-      body: _PinInputLayout(
-        step: step,
-        doCreateNewPin: () => computeWithLoading(() async {
-          d('doCreateNewPin');
-          await Future<void>.delayed(const Duration(seconds: 1));
-          showSuccessToast(context.l10n.changePinSuccessfully);
-          context.pop();
-        }),
-      ),
+      body: _PinInputLayout(step: step),
     );
   }
 }
@@ -111,11 +104,8 @@ class _PinInputLayout extends HookWidget {
   const _PinInputLayout({
     Key? key,
     required this.step,
-    required this.doCreateNewPin,
   }) : super(key: key);
   final ValueNotifier<_ChangePinStep> step;
-
-  final void Function() doCreateNewPin;
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +132,7 @@ class _PinInputLayout extends HookWidget {
     }
 
     final newPin = useRef<String>('');
+    final oldPin = useRef<String>('');
 
     useEffect(() {
       pinInputController.clear();
@@ -189,6 +180,7 @@ class _PinInputLayout extends HookWidget {
                 showErrorToast(error.toDisplayString(context));
                 return;
               }
+              oldPin.value = pinInputController.value;
               step.value = _ChangePinStep.createNewPin;
             });
             break;
@@ -239,7 +231,27 @@ class _PinInputLayout extends HookWidget {
               onConfirmNewPinFailed();
               return;
             }
-            doCreateNewPin();
+            d('doCreateNewPin');
+            runWithLoading(() async {
+              if (oldPin.value.isEmpty) {
+                e('oldPin is empty');
+                return;
+              }
+              try {
+                final old = encryptPin(oldPin.value);
+                final fresh = encryptPin(pinInputController.value);
+                final response = await context.appServices.client.accountApi
+                    .updatePin(sdk.PinRequest(pin: fresh!, oldPin: old));
+                await setAuth(auth!.copyWith(account: response.data));
+                showSuccessToast(context.l10n.changePinSuccessfully);
+                context.pop();
+              } catch (error, stacktrace) {
+                pinInputController.clear();
+                e('update pin error $error, $stacktrace');
+                showErrorToast(error.toDisplayString(context));
+                return;
+              }
+            });
             break;
         }
       }
