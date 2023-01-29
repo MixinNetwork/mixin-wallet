@@ -263,5 +263,6 @@
   "pinUnsafe": "The PIN is too simple and insecure.",
   "pinNotMatch": "The PIN is not the same twice, please try again.",
   "setNewPin": "Set a new PIN",
-  "confirmPin": "Confirm PIN"
+  "confirmPin": "Confirm PIN",
+  "changePinSuccessfully": "Change PIN successfully"
 }

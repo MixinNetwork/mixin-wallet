@@ -134,6 +134,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "changePhoneNumber":
             MessageLookupByLibrary.simpleMessage("Change phone number"),
         "changePin": MessageLookupByLibrary.simpleMessage("Change PIN"),
+        "changePinSuccessfully":
+            MessageLookupByLibrary.simpleMessage("Change PIN successfully"),
         "changePinTip": MessageLookupByLibrary.simpleMessage(
             "Please enter the 6 digit PIN to verify."),
         "clearConditions":

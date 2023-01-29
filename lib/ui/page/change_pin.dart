@@ -1,7 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
+import '../../service/profile/pin_session.dart';
 import '../../util/extension/extension.dart';
+import '../../util/logger.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/pin.dart';
@@ -84,7 +88,12 @@ class ChangePin extends HookWidget {
       backgroundColor: context.colorScheme.background,
       body: _PinInputLayout(
         step: step,
-        doCreateNewPin: () {},
+        doCreateNewPin: () => computeWithLoading(() async {
+          d('doCreateNewPin');
+          await Future<void>.delayed(const Duration(seconds: 1));
+          showSuccessToast(context.l10n.changePinSuccessfully);
+          context.pop();
+        }),
       ),
     );
   }
@@ -155,7 +164,31 @@ class _PinInputLayout extends HookWidget {
         switch (step.value) {
           case _ChangePinStep.verifyOldPin:
             runWithLoading(() async {
-              await Future<void>.delayed(const Duration(seconds: 1));
+              try {
+                await context.appServices.client.accountApi
+                    .verifyPin(encryptPin(pinInputController.value)!);
+              } catch (error, stacktrace) {
+                pinInputController.clear();
+                e('verify pin error $error, $stacktrace');
+                if (error is DioError) {
+                  final mixinError = error.optionMixinError;
+                  if (mixinError != null) {
+                    if (mixinError.code == sdk.tooManyRequest) {
+                      showErrorToast(context.l10n.errorPinCheckTooManyRequest);
+                      return;
+                    } else if (mixinError.code == sdk.pinIncorrect) {
+                      final count =
+                          await context.appServices.getPinErrorRemainCount();
+                      showErrorToast(
+                        context.l10n.errorPinIncorrectWithTimes(count, count),
+                      );
+                      return;
+                    }
+                  }
+                }
+                showErrorToast(error.toDisplayString(context));
+                return;
+              }
               step.value = _ChangePinStep.createNewPin;
             });
             break;

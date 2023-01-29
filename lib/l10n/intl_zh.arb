@@ -259,5 +259,6 @@
   "pinUnsafe": "PIN 过于简单不安全",
   "pinNotMatch": "PIN 不一致, 请重新输入",
   "setNewPin": "设置新的 PIN",
-  "confirmPin": "确认 PIN"
+  "confirmPin": "确认 PIN",
+  "changePinSuccessfully": "PIN 修改成功"
 }

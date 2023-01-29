@@ -2703,6 +2703,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Change PIN successfully`
+  String get changePinSuccessfully {
+    return Intl.message(
+      'Change PIN successfully',
+      name: 'changePinSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

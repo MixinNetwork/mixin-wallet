@@ -120,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("修改紧急联系人"),
         "changePhoneNumber": MessageLookupByLibrary.simpleMessage("修改手机号码"),
         "changePin": MessageLookupByLibrary.simpleMessage("修改 PIN"),
+        "changePinSuccessfully":
+            MessageLookupByLibrary.simpleMessage("PIN 修改成功"),
         "changePinTip": MessageLookupByLibrary.simpleMessage("请输入 6 位 PIN 来验证"),
         "clearConditions": MessageLookupByLibrary.simpleMessage("清除条件"),
         "coins": MessageLookupByLibrary.simpleMessage("代币"),
