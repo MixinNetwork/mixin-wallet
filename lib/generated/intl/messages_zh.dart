@@ -119,6 +119,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "changeEmergencyContact":
             MessageLookupByLibrary.simpleMessage("修改紧急联系人"),
         "changePhoneNumber": MessageLookupByLibrary.simpleMessage("修改手机号码"),
+        "changePin": MessageLookupByLibrary.simpleMessage("修改 PIN"),
+        "changePinSuccessfully":
+            MessageLookupByLibrary.simpleMessage("PIN 修改成功"),
+        "changePinTip": MessageLookupByLibrary.simpleMessage("请输入 6 位 PIN 来验证"),
         "clearConditions": MessageLookupByLibrary.simpleMessage("清除条件"),
         "coins": MessageLookupByLibrary.simpleMessage("代币"),
         "collectiblesReadFailed":
@@ -127,6 +131,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "comingSoon": MessageLookupByLibrary.simpleMessage("即将推出"),
         "completed": MessageLookupByLibrary.simpleMessage("已完成"),
         "confirm": MessageLookupByLibrary.simpleMessage("确认"),
+        "confirmPin": MessageLookupByLibrary.simpleMessage("确认 PIN"),
         "contact": MessageLookupByLibrary.simpleMessage("联系人"),
         "contactReadFailed": MessageLookupByLibrary.simpleMessage("读取联系人列表失败"),
         "contactSearchHint":
@@ -254,6 +259,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterApply": MessageLookupByLibrary.simpleMessage("应用"),
         "filterBy": MessageLookupByLibrary.simpleMessage("筛选"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("筛选"),
+        "fourthPinConfirmHint": MessageLookupByLibrary.simpleMessage(
+            "这是最后一次确认 PIN，记住：PIN 丢失将永远无法找回！"),
         "from": MessageLookupByLibrary.simpleMessage("来自"),
         "goPay": MessageLookupByLibrary.simpleMessage("去支付"),
         "gotIt": MessageLookupByLibrary.simpleMessage("知道了"),
@@ -277,6 +284,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkFeeTip": MessageLookupByLibrary.simpleMessage(
             "由第三方服务商收取。直接支付给以太坊矿工以保证以太坊上交易完成。网络费根据即时市场状况变动。"),
         "networkType": MessageLookupByLibrary.simpleMessage("网络类型"),
+        "next": MessageLookupByLibrary.simpleMessage("下一步"),
         "nfts": MessageLookupByLibrary.simpleMessage("NFTs"),
         "noAsset": MessageLookupByLibrary.simpleMessage("暂无资产"),
         "noCollectiblesFound":
@@ -304,8 +312,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "pendingConfirmations": m18,
         "phoneNumberChange": MessageLookupByLibrary.simpleMessage("修改手机号码"),
         "pinChange": MessageLookupByLibrary.simpleMessage("修改 PIN"),
+        "pinConfirmAgainHint":
+            MessageLookupByLibrary.simpleMessage("请再次确认您的 6 位 PIN"),
+        "pinConfirmHint":
+            MessageLookupByLibrary.simpleMessage("确认 6 位数字 PIN 并牢记它"),
         "pinCreation": MessageLookupByLibrary.simpleMessage("创建 PIN"),
         "pinIncorrect": MessageLookupByLibrary.simpleMessage("PIN 不正确"),
+        "pinLostHint": MessageLookupByLibrary.simpleMessage("如果忘记，你的钱包将无法找回。"),
+        "pinNotMatch": MessageLookupByLibrary.simpleMessage("PIN 不一致, 请重新输入"),
+        "pinUnsafe": MessageLookupByLibrary.simpleMessage("PIN 过于简单不安全"),
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "rawTransaction": MessageLookupByLibrary.simpleMessage("交易原始值"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),
@@ -330,6 +345,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendLink": MessageLookupByLibrary.simpleMessage("发送链接"),
         "sendTo": m20,
         "sendToContact": MessageLookupByLibrary.simpleMessage("转账至联系人"),
+        "setNewPin": MessageLookupByLibrary.simpleMessage("设置新的 PIN"),
+        "setNewPinDesc": MessageLookupByLibrary.simpleMessage("设置新的 6 位数字 PIN"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "show": MessageLookupByLibrary.simpleMessage("显示"),
         "signIn": MessageLookupByLibrary.simpleMessage("登录"),
@@ -352,6 +369,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "swapType": MessageLookupByLibrary.simpleMessage("兑换币种"),
         "symbol": MessageLookupByLibrary.simpleMessage("符号"),
         "tagHint": MessageLookupByLibrary.simpleMessage("标签（Tag）"),
+        "thirdPinConfirmHint": MessageLookupByLibrary.simpleMessage(
+            "很少看到第三次确认吧！所以请牢记，PIN 丢失是无法找回的。"),
         "time": MessageLookupByLibrary.simpleMessage("时间"),
         "to": MessageLookupByLibrary.simpleMessage("至"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("总余额"),
@@ -376,6 +395,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "undo": MessageLookupByLibrary.simpleMessage("撤销"),
         "unpaid": MessageLookupByLibrary.simpleMessage("未支付"),
         "verify": MessageLookupByLibrary.simpleMessage("验证"),
+        "verifyOldPin": MessageLookupByLibrary.simpleMessage("验证旧的 PIN"),
         "viewEmergencyContact": MessageLookupByLibrary.simpleMessage("查看紧急联系人"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),
         "walletTransactionCurrentValue": m22,

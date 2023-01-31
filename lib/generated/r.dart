@@ -83,6 +83,9 @@ class R {
   /// {@macro assets_generator.resourcesIcCopySvg.preview}
   static const String resourcesIcCopySvg = 'resources/ic_copy.svg';
 
+  /// {@macro assets_generator.resourcesIcDeleteWebp.preview}
+  static const String resourcesIcDeleteWebp = 'resources/ic_delete.webp';
+
   /// {@macro assets_generator.resourcesIcDoubleArrowSvg.preview}
   static const String resourcesIcDoubleArrowSvg =
       'resources/ic_double_arrow.svg';

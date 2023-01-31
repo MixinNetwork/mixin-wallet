@@ -3,7 +3,7 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import '../../util/logger.dart';
 import 'profile_manager.dart';
 
-String? encryptPin(String code) {
+String? encryptPin(String code, {int? iter}) {
   assert(code.isNotEmpty, 'code is empty');
 
   final credential = auth?.credential;
@@ -11,7 +11,7 @@ String? encryptPin(String code) {
     e('credential is null');
     return null;
   }
-  final iterator = DateTime.now().millisecondsSinceEpoch * 1000000;
+  final iterator = iter ?? DateTime.now().millisecondsSinceEpoch * 1000000;
   return sdk.encryptPin(
     code,
     credential.pinToken,

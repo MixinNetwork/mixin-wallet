@@ -2563,6 +2563,156 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Change PIN`
+  String get changePin {
+    return Intl.message(
+      'Change PIN',
+      name: 'changePin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Old PIN`
+  String get verifyOldPin {
+    return Intl.message(
+      'Old PIN',
+      name: 'verifyOldPin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter the 6 digit PIN to verify.`
+  String get changePinTip {
+    return Intl.message(
+      'Please enter the 6 digit PIN to verify.',
+      name: 'changePinTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please set a new 6 digit PIN`
+  String get setNewPinDesc {
+    return Intl.message(
+      'Please set a new 6 digit PIN',
+      name: 'setNewPinDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please confirm the 6 digit PIN and remember it`
+  String get pinConfirmHint {
+    return Intl.message(
+      'Please confirm the 6 digit PIN and remember it',
+      name: 'pinConfirmHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If lost, there is no way to recover your wallet.`
+  String get pinLostHint {
+    return Intl.message(
+      'If lost, there is no way to recover your wallet.',
+      name: 'pinLostHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please confirm your 6 digit PIN again`
+  String get pinConfirmAgainHint {
+    return Intl.message(
+      'Please confirm your 6 digit PIN again',
+      name: 'pinConfirmAgainHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It's rare to see a third confirmation somewhere else, so please remember the PIN is unrecoverable if lost.`
+  String get thirdPinConfirmHint {
+    return Intl.message(
+      'It\'s rare to see a third confirmation somewhere else, so please remember the PIN is unrecoverable if lost.',
+      name: 'thirdPinConfirmHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes, there is a fourth PIN confirmation, and I promise it's the last one to ensure you have remembered your PIN. The PIN is unrecoverable if lost.`
+  String get fourthPinConfirmHint {
+    return Intl.message(
+      'Yes, there is a fourth PIN confirmation, and I promise it\'s the last one to ensure you have remembered your PIN. The PIN is unrecoverable if lost.',
+      name: 'fourthPinConfirmHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The PIN is too simple and insecure.`
+  String get pinUnsafe {
+    return Intl.message(
+      'The PIN is too simple and insecure.',
+      name: 'pinUnsafe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The PIN is not the same twice, please try again.`
+  String get pinNotMatch {
+    return Intl.message(
+      'The PIN is not the same twice, please try again.',
+      name: 'pinNotMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set a new PIN`
+  String get setNewPin {
+    return Intl.message(
+      'Set a new PIN',
+      name: 'setNewPin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm PIN`
+  String get confirmPin {
+    return Intl.message(
+      'Confirm PIN',
+      name: 'confirmPin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change PIN successfully`
+  String get changePinSuccessfully {
+    return Intl.message(
+      'Change PIN successfully',
+      name: 'changePinSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

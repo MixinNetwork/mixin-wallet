@@ -13,6 +13,7 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
     this.backButtonColor,
     this.actions,
     this.bottom,
+    this.centerTitle = false,
   }) : super(key: key);
 
   final Widget? leading;
@@ -26,6 +27,8 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
   final Color? backButtonColor;
 
   final PreferredSizeWidget? bottom;
+
+  final bool centerTitle;
 
   List<Widget> get validActions {
     final isNotEmpty = actions?.isNotEmpty ?? false;
@@ -51,7 +54,7 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
           elevation: 0,
           titleSpacing: 0,
           actions: validActions,
-          centerTitle: false,
+          centerTitle: centerTitle,
           title: title,
           titleTextStyle: const TextStyle(
             fontWeight: FontWeight.w600,

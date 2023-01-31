@@ -1,14 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../generated/r.dart';
 import '../../service/profile/pin_session.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
-import '../../util/web/telegram_web_app.dart';
 import 'buttons.dart';
 import 'mixin_bottom_sheet.dart';
 import 'toast.dart';
@@ -133,44 +131,114 @@ class PinInputNumPad extends HookWidget {
   final PinInputController controller;
 
   @override
-  Widget build(BuildContext context) => Column(
-        children: <Widget>[
-          for (var i = 0; i < 3; i++)
+  Widget build(BuildContext context) => ColoredBox(
+        color: context.colorScheme.surface,
+        child: Column(
+          children: <Widget>[
+            const SizedBox(height: 8),
+            for (var i = 0; i < 3; i++) ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  for (var j = 0; j < 3; j++) ...[
+                    if (j == 0) const SizedBox(width: 8),
+                    Expanded(
+                      child: _NumPadButton(
+                        value: i * 3 + j + 1,
+                        controller: controller,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ]
+                ],
+              ),
+              const SizedBox(height: 8),
+            ],
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                for (var j = 0; j < 3; j++)
-                  Expanded(
-                    child: _NumPadButton(
-                      value: i * 3 + j + 1,
-                      controller: controller,
-                    ),
+                const SizedBox(width: 8),
+                const Spacer(),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _NumPadButton(
+                    value: 0,
+                    controller: controller,
                   ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _DeleteButton(controller: controller),
+                ),
+                const SizedBox(width: 8),
               ],
             ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Spacer(),
-              Expanded(
-                child: _NumPadButton(
-                  value: 0,
-                  controller: controller,
-                ),
-              ),
-              Expanded(
-                child: _NumPadButton(
-                  value: -1,
-                  controller: controller,
-                ),
-              ),
-            ],
-          ),
-        ],
+            const SizedBox(height: 8),
+          ],
+        ),
       );
 }
 
-class _NumPadButton extends HookWidget {
+class _DeleteButton extends StatelessWidget {
+  const _DeleteButton({Key? key, required this.controller}) : super(key: key);
+  final PinInputController controller;
+
+  @override
+  Widget build(BuildContext context) => _ButtonWrapper(
+        onTap: controller.delete,
+        background: const Color(0xFF999999),
+        child: Center(
+          child: Image.asset(
+            R.resourcesIcDeleteWebp,
+            width: 26,
+            height: 26,
+          ),
+        ),
+      );
+}
+
+class _ButtonWrapper extends HookWidget {
+  const _ButtonWrapper({
+    Key? key,
+    required this.child,
+    required this.onTap,
+    this.background,
+  }) : super(key: key);
+
+  final Widget child;
+  final VoidCallback onTap;
+  final Color? background;
+
+  @override
+  Widget build(BuildContext context) {
+    final tapDown = useState(false);
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTapDown: (details) {
+        tapDown.value = true;
+      },
+      onTapUp: (details) {
+        tapDown.value = false;
+      },
+      onTapCancel: () {
+        tapDown.value = false;
+      },
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: tapDown.value
+              ? context.colorScheme.captionIcon
+              : background ?? context.colorScheme.background,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        height: 50,
+        child: child,
+      ),
+    );
+  }
+}
+
+class _NumPadButton extends StatelessWidget {
   const _NumPadButton({
     Key? key,
     required this.value,
@@ -181,26 +249,23 @@ class _NumPadButton extends HookWidget {
   final PinInputController controller;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-        height: 60,
-        child: TextButton(
-          onPressed: () {
-            if (value == -1) {
-              controller.delete();
-            } else {
-              controller.append(value);
-            }
-            Telegram.instance.hapticFeedback();
-          },
-          child: value == -1
-              ? SvgPicture.asset(R.resourcesDeleteArrowSvg)
-              : Text(
-                  value.toString(),
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: context.theme.text,
-                  ),
-                ),
+  Widget build(BuildContext context) => _ButtonWrapper(
+        onTap: () {
+          if (value < 0 || value > 9) {
+            e('Invalid value: $value');
+            return;
+          }
+          controller.append(value);
+        },
+        child: Center(
+          child: Text(
+            value.toString(),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 24,
+              color: context.theme.text,
+            ),
+          ),
         ),
       );
 }

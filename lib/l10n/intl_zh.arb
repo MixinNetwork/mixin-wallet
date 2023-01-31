@@ -245,5 +245,20 @@
   "deleteAddress": "删除地址",
   "addEmergencyContact": "添加紧急联系人",
   "deleteEmergencyContact": "删除紧急联系人",
-  "viewEmergencyContact": "查看紧急联系人"
+  "viewEmergencyContact": "查看紧急联系人",
+  "changePin": "修改 PIN",
+  "verifyOldPin": "验证旧的 PIN",
+  "changePinTip": "请输入 6 位 PIN 来验证",
+  "next": "下一步",
+  "setNewPinDesc": "设置新的 6 位数字 PIN",
+  "pinConfirmHint": "确认 6 位数字 PIN 并牢记它",
+  "pinLostHint": "如果忘记，你的钱包将无法找回。",
+  "pinConfirmAgainHint": "请再次确认您的 6 位 PIN",
+  "thirdPinConfirmHint": "很少看到第三次确认吧！所以请牢记，PIN 丢失是无法找回的。",
+  "fourthPinConfirmHint": "这是最后一次确认 PIN，记住：PIN 丢失将永远无法找回！",
+  "pinUnsafe": "PIN 过于简单不安全",
+  "pinNotMatch": "PIN 不一致, 请重新输入",
+  "setNewPin": "设置新的 PIN",
+  "confirmPin": "确认 PIN",
+  "changePinSuccessfully": "PIN 修改成功"
 }

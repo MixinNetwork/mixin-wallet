@@ -133,6 +133,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Change emergency contact"),
         "changePhoneNumber":
             MessageLookupByLibrary.simpleMessage("Change phone number"),
+        "changePin": MessageLookupByLibrary.simpleMessage("Change PIN"),
+        "changePinSuccessfully":
+            MessageLookupByLibrary.simpleMessage("Change PIN successfully"),
+        "changePinTip": MessageLookupByLibrary.simpleMessage(
+            "Please enter the 6 digit PIN to verify."),
         "clearConditions":
             MessageLookupByLibrary.simpleMessage("Clear conditions"),
         "coins": MessageLookupByLibrary.simpleMessage("Coins"),
@@ -142,6 +147,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
         "completed": MessageLookupByLibrary.simpleMessage("Completed"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
+        "confirmPin": MessageLookupByLibrary.simpleMessage("Confirm PIN"),
         "contact": MessageLookupByLibrary.simpleMessage("Contact"),
         "contactReadFailed":
             MessageLookupByLibrary.simpleMessage("Failed to read contact list"),
@@ -282,6 +288,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "filterApply": MessageLookupByLibrary.simpleMessage("Apply"),
         "filterBy": MessageLookupByLibrary.simpleMessage("FILTER BY"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("Filter"),
+        "fourthPinConfirmHint": MessageLookupByLibrary.simpleMessage(
+            "Yes, there is a fourth PIN confirmation, and I promise it\'s the last one to ensure you have remembered your PIN. The PIN is unrecoverable if lost."),
         "from": MessageLookupByLibrary.simpleMessage("From"),
         "goPay": MessageLookupByLibrary.simpleMessage("Go pay"),
         "gotIt": MessageLookupByLibrary.simpleMessage("Got it"),
@@ -309,6 +317,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkFeeTip": MessageLookupByLibrary.simpleMessage(
             "Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions."),
         "networkType": MessageLookupByLibrary.simpleMessage("Network type"),
+        "next": MessageLookupByLibrary.simpleMessage("Next"),
         "nfts": MessageLookupByLibrary.simpleMessage("NFTs"),
         "noAsset": MessageLookupByLibrary.simpleMessage("NO ASSET"),
         "noCollectiblesFound":
@@ -337,8 +346,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "phoneNumberChange":
             MessageLookupByLibrary.simpleMessage("Phone number change"),
         "pinChange": MessageLookupByLibrary.simpleMessage("PIN change"),
+        "pinConfirmAgainHint": MessageLookupByLibrary.simpleMessage(
+            "Please confirm your 6 digit PIN again"),
+        "pinConfirmHint": MessageLookupByLibrary.simpleMessage(
+            "Please confirm the 6 digit PIN and remember it"),
         "pinCreation": MessageLookupByLibrary.simpleMessage("PIN creation"),
         "pinIncorrect": MessageLookupByLibrary.simpleMessage("PIN incorrect"),
+        "pinLostHint": MessageLookupByLibrary.simpleMessage(
+            "If lost, there is no way to recover your wallet."),
+        "pinNotMatch": MessageLookupByLibrary.simpleMessage(
+            "The PIN is not the same twice, please try again."),
+        "pinUnsafe": MessageLookupByLibrary.simpleMessage(
+            "The PIN is too simple and insecure."),
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "rawTransaction":
             MessageLookupByLibrary.simpleMessage("Raw Transaction"),
@@ -368,6 +387,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendTo": m20,
         "sendToContact":
             MessageLookupByLibrary.simpleMessage("Send to contact"),
+        "setNewPin": MessageLookupByLibrary.simpleMessage("Set a new PIN"),
+        "setNewPinDesc": MessageLookupByLibrary.simpleMessage(
+            "Please set a new 6 digit PIN"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "show": MessageLookupByLibrary.simpleMessage("Show"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
@@ -393,6 +415,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "swapType": MessageLookupByLibrary.simpleMessage("Swap type"),
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
         "tagHint": MessageLookupByLibrary.simpleMessage("Tag"),
+        "thirdPinConfirmHint": MessageLookupByLibrary.simpleMessage(
+            "It\'s rare to see a third confirmation somewhere else, so please remember the PIN is unrecoverable if lost."),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
         "to": MessageLookupByLibrary.simpleMessage("To"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
@@ -424,6 +448,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
         "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
         "verify": MessageLookupByLibrary.simpleMessage("Verify"),
+        "verifyOldPin": MessageLookupByLibrary.simpleMessage("Old PIN"),
         "viewEmergencyContact":
             MessageLookupByLibrary.simpleMessage("View emergency contact"),
         "waitingActionDone":

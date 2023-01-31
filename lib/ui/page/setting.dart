@@ -74,14 +74,21 @@ class _SettingsBody extends HookWidget {
               ),
             ),
             const SizedBox(height: 10),
-            if (isLoginByCredential) const _CurrencyItem(),
-            if (isLoginByCredential)
+            if (isLoginByCredential) ...[
+              const _CurrencyItem(),
               MenuItemWidget(
                 title: Text(context.l10n.logs),
                 topRounded: false,
-                bottomRounded: true,
+                bottomRounded: false,
                 onTap: () => context.push(pinLogsPath),
               ),
+              MenuItemWidget(
+                title: Text(context.l10n.changePin),
+                topRounded: false,
+                bottomRounded: true,
+                onTap: () => context.push(changePinPath),
+              ),
+            ],
           ],
         ),
       ),
