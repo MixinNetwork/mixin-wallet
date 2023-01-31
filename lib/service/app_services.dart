@@ -46,34 +46,37 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       );
     }
     scheduleMicrotask(() async {
-      Future<void> refreshAccount() async {
-        try {
-          final response = await client.accountApi.getMe();
-          await setAuth(auth!.copyWith(account: response.data));
-        } catch (error) {
-          d('refresh account failed. $error');
-        }
-      }
-
-      if (isLogin) {
-        final tgInitData = Telegram.instance.getTgInitData();
-        if (tgInitData?.isNotEmpty ?? false) {
-          // in telegram web app
-          final data = await TelegramApi.instance.verifyInitData(tgInitData!);
-          if (data.mixinId == auth!.account.userId) {
-            await refreshAccount();
-          } else {
-            await loginByTelegram(tgInitData, user: data);
-            _initCompleter.complete();
-            return;
-          }
-        } else {
-          await refreshAccount();
-        }
-      }
+      unawaited(_checkLogin());
       await _initDatabase();
       _initCompleter.complete();
     });
+  }
+
+  Future<void> _checkLogin() async {
+    Future<void> refreshAccount() async {
+      try {
+        final response = await client.accountApi.getMe();
+        await setAuth(auth!.copyWith(account: response.data));
+      } catch (error) {
+        d('refresh account failed. $error');
+      }
+    }
+
+    if (isLogin) {
+      final tgInitData = Telegram.instance.getTgInitData();
+      if (tgInitData?.isNotEmpty ?? false) {
+        // in telegram web app
+        final data = await TelegramApi.instance.verifyInitData(tgInitData!);
+        if (data.mixinId == auth!.account.userId) {
+          await refreshAccount();
+        } else {
+          await setAuth(null);
+          vRouterStateKey.currentState?.to('/auth', isReplacement: true);
+        }
+      } else {
+        await refreshAccount();
+      }
+    }
   }
 
   List<InterceptorsWrapper> get interceptors => [
