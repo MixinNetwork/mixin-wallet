@@ -31,7 +31,8 @@ class ActionButton extends StatelessWidget {
         name!,
         width: size,
         height: size,
-        color: color,
+        colorFilter:
+            color == null ? null : ColorFilter.mode(color!, BlendMode.srcIn),
       );
     }
     if (!enable) {

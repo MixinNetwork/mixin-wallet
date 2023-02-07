@@ -95,7 +95,10 @@ class AssetHeader extends StatelessWidget {
                 R.resourcesIcSearchSvg,
                 height: 24,
                 width: 24,
-                color: context.colorScheme.primaryText,
+                colorFilter: ColorFilter.mode(
+                  context.colorScheme.primaryText,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             const SizedBox(width: 16),
@@ -111,7 +114,10 @@ class AssetHeader extends StatelessWidget {
                 R.resourcesAmplitudeSvg,
                 height: 24,
                 width: 24,
-                color: context.colorScheme.primaryText,
+                colorFilter: ColorFilter.mode(
+                  context.colorScheme.primaryText,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             const SizedBox(width: 2),
