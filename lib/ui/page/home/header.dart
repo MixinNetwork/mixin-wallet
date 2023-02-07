@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../db/mixin_database.dart';
+import '../../../service/account_provider.dart';
 import '../../../service/profile/profile_manager.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
@@ -44,6 +45,8 @@ class Header extends HookWidget {
       }
     }, [data, bitcoin]);
 
+    final faitCurrency = useAccountFaitCurrency();
+
     return Column(
       children: [
         const SizedBox(height: 20),
@@ -55,7 +58,7 @@ class Header extends HookWidget {
             Padding(
               padding: const EdgeInsets.only(top: 6),
               child: Text(
-                currentCurrencyNumberFormat.currencySymbol,
+                currentCurrencyNumberFormat(faitCurrency).currencySymbol,
                 style: TextStyle(
                   color: context.colorScheme.thirdText,
                   fontSize: 16,
@@ -65,7 +68,7 @@ class Header extends HookWidget {
             ),
             const SizedBox(width: 4),
             Text(
-              balance.currencyFormatWithoutSymbol,
+              balance.currencyFormatWithoutSymbol(faitCurrency),
               style: TextStyle(
                 color: context.colorScheme.primaryText,
                 fontSize: 32,

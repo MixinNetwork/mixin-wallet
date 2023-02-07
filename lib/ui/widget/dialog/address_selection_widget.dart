@@ -7,7 +7,6 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../../db/mixin_database.dart';
 import '../../../service/account_provider.dart';
-import '../../../service/profile/profile_manager.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
 import '../../../util/native_scroll.dart';

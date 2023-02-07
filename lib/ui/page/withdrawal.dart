@@ -32,9 +32,14 @@ class Withdrawal extends HookWidget {
     if (assetId.isEmpty) {
       assetId = bitcoin;
     }
+
+    final faitCurrency = useAccountFaitCurrency();
+
     final data = useMemoizedFuture(
-      () => context.appServices.assetResult(assetId).getSingleOrNull(),
-      keys: [assetId],
+      () => context.appServices
+          .assetResult(assetId, faitCurrency)
+          .getSingleOrNull(),
+      keys: [assetId, faitCurrency],
     ).data;
     if (data == null) {
       return const SizedBox();
@@ -214,7 +219,7 @@ class _WithdrawalPage extends HookWidget {
                           await api.withdrawal(sdk.WithdrawalRequest(
                         addressId: addressId,
                         amount: amount.value,
-                        pin: encryptPin(context,pin)!,
+                        pin: encryptPin(context, pin)!,
                         traceId: traceId,
                         memo: memo.value,
                       ));

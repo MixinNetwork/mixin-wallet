@@ -94,6 +94,8 @@ class TransferAmountWidget extends HookWidget {
 
     final inputFocusNode = useFocusNode(debugLabel: 'amount input');
 
+    final faitCurrency = useAccountFaitCurrency();
+
     final String equivalent;
     if (fiatInputMode.value) {
       assert(!asset.priceUsd.isZero);
@@ -102,7 +104,7 @@ class TransferAmountWidget extends HookWidget {
           ' ${asset.symbol}';
     } else {
       equivalent =
-          '${(input.toDecimalWithLocale() * asset.usdUnitPrice).currencyFormatWithoutSymbol}'
+          '${(input.toDecimalWithLocale() * asset.usdUnitPrice).currencyFormatWithoutSymbol(faitCurrency)}'
           ' $currency';
     }
 

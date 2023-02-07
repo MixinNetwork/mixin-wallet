@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
+import '../../service/account_provider.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
@@ -86,10 +87,12 @@ class _AssetDetailLoader extends HookWidget {
       }
       context.appServices.updateAsset(assetId);
     }, [assetId]);
-
+    final faitCurrency = useAccountFaitCurrency();
     final data = useMemoizedStream(
-      () => context.appServices.assetResult(assetId).watchSingleOrNull(),
-      keys: [assetId],
+      () => context.appServices
+          .assetResult(assetId, faitCurrency)
+          .watchSingleOrNull(),
+      keys: [assetId, faitCurrency],
     ).data;
 
     // useEffect(() {
@@ -223,7 +226,7 @@ class _AssetDetailBody extends StatelessWidget {
       );
 }
 
-class _AssetHeader extends StatelessWidget {
+class _AssetHeader extends HookWidget {
   const _AssetHeader({
     Key? key,
     required this.asset,
@@ -235,59 +238,62 @@ class _AssetHeader extends StatelessWidget {
   final SnapshotFilter filter;
 
   @override
-  Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 20),
-          SymbolIconWithBorder(
-            symbolUrl: asset.iconUrl,
-            chainUrl: asset.chainIconUrl,
-            size: 58,
-            chainSize: 14,
-            chainBorder:
-                BorderSide(color: context.colorScheme.background, width: 2),
-          ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 48),
-            child: SelectableText.rich(
-              TextSpan(children: [
-                TextSpan(
-                  text: asset.balance.numberFormat().overflow,
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: context.colorScheme.primaryText,
-                    fontWeight: FontWeight.w700,
-                  ),
+  Widget build(BuildContext context) {
+    final faitCurrency = useAccountFaitCurrency();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SizedBox(height: 20),
+        SymbolIconWithBorder(
+          symbolUrl: asset.iconUrl,
+          chainUrl: asset.chainIconUrl,
+          size: 58,
+          chainSize: 14,
+          chainBorder:
+              BorderSide(color: context.colorScheme.background, width: 2),
+        ),
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 48),
+          child: SelectableText.rich(
+            TextSpan(children: [
+              TextSpan(
+                text: asset.balance.numberFormat().overflow,
+                style: TextStyle(
+                  fontSize: 32,
+                  color: context.colorScheme.primaryText,
+                  fontWeight: FontWeight.w700,
                 ),
-                const TextSpan(text: ' '),
-                TextSpan(
-                  text: asset.symbol.overflow,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: context.colorScheme.primaryText,
-                  ),
+              ),
+              const TextSpan(text: ' '),
+              TextSpan(
+                text: asset.symbol.overflow,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: context.colorScheme.primaryText,
                 ),
-              ]),
-              textAlign: TextAlign.center,
-            ),
+              ),
+            ]),
+            textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 4),
-          SelectableText(
-            asset.amountOfCurrentCurrency.currencyFormat,
-            style: TextStyle(
-              fontSize: 14,
-              color: context.colorScheme.thirdText,
-            ),
-            enableInteractiveSelection: false,
+        ),
+        const SizedBox(height: 4),
+        SelectableText(
+          asset.amountOfCurrentCurrency.currencyFormat(faitCurrency),
+          style: TextStyle(
+            fontSize: 14,
+            color: context.colorScheme.thirdText,
           ),
-          const SizedBox(height: 24),
-          _HeaderButtonBar(asset: asset),
-          const SizedBox(height: 24),
-          _AssetTransactionsHeader(filter: filter),
-        ],
-      );
+          enableInteractiveSelection: false,
+        ),
+        const SizedBox(height: 24),
+        _HeaderButtonBar(asset: asset),
+        const SizedBox(height: 24),
+        _AssetTransactionsHeader(filter: filter),
+      ],
+    );
+  }
 }
 
 class _HeaderButtonBar extends StatelessWidget {

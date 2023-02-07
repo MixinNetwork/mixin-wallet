@@ -228,25 +228,18 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   Selectable<AssetResult> assetResultsNotHidden(String faitCurrency) =>
       mixinDatabase.assetDao.assetResultsNotHidden(faitCurrency);
 
-  Selectable<AssetResult> searchAssetResults(String keyword) {
-    assert(isLogin);
-    return mixinDatabase.assetDao
-        .searchAssetResults(auth!.account.fiatCurrency, keyword.trim());
-  }
+  Selectable<AssetResult> searchAssetResults(
+          String keyword, String faitCurrency) =>
+      mixinDatabase.assetDao.searchAssetResults(faitCurrency, keyword.trim());
 
-  Selectable<AssetResult> assetResult(String assetId) {
-    assert(isLogin);
-    return mixinDatabase.assetDao
-        .assetResult(auth!.account.fiatCurrency, assetId);
-  }
+  Selectable<AssetResult> assetResult(String assetId, String faitCurrency) =>
+      mixinDatabase.assetDao.assetResult(faitCurrency, assetId);
 
-  Selectable<AssetResult> hiddenAssetResult() {
-    assert(isLogin);
-    return mixinDatabase.assetDao.hiddenAssets(auth!.account.fiatCurrency);
-  }
+  Selectable<AssetResult> hiddenAssetResult(String faitCurrency) =>
+      mixinDatabase.assetDao.hiddenAssets(faitCurrency);
 
   Future<void> updateAssetHidden(String assetId, {required bool hidden}) {
-    assert(isLogin);
+    assert(authProvider.isLogin, 'not login');
     return mixinDatabase.assetsExtraDao.updateHidden(assetId, hidden: hidden);
   }
 
@@ -530,9 +523,12 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     replaceTopAssetIds(assetIds);
   }
 
-  Stream<List<AssetResult>> watchAssetResultsOfIn(Iterable<String> assetIds) =>
+  Stream<List<AssetResult>> watchAssetResultsOfIn(
+    Iterable<String> assetIds,
+    String faitCurrency,
+  ) =>
       mixinDatabase.assetDao
-          .assetResultsOfIn(auth!.account.fiatCurrency, assetIds)
+          .assetResultsOfIn(faitCurrency, assetIds)
           .watch()
           .map((list) {
         final map = Map.fromEntries(list.map((e) => MapEntry(e.assetId, e)));
@@ -548,16 +544,16 @@ class AppServices extends ChangeNotifier with EquatableMixin {
           (list) => list.where((e) => e != null).cast<AssetResult>().toList());
 
   Future<AssetResult?> findOrSyncAsset(String assetId) async {
-    assert(isLogin);
+    assert(authProvider.isLogin);
     final result = await mixinDatabase.assetDao
-        .assetResult(auth!.account.fiatCurrency, assetId)
+        .assetResult(authProvider.value!.account.fiatCurrency, assetId)
         .getSingleOrNull();
     if (result != null) return result;
 
     final asset = (await client.assetApi.getAssetById(assetId)).data;
     await mixinDatabase.assetDao.insert(asset);
     return mixinDatabase.assetDao
-        .assetResult(auth!.account.fiatCurrency, assetId)
+        .assetResult(authProvider.value!.account.fiatCurrency, assetId)
         .getSingleOrNull();
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../../db/mixin_database.dart';
+import '../../../service/account_provider.dart';
 import '../../../service/profile/pin_session.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
@@ -52,7 +53,7 @@ Future<bool> showAddAddressByPinBottomSheet(
       postVerification: (context, pin) async {
         final response = await api.addAddress(sdk.AddressRequest(
           assetId: assetId,
-          pin: encryptPin(context,pin)!,
+          pin: encryptPin(context, pin)!,
           destination: destination,
           tag: tag,
           label: label,
@@ -112,9 +113,12 @@ class _AddressPinBottomSheetContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final faitCurrency = useAccountFaitCurrency();
     final asset = useMemoizedStream(
-      () => context.appServices.assetResult(assetId).watchSingleOrNull(),
-      keys: [assetId],
+      () => context.appServices
+          .assetResult(assetId, faitCurrency)
+          .watchSingleOrNull(),
+      keys: [assetId, faitCurrency],
     ).data;
     return PinVerifyDialogScaffold(
       title: Text(

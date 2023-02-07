@@ -46,10 +46,18 @@ String useAccountFaitCurrency() {
   final context = useContext();
   final authProvider = context.read<AuthProvider>();
 
-  final fait = useState<String>(authProvider.value!.account.fiatCurrency);
+  final fait = useState<String>(
+    useMemoized(() => authProvider.value!.account.fiatCurrency),
+  );
   useEffect(() {
     void listener() {
-      fait.value = authProvider.value!.account.fiatCurrency;
+      final fiatCurrency = authProvider.value?.account.fiatCurrency;
+      if (fiatCurrency == null) {
+        // this might happen when user logout.
+        e('fiatCurrency is null.');
+        return;
+      }
+      fait.value = fiatCurrency;
     }
 
     authProvider.addListener(listener);

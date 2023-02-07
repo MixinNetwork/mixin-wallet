@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../db/mixin_database.dart';
-import '../../service/profile/profile_manager.dart';
+import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/native_scroll.dart';
@@ -55,13 +55,15 @@ class _SnapshotDetailPageBody extends HookWidget {
       }
     }, [snapshotId]);
 
+    final faitCurrency = useAccountFaitCurrency();
+
     final asset = useMemoizedStream(
         () => snapshotItem == null
             ? const Stream<AssetResult>.empty()
             : context.appServices
-                .assetResult(snapshotItem.assetId)
+                .assetResult(snapshotItem.assetId, faitCurrency)
                 .watchSingleOrNull(),
-        keys: [snapshotItem?.assetId]).data;
+        keys: [snapshotItem?.assetId, faitCurrency]).data;
 
     if (snapshotItem == null || asset == null) {
       return const SizedBox();
@@ -171,8 +173,13 @@ class _ValuesDescription extends HookWidget {
 
     final String? thatTimeValue;
 
+    final faitCurrency = useAccountFaitCurrency();
+
     final currentValue = context.l10n.walletTransactionCurrentValue(
-      snapshot.amountOfCurrentCurrency(asset).abs().currencyFormat,
+      snapshot
+          .amountOfCurrentCurrency(asset)
+          .abs()
+          .currencyFormat(faitCurrency),
     );
 
     if (ticker == null) {
@@ -185,7 +192,7 @@ class _ValuesDescription extends HookWidget {
                 ticker.priceUsd.asDecimal *
                 asset.fiatRate.asDecimal)
             .abs()
-            .currencyFormat,
+            .currencyFormat(faitCurrency),
       );
     }
     return DefaultTextStyle.merge(
@@ -313,7 +320,8 @@ class _From extends StatelessWidget {
         if (snapshot.isPositive) {
           sender = snapshot.opponentFulName ?? '';
         } else {
-          sender = auth?.account.fullName ?? '';
+          final account = context.watch<AuthProvider>().value!.account;
+          sender = account.fullName ?? '';
         }
         break;
       default:
@@ -354,7 +362,8 @@ class _To extends StatelessWidget {
         if (!snapshot.isPositive) {
           receiver = snapshot.opponentFulName ?? '';
         } else {
-          receiver = auth?.account.fullName ?? '';
+          final account = context.watch<AuthProvider>().value!.account;
+          receiver = account.fullName ?? '';
         }
         break;
       default:

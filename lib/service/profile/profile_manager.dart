@@ -15,13 +15,7 @@ Future<void> initStorage() async {
   await Hive.openBox<dynamic>('session');
 }
 
-@deprecated
-Auth? get auth => profileBox.get('auth') as Auth?;
-
 Box<dynamic> get profileBox => Hive.box('profile');
-
-@deprecated
-bool get isLogin => auth?.accessToken != null || auth?.credential != null;
 
 List<String> get searchAssetHistory =>
     ((profileBox.get('searchAssetHistory') as List<dynamic>?) ?? [])

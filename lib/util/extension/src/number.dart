@@ -1,16 +1,17 @@
 part of '../extension.dart';
 
 extension CurrencyExtension on dynamic {
-  String get currencyFormat =>
-      currentCurrencyNumberFormat.format(num.tryParse('$this'));
+  String currencyFormat(String fiatCurrency) =>
+      currentCurrencyNumberFormat(fiatCurrency).format(num.tryParse('$this'));
 
-  String get currencyFormatWithoutSymbol =>
-      currencyFormat.replaceAll(currentCurrencyNumberFormat.currencySymbol, '');
+  String currencyFormatWithoutSymbol(String fiatCurrency) =>
+      currencyFormat(fiatCurrency).replaceAll(
+          currentCurrencyNumberFormat(fiatCurrency).currencySymbol, '');
 
   String get currencyFormatCoin => NumberFormat().format(num.tryParse('$this'));
 
-  NumberFormat get currentCurrencyNumberFormat =>
-      NumberFormat.simpleCurrency(name: auth?.account.fiatCurrency);
+  NumberFormat currentCurrencyNumberFormat(String fiatCurrency) =>
+      NumberFormat.simpleCurrency(name: fiatCurrency);
 }
 
 extension StringCurrencyExtension on String {
@@ -117,12 +118,11 @@ extension AddressExtension on Addresse {
 }
 
 extension PriceFormat on Decimal {
-  String get priceFormat {
+  String priceFormat(String fiatCurrency) {
     if (this > Decimal.one || this <= Decimal.zero) {
-      return currencyFormat;
+      return currencyFormat(fiatCurrency);
     }
-    return NumberFormat.simpleCurrency(
-            name: auth?.account.fiatCurrency, decimalDigits: 8)
+    return NumberFormat.simpleCurrency(name: fiatCurrency, decimalDigits: 8)
         .format(num.tryParse('$this'));
   }
 }

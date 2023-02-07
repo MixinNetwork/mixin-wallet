@@ -1,8 +1,10 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../generated/r.dart';
+import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 
 class SymbolIconWithBorder extends StatelessWidget {
@@ -57,7 +59,7 @@ class SymbolIconWithBorder extends StatelessWidget {
       );
 }
 
-class PercentageChange extends StatelessWidget {
+class PercentageChange extends HookWidget {
   const PercentageChange({
     Key? key,
     required this.changeUsd,
@@ -69,9 +71,12 @@ class PercentageChange extends StatelessWidget {
   Widget build(BuildContext context) {
     final decimal = Decimal.tryParse(changeUsd) ?? Decimal.zero;
     final negative = decimal < Decimal.zero;
+
+    final faitCurrency = useAccountFaitCurrency();
+
     final change = (decimal.abs() * Decimal.fromInt(100))
         .toDouble()
-        .currencyFormatWithoutSymbol;
+        .currencyFormatWithoutSymbol(faitCurrency);
 
     final text = Text(
       '$change%',

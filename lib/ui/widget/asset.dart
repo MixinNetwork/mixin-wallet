@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../db/mixin_database.dart';
+import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 import '../router/mixin_routes.dart';
 import 'symbol.dart';
 
-class AssetWidget extends StatelessWidget {
+class AssetWidget extends HookWidget {
   const AssetWidget({
     Key? key,
     required this.data,
@@ -21,6 +22,8 @@ class AssetWidget extends StatelessWidget {
     void onTap() {
       context.push(assetDetailPath.toUri({'id': data.assetId}));
     }
+
+    final faitCurrency = useAccountFaitCurrency();
 
     return InkWell(
       onTap: onTap,
@@ -74,7 +77,7 @@ class AssetWidget extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    data.amountOfCurrentCurrency.currencyFormat,
+                    data.amountOfCurrentCurrency.currencyFormat(faitCurrency),
                     style: TextStyle(
                       color: context.colorScheme.thirdText,
                       fontSize: 14,
@@ -91,7 +94,7 @@ class AssetWidget extends StatelessWidget {
   }
 }
 
-class AssetPrice extends StatelessWidget {
+class AssetPrice extends HookWidget {
   const AssetPrice({
     Key? key,
     required this.data,
@@ -102,6 +105,9 @@ class AssetPrice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final valid = !data.priceUsd.isZero;
+
+    final faitCurrency = useAccountFaitCurrency();
+
     if (!valid) {
       return Text(
         context.l10n.none,
@@ -120,7 +126,7 @@ class AssetPrice extends StatelessWidget {
           changeUsd: data.changeUsd,
         ),
         Text(
-          data.usdUnitPrice.priceFormat,
+          data.usdUnitPrice.priceFormat(faitCurrency),
           textAlign: TextAlign.right,
           style: TextStyle(
             color: context.colorScheme.thirdText,

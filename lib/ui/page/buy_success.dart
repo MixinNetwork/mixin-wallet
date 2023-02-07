@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../db/mixin_database.dart';
+import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/r.dart';
@@ -31,9 +32,14 @@ class BuySuccess extends HookWidget {
 
     useMemoizedFuture(() => context.appServices.updateAsset(assetId),
         keys: [assetId]);
+
+    final faitCurrency = useAccountFaitCurrency();
+
     final asset = useMemoizedStream(
-      () => context.appServices.assetResult(assetId).watchSingleOrNull(),
-      keys: [assetId],
+      () => context.appServices
+          .assetResult(assetId, faitCurrency)
+          .watchSingleOrNull(),
+      keys: [assetId, faitCurrency],
     ).data;
     if (asset == null) {
       return const SizedBox();
