@@ -6,8 +6,8 @@ import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../generated/r.dart';
+import '../../service/account_provider.dart';
 import '../../service/profile/pin_session.dart';
-import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
@@ -196,7 +196,7 @@ class _WithdrawalPage extends HookWidget {
 
                 final traceId = const Uuid().v4();
 
-                if (isLoginByCredential) {
+                if (context.read<AuthProvider>().isLoginByCredential) {
                   final addressId = address.value?.addressId;
                   if (addressId == null) {
                     e('addressId is null');
@@ -214,7 +214,7 @@ class _WithdrawalPage extends HookWidget {
                           await api.withdrawal(sdk.WithdrawalRequest(
                         addressId: addressId,
                         amount: amount.value,
-                        pin: encryptPin(pin)!,
+                        pin: encryptPin(context,pin)!,
                         traceId: traceId,
                         memo: memo.value,
                       ));

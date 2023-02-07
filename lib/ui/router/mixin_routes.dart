@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:vrouter/vrouter.dart';
 
-import '../../service/profile/profile_manager.dart';
+import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../page/all_transactions.dart';
@@ -66,14 +66,15 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       ),
       VGuard(
           beforeEnter: (redirector) async {
-            i('check is login: $isLogin');
-            if (!isLogin) {
+            final authProvider = context.read<AuthProvider>();
+            i('check is login: ${authProvider.isLogin}');
+            if (!authProvider.isLogin) {
               redirector.to('/auth');
               return;
             }
             await context.appServices.initServiceFuture;
-            if (isLoginByCredential) {
-              final hasPin = auth!.account.hasPin;
+            if (authProvider.isLoginByCredential) {
+              final hasPin = authProvider.account!.hasPin;
               d('check has pin: $hasPin');
               if (!hasPin) {
                 redirector.to(createPinPath);

@@ -24,7 +24,8 @@ Future<bool> showDeleteAddressByPinBottomSheet(
       tag: address.tag,
       postVerification: (context, pin) async {
         final api = context.appServices.client.addressApi;
-        await api.deleteAddressById(address.addressId, encryptPin(pin)!);
+        await api.deleteAddressById(
+            address.addressId, encryptPin(context, pin)!);
         Navigator.pop(context, true);
       },
     ),
@@ -51,7 +52,7 @@ Future<bool> showAddAddressByPinBottomSheet(
       postVerification: (context, pin) async {
         final response = await api.addAddress(sdk.AddressRequest(
           assetId: assetId,
-          pin: encryptPin(pin)!,
+          pin: encryptPin(context,pin)!,
           destination: destination,
           tag: tag,
           label: label,

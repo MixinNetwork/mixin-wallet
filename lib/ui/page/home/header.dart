@@ -37,8 +37,8 @@ class Header extends HookWidget {
                 (previousValue, element) => previousValue + element.amountOfBtc)
             .toString();
       } else {
-        return ((balance / bitcoin!.fiatRate.asDecimal).toDecimal() /
-                bitcoin!.priceUsd.asDecimal)
+        return ((balance / bitcoin!.fiatRate.asDecimal) /
+                (bitcoin!.priceUsd.asDecimal / Decimal.one))
             .toDecimal(scaleOnInfinitePrecision: 8)
             .toString();
       }

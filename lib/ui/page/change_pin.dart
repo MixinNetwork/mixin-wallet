@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
+import '../../service/account_provider.dart';
 import '../../service/profile/pin_session.dart';
-import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../widget/buttons.dart';
@@ -157,7 +157,7 @@ class _PinInputLayout extends HookWidget {
             runWithLoading(() async {
               try {
                 await context.appServices.client.accountApi
-                    .verifyPin(encryptPin(pinInputController.value)!);
+                    .verifyPin(encryptPin(context, pinInputController.value)!);
               } catch (error, stacktrace) {
                 pinInputController.clear();
                 e('verify pin error $error, $stacktrace');
@@ -238,11 +238,11 @@ class _PinInputLayout extends HookWidget {
                 return;
               }
               try {
-                final old = encryptPin(oldPin.value);
-                final fresh = encryptPin(pinInputController.value);
+                final old = encryptPin(context, oldPin.value);
+                final fresh = encryptPin(context, pinInputController.value);
                 final response = await context.appServices.client.accountApi
                     .updatePin(sdk.PinRequest(pin: fresh!, oldPin: old));
-                await setAuth(auth!.copyWith(account: response.data));
+                await context.read<AuthProvider>().updateAccount(response.data);
                 showSuccessToast(context.l10n.changePinSuccessfully);
                 context.pop();
               } catch (error, stacktrace) {

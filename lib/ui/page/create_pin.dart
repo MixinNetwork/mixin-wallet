@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' hide encryptPin;
 
+import '../../service/account_provider.dart';
 import '../../service/profile/pin_session.dart';
-import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../router/mixin_routes.dart';
@@ -83,8 +83,11 @@ class _PinCreateConfirmButton extends HookWidget {
               try {
                 await computeWithLoading(() async {
                   final account = await context.appServices.client.accountApi
-                      .updatePin(PinRequest(pin: encryptPin(pinCode)!));
-                  await setAuth(auth!.copyWith(account: account.data));
+                      .updatePin(
+                          PinRequest(pin: encryptPin(context, pinCode)!));
+                  await context
+                      .read<AuthProvider>()
+                      .updateAccount(account.data);
                   context.replace(homeUri);
                 });
               } catch (error, stacktrace) {

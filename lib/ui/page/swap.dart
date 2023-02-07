@@ -11,9 +11,9 @@ import 'package:uuid/uuid.dart';
 
 import '../../db/dao/extension.dart';
 import '../../db/mixin_database.dart';
+import '../../service/account_provider.dart';
 import '../../service/mix_swap.dart';
 import '../../service/profile/pin_session.dart';
-import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
@@ -295,7 +295,7 @@ class _Body extends HookWidget {
                       final traceId = const Uuid().v4();
                       final memo = buildMixSwapMemo(destAsset.value.assetId);
 
-                      if (isLoginByCredential) {
+                      if (context.read<AuthProvider>().isLoginByCredential) {
                         final api = context.appServices.client.transferApi;
                         final pinCode = await showPinVerifyDialog(context);
                         if (pinCode == null) {
@@ -309,7 +309,7 @@ class _Body extends HookWidget {
                               traceId: traceId,
                               opponentId: mixSwapUserId,
                               memo: memo,
-                              pin: encryptPin(pinCode),
+                              pin: encryptPin(context, pinCode),
                             )),
                           );
                         } catch (error, stacktrace) {

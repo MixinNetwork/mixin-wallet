@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:vrouter/vrouter.dart';
 
+import 'service/account_provider.dart';
 import 'service/app_services.dart';
 import 'service/profile/profile_manager.dart';
 import 'ui/brightness_theme_data.dart';
@@ -50,22 +52,27 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookWidget {
   MyApp({Key? key}) : super(key: key);
 
   final vRouterStateKey = GlobalKey<VRouterState>();
 
   @override
-  Widget build(BuildContext context) => MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (BuildContext context) => AppServices(
-              vRouterStateKey: vRouterStateKey,
-            ),
+  Widget build(BuildContext context) {
+    final authProvider = useMemoized(AuthProvider.new);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (BuildContext context) => AppServices(
+            vRouterStateKey: vRouterStateKey,
+            authProvider: authProvider,
           ),
-        ],
-        child: _Router(vRouterStateKey: vRouterStateKey),
-      );
+        ),
+        ChangeNotifierProvider<AuthProvider>.value(value: authProvider),
+      ],
+      child: _Router(vRouterStateKey: vRouterStateKey),
+    );
+  }
 }
 
 class _Router extends StatelessWidget {
