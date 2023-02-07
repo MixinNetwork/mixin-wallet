@@ -366,7 +366,10 @@ class _AssetTransactionsHeader extends StatelessWidget {
               radius: 20,
               child: SvgPicture.asset(
                 R.resourcesFilterSvg,
-                color: context.colorScheme.primaryText,
+                colorFilter: ColorFilter.mode(
+                  context.colorScheme.primaryText,
+                  BlendMode.srcIn,
+                ),
                 height: 24,
                 width: 24,
               ),

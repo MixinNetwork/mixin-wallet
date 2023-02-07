@@ -77,7 +77,7 @@ class SearchTextFieldWidget extends HookWidget {
           padding: const EdgeInsets.only(left: 16, right: 12),
           child: SvgPicture.asset(
             R.resourcesIcSearchSmallSvg,
-            color: hintColor,
+            colorFilter: ColorFilter.mode(hintColor, BlendMode.srcIn),
             width: 16,
             height: 16,
           ),
