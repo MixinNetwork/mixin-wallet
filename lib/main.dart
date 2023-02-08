@@ -92,15 +92,6 @@ class _Router extends StatelessWidget {
           ...L10n.delegate.supportedLocales,
         ],
         theme: ThemeData(
-          pageTransitionsTheme: const PageTransitionsTheme(
-            builders: <TargetPlatform, PageTransitionsBuilder>{
-              TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
-              TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-              TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
-              TargetPlatform.iOS: _NoAnimationPageTransitionsBuilder(),
-              TargetPlatform.android: _NoAnimationPageTransitionsBuilder(),
-            },
-          ),
           fontFamily: getFallbackFontFamily(),
         ),
         builder: (BuildContext context, Widget child) => DefaultTextStyle(
