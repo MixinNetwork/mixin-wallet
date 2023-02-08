@@ -65,7 +65,7 @@ class TransactionItem extends HookWidget {
                   DefaultTextStyle.merge(
                     maxLines: 1,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: context.colorScheme.primaryText,
                     ),
                     child: TransactionTypeWidget(item: item),
@@ -79,7 +79,7 @@ class TransactionItem extends HookWidget {
                         : DateFormat.yMMMMd().format(item.createdAt.toLocal()),
                     maxLines: 1,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 12,
                       color: context.colorScheme.thirdText,
                       fontWeight: FontWeight.w400,
                     ),
