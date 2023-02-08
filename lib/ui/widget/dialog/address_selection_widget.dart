@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 
 import '../../../db/mixin_database.dart';
-import '../../../service/profile/profile_manager.dart';
+import '../../../service/account_provider.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
 import '../../../util/native_scroll.dart';
@@ -209,7 +209,7 @@ class _AddressPopupMenuWrapperState extends State<_AddressPopupMenuWrapper> {
   Addresse get address => widget.address;
 
   Future<bool> _confirmDeleteAddress() async {
-    if (isLoginByCredential) {
+    if (context.read<AuthProvider>().isLoginByCredential) {
       return showDeleteAddressByPinBottomSheet(
         context,
         address: address,

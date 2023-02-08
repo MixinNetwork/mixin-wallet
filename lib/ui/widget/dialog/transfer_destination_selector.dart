@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../db/mixin_database.dart';
-import '../../../service/profile/profile_manager.dart';
+import '../../../service/account_provider.dart';
 import '../../../util/extension/extension.dart';
 import '../mixin_bottom_sheet.dart';
 import 'address_selection_widget.dart';
@@ -40,7 +40,8 @@ class _TransferDestinationSelectorDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final anonymous = auth?.account.identityNumber == '0';
+    final account = context.watch<AuthProvider>().value!.account;
+    final anonymous = account.identityNumber == '0';
     if (anonymous) {
       return Column(
         children: [

@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../db/mixin_database.dart';
+import '../../service/account_provider.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
@@ -73,14 +74,19 @@ class _EmptyKeywordAssetList extends HookWidget {
         }).data ??
         topAssetIds;
 
+    final faitCurrency = useAccountFaitCurrency();
+
     final topAssets = useMemoizedStream(
-                () => context.appServices.watchAssetResultsOfIn(assetIds),
-                keys: topAssetIds)
-            .data ??
+          () =>
+              context.appServices.watchAssetResultsOfIn(assetIds, faitCurrency),
+          keys: [...topAssetIds, faitCurrency],
+        ).data ??
         [];
 
     final histories = useMemoizedStream(
-          () => context.appServices.watchAssetResultsOfIn(searchAssetHistory),
+          () => context.appServices
+              .watchAssetResultsOfIn(searchAssetHistory, faitCurrency),
+          keys: [faitCurrency],
         ).data ??
         [];
 
@@ -184,9 +190,13 @@ class _SearchAssetList extends HookWidget {
           leading: false,
         )).data;
 
+    final faitCurrency = useAccountFaitCurrency();
+
     final searchResult = useMemoizedStream(() {
       if (keyword?.isEmpty ?? true) return Stream.value(<AssetResult>[]);
-      return context.appServices.searchAssetResults(keyword!).watch();
+      return context.appServices
+          .searchAssetResults(keyword!, faitCurrency)
+          .watch();
     }, keys: [keyword]);
 
     final searchList = searchResult.data ?? const [];

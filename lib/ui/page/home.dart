@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../db/mixin_database.dart';
 import '../../db/web/construct_db.dart';
+import '../../service/account_provider.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
@@ -49,9 +50,12 @@ class Home extends HookWidget {
             AssetSortType.amount,
         [sortParam]);
 
+    final faitCurrency = useAccountFaitCurrency();
+
     final assetResults = useMemoizedStream(
-      () => context.appServices.assetResultsNotHidden().watch(),
+      () => context.appServices.assetResultsNotHidden(faitCurrency).watch(),
       initialData: <AssetResult>[],
+      keys: [faitCurrency],
     ).requireData;
 
     final hideSmallAssets = useValueListenable(isSmallAssetsHidden);
@@ -110,7 +114,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final account = auth?.account;
+    final account = context.watch<AuthProvider>().account;
     return MixinAppBar(
       leading: Padding(
         padding: const EdgeInsets.only(left: 12),
@@ -118,7 +122,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: InkResponse(
             radius: 24,
             onTap: () {
-              if (isLoginByCredential) {
+              if (context.read<AuthProvider>().isLoginByCredential) {
                 return;
               }
               showMixinBottomSheet<void>(
@@ -191,7 +195,7 @@ class _AccountBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final account = auth?.account;
+    final account = context.watch<AuthProvider>().account;
     // might be null when use clicked DeAuthorize button.
     if (account == null) {
       return const SizedBox();
@@ -230,7 +234,9 @@ class _AccountBottomSheet extends StatelessWidget {
             ),
           ),
           onTap: () async {
-            final id = auth!.account.identityNumber;
+            final authProvider = context.read<AuthProvider>();
+            final id = authProvider.account!.identityNumber;
+            await authProvider.clear();
             await profileBox.clear();
             await deleteDatabase(id);
             context.replace(authUri.path);

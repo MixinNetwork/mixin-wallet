@@ -21,6 +21,7 @@ import '../util/constants.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
 import '../util/web/telegram_web_app.dart';
+import 'account_provider.dart';
 import 'env.dart';
 import 'profile/auth.dart';
 import 'profile/profile_manager.dart';
@@ -28,9 +29,10 @@ import 'profile/profile_manager.dart';
 class AppServices extends ChangeNotifier with EquatableMixin {
   AppServices({
     required this.vRouterStateKey,
+    required this.authProvider,
   }) {
-    if (isLoginByCredential) {
-      final credential = auth!.credential!;
+    if (authProvider.isLoginByCredential) {
+      final credential = authProvider.value!.credential!;
       client = sdk.Client(
         userId: credential.mixinId,
         sessionId: credential.sessionId,
@@ -40,7 +42,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       );
     } else {
       client = sdk.Client(
-        accessToken: accessToken,
+        accessToken: authProvider.accessToken,
         interceptors: interceptors,
         httpLogLevel: null,
       );
@@ -56,21 +58,21 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     Future<void> refreshAccount() async {
       try {
         final response = await client.accountApi.getMe();
-        await setAuth(auth!.copyWith(account: response.data));
+        await authProvider.updateAccount(response.data);
       } catch (error) {
         d('refresh account failed. $error');
       }
     }
 
-    if (isLogin) {
+    if (authProvider.isLogin) {
       final tgInitData = Telegram.instance.getTgInitData();
       if (tgInitData?.isNotEmpty ?? false) {
         // in telegram web app
         final data = await TelegramApi.instance.verifyInitData(tgInitData!);
-        if (data.mixinId == auth!.account.userId) {
+        if (data.mixinId == authProvider.account!.userId) {
           await refreshAccount();
         } else {
-          await setAuth(null);
+          await authProvider.clear();
           vRouterStateKey.currentState?.to('/auth', isReplacement: true);
         }
       } else {
@@ -88,7 +90,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
             if (e is sdk.MixinApiError &&
                 (e.error as sdk.MixinError).code == sdk.authentication) {
               i('api error code is 401 ');
-              await setAuth(null);
+              await authProvider.clear();
               vRouterStateKey.currentState?.to('/auth', isReplacement: true);
             }
             handler.next(e);
@@ -97,6 +99,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       ];
 
   final GlobalKey<VRouterState> vRouterStateKey;
+  final AuthProvider authProvider;
   late sdk.Client client;
 
   final _initCompleter = Completer<void>();
@@ -126,7 +129,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
     final mixinResponse = await client.accountApi.getMe();
 
-    await setAuth(Auth(
+    await authProvider.setAuth(Auth(
       accessToken: mixinResponse.data.userId,
       account: mixinResponse.data,
       credential: data,
@@ -154,8 +157,11 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
     final mixinResponse = await client.accountApi.getMe();
 
-    await setAuth(Auth(
-        accessToken: token, account: mixinResponse.data, credential: null));
+    await authProvider.setAuth(Auth(
+      accessToken: token,
+      account: mixinResponse.data,
+      credential: null,
+    ));
 
     this.client = client;
     await _initDatabase();
@@ -163,9 +169,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   }
 
   Future<void> _initDatabase() async {
-    if (accessToken == null) return;
+    if (authProvider.accessToken == null) return;
     i('init database start');
-    _mixinDatabase = await constructDb(auth!.account.identityNumber);
+    _mixinDatabase = await constructDb(authProvider.account!.identityNumber);
     i('init database done');
     notifyListeners();
   }
@@ -216,36 +222,24 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     return asset;
   }
 
-  Selectable<AssetResult> assetResults() {
-    assert(isLogin);
-    return mixinDatabase.assetDao.assetResults(auth!.account.fiatCurrency);
-  }
+  Selectable<AssetResult> assetResults(String faitCurrency) =>
+      mixinDatabase.assetDao.assetResults(faitCurrency);
 
-  Selectable<AssetResult> assetResultsNotHidden() {
-    assert(isLogin);
-    return mixinDatabase.assetDao
-        .assetResultsNotHidden(auth!.account.fiatCurrency);
-  }
+  Selectable<AssetResult> assetResultsNotHidden(String faitCurrency) =>
+      mixinDatabase.assetDao.assetResultsNotHidden(faitCurrency);
 
-  Selectable<AssetResult> searchAssetResults(String keyword) {
-    assert(isLogin);
-    return mixinDatabase.assetDao
-        .searchAssetResults(auth!.account.fiatCurrency, keyword.trim());
-  }
+  Selectable<AssetResult> searchAssetResults(
+          String keyword, String faitCurrency) =>
+      mixinDatabase.assetDao.searchAssetResults(faitCurrency, keyword.trim());
 
-  Selectable<AssetResult> assetResult(String assetId) {
-    assert(isLogin);
-    return mixinDatabase.assetDao
-        .assetResult(auth!.account.fiatCurrency, assetId);
-  }
+  Selectable<AssetResult> assetResult(String assetId, String faitCurrency) =>
+      mixinDatabase.assetDao.assetResult(faitCurrency, assetId);
 
-  Selectable<AssetResult> hiddenAssetResult() {
-    assert(isLogin);
-    return mixinDatabase.assetDao.hiddenAssets(auth!.account.fiatCurrency);
-  }
+  Selectable<AssetResult> hiddenAssetResult(String faitCurrency) =>
+      mixinDatabase.assetDao.hiddenAssets(faitCurrency);
 
   Future<void> updateAssetHidden(String assetId, {required bool hidden}) {
-    assert(isLogin);
+    assert(authProvider.isLogin, 'not login');
     return mixinDatabase.assetsExtraDao.updateHidden(assetId, hidden: hidden);
   }
 
@@ -450,7 +444,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   }
 
   Selectable<Addresse> addresses(String assetId) {
-    assert(isLogin);
+    assert(authProvider.isLogin);
     return mixinDatabase.addressDao.addressesByAssetId(assetId);
   }
 
@@ -464,7 +458,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   Selectable<User> friends() => mixinDatabase.findFriendsNotBot();
 
   Future<void> updateFriends() async {
-    assert(isLogin);
+    assert(authProvider.isLogin);
     try {
       final friends = await client.accountApi.getFriends();
       await mixinDatabase.userDao
@@ -529,9 +523,12 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     replaceTopAssetIds(assetIds);
   }
 
-  Stream<List<AssetResult>> watchAssetResultsOfIn(Iterable<String> assetIds) =>
+  Stream<List<AssetResult>> watchAssetResultsOfIn(
+    Iterable<String> assetIds,
+    String faitCurrency,
+  ) =>
       mixinDatabase.assetDao
-          .assetResultsOfIn(auth!.account.fiatCurrency, assetIds)
+          .assetResultsOfIn(faitCurrency, assetIds)
           .watch()
           .map((list) {
         final map = Map.fromEntries(list.map((e) => MapEntry(e.assetId, e)));
@@ -547,16 +544,16 @@ class AppServices extends ChangeNotifier with EquatableMixin {
           (list) => list.where((e) => e != null).cast<AssetResult>().toList());
 
   Future<AssetResult?> findOrSyncAsset(String assetId) async {
-    assert(isLogin);
+    assert(authProvider.isLogin);
     final result = await mixinDatabase.assetDao
-        .assetResult(auth!.account.fiatCurrency, assetId)
+        .assetResult(authProvider.value!.account.fiatCurrency, assetId)
         .getSingleOrNull();
     if (result != null) return result;
 
     final asset = (await client.assetApi.getAssetById(assetId)).data;
     await mixinDatabase.assetDao.insert(asset);
     return mixinDatabase.assetDao
-        .assetResult(auth!.account.fiatCurrency, assetId)
+        .assetResult(authProvider.value!.account.fiatCurrency, assetId)
         .getSingleOrNull();
   }
 
@@ -564,7 +561,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     String? offset,
   }) async {
     // hash member id.
-    final members = auth!.account.userId;
+    final members = authProvider.account!.userId;
 
     String hashMemberId(String member) {
       try {

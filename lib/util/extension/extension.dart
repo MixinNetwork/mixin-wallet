@@ -11,7 +11,6 @@ import 'package:vrouter/vrouter.dart' show VRouterContext;
 
 import '../../db/mixin_database.dart';
 import '../../service/app_services.dart';
-import '../../service/profile/profile_manager.dart';
 import '../constants.dart';
 import '../l10n.dart';
 
@@ -26,9 +25,13 @@ export 'src/async.dart';
 export 'src/errors.dart';
 
 part 'src/iterable.dart';
+
 part 'src/number.dart';
+
 part 'src/path.dart';
+
 part 'src/provider.dart';
+
 part 'src/string.dart';
 
 void importExtension() {}

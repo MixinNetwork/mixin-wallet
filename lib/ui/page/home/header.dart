@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../db/mixin_database.dart';
+import '../../../service/account_provider.dart';
 import '../../../service/profile/profile_manager.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
@@ -37,12 +38,14 @@ class Header extends HookWidget {
                 (previousValue, element) => previousValue + element.amountOfBtc)
             .toString();
       } else {
-        return ((balance / bitcoin!.fiatRate.asDecimal).toDecimal() /
-                bitcoin!.priceUsd.asDecimal)
+        return ((balance / bitcoin!.fiatRate.asDecimal) /
+                (bitcoin!.priceUsd.asDecimal / Decimal.one))
             .toDecimal(scaleOnInfinitePrecision: 8)
             .toString();
       }
     }, [data, bitcoin]);
+
+    final faitCurrency = useAccountFaitCurrency();
 
     return Column(
       children: [
@@ -55,7 +58,7 @@ class Header extends HookWidget {
             Padding(
               padding: const EdgeInsets.only(top: 6),
               child: Text(
-                currentCurrencyNumberFormat.currencySymbol,
+                currentCurrencyNumberFormat(faitCurrency).currencySymbol,
                 style: TextStyle(
                   color: context.colorScheme.thirdText,
                   fontSize: 16,
@@ -65,7 +68,7 @@ class Header extends HookWidget {
             ),
             const SizedBox(width: 4),
             Text(
-              balance.currencyFormatWithoutSymbol,
+              balance.currencyFormatWithoutSymbol(faitCurrency),
               style: TextStyle(
                 color: context.colorScheme.primaryText,
                 fontSize: 32,

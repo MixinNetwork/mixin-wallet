@@ -8,7 +8,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../main.dart';
-import '../service/profile/profile_manager.dart';
+import '../service/account_provider.dart';
+import 'extension/extension.dart';
 import 'web/telegram_web_app.dart';
 
 class NativeScrollBuilder extends HookWidget {
@@ -21,7 +22,8 @@ class NativeScrollBuilder extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = useScrollController();
-    if (isLoginByCredential && Telegram.instance.isMobilePlatform) {
+    if (context.watch<AuthProvider>().isLoginByCredential &&
+        Telegram.instance.isMobilePlatform) {
       // telegram web app on mobile platform need use native scroll to intercept
       // scroll event.
       return _NativeScrollBuilder(builder: builder);

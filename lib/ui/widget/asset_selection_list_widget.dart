@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../db/dao/extension.dart';
 import '../../db/mixin_database.dart';
+import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
@@ -113,13 +114,19 @@ class AssetSelectionListWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final faitCurrency = useAccountFaitCurrency();
     final assetResults = useMemoizedStream(() {
           if (source != null) {
             return source!.call();
           }
-          return context.appServices.assetResults().watch().map((event) => event
-            ..removeWhere((element) => ignoreAssets.contains(element.assetId)));
-        }, keys: [ignoreAssets, source]).data ??
+          return context.appServices
+              .assetResults(faitCurrency)
+              .watch()
+              .map((event) => event
+                ..removeWhere(
+                  (element) => ignoreAssets.contains(element.assetId),
+                ));
+        }, keys: [ignoreAssets, source, faitCurrency]).data ??
         const [];
 
     final keywordStreamController = useStreamController<String>();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../../service/profile/profile_manager.dart';
+import '../../service/account_provider.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
@@ -200,7 +200,7 @@ class AddressAddWidget extends HookWidget {
                 }
                 final tag = memoController.text.trim();
 
-                if (isLoginByCredential) {
+                if (context.read<AuthProvider>().isLoginByCredential) {
                   final succeed = await showAddAddressByPinBottomSheet(
                     context,
                     assetId: assetId,

@@ -24,7 +24,7 @@ void usePinVerificationEffect(PinInputController controller) {
         final pin = controller.value;
         try {
           await context.appServices.client.accountApi
-              .verifyPin(encryptPin(pin)!);
+              .verifyPin(encryptPin(context, pin)!);
           Navigator.pop(context, pin);
         } catch (error, stacktrace) {
           e('verify pin error $error, $stacktrace');
@@ -307,7 +307,7 @@ class PinVerifyDialogScaffold extends HookWidget {
         verifying.value = true;
         try {
           await context.appServices.client.accountApi
-              .verifyPin(encryptPin(pin)!);
+              .verifyPin(encryptPin(context, pin)!);
           await onVerified(context, pin);
         } catch (error, stacktrace) {
           e('verify pin error $error, $stacktrace');

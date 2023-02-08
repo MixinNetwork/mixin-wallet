@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/native_scroll.dart';
@@ -35,8 +36,11 @@ class _HiddenAssetsList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final faitCurrency = useAccountFaitCurrency();
     final assets = useMemoizedStream(
-        () => context.appServices.hiddenAssetResult().watch());
+      () => context.appServices.hiddenAssetResult(faitCurrency).watch(),
+      keys: [faitCurrency],
+    );
     if (assets.connectionState == ConnectionState.waiting) {
       return Center(
         child: CircularProgressIndicator(

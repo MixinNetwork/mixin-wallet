@@ -15,17 +15,7 @@ Future<void> initStorage() async {
   await Hive.openBox<dynamic>('session');
 }
 
-Auth? get auth => profileBox.get('auth') as Auth?;
-
-Future<void> setAuth(Auth? value) => profileBox.put('auth', value);
-
 Box<dynamic> get profileBox => Hive.box('profile');
-
-String? get accessToken => auth?.accessToken;
-
-bool get isLogin => accessToken != null || auth?.credential != null;
-
-bool get isLoginByCredential => auth?.credential != null;
 
 List<String> get searchAssetHistory =>
     ((profileBox.get('searchAssetHistory') as List<dynamic>?) ?? [])

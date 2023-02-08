@@ -9,7 +9,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import '../../db/converter/deposit_entry_converter.dart';
 import '../../db/dao/extension.dart';
 import '../../db/mixin_database.dart';
-import '../../service/profile/profile_manager.dart';
+import '../../service/account_provider.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
@@ -108,9 +108,12 @@ class _AssetDepositLoader extends HookWidget {
       };
     }, [assetId]);
 
+    final faitCurrency = useAccountFaitCurrency();
     final data = useMemoizedStream(
-      () => context.appServices.assetResult(assetId).watchSingleOrNull(),
-      keys: [assetId],
+      () => context.appServices
+          .assetResult(assetId, faitCurrency)
+          .watchSingleOrNull(),
+      keys: [assetId, faitCurrency],
     ).data;
 
     if (data == null) {
@@ -253,6 +256,9 @@ class _AssetDepositBody extends HookWidget {
                   final amount = result[0];
                   final memo = result[1];
 
+                  final userId =
+                      context.read<AuthProvider>().value!.account.userId;
+
                   await showRequestPaymentResultBottomSheet(
                     context,
                     asset: asset,
@@ -260,7 +266,7 @@ class _AssetDepositBody extends HookWidget {
                     tag: tag,
                     amount: amount,
                     memo: memo,
-                    recipient: auth!.account.userId,
+                    recipient: userId,
                   );
                 },
                 text: context.l10n.requestPayment,

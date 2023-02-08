@@ -8,7 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import '../../db/mixin_database.dart';
-import '../../service/profile/profile_manager.dart';
+import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 import '../../util/mixin_context.dart';
 import '../../util/r.dart';
@@ -90,9 +90,11 @@ class TransferAmountWidget extends HookWidget {
     );
     final input = useValueListenable(controller).text;
 
-    final currency = auth!.account.fiatCurrency;
+    final currency = context.watch<AuthProvider>().account!.fiatCurrency;
 
     final inputFocusNode = useFocusNode(debugLabel: 'amount input');
+
+    final faitCurrency = useAccountFaitCurrency();
 
     final String equivalent;
     if (fiatInputMode.value) {
@@ -102,7 +104,7 @@ class TransferAmountWidget extends HookWidget {
           ' ${asset.symbol}';
     } else {
       equivalent =
-          '${(input.toDecimalWithLocale() * asset.usdUnitPrice).currencyFormatWithoutSymbol}'
+          '${(input.toDecimalWithLocale() * asset.usdUnitPrice).currencyFormatWithoutSymbol(faitCurrency)}'
           ' $currency';
     }
 

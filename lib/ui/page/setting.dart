@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../generated/r.dart';
+import '../../service/account_provider.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
@@ -74,7 +75,7 @@ class _SettingsBody extends HookWidget {
               ),
             ),
             const SizedBox(height: 10),
-            if (isLoginByCredential) ...[
+            if (context.watch<AuthProvider>().isLoginByCredential) ...[
               const _CurrencyItem(),
               MenuItemWidget(
                 title: Text(context.l10n.logs),
@@ -96,20 +97,20 @@ class _SettingsBody extends HookWidget {
   }
 }
 
-class _CurrencyItem extends HookWidget {
+class _CurrencyItem extends StatelessWidget {
   const _CurrencyItem({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final currency = useState(auth!.account.fiatCurrency);
+    final currency = context.watch<AuthProvider>().account?.fiatCurrency;
     return MenuItemWidget(
       topRounded: true,
       bottomRounded: false,
       title: Text(context.l10n.currency),
       trailing: Text(
-        currency.value,
+        currency ?? '',
         style: TextStyle(
           color: context.colorScheme.secondaryText,
           fontSize: 12,
@@ -119,7 +120,7 @@ class _CurrencyItem extends HookWidget {
         d('currency: $currency');
         final selected = await showCurrencyBottomSheet(
           context,
-          selectedCurrency: currency.value,
+          selectedCurrency: currency,
         );
         if (selected == null) {
           return;
@@ -127,12 +128,11 @@ class _CurrencyItem extends HookWidget {
         final succeed = await runWithLoading(() async {
           final account = await context.appServices.client.accountApi
               .preferences(AccountUpdateRequest(fiatCurrency: selected.name));
-          await setAuth(auth?.copyWith(account: account.data));
+          await context.read<AuthProvider>().updateAccount(account.data);
         });
         if (!succeed) {
           return;
         }
-        currency.value = selected.name;
       },
     );
   }
