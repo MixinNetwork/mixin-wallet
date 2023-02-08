@@ -9,9 +9,17 @@ class Telegram {
 
   void hapticFeedback() {}
 
-  Future<String?> showScanQrPopup() async => null;
+  Future<String?> showScanQrPopup(
+    String text,
+    bool Function(String result) callback,
+  ) async =>
+      null;
 
   String get platform => '';
 
   String get version => '';
+
+  bool get isMobilePlatform => false;
+
+  bool isVersionGreaterOrEqual(String version) => false;
 }

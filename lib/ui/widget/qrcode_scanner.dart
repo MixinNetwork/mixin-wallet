@@ -1,15 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:web_qrcode/web_qrcode.dart';
 
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
+import '../../util/web/qrcode_scanner_dialog.dart';
 import '../../util/web/telegram_web_app.dart';
-import 'buttons.dart';
-import 'mixin_appbar.dart';
 
 Future<String?> scanTextFromQrcode({
   required BuildContext context,
@@ -40,7 +37,7 @@ Future<String?> scanTextFromQrcode({
 
   return showDialog(
     context: context,
-    builder: (context) => const _QrcodeScannerDialog(),
+    builder: (context) => const QrcodeScannerDialog(),
   );
 }
 
@@ -108,39 +105,4 @@ class _NoCameraTips extends StatelessWidget {
           ),
         ),
       );
-}
-
-class _QrcodeScannerDialog extends HookWidget {
-  const _QrcodeScannerDialog({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final qrcodeReaderKey = useMemoized(GlobalKey<QrCodeReaderState>.new);
-    return ColoredBox(
-      color: Colors.black,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Center(
-            child: QrCodeReader(
-              key: qrcodeReaderKey,
-              successCallback: (text) async {
-                await qrcodeReaderKey.currentState?.stopScanner();
-                Navigator.pop(context, text);
-              },
-            ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: MixinAppBar(
-              backgroundColor: Colors.transparent,
-              leading: MixinBackButton(
-                onTap: () => Navigator.pop(context),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

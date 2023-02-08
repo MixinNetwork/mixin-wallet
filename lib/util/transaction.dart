@@ -1,7 +1,4 @@
-// ignore_for_file: avoid_dynamic_calls, avoid_web_libraries_in_flutter
-
 import 'dart:convert';
-import 'dart:js' as js;
 
 import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +9,8 @@ import '../ui/widget/external_action_confirm.dart';
 import '../ui/widget/toast.dart';
 import 'extension/extension.dart';
 import 'logger.dart';
+import 'web/src/transaction_web.dart'
+    if (dart.library.io) 'web/src/transaction_io.dart' as impl;
 
 bool isSignedToken(List<CollectibleOutputData> outputs) {
   var signed = Decimal.zero;
@@ -94,15 +93,7 @@ Future<String> buildTransaction({
 
   d('transaction: $tx');
 
-  return _buildTransaction(tx);
-}
-
-String _buildTransaction(Map<String, dynamic> tx) {
-  final mixinGo = js.context['mixinGo'];
-  assert(mixinGo != null, 'mixinGo is null');
-  final buildTransaction = mixinGo['buildTransaction'] as js.JsFunction;
-  final raw = buildTransaction.apply([jsonEncode(tx)]);
-  return raw as String;
+  return impl.buildTransaction(tx);
 }
 
 String _buildThresholdScript(int threshold) {
