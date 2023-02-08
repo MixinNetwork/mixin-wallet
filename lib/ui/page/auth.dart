@@ -1,7 +1,9 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../service/env.dart';
@@ -47,6 +49,8 @@ class AuthPage extends HookWidget {
         loading.value = false;
       }
     }, keys: [oauthCode]);
+
+    _useNativeForegroundClipboardCheck();
 
     return Scaffold(
       backgroundColor: context.colorScheme.background,
@@ -201,7 +205,7 @@ class _AuthorizeButton extends StatelessWidget {
         'scope': authScope,
         'response_type': 'code',
       });
-      context.toExternal(uri);
+      launchUrl(uri);
     }
 
     return ElevatedButton(
@@ -226,4 +230,53 @@ class _AuthorizeButton extends StatelessWidget {
       ),
     );
   }
+}
+
+class CallbackWidgetsBindingObserver extends WidgetsBindingObserver {
+  CallbackWidgetsBindingObserver({
+    this.onAppLifecycleStateChanged,
+  });
+
+  final void Function(AppLifecycleState state)? onAppLifecycleStateChanged;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    onAppLifecycleStateChanged?.call(state);
+  }
+}
+
+void _useNativeForegroundClipboardCheck() {
+  final context = useContext();
+  useEffect(() {
+    final observer = CallbackWidgetsBindingObserver(
+      onAppLifecycleStateChanged: (state) async {
+        d('app lifecycle state changed: $state');
+        if (state != AppLifecycleState.resumed) {
+          return;
+        }
+        await Future<void>.delayed(const Duration(seconds: 2));
+        final text = (await Clipboard.getData(Clipboard.kTextPlain))?.text;
+        if (text == null) {
+          e('clipboard text is null.');
+          return;
+        }
+        // check if match http://localhost:8001/#auth
+        if (!text.startsWith('http://localhost:8001/#/auth')) {
+          return;
+        }
+        final regex = RegExp('(?<=code=).*(?=&)');
+        final code = regex.firstMatch(text)?.group(0);
+        if (code == null) {
+          e('code is null.');
+          return;
+        }
+        await context.appServices.loginByMixinAuth(code);
+        context.replace(homeUri);
+      },
+    );
+    WidgetsBinding.instance.addObserver(observer);
+    return () {
+      WidgetsBinding.instance.removeObserver(observer);
+    };
+  }, []);
 }
