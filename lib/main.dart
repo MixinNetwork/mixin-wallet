@@ -113,16 +113,3 @@ class _Router extends StatelessWidget {
         routes: buildMixinRoutes(context),
       );
 }
-
-class _NoAnimationPageTransitionsBuilder extends PageTransitionsBuilder {
-  const _NoAnimationPageTransitionsBuilder() : super();
-
-  @override
-  Widget buildTransitions<T>(
-          PageRoute<T> route,
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child) =>
-      child;
-}
