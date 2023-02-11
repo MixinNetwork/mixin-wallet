@@ -303,7 +303,7 @@ class _Body extends HookWidget {
                         }
                         try {
                           await computeWithLoading(
-                            () => api.pay(sdk.PaymentRequest(
+                            () => api.transfer(sdk.TransferRequest(
                               assetId: sourceAsset.value.assetId,
                               amount: sourceTextController.text,
                               traceId: traceId,
@@ -312,6 +312,12 @@ class _Body extends HookWidget {
                               pin: encryptPin(context, pinCode),
                             )),
                           );
+                          context.push(swapDetailPath.toUri({'id': traceId}),
+                              queryParameters: {
+                                'source': sourceAsset.value.assetId,
+                                'dest': destAsset.value.assetId,
+                                'amount': sourceTextController.text,
+                              });
                         } catch (error, stacktrace) {
                           e('pay error $error $stacktrace');
                           showErrorToast(error.toDisplayString(context));
