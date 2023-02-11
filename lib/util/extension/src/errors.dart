@@ -13,8 +13,20 @@ extension MixinErrorHandle on DioError {
   }
 }
 
+class ErrorWithFormattedMessage implements Exception {
+  ErrorWithFormattedMessage(this.message);
+
+  final String message;
+
+  @override
+  String toString() => message;
+}
+
 extension ErrorExtenstion on Object {
   String toDisplayString(BuildContext context) {
+    if (this is ErrorWithFormattedMessage) {
+      return (this as ErrorWithFormattedMessage).message;
+    }
     if (this is MixinError) {
       return (this as MixinError).toDisplayString(context);
     }
@@ -97,7 +109,7 @@ extension GetErrorStringByCode on BuildContext {
       case timeInaccurate:
         return '$code TIME_INACCURATE';
       default:
-        return '${l10n.errorUnknownWithCode}: $message';
+        return '${l10n.errorUnknownWithCode(code)}: $message';
     }
   }
 }

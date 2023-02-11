@@ -273,6 +273,9 @@ class _NumPadButton extends StatelessWidget {
 typedef PinPostVerification = Future<void> Function(
     BuildContext context, String pin);
 
+typedef PinVerification = Future<void> Function(
+    BuildContext context, String pin);
+
 class PinVerifyDialogScaffold extends HookWidget {
   const PinVerifyDialogScaffold({
     Key? key,
@@ -281,6 +284,7 @@ class PinVerifyDialogScaffold extends HookWidget {
     required this.onVerified,
     required this.onErrorConfirmed,
     this.title,
+    this.verification,
   }) : super(key: key);
 
   final Widget? title;
@@ -288,6 +292,8 @@ class PinVerifyDialogScaffold extends HookWidget {
   final Widget header;
 
   final Widget tip;
+
+  final PinVerification? verification;
 
   final PinPostVerification onVerified;
 
@@ -303,11 +309,19 @@ class PinVerifyDialogScaffold extends HookWidget {
         if (!controller.isFull) {
           return;
         }
+        if (verifying.value) {
+          assert(false, 'verifying, but pin is full. ${controller.value}');
+          return;
+        }
         final pin = controller.value;
         verifying.value = true;
         try {
-          await context.appServices.client.accountApi
-              .verifyPin(encryptPin(context, pin)!);
+          if (verification == null) {
+            await context.appServices.client.accountApi
+                .verifyPin(encryptPin(context, pin)!);
+          } else {
+            await verification!(context, pin);
+          }
           await onVerified(context, pin);
         } catch (error, stacktrace) {
           e('verify pin error $error, $stacktrace');

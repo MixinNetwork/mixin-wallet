@@ -83,6 +83,12 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   List<InterceptorsWrapper> get interceptors => [
         InterceptorsWrapper(
+          onRequest: (options, handler) {
+            // disable retry.
+            // FIXME(BIN): add an option to mixin_bot_sdk_dart for disable retry.
+            options.extra['retry'] = true;
+            handler.next(options);
+          },
           onError: (
             DioError e,
             ErrorInterceptorHandler handler,
