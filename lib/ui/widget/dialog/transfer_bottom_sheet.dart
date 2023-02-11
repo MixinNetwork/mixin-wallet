@@ -13,7 +13,7 @@ Future<bool?> showTransferVerifyBottomSheet(
   required AssetResult asset,
   required AssetResult feeAsset,
   required String amount,
-  required PinPostVerification postVerification,
+  required PinVerification verification,
 }) =>
     showModalBottomSheet<bool>(
       context: context,
@@ -28,7 +28,7 @@ Future<bool?> showTransferVerifyBottomSheet(
             asset: asset,
             feeAsset: feeAsset,
             amount: amount,
-            postVerification: postVerification,
+            verification: verification,
           ),
         ),
       ),
@@ -50,14 +50,14 @@ class _TransferVerifyBottomSheet extends StatelessWidget {
     required this.amount,
     required this.asset,
     required this.feeAsset,
-    required this.postVerification,
+    required this.verification,
   }) : super(key: key);
 
   final Addresse address;
   final String amount;
   final AssetResult asset;
   final AssetResult feeAsset;
-  final PinPostVerification postVerification;
+  final PinVerification verification;
 
   @override
   Widget build(BuildContext context) => PinVerifyDialogScaffold(
@@ -108,9 +108,12 @@ class _TransferVerifyBottomSheet extends StatelessWidget {
             color: context.colorScheme.secondaryText,
           ),
         ),
-        onVerified: postVerification,
+        verification: verification,
         onErrorConfirmed: () {
           Navigator.of(context).pop();
+        },
+        onVerified: (BuildContext context, String pin) async {
+          // do nothing.
         },
       );
 }

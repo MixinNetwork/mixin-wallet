@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -213,19 +214,34 @@ class _WithdrawalPage extends HookWidget {
                     asset: asset,
                     feeAsset: feeAsset!,
                     amount: amount.value,
-                    postVerification: (context, pin) async {
-                      final api = context.appServices.client.transferApi;
-                      final response =
-                          await api.withdrawal(sdk.WithdrawalRequest(
-                        addressId: addressId,
-                        amount: amount.value,
-                        pin: encryptPin(context, pin)!,
-                        traceId: traceId,
-                        memo: memo.value,
-                      ));
-                      await context.appServices.mixinDatabase.snapshotDao
-                          .insertAll([response.data]);
-                      Navigator.of(context).pop(true);
+                    verification: (context, pin) async {
+                      try {
+                        final api = context.appServices.client.transferApi;
+                        final response = await api.withdrawal(
+                          sdk.WithdrawalRequest(
+                            addressId: addressId,
+                            amount: amount.value,
+                            pin: encryptPin(context, pin)!,
+                            traceId: traceId,
+                            memo: memo.value,
+                            fee: address.value!.fee,
+                          ),
+                        );
+                        await context.appServices.mixinDatabase.snapshotDao
+                            .insertAll([response.data]);
+                        Navigator.of(context).pop(true);
+                      } on DioError catch (error) {
+                        final mixinError = error.optionMixinError;
+                        if (mixinError?.code ==
+                            sdk.insufficientTransactionFee) {
+                          final message = context.l10n
+                              .errorInsufficientTransactionFeeWithAmount(
+                                  '${address.value!.fee} ${feeAsset.symbol}');
+                          throw ErrorWithFormattedMessage(message);
+                        } else {
+                          rethrow;
+                        }
+                      }
                     },
                   );
                   if (ret ?? false) {
