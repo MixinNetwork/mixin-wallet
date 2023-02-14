@@ -71,7 +71,7 @@ class Home extends HookWidget {
     }, [hideSmallAssets, assetResults, sortType]);
 
     final bitcoinAsset = useMemoizedFuture(() async {
-      var target = assetList.firstWhereOrNull((e) => e?.assetId == bitcoin);
+      var target = assetList.firstWhereOrNull((e) => e.assetId == bitcoin);
       return target ??= await context.appServices.findOrSyncAsset(bitcoin);
     }, keys: [assetResults]).data;
 
