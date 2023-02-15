@@ -109,6 +109,87 @@ void main() {
     final result11 = await _parse(url11);
     expect(result11, isNull);
   });
+
+  test('parse lite coin', () async {
+    const url1 =
+        'litecoin:MAA5rAYDJcfpGShL2fHHyqdH5Sum4hC9My?amount=0.31837321';
+    final result1 = await _parse(url1);
+    expect(result1, isNotNull);
+
+    expect(result1!.assetId, ChainId.litecoin);
+    expect(result1.destination, 'MAA5rAYDJcfpGShL2fHHyqdH5Sum4hC9My');
+    expect(result1.amount, '0.31837321');
+
+    const url2 = 'litecoin:MAA5rAYDJcfpGShL2fHHyqdH5Sum4hC9My?amount=0.31e5';
+    final result2 = await _parse(url2);
+    expect(result2, isNull);
+  });
+
+  test('parse doge coin', () async {
+    const url1 = 'dogecoin:DQDHx7KcDjq1uDR5MC8tHQPiUp1C3eQHcd?amount=258.69';
+    final result1 = await _parse(url1);
+    expect(result1, isNotNull);
+
+    expect(result1!.assetId, ChainId.dogecoin);
+    expect(result1.destination, 'DQDHx7KcDjq1uDR5MC8tHQPiUp1C3eQHcd');
+    expect(result1.amount, '258.69');
+
+    const url2 = 'dogecoin:DQDHx7KcDjq1uDR5MC8tHQPiUp1C3eQHcd?amount=258.6e5';
+    final result2 = await _parse(url2);
+    expect(result2, isNull);
+  });
+
+  test('parse dash', () async {
+    const url1 =
+        'dash:XimNHukVq5PFRkadrwybyuppbree51mByS?amount=0.47098703&IS=1';
+    final result1 = await _parse(url1);
+
+    expect(result1, isNotNull);
+    expect(result1!.assetId, ChainId.dash);
+    expect(result1.destination, 'XimNHukVq5PFRkadrwybyuppbree51mByS');
+    expect(result1.amount, '0.47098703');
+
+    const url2 = 'dash:XimNHukVq5PFRkadrwybyuppbree51mByS?amount=0.47e5&IS=1';
+    final result2 = await _parse(url2);
+    expect(result2, isNull);
+  });
+
+  test('parse monero', () async {
+    const url1 =
+        'monero:83sfoqWFNrsGTAyuC3PxHeS9stn8TQiTkiBcizHwjyHN57NczsRJE8UfrnhTUxT5PLBWLnq5yXrtPKeAjWeoDTkCPHGVe1Y?tx_amount=1.61861962';
+    final result1 = await _parse(url1);
+
+    expect(result1, isNotNull);
+    expect(result1!.assetId, ChainId.monero);
+    expect(result1.destination,
+        '83sfoqWFNrsGTAyuC3PxHeS9stn8TQiTkiBcizHwjyHN57NczsRJE8UfrnhTUxT5PLBWLnq5yXrtPKeAjWeoDTkCPHGVe1Y');
+    expect(result1.amount, '1.61861962');
+
+    const url2 =
+        'monero:83sfoqWFNrsGTAyuC3PxHeS9stn8TQiTkiBcizHwjyHN57NczsRJE8UfrnhTUxT5PLBWLnq5yXrtPKeAjWeoDTkCPHGVe1Y?tx_amount=1.61e6';
+    final result2 = await _parse(url2);
+    expect(result2, isNull);
+  });
+
+  test('parse solana', () async {
+    const url1 =
+        'solana:mvines9iiHiQTysrwkJjGf2gb9Ex9jXJX8ns3qwf2kN?amount=1&label=Michael&message=Thanks%20for%20all%20the%20fish&memo=OrderId12345';
+    final result1 = await _parse(url1);
+    expect(result1, isNotNull);
+    expect(result1!.assetId, ChainId.solana);
+    expect(result1.destination, 'mvines9iiHiQTysrwkJjGf2gb9Ex9jXJX8ns3qwf2kN');
+    expect(result1.amount, '1');
+
+    const url2 =
+        'solana:mvines9iiHiQTysrwkJjGf2gb9Ex9jXJX8ns3qwf2kN?amount=0.01&spl-token=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+    final result2 = await _parse(url2);
+    expect(result2, isNull);
+
+    const url3 =
+        'solana:mvines9iiHiQTysrwkJjGf2gb9Ex9jXJX8ns3qwf2kN?amount=1e7&label=Michael&message=Thanks%20for%20all%20the%20fish&memo=OrderId12345';
+    final result3 = await _parse(url3);
+    expect(result3, isNull);
+  });
 }
 
 Future<ExternalTransfer?> _parse(String uri) => parseExternalTransferUri(
