@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:tuple/tuple.dart';
 
 import 'erc_831.dart';
 
@@ -37,9 +36,9 @@ class CommonEthereumURIData {
               .map((e) {
             final index = e.indexOf('=');
             if (index == -1) {
-              return Tuple2(e, 'true');
+              return MapEntry(e, 'true');
             } else {
-              return Tuple2(e.substring(0, index), e.substring(index + 1));
+              return MapEntry(e.substring(0, index), e.substring(index + 1));
             }
           }).toList();
           break;
@@ -79,5 +78,5 @@ class CommonEthereumURIData {
   BigInt? chainId;
   String? address;
   String? function;
-  List<Tuple2<String, String>> query = [];
+  List<MapEntry<String, String>> query = [];
 }

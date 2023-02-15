@@ -21,6 +21,8 @@ extension StringCurrencyExtension on String {
 
   Rational get asRational => Rational.parse(this);
 
+  Rational? get asRationalOrNull => Rational.tryParse(this);
+
   String numberFormat() {
     if (isEmpty) return this;
     try {

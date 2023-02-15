@@ -37,67 +37,84 @@ Future<ExternalTransfer?> parseEthereum(
   }
 
   final chainId = erc681.chainId?.toInt() ?? 1;
-  var assetId = _ethereumChainIdMap[chainId] ?? '';
+  var assetId = _ethereumChainIdMap[chainId];
+  if (assetId == null || assetId.isEmpty) {
+    e('invalid chainId: $chainId');
+    return null;
+  }
 
   final value = erc681.value;
   String? address;
-  Rational? amount;
-  if (value == null) {
-    var needCheckPrecision = false;
-    if (erc681.function != 'transfer') return null;
 
-    final assetKey = erc681.address?.toLowerCase() ?? '';
-    assetId = await findAssetIdByAssetKey(assetKey) ?? '';
-    if (assetId.isEmpty) {
+  final amountTemp = erc681.amount;
+  Rational? uint256Temp;
+  Rational? valueTemp;
+
+  if (value != null) {
+    address = erc681.address;
+    valueTemp = EtherAmount.inWei(value).getInEther;
+  }
+
+  if (erc681.function != 'transfer') {
+    address = erc681.address;
+  } else {
+    final assetKey = erc681.address?.toLowerCase();
+    if (assetKey == null) {
       e('asset not found: $assetKey');
       return null;
     }
-
-    var amountFound = false;
-    var addressFound = false;
+    assetId = await findAssetIdByAssetKey(assetKey);
+    if (assetId == null || assetId.isEmpty) {
+      e('asset not found: $assetKey');
+      return null;
+    }
     for (final pair in erc681.functionParams) {
-      if (amountFound && addressFound) {
-        break;
-      }
-
-      if (pair.item1 == 'address') {
-        address = pair.item2;
-        addressFound = true;
-      } else {
-        if (pair.item1 == 'amount') {
-          if (pair.item2.amountWithE) {
-            return null;
-          }
-          amount = Rational.tryParse(pair.item2);
-          amountFound = true;
-          needCheckPrecision = false;
-        } else if (!amountFound && pair.item1 == 'uint256') {
-          amount = pair.item2.asRational;
-          needCheckPrecision = true;
+      if (pair.key == 'address') {
+        address = pair.value;
+      } else if (pair.key == 'uint256') {
+        uint256Temp = Rational.tryParse(pair.value);
+        if (uint256Temp == null) {
+          e('invalid uint256: ${pair.value}');
+          return null;
         }
+        final assetPrecision = await getAssetPrecisionById(assetId);
+        if (assetPrecision == null) {
+          return null;
+        }
+        uint256Temp =
+            uint256Temp / (Rational.fromInt(10).pow(assetPrecision.precision));
       }
     }
-    if (needCheckPrecision) {
-      final assetPrecision = await getAssetPrecisionById(assetId);
-      if (assetPrecision == null) {
-        e('asset precision not found: $assetId');
-        return null;
-      }
-      if (assetPrecision.assetId.isEmpty) return null;
-      amount = (amount!) / (Decimal.fromInt(10).pow(assetPrecision.precision));
-    }
-  } else {
-    address = erc681.address;
-    amount = EtherAmount.inWei(value).getInEther;
   }
-  if (address == null) {
+
+  final destination = address;
+  if (destination == null) {
+    e('destination not found: $url');
     return null;
   }
-  final am = amount?.toDecimal(scaleOnInfinitePrecision: 10).toString();
-  if (am == null) {
+
+  final amount = valueTemp ?? amountTemp ?? uint256Temp;
+  if (amount == null) {
+    e('amount not found: $url');
     return null;
   }
-  final addressFeeResponse = await getAddressFee(assetId, address);
+
+  // check amount is equal to valueTemp, amountTemp, uint256Temp
+  if (valueTemp != null && valueTemp != amount) {
+    e('valueTemp != amount: $url');
+    return null;
+  }
+  if (amountTemp != null && amountTemp != amount) {
+    e('amountTemp != amount: $url');
+    return null;
+  }
+  if (uint256Temp != null && uint256Temp != amount) {
+    e('uint256Temp != amount: $url');
+    return null;
+  }
+
+  final am = amount.toDecimal(scaleOnInfinitePrecision: 10).toString();
+  final addressFeeResponse = await getAddressFee(assetId, destination);
   if (addressFeeResponse == null) {
     return null;
   }
@@ -108,6 +125,6 @@ Future<ExternalTransfer?> parseEthereum(
     destination: addressFeeResponse.destination,
     amount: am,
     assetId: assetId,
-    fee: Decimal.tryParse(addressFeeResponse.fee),
+    fee: Rational.tryParse(addressFeeResponse.fee),
   );
 }

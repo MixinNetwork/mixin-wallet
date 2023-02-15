@@ -1,6 +1,7 @@
 import 'package:decimal/decimal.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:rational/rational.dart';
 
 import '../constants.dart';
 import '../extension/extension.dart';
@@ -19,7 +20,7 @@ class ExternalTransfer with EquatableMixin {
   final String destination;
   final String amount;
   final String assetId;
-  final Decimal? fee;
+  final Rational? fee;
   final String? memo;
 
   @override
@@ -154,12 +155,16 @@ Future<ExternalTransfer?> parseExternalTransferUri(
   if (amount != amountBD.toString()) {
     return null;
   }
-  final memo = uri.queryParameters['memo'];
+  var memo = uri.queryParameters['memo'];
+  if (memo != null) {
+    memo = Uri.decodeQueryComponent(memo);
+  }
+
   return ExternalTransfer(
     destination: addressFeeResponse.destination,
     amount: amount,
     assetId: assetId,
-    fee: Decimal.tryParse(addressFeeResponse.fee),
+    fee: Rational.tryParse(addressFeeResponse.fee),
     memo: memo,
   );
 }
