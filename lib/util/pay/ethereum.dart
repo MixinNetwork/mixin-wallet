@@ -26,9 +26,9 @@ extension StringExt on String {
 
 Future<ExternalTransfer?> parseEthereum(
   String url, {
-  required Future<AddressFeeResponse?> Function(String, String) getAddressFee,
-  required Future<String?> Function(String) findAssetIdByAssetKey,
-  required Future<AssetPrecision?> Function(String) getAssetPrecisionById,
+  required GetAddressFeeCallback getAddressFee,
+  required FindAssetIdByAssetKeyCallback findAssetIdByAssetKey,
+  required GetAssetPrecisionByIdCallback getAssetPrecisionById,
 }) async {
   final erc681 = EthereumURI(url).toERC681();
   if (!erc681.valid) {

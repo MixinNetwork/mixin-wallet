@@ -232,8 +232,8 @@ class _AddressPopupMenuWrapperState extends State<_AddressPopupMenuWrapper> {
               return false;
             } catch (error) {
               if (error is DioError) {
-                final mixinError = error.error as sdk.MixinError;
-                if (mixinError.code == 404) {
+                final mixinError = error.error as sdk.MixinError?;
+                if (mixinError?.code == 404) {
                   return true;
                 }
               }

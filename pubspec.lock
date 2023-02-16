@@ -254,10 +254,10 @@ packages:
     dependency: "direct main"
     description:
       name: dio
-      sha256: "7d328c4d898a61efc3cd93655a0955858e29a0aa647f0f9e02d59b3bb275e2e8"
+      sha256: "9fdbf71baeb250fc9da847f6cb2052196f62c19906a3657adfc18631a667d316"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.6"
+    version: "5.0.0"
   dotenv:
     dependency: transitive
     description:
@@ -556,19 +556,19 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "44a84315f47dde84186ac8154d5b1ff389813c99"
-      resolved-ref: "44a84315f47dde84186ac8154d5b1ff389813c99"
+      ref: "861368a6a879db12d010477514ee0341db92e4fe"
+      resolved-ref: "861368a6a879db12d010477514ee0341db92e4fe"
       url: "https://github.com/MixinNetwork/mixin_bot_sdk_dart.git"
     source: git
-    version: "0.3.7"
+    version: "0.3.12"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:
       name: mixswap_sdk_dart
-      sha256: b2f0f461f6366e27a09240a42b76ca3db25705bd9b39505939aacf8abcba7699
+      sha256: "55b46d61488723d34da31c0b509a4ff8ea052d600f1b880f17050de8ffd0b44b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "0.2.0"
   move_to_background:
     dependency: transitive
     description:

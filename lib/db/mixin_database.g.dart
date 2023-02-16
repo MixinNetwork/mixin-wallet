@@ -5119,6 +5119,17 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
     });
   }
 
+  Selectable<String> findAssetIdByAssetKey(String assetKey) {
+    return customSelect(
+        'SELECT asset_id FROM assets WHERE asset_key = ?1 COLLATE NOCASE',
+        variables: [
+          Variable<String>(assetKey)
+        ],
+        readsFrom: {
+          assets,
+        }).map((QueryRow row) => row.read<String>('asset_id'));
+  }
+
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

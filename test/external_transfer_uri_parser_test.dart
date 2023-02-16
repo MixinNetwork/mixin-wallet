@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 import 'package:mixin_wallet/util/constants.dart';
 import 'package:mixin_wallet/util/pay/external_transfer_uri_parser.dart';
 
@@ -194,7 +195,7 @@ void main() {
 
 Future<ExternalTransfer?> _parse(String uri) => parseExternalTransferUri(
       uri,
-      getAddressFee: (assetId, destination) async => AddressFeeResponse(
+      getAddressFee: (assetId, destination) async => AddressFee(
         destination: destination,
         assetId: assetId,
         fee: '0',

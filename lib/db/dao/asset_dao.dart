@@ -178,4 +178,7 @@ ELSE 1000 END
         (asset, tempAsset, ae, fiat) => ignoreOrderBy,
         (asset, tempAsset, ae, fiat) => maxLimit,
       );
+
+  Future<String?> findAssetIdByAssetKey(String assetKey) =>
+      db.findAssetIdByAssetKey(assetKey).getSingleOrNull();
 }

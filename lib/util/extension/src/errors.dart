@@ -7,7 +7,7 @@ import '../extension.dart';
 extension MixinErrorHandle on DioError {
   MixinError? get optionMixinError {
     if (error is MixinError) {
-      return error as MixinError;
+      return error! as MixinError;
     }
     return null;
   }

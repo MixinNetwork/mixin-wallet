@@ -9,7 +9,9 @@ import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/logger.dart';
 import '../../util/native_scroll.dart';
+import '../../util/pay/external_transfer_uri_parser.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
@@ -17,6 +19,8 @@ import '../widget/avatar.dart';
 import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
+import '../widget/qrcode_scanner.dart';
+import '../widget/toast.dart';
 import 'home/header.dart';
 import 'home/tab_coins.dart';
 import 'home/tab_collectibles.dart';
@@ -142,11 +146,12 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
+        const _ScanButton(),
         ActionButton(
           name: R.resourcesSettingSvg,
           size: 24,
           onTap: () => context.push(settingPath),
-        )
+        ),
       ],
       backgroundColor: context.colorScheme.background,
     );
@@ -154,6 +159,61 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(48);
+}
+
+class _ScanButton extends StatelessWidget {
+  const _ScanButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => ActionButton(
+        name: R.resourcesIcScanSvg,
+        size: 24,
+        onTap: () async {
+          final text = await scanTextFromQrcode(context: context);
+          if (text == null) {
+            return;
+          }
+          d('scan text: $text');
+          final result = await parseExternalTransferUri(
+            text,
+            getAddressFee: (assetId, destination) async {
+              final api = context.appServices.client.accountApi;
+              try {
+                final resp = await api.getExternalAddressFee(
+                    assetId: assetId, destination: destination);
+                return resp.data;
+              } catch (error, stacktrace) {
+                e('getExternalAddressFee error. $error $stacktrace');
+                showErrorToast(error.toDisplayString(context));
+                return null;
+              }
+            },
+            findAssetIdByAssetKey: (assetKey) async {
+              final assetId = await context.mixinDatabase.assetDao
+                  .findAssetIdByAssetKey(assetKey);
+              return assetId;
+            },
+            getAssetPrecisionById: (assetId) async {
+              try {
+                final api = context.appServices.client.assetApi;
+                final response = await api.getAssetPrecisionById(assetId);
+                return response.data;
+              } catch (error, stacktrace) {
+                e('getAssetPrecisionById error. $error $stacktrace');
+                showErrorToast(error.toDisplayString(context));
+                return null;
+              }
+            },
+          );
+          if (result == null) {
+            e('parseExternalTransferUri error. $text');
+            return;
+          }
+          d('parseExternalTransferUri result. $result');
+        },
+      );
 }
 
 extension _SortAssets on List<AssetResult> {

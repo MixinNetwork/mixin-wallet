@@ -14,3 +14,7 @@ INNER JOIN fiats fiat ON fiat.code = :currentFiat
 WHERE $where
 ORDER BY $orderBy
 LIMIT $limit;
+
+
+findAssetIdByAssetKey:
+SELECT asset_id FROM assets WHERE asset_key = :assetKey COLLATE NOCASE;

@@ -1,6 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 import 'package:rational/rational.dart';
 
 import '../constants.dart';
@@ -27,36 +27,6 @@ class ExternalTransfer with EquatableMixin {
   List<Object?> get props => [destination, amount, assetId, fee, memo];
 }
 
-@JsonSerializable()
-class AddressFeeResponse {
-  AddressFeeResponse({
-    required this.destination,
-    required this.assetId,
-    required this.fee,
-    this.tag,
-  });
-
-  final String destination;
-  @JsonKey(name: 'fee_asset_id')
-  final String assetId;
-  final String fee;
-  final String? tag;
-}
-
-class AssetPrecision {
-  AssetPrecision({
-    required this.assetId,
-    required this.chainId,
-    required this.precision,
-  });
-
-  @JsonKey(name: 'asset_id')
-  final String assetId;
-  @JsonKey(name: 'chain_id')
-  final String chainId;
-  final int precision;
-}
-
 extension StringExtension on String {
   bool isEthereumURLString() => startsWith('ethereum:');
 
@@ -78,11 +48,24 @@ const externalTransferAssetIdMap = {
   'solana': ChainId.solana,
 };
 
+typedef GetAddressFeeCallback = Future<AddressFee?> Function(
+  String assetId,
+  String destination,
+);
+
+typedef GetAssetPrecisionByIdCallback = Future<AssetPrecision?> Function(
+  String assetId,
+);
+
+typedef FindAssetIdByAssetKeyCallback = Future<String?> Function(
+  String assetKey,
+);
+
 Future<ExternalTransfer?> parseExternalTransferUri(
   String url, {
-  required Future<AddressFeeResponse?> Function(String, String) getAddressFee,
-  required Future<String?> Function(String) findAssetIdByAssetKey,
-  required Future<AssetPrecision?> Function(String) getAssetPrecisionById,
+  required GetAddressFeeCallback getAddressFee,
+  required FindAssetIdByAssetKeyCallback findAssetIdByAssetKey,
+  required GetAssetPrecisionByIdCallback getAssetPrecisionById,
 }) async {
   if (url.isEthereumURLString()) {
     return parseEthereum(
