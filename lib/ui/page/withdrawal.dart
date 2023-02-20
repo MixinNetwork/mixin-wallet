@@ -1,14 +1,11 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../generated/r.dart';
 import '../../service/account_provider.dart';
-import '../../service/profile/pin_session.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
@@ -208,43 +205,16 @@ class _WithdrawalPage extends HookWidget {
                     e('addressId is null');
                     return;
                   }
-                  final ret = await showTransferVerifyBottomSheet(
+
+                  final ret = await showTransferToAddressBottomSheet(
                     context,
                     address: address.value!,
                     asset: asset,
                     feeAsset: feeAsset!,
                     amount: amount.value,
-                    verification: (context, pin) async {
-                      try {
-                        final api = context.appServices.client.transferApi;
-                        final response = await api.withdrawal(
-                          sdk.WithdrawalRequest(
-                            addressId: addressId,
-                            amount: amount.value,
-                            pin: encryptPin(context, pin)!,
-                            traceId: traceId,
-                            memo: memo.value,
-                            fee: address.value!.fee,
-                          ),
-                        );
-                        await context.appServices.mixinDatabase.snapshotDao
-                            .insertAll([response.data]);
-                        Navigator.of(context).pop(true);
-                      } on DioError catch (error) {
-                        final mixinError = error.optionMixinError;
-                        if (mixinError?.code ==
-                            sdk.insufficientTransactionFee) {
-                          final message = context.l10n
-                              .errorInsufficientTransactionFeeWithAmount(
-                                  '${address.value!.fee} ${feeAsset.symbol}');
-                          throw ErrorWithFormattedMessage(message);
-                        } else {
-                          rethrow;
-                        }
-                      }
-                    },
+                    memo: '', // memo is disabled for address transfer.
                   );
-                  if (ret ?? false) {
+                  if (ret) {
                     context.pop();
                   }
                 } else {

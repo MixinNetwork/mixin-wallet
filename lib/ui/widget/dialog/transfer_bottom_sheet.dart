@@ -1,20 +1,120 @@
+import 'package:decimal/decimal.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
+import 'package:uuid/uuid.dart';
 
 import '../../../db/mixin_database.dart';
+import '../../../service/profile/pin_session.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
+import '../../../util/pay/external_transfer_uri_parser.dart';
 import '../pin.dart';
 import '../symbol.dart';
 
-/// return: verified succeed pin code. null if canceled.
-Future<bool?> showTransferVerifyBottomSheet(
+Future<bool> showTransferToAddressBottomSheet(
   BuildContext context, {
   required Addresse address,
   required AssetResult asset,
   required AssetResult feeAsset,
   required String amount,
-  required PinVerification verification,
-}) =>
+  String? memo,
+}) async {
+  final traceId = const Uuid().v4();
+
+  return _showTransferBottomSheet(
+      context,
+      _TransferVerifyBottomSheetBody(
+        displayAddress: address.displayAddress(),
+        asset: asset,
+        amount: amount,
+        description: _FeeText(
+          address: address,
+          asset: asset,
+          feeAsset: feeAsset,
+        ),
+        addressLabel: address.label,
+        verification: (context, pin) async {
+          try {
+            final api = context.appServices.client.transferApi;
+            final response = await api.withdrawal(
+              sdk.WithdrawalRequest(
+                addressId: address.addressId,
+                amount: amount,
+                pin: encryptPin(context, pin)!,
+                traceId: traceId,
+                memo: memo,
+                fee: address.fee,
+              ),
+            );
+            await context.appServices.mixinDatabase.snapshotDao
+                .insertAll([response.data]);
+            Navigator.of(context).pop(true);
+          } on DioError catch (error) {
+            final mixinError = error.optionMixinError;
+            if (mixinError?.code == sdk.insufficientTransactionFee) {
+              final message = context.l10n
+                  .errorInsufficientTransactionFeeWithAmount(
+                      '${address.fee} ${feeAsset.symbol}');
+              throw ErrorWithFormattedMessage(message);
+            } else {
+              rethrow;
+            }
+          }
+        },
+      ));
+}
+
+Future<bool> showTransferToExternalUrlBottomSheet({
+  required BuildContext context,
+  required ExternalTransfer transfer,
+  required String traceId,
+  required AssetResult asset,
+}) {
+  final fee =
+      transfer.fee?.toDecimal(scaleOnInfinitePrecision: 10).toString() ?? '0';
+  return _showTransferBottomSheet(
+    context,
+    _TransferVerifyBottomSheetBody(
+      amount: transfer.amount,
+      asset: asset,
+      verification: (context, pin) async {
+        try {
+          final api = context.appServices.client.transferApi;
+          final response = await api.withdrawal(
+            sdk.WithdrawalRequest(
+              assetId: asset.assetId,
+              amount: transfer.amount,
+              pin: encryptPin(context, pin)!,
+              traceId: traceId,
+              memo: transfer.memo,
+              fee: fee,
+              destination: transfer.destination,
+              tag: null,
+            ),
+          );
+          await context.appServices.mixinDatabase.snapshotDao
+              .insertAll([response.data]);
+          Navigator.of(context).pop(true);
+        } on DioError catch (error) {
+          final mixinError = error.optionMixinError;
+          if (mixinError?.code == sdk.insufficientTransactionFee) {
+            final message = context.l10n
+                .errorInsufficientTransactionFeeWithAmount(
+                    '$fee ${asset.chainSymbol}');
+            throw ErrorWithFormattedMessage(message);
+          } else {
+            rethrow;
+          }
+        }
+      },
+      description: Text('${context.l10n.fee} $fee ${asset.chainSymbol}'),
+      displayAddress: transfer.destination,
+    ),
+  );
+}
+
+Future<bool> _showTransferBottomSheet(BuildContext context, Widget body) =>
     showModalBottomSheet<bool>(
       context: context,
       builder: (context) => SingleChildScrollView(
@@ -23,13 +123,7 @@ Future<bool?> showTransferVerifyBottomSheet(
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(topRadius),
           ),
-          child: _TransferVerifyBottomSheet(
-            address: address,
-            asset: asset,
-            feeAsset: feeAsset,
-            amount: amount,
-            verification: verification,
-          ),
+          child: body,
         ),
       ),
       shape: const RoundedRectangleBorder(
@@ -41,23 +135,28 @@ Future<bool?> showTransferVerifyBottomSheet(
       isDismissible: false,
       enableDrag: false,
       backgroundColor: Colors.transparent,
-    );
+    ).then((value) => value ?? false);
 
-class _TransferVerifyBottomSheet extends StatelessWidget {
-  const _TransferVerifyBottomSheet({
+class _TransferVerifyBottomSheetBody extends StatelessWidget {
+  const _TransferVerifyBottomSheetBody({
     Key? key,
-    required this.address,
     required this.amount,
     required this.asset,
-    required this.feeAsset,
     required this.verification,
+    required this.description,
+    required this.displayAddress,
+    this.addressLabel,
   }) : super(key: key);
 
-  final Addresse address;
   final String amount;
   final AssetResult asset;
-  final AssetResult feeAsset;
   final PinVerification verification;
+
+  final String? addressLabel;
+
+  final String displayAddress;
+
+  final Widget description;
 
   @override
   Widget build(BuildContext context) => PinVerifyDialogScaffold(
@@ -66,7 +165,9 @@ class _TransferVerifyBottomSheet extends StatelessWidget {
           children: [
             const SizedBox(height: 10),
             Text(
-              context.l10n.withdrawalTo(address.label),
+              addressLabel == null
+                  ? context.l10n.withdrawal
+                  : context.l10n.withdrawalTo(addressLabel!),
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -75,7 +176,7 @@ class _TransferVerifyBottomSheet extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              address.displayAddress().formatAddress(),
+              displayAddress.formatAddress(),
               style: TextStyle(
                 fontSize: 14,
                 color: context.colorScheme.secondaryText,
@@ -98,7 +199,13 @@ class _TransferVerifyBottomSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            _FeeText(address: address, asset: asset, feeAsset: feeAsset),
+            DefaultTextStyle.merge(
+              style: TextStyle(
+                fontSize: 14,
+                color: context.colorScheme.secondaryText,
+              ),
+              child: description,
+            ),
           ],
         ),
         tip: Text(

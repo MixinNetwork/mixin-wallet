@@ -33,9 +33,7 @@ dependencies:
     sdk: flutter
 
   mixin_bot_sdk_dart:
-    git:
-      url: https://github.com/MixinNetwork/mixin_bot_sdk_dart.git
-      ref: 861368a6a879db12d010477514ee0341db92e4fe
+    path: ../mixin_bot_sdk_dart
   very_good_analysis: ^3.1.0
   intl: ^0.17.0
   json_annotation: ^4.7.0

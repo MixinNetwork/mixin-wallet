@@ -1,6 +1,7 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../db/web/construct_db.dart';
@@ -16,6 +17,7 @@ import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/avatar.dart';
+import '../widget/dialog/transfer_bottom_sheet.dart';
 import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
@@ -212,6 +214,20 @@ class _ScanButton extends StatelessWidget {
             return;
           }
           d('parseExternalTransferUri result. $result');
+
+          final asset =
+              await context.appServices.findOrSyncAsset(result.assetId);
+          if (asset == null) {
+            showErrorToast(context.l10n.noAsset);
+            return;
+          }
+          final traceId = const Uuid().v4();
+          await showTransferToExternalUrlBottomSheet(
+            context: context,
+            asset: asset,
+            transfer: result,
+            traceId: traceId,
+          );
         },
       );
 }
