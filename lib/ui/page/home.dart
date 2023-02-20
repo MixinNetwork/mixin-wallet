@@ -170,7 +170,7 @@ class _ScanButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ActionButton(
-        name: R.resourcesIcScanSvg,
+        name: R.resourcesIcScanBlackSvg,
         size: 24,
         onTap: () async {
           final text = await scanTextFromQrcode(context: context);
