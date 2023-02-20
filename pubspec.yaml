@@ -41,7 +41,7 @@ dependencies:
   json_annotation: ^4.7.0
   flutter_hooks: ^0.18.5
   equatable: ^2.0.5
-  flutter_svg: ^2.0.0+1
+  flutter_svg: ^2.0.1
   path_provider: ^2.0.2
   provider: ^6.0.4
   isolate: ^2.1.1
