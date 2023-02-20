@@ -78,6 +78,7 @@ Future<bool> showTransferToExternalUrlBottomSheet({
     _TransferVerifyBottomSheetBody(
       amount: transfer.amount,
       asset: asset,
+      showWithdrawalWithPinTip: false,
       verification: (context, pin) async {
         try {
           final api = context.appServices.client.transferApi;
@@ -146,6 +147,7 @@ class _TransferVerifyBottomSheetBody extends StatelessWidget {
     required this.description,
     required this.displayAddress,
     this.addressLabel,
+    this.showWithdrawalWithPinTip = true,
   }) : super(key: key);
 
   final String amount;
@@ -157,6 +159,8 @@ class _TransferVerifyBottomSheetBody extends StatelessWidget {
   final String displayAddress;
 
   final Widget description;
+
+  final bool showWithdrawalWithPinTip;
 
   @override
   Widget build(BuildContext context) => PinVerifyDialogScaffold(
@@ -175,11 +179,15 @@ class _TransferVerifyBottomSheetBody extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              displayAddress.formatAddress(),
-              style: TextStyle(
-                fontSize: 14,
-                color: context.colorScheme.secondaryText,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Text(
+                displayAddress,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: context.colorScheme.secondaryText,
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -208,13 +216,15 @@ class _TransferVerifyBottomSheetBody extends StatelessWidget {
             ),
           ],
         ),
-        tip: Text(
-          context.l10n.withdrawalWithPin,
-          style: TextStyle(
-            fontSize: 14,
-            color: context.colorScheme.secondaryText,
-          ),
-        ),
+        tip: showWithdrawalWithPinTip
+            ? Text(
+                context.l10n.withdrawalWithPin,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: context.colorScheme.secondaryText,
+                ),
+              )
+            : null,
         verification: verification,
         onErrorConfirmed: () {
           Navigator.of(context).pop();

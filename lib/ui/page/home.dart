@@ -178,6 +178,7 @@ class _ScanButton extends StatelessWidget {
             return;
           }
           d('scan text: $text');
+          final loadingEntry = showLoading();
           final result = await parseExternalTransferUri(
             text,
             getAddressFee: (assetId, destination) async {
@@ -211,6 +212,7 @@ class _ScanButton extends StatelessWidget {
           );
           if (result == null) {
             e('parseExternalTransferUri error. $text');
+            loadingEntry.dismiss();
             return;
           }
           d('parseExternalTransferUri result. $result');
@@ -218,9 +220,11 @@ class _ScanButton extends StatelessWidget {
           final asset =
               await context.appServices.findOrSyncAsset(result.assetId);
           if (asset == null) {
+            loadingEntry.dismiss();
             showErrorToast(context.l10n.noAsset);
             return;
           }
+          loadingEntry.dismiss();
           final traceId = const Uuid().v4();
           await showTransferToExternalUrlBottomSheet(
             context: context,

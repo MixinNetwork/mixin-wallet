@@ -12,7 +12,7 @@ import 'text.dart';
 const _kToastDuration = Duration(milliseconds: 2000);
 
 Future<T> computeWithLoading<T>(Future<T> Function() compute) async {
-  final entry = _showLoading();
+  final entry = showLoading();
   try {
     return await compute();
   } finally {
@@ -24,7 +24,7 @@ Future<bool> runWithLoading(
   Future<void> Function() run, {
   bool handleError = true,
 }) async {
-  final entry = _showLoading();
+  final entry = showLoading();
   try {
     await run();
     return true;
@@ -43,7 +43,7 @@ Future<bool> runWithLoading(
   }
 }
 
-OverlaySupportEntry _showLoading() => showOverlay(
+OverlaySupportEntry showLoading() => showOverlay(
       (context, progress) => Opacity(
         opacity: progress,
         child: Container(
