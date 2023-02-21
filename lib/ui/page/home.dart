@@ -226,12 +226,17 @@ class _ScanButton extends StatelessWidget {
           }
           loadingEntry.dismiss();
           final traceId = const Uuid().v4();
-          await showTransferToExternalUrlBottomSheet(
+          final ret = await showTransferToExternalUrlBottomSheet(
             context: context,
             asset: asset,
             transfer: result,
             traceId: traceId,
           );
+          if (!ret) {
+            return;
+          }
+          // transaction success, to asset detail page.
+          context.push(assetDetailPath.toUri({'id': asset.assetId}));
         },
       );
 }
