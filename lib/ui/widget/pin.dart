@@ -291,7 +291,7 @@ class PinVerifyDialogScaffold extends HookWidget {
 
   final Widget header;
 
-  final Widget tip;
+  final Widget? tip;
 
   final PinVerification? verification;
 
@@ -407,8 +407,11 @@ class PinVerifyDialogScaffold extends HookWidget {
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: PinField(controller: controller),
         ),
-        tip,
-        const SizedBox(height: 32),
+        if (tip != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: tip,
+          ),
         AnimatedSize(
           duration: const Duration(milliseconds: 300),
           child: bottom,

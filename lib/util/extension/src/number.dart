@@ -19,6 +19,10 @@ extension StringCurrencyExtension on String {
 
   Decimal get asDecimal => Decimal.parse(this);
 
+  Rational get asRational => Rational.parse(this);
+
+  Rational? get asRationalOrNull => Rational.tryParse(this);
+
   String numberFormat() {
     if (isEmpty) return this;
     try {

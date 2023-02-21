@@ -32,10 +32,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  mixin_bot_sdk_dart:
-    git:
-      url: https://github.com/MixinNetwork/mixin_bot_sdk_dart.git
-      ref: 44a84315f47dde84186ac8154d5b1ff389813c99
+  mixin_bot_sdk_dart: ^0.3.14
   very_good_analysis: ^3.1.0
   intl: ^0.17.0
   json_annotation: ^4.7.0
@@ -46,7 +43,7 @@ dependencies:
   provider: ^6.0.4
   isolate: ^2.1.1
   path: ^1.8.0
-  dio: ^4.0.0
+  dio: ^5.0.0
   drift: ^2.1.0
   tuple: ^2.0.1
   hive: ^2.2.3
@@ -63,7 +60,7 @@ dependencies:
       ref: main
       path: envify
   path_to_regexp: ^0.4.0
-  mixswap_sdk_dart: ^0.1.0
+  mixswap_sdk_dart: ^0.2.0
   web_qrcode:
     git:
       url: https://github.com/MixinNetwork/flutter-plugins.git
@@ -84,6 +81,7 @@ dependencies:
     git:
       url: https://github.com/boyan01/calendar_date_picker2.git
       ref: 69b1d268a63e628565574b50b3b2b64591ac0dbb
+  rational: ^2.2.2
 
 dev_dependencies:
   flutter_test:

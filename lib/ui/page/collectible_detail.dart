@@ -195,8 +195,8 @@ class _SendButton extends HookWidget {
             return;
           }
           if (isSignedToken(outputs)) {
-            final utxo = outputs.firstWhereOrNull(
-                (element) => element?.signedTx.isNotEmpty ?? false);
+            final utxo = outputs
+                .firstWhereOrNull((element) => element.signedTx.isNotEmpty);
             if (utxo == null) {
               e('failed to find valid output: $outputs');
               return;

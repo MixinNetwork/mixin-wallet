@@ -1,6 +1,7 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../db/web/construct_db.dart';
@@ -9,14 +10,19 @@ import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
+import '../../util/logger.dart';
 import '../../util/native_scroll.dart';
+import '../../util/pay/external_transfer_uri_parser.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/avatar.dart';
+import '../widget/dialog/transfer_bottom_sheet.dart';
 import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
+import '../widget/qrcode_scanner.dart';
+import '../widget/toast.dart';
 import 'home/header.dart';
 import 'home/tab_coins.dart';
 import 'home/tab_collectibles.dart';
@@ -71,7 +77,7 @@ class Home extends HookWidget {
     }, [hideSmallAssets, assetResults, sortType]);
 
     final bitcoinAsset = useMemoizedFuture(() async {
-      var target = assetList.firstWhereOrNull((e) => e?.assetId == bitcoin);
+      var target = assetList.firstWhereOrNull((e) => e.assetId == bitcoin);
       return target ??= await context.appServices.findOrSyncAsset(bitcoin);
     }, keys: [assetResults]).data;
 
@@ -142,11 +148,12 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
+        const _ScanButton(),
         ActionButton(
           name: R.resourcesSettingSvg,
           size: 24,
           onTap: () => context.push(settingPath),
-        )
+        ),
       ],
       backgroundColor: context.colorScheme.background,
     );
@@ -154,6 +161,84 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(48);
+}
+
+class _ScanButton extends StatelessWidget {
+  const _ScanButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => ActionButton(
+        name: R.resourcesIcScanBlackSvg,
+        size: 24,
+        onTap: () async {
+          final text = await scanTextFromQrcode(context: context);
+          if (text == null) {
+            return;
+          }
+          d('scan text: $text');
+          final loadingEntry = showLoading();
+          final result = await parseExternalTransferUri(
+            text,
+            getAddressFee: (assetId, destination) async {
+              final api = context.appServices.client.accountApi;
+              try {
+                final resp = await api.getExternalAddressFee(
+                    assetId: assetId, destination: destination);
+                return resp.data;
+              } catch (error, stacktrace) {
+                e('getExternalAddressFee error. $error $stacktrace');
+                showErrorToast(error.toDisplayString(context));
+                return null;
+              }
+            },
+            findAssetIdByAssetKey: (assetKey) async {
+              final assetId = await context.mixinDatabase.assetDao
+                  .findAssetIdByAssetKey(assetKey);
+              return assetId;
+            },
+            getAssetPrecisionById: (assetId) async {
+              try {
+                final api = context.appServices.client.assetApi;
+                final response = await api.getAssetPrecisionById(assetId);
+                return response.data;
+              } catch (error, stacktrace) {
+                e('getAssetPrecisionById error. $error $stacktrace');
+                showErrorToast(error.toDisplayString(context));
+                return null;
+              }
+            },
+          );
+          if (result == null) {
+            e('parseExternalTransferUri error. $text');
+            loadingEntry.dismiss();
+            return;
+          }
+          d('parseExternalTransferUri result. $result');
+
+          final asset =
+              await context.appServices.findOrSyncAsset(result.assetId);
+          if (asset == null) {
+            loadingEntry.dismiss();
+            showErrorToast(context.l10n.noAsset);
+            return;
+          }
+          loadingEntry.dismiss();
+          final traceId = const Uuid().v4();
+          final ret = await showTransferToExternalUrlBottomSheet(
+            context: context,
+            asset: asset,
+            transfer: result,
+            traceId: traceId,
+          );
+          if (!ret) {
+            return;
+          }
+          // transaction success, to asset detail page.
+          context.push(assetDetailPath.toUri({'id': asset.assetId}));
+        },
+      );
 }
 
 extension _SortAssets on List<AssetResult> {

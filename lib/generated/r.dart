@@ -198,6 +198,9 @@ class R {
   /// {@macro assets_generator.resourcesIcScanSvg.preview}
   static const String resourcesIcScanSvg = 'resources/ic_scan.svg';
 
+  /// {@macro assets_generator.resourcesIcScanBlackSvg.preview}
+  static const String resourcesIcScanBlackSvg = 'resources/ic_scan_black.svg';
+
   /// {@macro assets_generator.resourcesIcSearchSvg.preview}
   static const String resourcesIcSearchSvg = 'resources/ic_search.svg';
 

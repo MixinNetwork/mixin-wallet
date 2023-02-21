@@ -94,7 +94,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
             ErrorInterceptorHandler handler,
           ) async {
             if (e is sdk.MixinApiError &&
-                (e.error as sdk.MixinError).code == sdk.authentication) {
+                (e.error! as sdk.MixinError).code == sdk.authentication) {
               i('api error code is 401 ');
               await authProvider.clear();
               vRouterStateKey.currentState?.to('/auth', isReplacement: true);
