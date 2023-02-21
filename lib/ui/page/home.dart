@@ -179,42 +179,45 @@ class _ScanButton extends StatelessWidget {
           }
           d('scan text: $text');
           final loadingEntry = showLoading();
-          final result = await parseExternalTransferUri(
-            text,
-            getAddressFee: (assetId, destination) async {
-              final api = context.appServices.client.accountApi;
-              try {
+          ExternalTransfer? result;
+          try {
+            result = await parseExternalTransferUri(
+              text,
+              getAddressFee: (assetId, destination) async {
+                final api = context.appServices.client.accountApi;
                 final resp = await api.getExternalAddressFee(
                     assetId: assetId, destination: destination);
                 return resp.data;
-              } catch (error, stacktrace) {
-                e('getExternalAddressFee error. $error $stacktrace');
-                showErrorToast(error.toDisplayString(context));
-                return null;
-              }
-            },
-            findAssetIdByAssetKey: (assetKey) async {
-              final assetId = await context.mixinDatabase.assetDao
-                  .findAssetIdByAssetKey(assetKey);
-              return assetId;
-            },
-            getAssetPrecisionById: (assetId) async {
-              try {
+              },
+              findAssetIdByAssetKey: (assetKey) async {
+                final assetId = await context.mixinDatabase.assetDao
+                    .findAssetIdByAssetKey(assetKey);
+                return assetId;
+              },
+              getAssetPrecisionById: (assetId) async {
                 final api = context.appServices.client.assetApi;
                 final response = await api.getAssetPrecisionById(assetId);
                 return response.data;
-              } catch (error, stacktrace) {
-                e('getAssetPrecisionById error. $error $stacktrace');
-                showErrorToast(error.toDisplayString(context));
-                return null;
-              }
-            },
-          );
-          if (result == null) {
-            e('parseExternalTransferUri error. $text');
+              },
+            );
+          } on ParseExternalTransferUriException catch (e) {
             loadingEntry.dismiss();
+
+            final String message;
+            if (e is NoAssetFound) {
+              message = context.l10n.externalPayNoAssetFound;
+            } else {
+              message = context.l10n.invalidPayUrl;
+            }
+            showErrorToast(message);
+            return;
+          } catch (error, stacktrace) {
+            loadingEntry.dismiss();
+            e('parseExternalTransferUri error. $error $stacktrace');
+            showErrorToast(error.toDisplayString(context));
             return;
           }
+
           d('parseExternalTransferUri result. $result');
 
           final asset =

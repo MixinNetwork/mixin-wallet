@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 import 'package:mixin_wallet/util/constants.dart';
+import 'package:mixin_wallet/util/logger.dart';
 import 'package:mixin_wallet/util/pay/external_transfer_uri_parser.dart';
 
 void main() {
@@ -193,7 +194,9 @@ void main() {
   });
 }
 
-Future<ExternalTransfer?> _parse(String uri) => parseExternalTransferUri(
+Future<ExternalTransfer?> _parse(String uri) async {
+  try {
+    return await parseExternalTransferUri(
       uri,
       getAddressFee: (assetId, destination) async => AddressFee(
         destination: destination,
@@ -217,3 +220,8 @@ Future<ExternalTransfer?> _parse(String uri) => parseExternalTransferUri(
               }[assetId] ??
               0),
     );
+  } on ParseExternalTransferUriException catch (error) {
+    e('ParseExternalTransferUriException: $error');
+    return null;
+  }
+}

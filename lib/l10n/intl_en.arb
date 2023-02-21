@@ -264,5 +264,7 @@
   "pinNotMatch": "The PIN is not the same twice, please try again.",
   "setNewPin": "Set a new PIN",
   "confirmPin": "Confirm PIN",
-  "changePinSuccessfully": "Change PIN successfully"
+  "changePinSuccessfully": "Change PIN successfully",
+  "invalidPayUrl": "Invalid Pay URL",
+  "externalPayNoAssetFound": "No asset found, please deposit to your wallet first."
 }

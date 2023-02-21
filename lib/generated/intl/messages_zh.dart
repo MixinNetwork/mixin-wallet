@@ -254,6 +254,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "export": MessageLookupByLibrary.simpleMessage("导出"),
         "exportTransactionsData":
             MessageLookupByLibrary.simpleMessage("导出交易数据"),
+        "externalPayNoAssetFound":
+            MessageLookupByLibrary.simpleMessage("无法找到该资产，请先充值。"),
         "fee": MessageLookupByLibrary.simpleMessage("手续费"),
         "filterAll": MessageLookupByLibrary.simpleMessage("全部"),
         "filterApply": MessageLookupByLibrary.simpleMessage("应用"),
@@ -268,6 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hide": MessageLookupByLibrary.simpleMessage("隐藏"),
         "hideSmallAssets": MessageLookupByLibrary.simpleMessage("隐藏小额资产"),
         "incomplete": MessageLookupByLibrary.simpleMessage("未完成"),
+        "invalidPayUrl": MessageLookupByLibrary.simpleMessage("支付链接无法识别"),
         "lastNinetyDays": MessageLookupByLibrary.simpleMessage("最近 90 天"),
         "lastSevenDays": MessageLookupByLibrary.simpleMessage("最近 7 天"),
         "lastThirtyDays": MessageLookupByLibrary.simpleMessage("最近 30 天"),

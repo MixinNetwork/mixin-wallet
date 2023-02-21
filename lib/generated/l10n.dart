@@ -2713,6 +2713,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Invalid Pay URL`
+  String get invalidPayUrl {
+    return Intl.message(
+      'Invalid Pay URL',
+      name: 'invalidPayUrl',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No asset found, please deposit to your wallet first.`
+  String get externalPayNoAssetFound {
+    return Intl.message(
+      'No asset found, please deposit to your wallet first.',
+      name: 'externalPayNoAssetFound',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

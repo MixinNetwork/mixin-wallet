@@ -260,5 +260,7 @@
   "pinNotMatch": "PIN 不一致, 请重新输入",
   "setNewPin": "设置新的 PIN",
   "confirmPin": "确认 PIN",
-  "changePinSuccessfully": "PIN 修改成功"
+  "changePinSuccessfully": "PIN 修改成功",
+  "invalidPayUrl": "支付链接无法识别",
+  "externalPayNoAssetFound": "无法找到该资产，请先充值。"
 }

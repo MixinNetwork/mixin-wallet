@@ -283,6 +283,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "export": MessageLookupByLibrary.simpleMessage("Export"),
         "exportTransactionsData":
             MessageLookupByLibrary.simpleMessage("Export transactions data"),
+        "externalPayNoAssetFound": MessageLookupByLibrary.simpleMessage(
+            "No asset found, please deposit to your wallet first."),
         "fee": MessageLookupByLibrary.simpleMessage("Fee"),
         "filterAll": MessageLookupByLibrary.simpleMessage("All"),
         "filterApply": MessageLookupByLibrary.simpleMessage("Apply"),
@@ -298,6 +300,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "hideSmallAssets":
             MessageLookupByLibrary.simpleMessage("Hide small assets"),
         "incomplete": MessageLookupByLibrary.simpleMessage("Incomplete"),
+        "invalidPayUrl":
+            MessageLookupByLibrary.simpleMessage("Invalid Pay URL"),
         "lastNinetyDays": MessageLookupByLibrary.simpleMessage("Last 90 days"),
         "lastSevenDays": MessageLookupByLibrary.simpleMessage("Last 7 days"),
         "lastThirtyDays": MessageLookupByLibrary.simpleMessage("Last 30 days"),
