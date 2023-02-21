@@ -148,7 +148,8 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        const _ScanButton(),
+        if (context.watch<AuthProvider>().isLoginByCredential)
+          const _ScanButton(),
         ActionButton(
           name: R.resourcesSettingSvg,
           size: 24,
