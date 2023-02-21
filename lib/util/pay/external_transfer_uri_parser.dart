@@ -48,12 +48,12 @@ const externalTransferAssetIdMap = {
   'solana': ChainId.solana,
 };
 
-typedef GetAddressFeeCallback = Future<AddressFee?> Function(
+typedef GetAddressFeeCallback = Future<AddressFee> Function(
   String assetId,
   String destination,
 );
 
-typedef GetAssetPrecisionByIdCallback = Future<AssetPrecision?> Function(
+typedef GetAssetPrecisionByIdCallback = Future<AssetPrecision> Function(
   String assetId,
 );
 
@@ -61,7 +61,45 @@ typedef FindAssetIdByAssetKeyCallback = Future<String?> Function(
   String assetKey,
 );
 
-Future<ExternalTransfer?> parseExternalTransferUri(
+class ParseExternalTransferUriException implements Exception {}
+
+class InvalidUri extends ParseExternalTransferUriException {
+  InvalidUri(this.uri);
+
+  final String uri;
+
+  @override
+  String toString() => 'InvalidUri: $uri';
+}
+
+class InvalidScheme extends ParseExternalTransferUriException {
+  InvalidScheme(this.scheme);
+
+  final String scheme;
+
+  @override
+  String toString() => 'InvalidScheme: $scheme';
+}
+
+class InvalidChainId extends ParseExternalTransferUriException {
+  InvalidChainId(this.chainId);
+
+  final int chainId;
+
+  @override
+  String toString() => 'InvalidChainId: $chainId';
+}
+
+class NoAssetFound extends ParseExternalTransferUriException {
+  NoAssetFound(this.assetKey);
+
+  final String? assetKey;
+
+  @override
+  String toString() => 'NoAssetFound: $assetKey';
+}
+
+Future<ExternalTransfer> parseExternalTransferUri(
   String url, {
   required GetAddressFeeCallback getAddressFee,
   required FindAssetIdByAssetKeyCallback findAssetIdByAssetKey,
@@ -78,65 +116,61 @@ Future<ExternalTransfer?> parseExternalTransferUri(
 
   final uri = Uri.tryParse(url.addSlashesIfNeeded());
   if (uri == null) {
-    e('invalid uri: $url');
-    return null;
+    throw InvalidUri(url);
   }
   final scheme = uri.scheme;
   final assetId = externalTransferAssetIdMap[scheme];
 
   if (assetId == null || assetId.isEmpty) {
-    e('invalid scheme: $scheme');
-    return null;
+    throw InvalidScheme(scheme);
   }
 
   if (assetId == ChainId.solana) {
     final splToken = uri.queryParameters['spl-token'];
     if (splToken != null && splToken.isNotEmpty) {
-      return null;
+      throw InvalidUri(url);
     }
   }
 
   var destination = uri.host;
 
   if (destination.isEmpty) {
-    e('destination is empty. $uri');
-    return null;
+    throw InvalidUri(url);
   }
 
   // uri.host is case insensitive, so we need to use the original string.
   final index = url.toLowerCase().indexOf(destination);
   if (index == -1) {
     e('invalid destination: $destination');
-    return null;
+    throw InvalidUri(url);
   }
   destination = url.substring(index, index + destination.length);
 
   if (!destination.equalsIgnoreCase(uri.host)) {
     e('invalid destination: $destination $url');
-    return null;
+    throw InvalidUri(url);
   }
 
   final addressFeeResponse = await getAddressFee(assetId, destination);
-  if (addressFeeResponse == null ||
-      addressFeeResponse.destination.toLowerCase() !=
-          destination.toLowerCase()) {
-    return null;
+  if (addressFeeResponse.destination.toLowerCase() !=
+      destination.toLowerCase()) {
+    throw InvalidUri(url);
   }
 
   var amount = uri.queryParameters['amount'];
   amount ??= uri.queryParameters['tx_amount'];
   if (amount == null || amount.isEmpty || amount.amountWithE) {
     e('amount is empty or invalid. $amount');
-    return null;
+    throw InvalidUri(url);
   }
 
   amount = amount.asDecimal.toString();
   final amountBD = Decimal.tryParse(amount);
   if (amountBD == null) {
-    return null;
+    throw InvalidUri(url);
   }
   if (amount != amountBD.toString()) {
-    return null;
+    throw InvalidUri(url);
   }
   var memo = uri.queryParameters['memo'];
   if (memo != null) {

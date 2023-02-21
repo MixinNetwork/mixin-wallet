@@ -54,19 +54,21 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m17(arg0) => "错误：${arg0}";
 
-  static String m18(value, value2) => "${value}/${value2} 区块确认数";
+  static String m18(url) => "支付链接无法识别：${url}";
 
-  static String m19(value) => "请求付款金额: ${value}";
+  static String m19(value, value2) => "${value}/${value2} 区块确认数";
 
-  static String m20(value) => "发送给 ${value}";
+  static String m20(value) => "请求付款金额: ${value}";
 
-  static String m21(value) => "暂不支持滑点大于 ${value} 的闪兑";
+  static String m21(value) => "发送给 ${value}";
 
-  static String m22(value) => "价值 ${value}";
+  static String m22(value) => "暂不支持滑点大于 ${value} 的闪兑";
 
-  static String m23(value) => "当时价值 ${value}";
+  static String m23(value) => "价值 ${value}";
 
-  static String m24(value) => "提现到 ${value}";
+  static String m24(value) => "当时价值 ${value}";
+
+  static String m25(value) => "提现到 ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -254,6 +256,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "export": MessageLookupByLibrary.simpleMessage("导出"),
         "exportTransactionsData":
             MessageLookupByLibrary.simpleMessage("导出交易数据"),
+        "externalPayNoAssetFound":
+            MessageLookupByLibrary.simpleMessage("无法找到该资产，请先充值。"),
         "fee": MessageLookupByLibrary.simpleMessage("手续费"),
         "filterAll": MessageLookupByLibrary.simpleMessage("全部"),
         "filterApply": MessageLookupByLibrary.simpleMessage("应用"),
@@ -268,6 +272,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hide": MessageLookupByLibrary.simpleMessage("隐藏"),
         "hideSmallAssets": MessageLookupByLibrary.simpleMessage("隐藏小额资产"),
         "incomplete": MessageLookupByLibrary.simpleMessage("未完成"),
+        "invalidPayUrl": m18,
         "lastNinetyDays": MessageLookupByLibrary.simpleMessage("最近 90 天"),
         "lastSevenDays": MessageLookupByLibrary.simpleMessage("最近 7 天"),
         "lastThirtyDays": MessageLookupByLibrary.simpleMessage("最近 30 天"),
@@ -309,7 +314,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidInMixinWarning":
             MessageLookupByLibrary.simpleMessage("如果您已经支付成功，请耐心等待，无需再次支付"),
         "pay": MessageLookupByLibrary.simpleMessage("支付"),
-        "pendingConfirmations": m18,
+        "pendingConfirmations": m19,
         "phoneNumberChange": MessageLookupByLibrary.simpleMessage("修改手机号码"),
         "pinChange": MessageLookupByLibrary.simpleMessage("修改 PIN"),
         "pinConfirmAgainHint":
@@ -332,7 +337,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "refund": MessageLookupByLibrary.simpleMessage("退回"),
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("取消授权"),
         "requestPayment": MessageLookupByLibrary.simpleMessage("请求付款"),
-        "requestPaymentAmount": m19,
+        "requestPaymentAmount": m20,
         "requestPaymentGeneratedTips":
             MessageLookupByLibrary.simpleMessage("请求付款链接已生成，请发送给指定联系人。"),
         "revokeMultisigTransaction":
@@ -343,7 +348,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("选择地址或联系人"),
         "send": MessageLookupByLibrary.simpleMessage("发送"),
         "sendLink": MessageLookupByLibrary.simpleMessage("发送链接"),
-        "sendTo": m20,
+        "sendTo": m21,
         "sendToContact": MessageLookupByLibrary.simpleMessage("转账至联系人"),
         "setNewPin": MessageLookupByLibrary.simpleMessage("设置新的 PIN"),
         "setNewPinDesc": MessageLookupByLibrary.simpleMessage("设置新的 6 位数字 PIN"),
@@ -358,7 +363,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signTransaction": MessageLookupByLibrary.simpleMessage("签名交易"),
         "signers": MessageLookupByLibrary.simpleMessage("签名者"),
         "slippage": MessageLookupByLibrary.simpleMessage("滑点"),
-        "slippageOver": m21,
+        "slippageOver": m22,
         "snapshotHash": MessageLookupByLibrary.simpleMessage("Snapshot hash"),
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
         "state": MessageLookupByLibrary.simpleMessage("State"),
@@ -398,17 +403,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "verifyOldPin": MessageLookupByLibrary.simpleMessage("验证旧的 PIN"),
         "viewEmergencyContact": MessageLookupByLibrary.simpleMessage("查看紧急联系人"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),
-        "walletTransactionCurrentValue": m22,
+        "walletTransactionCurrentValue": m23,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),
-        "walletTransactionThatTimeValue": m23,
+        "walletTransactionThatTimeValue": m24,
         "warningExportInWebView": MessageLookupByLibrary.simpleMessage(
             "当前处于 WebView 中，无法导出数据。请使用浏览器打开。"),
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "本服务由 Wyre 提供。我们仅作为渠道，不额外收取手续费。"),
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),
         "withdrawalMemoHint": MessageLookupByLibrary.simpleMessage("备注 (可选)"),
-        "withdrawalTo": m24,
+        "withdrawalTo": m25,
         "withdrawalWithPin": MessageLookupByLibrary.simpleMessage("用 PIN 提现"),
         "wyreServiceStatement": MessageLookupByLibrary.simpleMessage("服务声明"),
         "youPinHasBeenCreated":

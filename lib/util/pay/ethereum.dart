@@ -24,7 +24,7 @@ extension StringExt on String {
   bool get amountWithE => contains('e');
 }
 
-Future<ExternalTransfer?> parseEthereum(
+Future<ExternalTransfer> parseEthereum(
   String url, {
   required GetAddressFeeCallback getAddressFee,
   required FindAssetIdByAssetKeyCallback findAssetIdByAssetKey,
@@ -33,14 +33,14 @@ Future<ExternalTransfer?> parseEthereum(
   final erc681 = EthereumURI(url).toERC681();
   if (!erc681.valid) {
     e('invalid erc681: $url');
-    return null;
+    throw InvalidUri(url);
   }
 
   final chainId = erc681.chainId?.toInt() ?? 1;
   var assetId = _ethereumChainIdMap[chainId];
   if (assetId == null || assetId.isEmpty) {
     e('invalid chainId: $chainId');
-    return null;
+    throw InvalidChainId(chainId);
   }
 
   final value = erc681.value;
@@ -60,13 +60,11 @@ Future<ExternalTransfer?> parseEthereum(
   } else {
     final assetKey = erc681.address?.toLowerCase();
     if (assetKey == null) {
-      e('asset not found: $assetKey');
-      return null;
+      throw NoAssetFound(assetKey);
     }
     assetId = await findAssetIdByAssetKey(assetKey);
     if (assetId == null || assetId.isEmpty) {
-      e('asset not found: $assetKey');
-      return null;
+      throw NoAssetFound(assetKey);
     }
     for (final pair in erc681.functionParams) {
       if (pair.key == 'address') {
@@ -75,12 +73,9 @@ Future<ExternalTransfer?> parseEthereum(
         uint256Temp = Rational.tryParse(pair.value);
         if (uint256Temp == null) {
           e('invalid uint256: ${pair.value}');
-          return null;
+          throw InvalidUri(url);
         }
         final assetPrecision = await getAssetPrecisionById(assetId);
-        if (assetPrecision == null) {
-          return null;
-        }
         uint256Temp =
             uint256Temp / (Rational.fromInt(10).pow(assetPrecision.precision));
       }
@@ -90,36 +85,33 @@ Future<ExternalTransfer?> parseEthereum(
   final destination = address;
   if (destination == null) {
     e('destination not found: $url');
-    return null;
+    throw InvalidUri(url);
   }
 
   final amount = valueTemp ?? amountTemp ?? uint256Temp;
   if (amount == null) {
     e('amount not found: $url');
-    return null;
+    throw InvalidUri(url);
   }
 
   // check amount is equal to valueTemp, amountTemp, uint256Temp
   if (valueTemp != null && valueTemp != amount) {
     e('valueTemp != amount: $url');
-    return null;
+    throw InvalidUri(url);
   }
   if (amountTemp != null && amountTemp != amount) {
     e('amountTemp != amount: $url');
-    return null;
+    throw InvalidUri(url);
   }
   if (uint256Temp != null && uint256Temp != amount) {
     e('uint256Temp != amount: $url');
-    return null;
+    throw InvalidUri(url);
   }
 
   final am = amount.toDecimal(scaleOnInfinitePrecision: 10).toString();
   final addressFeeResponse = await getAddressFee(assetId, destination);
-  if (addressFeeResponse == null) {
-    return null;
-  }
   if (!addressFeeResponse.destination.equalsIgnoreCase(address)) {
-    return null;
+    throw InvalidUri(url);
   }
   return ExternalTransfer(
     destination: addressFeeResponse.destination,
