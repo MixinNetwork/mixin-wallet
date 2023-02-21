@@ -265,6 +265,6 @@
   "setNewPin": "Set a new PIN",
   "confirmPin": "Confirm PIN",
   "changePinSuccessfully": "Change PIN successfully",
-  "invalidPayUrl": "Invalid Pay URL",
+  "invalidPayUrl": "Invalid Pay URL: {url}",
   "externalPayNoAssetFound": "No asset found, please deposit to your wallet first."
 }

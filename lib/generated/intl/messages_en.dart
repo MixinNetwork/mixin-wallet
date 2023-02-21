@@ -62,20 +62,22 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m17(arg0) => "ERROR: ${arg0}";
 
-  static String m18(value, value2) => "${value}/${value2} confirmations";
+  static String m18(url) => "Invalid Pay URL: ${url}";
 
-  static String m19(value) => "Request payment amount: ${value}";
+  static String m19(value, value2) => "${value}/${value2} confirmations";
 
-  static String m20(value) => "Send to ${value}";
+  static String m20(value) => "Request payment amount: ${value}";
 
-  static String m21(value) =>
+  static String m21(value) => "Send to ${value}";
+
+  static String m22(value) =>
       "Swap with slippage greater than ${value} is not currently supported";
 
-  static String m22(value) => "value now ${value}";
+  static String m23(value) => "value now ${value}";
 
-  static String m23(value) => "value then ${value}";
+  static String m24(value) => "value then ${value}";
 
-  static String m24(value) => "Withdrawal to ${value}";
+  static String m25(value) => "Withdrawal to ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -300,8 +302,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hideSmallAssets":
             MessageLookupByLibrary.simpleMessage("Hide small assets"),
         "incomplete": MessageLookupByLibrary.simpleMessage("Incomplete"),
-        "invalidPayUrl":
-            MessageLookupByLibrary.simpleMessage("Invalid Pay URL"),
+        "invalidPayUrl": m18,
         "lastNinetyDays": MessageLookupByLibrary.simpleMessage("Last 90 days"),
         "lastSevenDays": MessageLookupByLibrary.simpleMessage("Last 7 days"),
         "lastThirtyDays": MessageLookupByLibrary.simpleMessage("Last 30 days"),
@@ -346,7 +347,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidInMixinWarning": MessageLookupByLibrary.simpleMessage(
             "If you have paid via Mixin, please be patient."),
         "pay": MessageLookupByLibrary.simpleMessage("Pay"),
-        "pendingConfirmations": m18,
+        "pendingConfirmations": m19,
         "phoneNumberChange":
             MessageLookupByLibrary.simpleMessage("Phone number change"),
         "pinChange": MessageLookupByLibrary.simpleMessage("PIN change"),
@@ -377,7 +378,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("Deauthorize"),
         "requestPayment":
             MessageLookupByLibrary.simpleMessage("Request payment"),
-        "requestPaymentAmount": m19,
+        "requestPaymentAmount": m20,
         "requestPaymentGeneratedTips": MessageLookupByLibrary.simpleMessage(
             "A request payment link has been generated, please send it to the specified contact."),
         "revokeMultisigTransaction":
@@ -388,7 +389,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choose a address or contact"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "sendLink": MessageLookupByLibrary.simpleMessage("Send link"),
-        "sendTo": m20,
+        "sendTo": m21,
         "sendToContact":
             MessageLookupByLibrary.simpleMessage("Send to contact"),
         "setNewPin": MessageLookupByLibrary.simpleMessage("Set a new PIN"),
@@ -407,7 +408,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sign Transaction"),
         "signers": MessageLookupByLibrary.simpleMessage("Signers"),
         "slippage": MessageLookupByLibrary.simpleMessage("Slippage"),
-        "slippageOver": m21,
+        "slippageOver": m22,
         "snapshotHash": MessageLookupByLibrary.simpleMessage("Snapshot hash"),
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
         "state": MessageLookupByLibrary.simpleMessage("State"),
@@ -457,10 +458,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("View emergency contact"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
-        "walletTransactionCurrentValue": m22,
+        "walletTransactionCurrentValue": m23,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
-        "walletTransactionThatTimeValue": m23,
+        "walletTransactionThatTimeValue": m24,
         "warningExportInWebView": MessageLookupByLibrary.simpleMessage(
             "Exporting data in webview is not supported, please open in browser."),
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
@@ -468,7 +469,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
         "withdrawalMemoHint":
             MessageLookupByLibrary.simpleMessage("Memo (Optional)"),
-        "withdrawalTo": m24,
+        "withdrawalTo": m25,
         "withdrawalWithPin":
             MessageLookupByLibrary.simpleMessage("Withdrawal with PIN"),
         "wyreServiceStatement":

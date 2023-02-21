@@ -207,7 +207,7 @@ class _ScanButton extends StatelessWidget {
             if (e is NoAssetFound) {
               message = context.l10n.externalPayNoAssetFound;
             } else {
-              message = context.l10n.invalidPayUrl;
+              message = context.l10n.invalidPayUrl(text);
             }
             showErrorToast(message);
             return;

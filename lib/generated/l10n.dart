@@ -2714,13 +2714,13 @@ class L10n {
     );
   }
 
-  /// `Invalid Pay URL`
-  String get invalidPayUrl {
+  /// `Invalid Pay URL: {url}`
+  String invalidPayUrl(Object url) {
     return Intl.message(
-      'Invalid Pay URL',
+      'Invalid Pay URL: $url',
       name: 'invalidPayUrl',
       desc: '',
-      args: [],
+      args: [url],
     );
   }
 
