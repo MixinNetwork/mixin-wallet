@@ -110,6 +110,16 @@ void main() {
         'ethereum:0xA974c709cFb4566686553a20790685A47acEAA33@1/transfer?address=0xB38F2E40e82F0AE5613D55203d84953aE4d5181B&amount=1&uint256=1.24e18';
     final result11 = await _parse(url11);
     expect(result11, isNull);
+
+    // polygon usdc
+    const url12 =
+        'ethereum:0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174@137/transfer?address=0x1DB766A18aB5b70A38e2A8a8819Ba6472029E9Ac&uint256=3.27e6&gas=250000';
+    final result12 = await _parse(url12);
+    expect(result12, isNotNull);
+
+    expect(result12!.assetId, '80b65786-7c75-3523-bc03-fb25378eae41');
+    expect(result12.destination, '0x1DB766A18aB5b70A38e2A8a8819Ba6472029E9Ac');
+    expect(result12.amount, '3.27');
   });
 
   test('parse lite coin', () async {
@@ -204,12 +214,15 @@ Future<ExternalTransfer?> _parse(String uri) async {
         fee: '0',
       ),
       findAssetIdByAssetKey: (assetKey) async => const {
+        // ERC20 USDT
         '0xdac17f958d2ee523a2206206994597c13d831ec7':
             '4d8c508b-91c5-375b-92b0-ee702ed2dac5',
-        // ERC20 USDT
+        // XIN
         '0xa974c709cfb4566686553a20790685a47aceaa33':
             'c94ac88f-4671-3976-b60a-09064f1811e8',
-        // XIN
+        // Polygon USDC
+        '0x2791bca1f2de4661ed88a30c99a7a9449aa84174':
+            '80b65786-7c75-3523-bc03-fb25378eae41',
       }[assetKey],
       getAssetPrecisionById: (assetId) async => AssetPrecision(
           assetId: assetId,
@@ -217,6 +230,7 @@ Future<ExternalTransfer?> _parse(String uri) async {
           precision: const {
                 '4d8c508b-91c5-375b-92b0-ee702ed2dac5': 6, // ERC20 USDT
                 'c94ac88f-4671-3976-b60a-09064f1811e8': 18, // XIN
+                '80b65786-7c75-3523-bc03-fb25378eae41': 6,
               }[assetId] ??
               0),
     );

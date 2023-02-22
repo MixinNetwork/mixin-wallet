@@ -25,6 +25,7 @@ class ChainId {
   static const monero = '05c5ac01-31f9-4a69-aa8a-ab796de1d041';
   static const dash = '6472e7e3-75fd-48b6-b1dc-28d294ee1476';
   static const solana = '64692c23-8971-4cf4-84a7-4dd1271dd887';
+  static const polygon = 'b7938396-3f94-4e0a-9179-d3440718156f';
 }
 
 const topRadius = 20.0;
