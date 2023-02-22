@@ -23,7 +23,7 @@ import 'symbol.dart';
 import 'text.dart';
 
 class BuyAssetSelectionBottomSheet extends StatelessWidget {
-  const BuyAssetSelectionBottomSheet({Key? key}) : super(key: key);
+  const BuyAssetSelectionBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) => AssetSelectionListWidget(
@@ -87,15 +87,15 @@ typedef AssetSourceLoader = Stream<List<AssetResult>> Function();
 
 class AssetSelectionListWidget extends HookWidget {
   const AssetSelectionListWidget({
-    Key? key,
     required this.onTap,
+    required this.onCancelPressed,
+    super.key,
     this.selectedAssetId,
     this.source,
     this.ignoreAssets = const {},
     this.useSearchApi = false,
     this.hasNullChoose = false,
-    required this.onCancelPressed,
-  }) : super(key: key);
+  });
 
   final String? selectedAssetId;
   final AssetSelectCallback onTap;
@@ -235,10 +235,9 @@ class AssetSelectionListWidget extends HookWidget {
 
 class _NoChooseItem extends StatelessWidget {
   const _NoChooseItem({
-    Key? key,
     required this.onTap,
     required this.selected,
-  }) : super(key: key);
+  });
 
   final VoidCallback onTap;
   final bool selected;
@@ -267,11 +266,10 @@ class _NoChooseItem extends StatelessWidget {
 
 class _Item extends StatelessWidget {
   const _Item({
-    Key? key,
     required this.asset,
     required this.selectedAssetId,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
   final String? selectedAssetId;

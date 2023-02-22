@@ -7,7 +7,7 @@ part 'assets_extra_dao.g.dart';
 @DriftAccessor(tables: [AssetsExtra])
 class AssetsExtraDao extends DatabaseAccessor<MixinDatabase>
     with _$AssetsExtraDaoMixin {
-  AssetsExtraDao(MixinDatabase db) : super(db);
+  AssetsExtraDao(super.db);
 
   Future<int> updateHidden(String assetId, {required bool hidden}) =>
       into(db.assetsExtra).insertOnConflictUpdate(

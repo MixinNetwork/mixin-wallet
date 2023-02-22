@@ -9,9 +9,9 @@ import 'search_header_widget.dart';
 
 class FiatSelectionListWidget extends HookWidget {
   const FiatSelectionListWidget({
-    Key? key,
+    super.key,
     this.selectedFiat,
-  }) : super(key: key);
+  });
 
   final WyreFiat? selectedFiat;
 
@@ -60,10 +60,9 @@ class FiatSelectionListWidget extends HookWidget {
 
 class _Item extends StatelessWidget {
   const _Item({
-    Key? key,
     required this.fiat,
     required this.selectedFiat,
-  }) : super(key: key);
+  });
 
   final WyreFiat fiat;
   final WyreFiat selectedFiat;

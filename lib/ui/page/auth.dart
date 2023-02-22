@@ -17,7 +17,7 @@ import '../widget/text.dart';
 import '../widget/toast.dart';
 
 class AuthPage extends HookWidget {
-  const AuthPage({Key? key}) : super(key: key);
+  const AuthPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +76,7 @@ class _ProgressBody extends StatelessWidget {
 }
 
 class _AuthBody extends StatelessWidget {
-  const _AuthBody({
-    Key? key,
-  }) : super(key: key);
+  const _AuthBody();
 
   @override
   Widget build(BuildContext context) => Column(
@@ -189,9 +187,7 @@ class _AuthBody extends StatelessWidget {
 }
 
 class _AuthorizeButton extends StatelessWidget {
-  const _AuthorizeButton({
-    Key? key,
-  }) : super(key: key);
+  const _AuthorizeButton();
 
   @override
   Widget build(BuildContext context) {

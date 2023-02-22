@@ -7,10 +7,10 @@ import 'action_button.dart';
 
 class MixinBackButton extends StatelessWidget {
   const MixinBackButton({
-    Key? key,
+    super.key,
     this.color,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final Color? color;
   final VoidCallback? onTap;
@@ -32,7 +32,7 @@ class MixinBackButton extends StatelessWidget {
 }
 
 class MixinBackButton2 extends StatelessWidget {
-  const MixinBackButton2({Key? key, this.onTap}) : super(key: key);
+  const MixinBackButton2({super.key, this.onTap});
   final VoidCallback? onTap;
 
   @override
@@ -57,9 +57,9 @@ class MixinBackButton2 extends StatelessWidget {
 
 class HeaderButtonBarLayout extends StatelessWidget {
   const HeaderButtonBarLayout({
-    Key? key,
     required this.buttons,
-  }) : super(key: key);
+    super.key,
+  });
 
   final List<HeaderButton> buttons;
 
@@ -95,10 +95,10 @@ class HeaderButtonBarLayout extends StatelessWidget {
 
 class HeaderButton extends StatelessWidget {
   const HeaderButton({
-    Key? key,
     required this.child,
     required this.onTap,
-  }) : super(key: key);
+    super.key,
+  });
 
   factory HeaderButton.text({
     required String text,
@@ -134,10 +134,10 @@ class HeaderButton extends StatelessWidget {
 
 class SendButton extends StatelessWidget {
   const SendButton({
-    Key? key,
     required this.onTap,
     required this.enable,
-  }) : super(key: key);
+    super.key,
+  });
 
   final VoidCallback onTap;
   final bool enable;
@@ -176,11 +176,11 @@ class SendButton extends StatelessWidget {
 
 class MixinPrimaryTextButton extends StatelessWidget {
   const MixinPrimaryTextButton({
-    Key? key,
     required this.onTap,
     required this.text,
+    super.key,
     this.enable = true,
-  }) : super(key: key);
+  });
 
   final VoidCallback onTap;
   final String text;

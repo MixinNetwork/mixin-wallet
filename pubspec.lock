@@ -386,10 +386,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_svg
-      sha256: b9be7260c1fdbe0090a11d9d356fc2c88e14cf33407fc0c1829d76ab13808035
+      sha256: "97c5b291b4fd34ae4f55d6a4c05841d4d0ed94952e033c5a6529e1b47b4d2a29"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -556,10 +556,10 @@ packages:
     dependency: "direct main"
     description:
       name: mixin_bot_sdk_dart
-      sha256: f1b0dc69be5dc6318b34090813660f29927a1027795c047af68e14e1d54673b9
+      sha256: e663989c5b294de6fdd154a16aea509c20c72abab33083943b9387cdb40bcc79
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.14"
+    version: "0.3.15"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:
@@ -1025,26 +1025,26 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics
-      sha256: "09562ef5f47aa84f6567495adb6b9cb2a3192b82c352623b8bd00b300d62603b"
+      sha256: "254348b40251c995cf8301ac715486c8cfa0a93b7fdc4dbd495a30f04db1fb44"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   vector_graphics_codec:
     dependency: transitive
     description:
       name: vector_graphics_codec
-      sha256: "886e57742644ebed024dc3ade29712e37eea1b03d294fb314c0a3386243fe5a6"
+      sha256: "143c290b762646c696c63be5d976bde7379ea892cb6868ddc5a17cbc56e71411"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   vector_graphics_compiler:
     dependency: transitive
     description:
       name: vector_graphics_compiler
-      sha256: "5d9010c4a292766c55395b2288532579a85673f8148460d1e233d98ffe10d24e"
+      sha256: "3190cc26d9ebda686bafb9721bb6a74c6d358700f4fc978a0f2cba6912daff86"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   vector_math:
     dependency: transitive
     description:
@@ -1057,10 +1057,10 @@ packages:
     dependency: "direct main"
     description:
       name: very_good_analysis
-      sha256: "4815adc7ded57657038d2bb2a7f332c50e3c8152f7d3c6acf8f6b7c0cc81e5e2"
+      sha256: ebc48c51db35beeeec8c414e32f7bd78e612bd7f5992ccb0d46e19edaeb40b08
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "4.0.0+1"
   vrouter:
     dependency: "direct main"
     description:
@@ -1136,4 +1136,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.19.0 <3.0.0"
-  flutter: ">=3.7.0-0"
+  flutter: ">=3.7.0"

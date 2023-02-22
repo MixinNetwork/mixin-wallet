@@ -11,14 +11,14 @@ const _bound = {
 
 class BrightnessObserver extends HookWidget {
   const BrightnessObserver({
-    Key? key,
-    this.duration = const Duration(milliseconds: 200),
-    this.curve = Curves.linear,
     required this.child,
     required this.lightThemeData,
+    super.key,
+    this.duration = const Duration(milliseconds: 200),
+    this.curve = Curves.linear,
     this.darkThemeData,
     this.forceBrightness,
-  }) : super(key: key);
+  });
 
   final Duration duration;
   final Curve curve;
@@ -60,11 +60,11 @@ class BrightnessObserver extends HookWidget {
 
 class BrightnessData extends InheritedWidget {
   const BrightnessData({
-    required this.value,
-    required Widget child,
-    Key? key,
     required this.brightnessThemeData,
-  }) : super(key: key, child: child);
+    required this.value,
+    required super.child,
+    super.key,
+  });
 
   final double value;
   final BrightnessThemeData brightnessThemeData;

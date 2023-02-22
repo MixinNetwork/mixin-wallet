@@ -10,7 +10,7 @@ import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 
 class CollectiblesCollection extends HookWidget {
-  const CollectiblesCollection({Key? key}) : super(key: key);
+  const CollectiblesCollection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +73,9 @@ class CollectiblesCollection extends HookWidget {
 
 class _GroupHeader extends StatelessWidget {
   const _GroupHeader({
-    Key? key,
     required this.collection,
     required this.count,
-  }) : super(key: key);
+  });
 
   final Collection collection;
 
@@ -148,7 +147,7 @@ class _GroupHeader extends StatelessWidget {
 }
 
 class _Body extends HookWidget {
-  const _Body({Key? key, required this.collection}) : super(key: key);
+  const _Body({required this.collection});
 
   final Collection collection;
 
@@ -213,9 +212,8 @@ class _Body extends HookWidget {
 
 class _CollectiblesItemTile extends StatelessWidget {
   const _CollectiblesItemTile({
-    Key? key,
     required this.item,
-  }) : super(key: key);
+  });
 
   final CollectibleItem item;
 

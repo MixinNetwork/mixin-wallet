@@ -9,13 +9,13 @@ import '../../util/extension/extension.dart';
 
 class SymbolIconWithBorder extends StatelessWidget {
   const SymbolIconWithBorder({
-    Key? key,
     required this.symbolUrl,
-    this.chainUrl,
     required this.size,
     required this.chainSize,
+    super.key,
+    this.chainUrl,
     this.chainBorder = const BorderSide(color: Colors.white, width: 1),
-  }) : super(key: key);
+  });
 
   final String symbolUrl;
   final String? chainUrl;
@@ -61,9 +61,9 @@ class SymbolIconWithBorder extends StatelessWidget {
 
 class PercentageChange extends HookWidget {
   const PercentageChange({
-    Key? key,
     required this.changeUsd,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String changeUsd;
 

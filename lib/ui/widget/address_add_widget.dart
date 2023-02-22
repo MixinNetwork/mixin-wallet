@@ -13,8 +13,11 @@ import 'qrcode_scanner.dart';
 import 'round_container.dart';
 
 class AddressAddWidget extends HookWidget {
-  const AddressAddWidget({Key? key, required this.assetId, this.chainId})
-      : super(key: key);
+  const AddressAddWidget({
+    required this.assetId,
+    super.key,
+    this.chainId,
+  });
 
   final String assetId;
   final String? chainId;
@@ -270,10 +273,9 @@ class AddressAddWidget extends HookWidget {
 
 class _SaveButton extends StatelessWidget {
   const _SaveButton({
-    Key? key,
     required this.onTap,
     required this.enable,
-  }) : super(key: key);
+  });
 
   final VoidCallback onTap;
 

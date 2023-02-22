@@ -11,13 +11,13 @@ Color _getAvatarColorById(String userId) {
 
 class Avatar extends StatelessWidget {
   const Avatar({
-    Key? key,
-    this.size = 32.0,
-    this.borderWidth = 2.0,
     required this.avatarUrl,
     required this.userId,
     required this.name,
-  }) : super(key: key);
+    super.key,
+    this.size = 32.0,
+    this.borderWidth = 2.0,
+  });
 
   final double? size;
   final double borderWidth;
@@ -62,10 +62,9 @@ class Avatar extends StatelessWidget {
 
 class _AvatarPlaceholder extends HookWidget {
   const _AvatarPlaceholder({
-    Key? key,
     required this.userId,
     required this.name,
-  }) : super(key: key);
+  });
 
   final String userId;
   final String name;

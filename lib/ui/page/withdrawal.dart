@@ -21,7 +21,7 @@ import '../widget/mixin_appbar.dart';
 import '../widget/transfer.dart';
 
 class Withdrawal extends HookWidget {
-  const Withdrawal({Key? key}) : super(key: key);
+  const Withdrawal({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +48,8 @@ class Withdrawal extends HookWidget {
 
 class _WithdrawalPage extends HookWidget {
   const _WithdrawalPage({
-    Key? key,
     required this.asset,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
 
@@ -263,11 +262,10 @@ class _WithdrawalPage extends HookWidget {
 
 class _FeeText extends StatelessWidget {
   const _FeeText({
-    Key? key,
     required this.address,
     required this.asset,
     required this.feeAsset,
-  }) : super(key: key);
+  });
 
   final Addresse address;
   final AssetResult asset;
@@ -324,11 +322,10 @@ class _FeeText extends StatelessWidget {
 
 class _TransferTarget extends StatelessWidget {
   const _TransferTarget({
-    Key? key,
     required this.user,
     required this.address,
     required this.asset,
-  }) : super(key: key);
+  });
 
   final ValueNotifier<User?> user;
   final ValueNotifier<Addresse?> address;

@@ -18,7 +18,7 @@ import '../widget/mixin_bottom_sheet.dart';
 import '../widget/toast.dart';
 
 class CollectibleDetail extends HookWidget {
-  const CollectibleDetail({Key? key}) : super(key: key);
+  const CollectibleDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +68,9 @@ class CollectibleDetail extends HookWidget {
 
 class _CollectibleDetailScaffold extends StatelessWidget {
   const _CollectibleDetailScaffold({
-    Key? key,
     required this.item,
     required this.child,
-  }) : super(key: key);
+  });
 
   final CollectibleItem? item;
 
@@ -99,9 +98,8 @@ class _CollectibleDetailScaffold extends StatelessWidget {
 
 class _Body extends StatelessWidget {
   const _Body({
-    Key? key,
     required this.item,
-  }) : super(key: key);
+  });
 
   final CollectibleItem item;
 
@@ -165,9 +163,8 @@ class _Body extends StatelessWidget {
 
 class _SendButton extends HookWidget {
   const _SendButton({
-    Key? key,
     required this.item,
-  }) : super(key: key);
+  });
 
   final CollectibleItem item;
 

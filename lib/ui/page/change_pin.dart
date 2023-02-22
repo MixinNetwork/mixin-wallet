@@ -14,7 +14,7 @@ import '../widget/text.dart';
 import '../widget/toast.dart';
 
 class ChangePin extends HookWidget {
-  const ChangePin({Key? key}) : super(key: key);
+  const ChangePin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -102,9 +102,8 @@ enum _ChangePinStep {
 
 class _PinInputLayout extends HookWidget {
   const _PinInputLayout({
-    Key? key,
     required this.step,
-  }) : super(key: key);
+  });
   final ValueNotifier<_ChangePinStep> step;
 
   @override
@@ -300,7 +299,7 @@ class _PinInputLayout extends HookWidget {
 }
 
 class _StepCircle extends HookWidget {
-  const _StepCircle({Key? key, required this.step}) : super(key: key);
+  const _StepCircle({required this.step});
 
   final int step;
 

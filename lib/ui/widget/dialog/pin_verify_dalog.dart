@@ -31,7 +31,7 @@ Future<String?> showPinVerifyDialog(BuildContext context) =>
     );
 
 class _PinVerifyDialog extends HookWidget {
-  const _PinVerifyDialog({Key? key}) : super(key: key);
+  const _PinVerifyDialog();
 
   @override
   Widget build(BuildContext context) {

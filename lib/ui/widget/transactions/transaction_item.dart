@@ -20,10 +20,10 @@ const kTransactionItemHeight = 72.0;
 
 class TransactionItem extends HookWidget {
   const TransactionItem({
-    Key? key,
     required this.item,
+    super.key,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final SnapshotItem item;
 
@@ -124,10 +124,10 @@ class TransactionItem extends HookWidget {
 
 class TransactionTypeWidget extends StatelessWidget {
   const TransactionTypeWidget({
-    Key? key,
     required this.item,
+    super.key,
     this.selectable = false,
-  }) : super(key: key);
+  });
 
   final SnapshotItem item;
 
@@ -171,7 +171,7 @@ class TransactionTypeWidget extends StatelessWidget {
 }
 
 class _TransactionIcon extends StatelessWidget {
-  const _TransactionIcon({Key? key, required this.item}) : super(key: key);
+  const _TransactionIcon({required this.item});
 
   final SnapshotItem item;
 

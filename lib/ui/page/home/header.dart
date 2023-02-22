@@ -14,10 +14,10 @@ import '../../widget/chart_assets.dart';
 
 class Header extends HookWidget {
   const Header({
-    Key? key,
     required this.data,
+    super.key,
     this.bitcoin,
-  }) : super(key: key);
+  });
 
   final List<AssetResult> data;
   final AssetResult? bitcoin;
@@ -102,7 +102,7 @@ class Header extends HookWidget {
 }
 
 class _ButtonBar extends StatelessWidget {
-  const _ButtonBar({Key? key}) : super(key: key);
+  const _ButtonBar();
 
   @override
   Widget build(BuildContext context) => Padding(

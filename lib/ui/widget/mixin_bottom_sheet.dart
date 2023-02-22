@@ -29,11 +29,11 @@ Future<T?> showMixinBottomSheet<T>({
 
 class MixinBottomSheetTitle extends StatelessWidget {
   const MixinBottomSheetTitle({
-    Key? key,
     required this.title,
+    super.key,
     this.action = const BottomSheetCloseButton(),
     this.padding = const EdgeInsets.only(left: 20, right: 12),
-  }) : super(key: key);
+  });
 
   final Widget title;
   final Widget action;
@@ -65,9 +65,9 @@ class MixinBottomSheetTitle extends StatelessWidget {
 
 class BottomSheetCloseButton extends StatelessWidget {
   const BottomSheetCloseButton({
-    Key? key,
+    super.key,
     this.enable = true,
-  }) : super(key: key);
+  });
 
   final bool enable;
 

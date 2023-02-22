@@ -7,13 +7,13 @@ import 'search_text_field_widget.dart';
 
 class SearchHeaderWidget extends HookWidget {
   const SearchHeaderWidget({
-    Key? key,
+    super.key,
     this.hintText,
     this.controller,
     this.onChanged,
     this.cancelVisible = true,
     this.onCancelPressed,
-  }) : super(key: key);
+  });
 
   final String? hintText;
   final TextEditingController? controller;

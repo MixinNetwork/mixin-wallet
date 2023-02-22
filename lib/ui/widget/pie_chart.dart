@@ -20,11 +20,11 @@ abstract class PieChartItem extends Equatable {
 
 class PieChart extends StatelessWidget {
   const PieChart({
-    Key? key,
     required this.items,
+    super.key,
     this.dividerColor,
     this.centerCircleColor,
-  }) : super(key: key);
+  });
 
   final List<PieChartItem> items;
 
@@ -47,11 +47,10 @@ class PieChart extends StatelessWidget {
 
 class _RawPieChart extends LeafRenderObjectWidget {
   const _RawPieChart({
-    Key? key,
     required this.items,
     required this.dividerColor,
     required this.centerCircleColor,
-  }) : super(key: key);
+  });
 
   final List<PieChartItem> items;
 

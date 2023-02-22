@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class MixinElevatedButton extends StatelessWidget {
   const MixinElevatedButton({
-    Key? key,
     required this.onTap,
     required this.child,
+    super.key,
     this.primary,
     this.padding = EdgeInsets.zero,
     this.alignment = Alignment.center,
@@ -12,7 +12,7 @@ class MixinElevatedButton extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(12)),
     ),
     this.fixedSize,
-  }) : super(key: key);
+  });
 
   final VoidCallback? onTap;
   final Widget? child;

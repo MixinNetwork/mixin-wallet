@@ -33,10 +33,9 @@ Future<bool?> showTransactionSubmitBottomSheet(
 
 class _TransactionSubmitBottomSheet extends StatelessWidget {
   const _TransactionSubmitBottomSheet({
-    Key? key,
     required this.request,
     required this.utxo,
-  }) : super(key: key);
+  });
 
   final sdk.CollectibleRequest request;
   final CollectibleOutputData utxo;
@@ -113,10 +112,9 @@ class _TransactionSubmitBottomSheet extends StatelessWidget {
 
 class _CollectibleInfoTile extends StatelessWidget {
   const _CollectibleInfoTile({
-    Key? key,
     required this.title,
     required this.content,
-  }) : super(key: key);
+  });
 
   final Widget title;
   final Widget content;
@@ -129,7 +127,7 @@ class _CollectibleInfoTile extends StatelessWidget {
 }
 
 class _UserAvatarRow extends HookWidget {
-  const _UserAvatarRow({Key? key, required this.userIds}) : super(key: key);
+  const _UserAvatarRow({required this.userIds});
 
   final List<String> userIds;
 

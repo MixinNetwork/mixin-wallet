@@ -33,7 +33,7 @@ import '../widget/tip_tile.dart';
 import '../widget/toast.dart';
 
 class Swap extends HookWidget {
-  const Swap({Key? key}) : super(key: key);
+  const Swap({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -104,12 +104,11 @@ class Swap extends HookWidget {
 
 class _Body extends HookWidget {
   const _Body({
-    Key? key,
     required this.swapClient,
     required this.supportedAssets,
     this.initialSource,
     this.initialDest,
-  }) : super(key: key);
+  });
 
   final Client swapClient;
   final List<AssetResult> supportedAssets;
@@ -376,7 +375,6 @@ class _Body extends HookWidget {
 
 class _AssetItem extends HookWidget {
   const _AssetItem({
-    Key? key,
     required this.asset,
     required this.textController,
     required this.supportedAssets,
@@ -384,7 +382,7 @@ class _AssetItem extends HookWidget {
     required this.onSelected,
     this.showLoading = false,
     this.focusNode,
-  }) : super(key: key);
+  });
 
   final ValueNotifier<AssetResult> asset;
   final TextEditingController textController;
@@ -474,10 +472,9 @@ class _AssetItem extends HookWidget {
 
 class _SourceAmountArea extends StatelessWidget {
   const _SourceAmountArea({
-    Key? key,
     required this.amountTextField,
     required this.asset,
-  }) : super(key: key);
+  });
 
   final ValueNotifier<AssetResult> asset;
   final Widget amountTextField;
@@ -492,10 +489,9 @@ class _SourceAmountArea extends StatelessWidget {
 
 class _DestAmountArea extends StatelessWidget {
   const _DestAmountArea({
-    Key? key,
     required this.showLoading,
     required this.amountTextField,
-  }) : super(key: key);
+  });
 
   final bool showLoading;
   final Widget amountTextField;
@@ -518,11 +514,10 @@ class _DestAmountArea extends StatelessWidget {
 
 class _AmountTextField extends StatelessWidget {
   const _AmountTextField({
-    Key? key,
     required this.controller,
     required this.readOnly,
     this.focusNode,
-  }) : super(key: key);
+  });
 
   final FocusNode? focusNode;
   final TextEditingController controller;
@@ -558,10 +553,9 @@ class _AmountTextField extends StatelessWidget {
 
 class _SwapButton extends StatelessWidget {
   const _SwapButton({
-    Key? key,
     required this.onTap,
     required this.enable,
-  }) : super(key: key);
+  });
 
   final VoidCallback onTap;
   final bool enable;

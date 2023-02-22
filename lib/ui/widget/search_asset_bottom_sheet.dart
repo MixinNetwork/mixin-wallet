@@ -21,7 +21,7 @@ import 'symbol.dart';
 import 'text.dart';
 
 class SearchAssetBottomSheet extends HookWidget {
-  const SearchAssetBottomSheet({Key? key}) : super(key: key);
+  const SearchAssetBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +62,7 @@ class SearchAssetBottomSheet extends HookWidget {
 }
 
 class _EmptyKeywordAssetList extends HookWidget {
-  const _EmptyKeywordAssetList({
-    Key? key,
-  }) : super(key: key);
+  const _EmptyKeywordAssetList();
 
   @override
   Widget build(BuildContext context) {
@@ -127,10 +125,7 @@ class _EmptyKeywordAssetList extends HookWidget {
 }
 
 class _SubTitle extends StatelessWidget {
-  const _SubTitle(
-    this.title, {
-    Key? key,
-  }) : super(key: key);
+  const _SubTitle(this.title);
 
   final String title;
 
@@ -148,9 +143,8 @@ class _SubTitle extends StatelessWidget {
 
 class _SearchAssetList extends HookWidget {
   const _SearchAssetList({
-    Key? key,
     required this.keywordStream,
-  }) : super(key: key);
+  });
 
   final Stream<String> keywordStream;
 
@@ -226,10 +220,9 @@ class _SearchAssetList extends HookWidget {
 
 class _Item extends StatelessWidget {
   const _Item({
-    Key? key,
     required this.data,
     this.replaceHistory = false,
-  }) : super(key: key);
+  });
 
   final AssetResult data;
   final bool replaceHistory;
@@ -308,7 +301,7 @@ class _Item extends StatelessWidget {
 }
 
 class _SearchEmptyLayout extends StatelessWidget {
-  const _SearchEmptyLayout({Key? key}) : super(key: key);
+  const _SearchEmptyLayout();
 
   @override
   Widget build(BuildContext context) => Column(
@@ -339,7 +332,7 @@ class _SearchEmptyLayout extends StatelessWidget {
 }
 
 class _SearchLoadingLayout extends StatelessWidget {
-  const _SearchLoadingLayout({Key? key}) : super(key: key);
+  const _SearchLoadingLayout();
 
   @override
   Widget build(BuildContext context) => Column(

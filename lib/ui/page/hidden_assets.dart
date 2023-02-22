@@ -10,7 +10,7 @@ import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 
 class HiddenAssets extends StatelessWidget {
-  const HiddenAssets({Key? key}) : super(key: key);
+  const HiddenAssets({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -32,7 +32,7 @@ class HiddenAssets extends StatelessWidget {
 }
 
 class _HiddenAssetsList extends HookWidget {
-  const _HiddenAssetsList({Key? key}) : super(key: key);
+  const _HiddenAssetsList();
 
   @override
   Widget build(BuildContext context) {

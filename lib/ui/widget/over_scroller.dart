@@ -3,10 +3,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ColoredOverScrollTopWidget extends StatelessWidget {
   const ColoredOverScrollTopWidget({
-    Key? key,
     required this.child,
     required this.background,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
   final Color background;
@@ -26,10 +26,9 @@ class ColoredOverScrollTopWidget extends StatelessWidget {
 
 class _ColoredBackground extends HookWidget {
   const _ColoredBackground({
-    Key? key,
     required this.child,
     required this.background,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final Color background;

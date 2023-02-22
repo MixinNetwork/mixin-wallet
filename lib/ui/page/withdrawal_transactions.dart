@@ -12,7 +12,7 @@ import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
 
 class WithdrawalTransactions extends HookWidget {
-  const WithdrawalTransactions({Key? key}) : super(key: key);
+  const WithdrawalTransactions({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +76,11 @@ class WithdrawalTransactions extends HookWidget {
 
 class _AddressTransactionsBody extends HookWidget {
   const _AddressTransactionsBody({
-    Key? key,
     required this.assetId,
     required this.destination,
     required this.tag,
     required this.pageSize,
-  }) : super(key: key);
+  });
 
   final String assetId;
   final String? destination;
@@ -176,11 +175,10 @@ class _AddressTransactionsBody extends HookWidget {
 
 class _UserTransactionsBody extends StatelessWidget {
   const _UserTransactionsBody({
-    Key? key,
     required this.assetId,
     required this.opponent,
     required this.sort,
-  }) : super(key: key);
+  });
 
   final String assetId;
 

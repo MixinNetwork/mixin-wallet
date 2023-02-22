@@ -30,10 +30,9 @@ Future<dynamic> showTransferDestinationSelectorDialog({
 
 class _TransferDestinationSelectorDialog extends StatelessWidget {
   const _TransferDestinationSelectorDialog({
-    Key? key,
     required this.asset,
     required this.initialSelected,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
   final dynamic initialSelected;
@@ -98,9 +97,7 @@ class _TransferDestinationSelectorDialog extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({
-    Key? key,
-  }) : super(key: key);
+  const _Header();
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -144,7 +141,7 @@ class _Header extends StatelessWidget {
 }
 
 class _Tab extends StatelessWidget {
-  const _Tab({Key? key, required this.text}) : super(key: key);
+  const _Tab({required this.text});
 
   final String text;
 

@@ -12,7 +12,7 @@ import '../widget/pin.dart';
 import '../widget/toast.dart';
 
 class CreatePinPage extends HookWidget {
-  const CreatePinPage({Key? key}) : super(key: key);
+  const CreatePinPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +66,8 @@ class CreatePinPage extends HookWidget {
 
 class _PinCreateConfirmButton extends HookWidget {
   const _PinCreateConfirmButton({
-    Key? key,
     required this.controller,
-  }) : super(key: key);
+  });
 
   final PinInputController controller;
 

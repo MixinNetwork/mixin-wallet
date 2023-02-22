@@ -13,8 +13,10 @@ import 'extension/extension.dart';
 import 'web/telegram_web_app.dart';
 
 class NativeScrollBuilder extends HookWidget {
-  const NativeScrollBuilder({Key? key, required this.builder})
-      : super(key: key);
+  const NativeScrollBuilder({
+    required this.builder,
+    super.key,
+  });
 
   final Widget Function(BuildContext context, ScrollController controller)
       builder;
@@ -35,9 +37,8 @@ class NativeScrollBuilder extends HookWidget {
 /// https://github.com/tomgilder/native_scroll/blob/main/lib/src/native_scroll_web.dart
 class _NativeScrollBuilder extends StatefulWidget {
   const _NativeScrollBuilder({
-    Key? key,
     required this.builder,
-  }) : super(key: key);
+  });
 
   final Widget Function(BuildContext context, ScrollController controller)
       builder;

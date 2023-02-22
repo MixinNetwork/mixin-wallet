@@ -15,7 +15,7 @@ import '../widget/transaction_info_tile.dart';
 import '../widget/transactions/transaction_item.dart';
 
 class SnapshotDetail extends StatelessWidget {
-  const SnapshotDetail({Key? key}) : super(key: key);
+  const SnapshotDetail({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -38,7 +38,7 @@ class SnapshotDetail extends StatelessWidget {
 }
 
 class _SnapshotDetailPageBody extends HookWidget {
-  const _SnapshotDetailPageBody(this.snapshotId, {Key? key}) : super(key: key);
+  const _SnapshotDetailPageBody(this.snapshotId);
 
   final String snapshotId;
 
@@ -95,10 +95,9 @@ class _SnapshotDetailPageBody extends HookWidget {
 
 class _SnapshotDetailHeader extends HookWidget {
   const _SnapshotDetailHeader({
-    Key? key,
     required this.snapshot,
     required this.asset,
-  }) : super(key: key);
+  });
 
   final SnapshotItem snapshot;
 
@@ -153,10 +152,9 @@ class _SnapshotDetailHeader extends HookWidget {
 
 class _ValuesDescription extends HookWidget {
   const _ValuesDescription({
-    Key? key,
     required this.asset,
     required this.snapshot,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
   final SnapshotItem snapshot;
@@ -224,10 +222,9 @@ class _ValuesDescription extends HookWidget {
 
 class _TransactionDetailInfo extends StatelessWidget {
   const _TransactionDetailInfo({
-    Key? key,
     required this.snapshot,
     required this.asset,
-  }) : super(key: key);
+  });
 
   final SnapshotItem snapshot;
 
@@ -300,9 +297,8 @@ class _TransactionDetailInfo extends StatelessWidget {
 
 class _From extends StatelessWidget {
   const _From({
-    Key? key,
     required this.snapshot,
-  }) : super(key: key);
+  });
 
   final SnapshotItem snapshot;
 
@@ -338,10 +334,9 @@ class _From extends StatelessWidget {
 
 class _To extends StatelessWidget {
   const _To({
-    Key? key,
     required this.snapshot,
     required this.asset,
-  }) : super(key: key);
+  });
 
   final SnapshotItem snapshot;
 

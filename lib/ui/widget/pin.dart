@@ -83,7 +83,10 @@ class PinInputController extends ValueNotifier<String> {
 }
 
 class PinField extends HookWidget {
-  const PinField({Key? key, required this.controller}) : super(key: key);
+  const PinField({
+    required this.controller,
+    super.key,
+  });
 
   final PinInputController controller;
 
@@ -124,9 +127,9 @@ class PinField extends HookWidget {
 
 class PinInputNumPad extends HookWidget {
   const PinInputNumPad({
-    Key? key,
     required this.controller,
-  }) : super(key: key);
+    super.key,
+  });
 
   final PinInputController controller;
 
@@ -180,7 +183,8 @@ class PinInputNumPad extends HookWidget {
 }
 
 class _DeleteButton extends StatelessWidget {
-  const _DeleteButton({Key? key, required this.controller}) : super(key: key);
+  const _DeleteButton({required this.controller});
+
   final PinInputController controller;
 
   @override
@@ -199,11 +203,10 @@ class _DeleteButton extends StatelessWidget {
 
 class _ButtonWrapper extends HookWidget {
   const _ButtonWrapper({
-    Key? key,
     required this.child,
     required this.onTap,
     this.background,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final VoidCallback onTap;
@@ -240,10 +243,9 @@ class _ButtonWrapper extends HookWidget {
 
 class _NumPadButton extends StatelessWidget {
   const _NumPadButton({
-    Key? key,
     required this.value,
     required this.controller,
-  }) : super(key: key);
+  });
 
   final int value;
   final PinInputController controller;
@@ -278,14 +280,14 @@ typedef PinVerification = Future<void> Function(
 
 class PinVerifyDialogScaffold extends HookWidget {
   const PinVerifyDialogScaffold({
-    Key? key,
     required this.header,
     required this.tip,
     required this.onVerified,
     required this.onErrorConfirmed,
+    super.key,
     this.title,
     this.verification,
-  }) : super(key: key);
+  });
 
   final Widget? title;
 

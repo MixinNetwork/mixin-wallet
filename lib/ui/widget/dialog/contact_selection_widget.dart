@@ -14,9 +14,9 @@ import '../search_header_widget.dart';
 
 class ContactSelectionBottomSheet extends HookWidget {
   const ContactSelectionBottomSheet({
-    Key? key,
     required this.selectedUser,
-  }) : super(key: key);
+    super.key,
+  });
 
   final User? selectedUser;
 
@@ -81,10 +81,9 @@ class ContactSelectionBottomSheet extends HookWidget {
 
 class _UserItem extends StatelessWidget {
   const _UserItem({
-    Key? key,
     required this.selectedUserId,
     required this.user,
-  }) : super(key: key);
+  });
 
   final String? selectedUserId;
   final User user;
@@ -106,13 +105,12 @@ class _UserItem extends StatelessWidget {
 
 class _ContactSelectionItemTile extends StatelessWidget {
   const _ContactSelectionItemTile({
-    Key? key,
     required this.leading,
     required this.onTap,
     required this.title,
     required this.subtitle,
     required this.selected,
-  }) : super(key: key);
+  });
 
   final Widget? leading;
   final VoidCallback onTap;
@@ -184,7 +182,7 @@ class _ContactSelectionItemTile extends StatelessWidget {
 }
 
 class _UnauthorizedWidget extends StatelessWidget {
-  const _UnauthorizedWidget({Key? key}) : super(key: key);
+  const _UnauthorizedWidget();
 
   @override
   Widget build(BuildContext context) => Column(

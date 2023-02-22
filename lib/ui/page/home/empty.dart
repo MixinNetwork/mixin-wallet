@@ -6,9 +6,9 @@ import '../../../util/extension/extension.dart';
 
 class EmptyLayout extends StatelessWidget {
   const EmptyLayout({
-    Key? key,
     required this.content,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String content;
 

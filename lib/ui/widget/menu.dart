@@ -4,15 +4,15 @@ import 'brightness_observer.dart';
 
 class MenuItemWidget extends StatelessWidget {
   const MenuItemWidget({
-    Key? key,
     required this.title,
+    super.key,
     this.leading,
     this.topRounded = false,
     this.bottomRounded = false,
     this.trailing,
     this.onTap,
     this.subtitle,
-  }) : super(key: key);
+  });
 
   final Widget title;
   final Widget? leading;

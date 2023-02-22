@@ -140,7 +140,6 @@ Future<bool> _showTransferBottomSheet(BuildContext context, Widget body) =>
 
 class _TransferVerifyBottomSheetBody extends StatelessWidget {
   const _TransferVerifyBottomSheetBody({
-    Key? key,
     required this.amount,
     required this.asset,
     required this.verification,
@@ -148,7 +147,7 @@ class _TransferVerifyBottomSheetBody extends StatelessWidget {
     required this.displayAddress,
     this.addressLabel,
     this.showWithdrawalWithPinTip = true,
-  }) : super(key: key);
+  });
 
   final String amount;
   final AssetResult asset;
@@ -237,11 +236,10 @@ class _TransferVerifyBottomSheetBody extends StatelessWidget {
 
 class _FeeText extends StatelessWidget {
   const _FeeText({
-    Key? key,
     required this.address,
     required this.asset,
     required this.feeAsset,
-  }) : super(key: key);
+  });
 
   final Addresse address;
   final AssetResult asset;

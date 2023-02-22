@@ -10,7 +10,7 @@ import '../../router/mixin_routes.dart';
 import 'empty.dart';
 
 class CollectiblesGroupSliverGrid extends HookWidget {
-  const CollectiblesGroupSliverGrid({Key? key}) : super(key: key);
+  const CollectiblesGroupSliverGrid({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +79,8 @@ class CollectiblesGroupSliverGrid extends HookWidget {
 
 class _CollectiblesGroupTile extends StatelessWidget {
   const _CollectiblesGroupTile({
-    Key? key,
     required this.items,
-  }) : super(key: key);
+  });
 
   final List<CollectibleItem> items;
 
@@ -162,7 +161,7 @@ class _CollectiblesGroupTile extends StatelessWidget {
 }
 
 class _GroupCover extends StatelessWidget {
-  const _GroupCover({Key? key, required this.items}) : super(key: key);
+  const _GroupCover({required this.items});
 
   final List<CollectibleItem> items;
 
@@ -242,9 +241,8 @@ class _GroupCover extends StatelessWidget {
 
 class _CollectibleItemImage extends StatelessWidget {
   const _CollectibleItemImage({
-    Key? key,
     required this.item,
-  }) : super(key: key);
+  });
 
   final CollectibleItem item;
 
@@ -257,7 +255,7 @@ class _CollectibleItemImage extends StatelessWidget {
 }
 
 class _UnauthorizedWidget extends StatelessWidget {
-  const _UnauthorizedWidget({Key? key}) : super(key: key);
+  const _UnauthorizedWidget();
 
   @override
   Widget build(BuildContext context) => Column(

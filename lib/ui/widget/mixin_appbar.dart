@@ -6,7 +6,7 @@ import 'buttons.dart';
 
 class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
   const MixinAppBar({
-    Key? key,
+    super.key,
     this.leading,
     this.title,
     this.backgroundColor,
@@ -14,7 +14,7 @@ class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
     this.actions,
     this.bottom,
     this.centerTitle = false,
-  }) : super(key: key);
+  });
 
   final Widget? leading;
 

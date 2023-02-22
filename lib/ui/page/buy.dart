@@ -24,7 +24,7 @@ import '../widget/mixin_bottom_sheet.dart';
 import '../widget/number_input_pad.dart';
 
 class Buy extends HookWidget {
-  const Buy({Key? key}) : super(key: key);
+  const Buy({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +62,10 @@ class Buy extends HookWidget {
 }
 
 class _BuyScaffold extends StatelessWidget {
-  const _BuyScaffold({Key? key, this.asset, required this.child})
-      : super(key: key);
+  const _BuyScaffold({
+    required this.child,
+    this.asset,
+  });
 
   final AssetResult? asset;
 
@@ -92,9 +94,8 @@ class _BuyScaffold extends StatelessWidget {
 
 class _Body extends HookWidget {
   const _Body({
-    Key? key,
     required this.asset,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
 
@@ -230,10 +231,9 @@ Future<WyreFiat?> showFiatListBottomSheet({
 
 class _FiatIcon extends StatelessWidget {
   const _FiatIcon({
-    Key? key,
     required this.fiat,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final WyreFiat fiat;
 
@@ -287,12 +287,11 @@ class _FiatIcon extends StatelessWidget {
 
 class _InputPreview extends HookWidget {
   const _InputPreview({
-    Key? key,
     required this.text,
     required this.fiat,
     required this.asset,
     required this.quote,
-  }) : super(key: key);
+  });
 
   final String text;
 
@@ -375,11 +374,10 @@ class _InputPreview extends HookWidget {
 
 class _BuyDescription extends HookWidget {
   const _BuyDescription({
-    Key? key,
     required this.quote,
     required this.fiat,
     required this.asset,
-  }) : super(key: key);
+  });
 
   final WyreQuote? quote;
   final WyreFiat fiat;
@@ -436,10 +434,9 @@ class _BuyDescription extends HookWidget {
 
 class _PayButton extends StatelessWidget {
   const _PayButton({
-    Key? key,
     required this.onTap,
     required this.enable,
-  }) : super(key: key);
+  });
 
   final VoidCallback onTap;
   final bool enable;
@@ -478,7 +475,7 @@ class _PayButton extends StatelessWidget {
 }
 
 class _LoadingLayout extends StatelessWidget {
-  const _LoadingLayout({Key? key}) : super(key: key);
+  const _LoadingLayout();
 
   @override
   Widget build(BuildContext context) => Center(

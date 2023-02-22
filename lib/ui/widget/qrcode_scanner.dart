@@ -45,9 +45,7 @@ Future<String?> scanTextFromQrcode({
 }
 
 class _NoCameraTips extends StatelessWidget {
-  const _NoCameraTips({
-    Key? key,
-  }) : super(key: key);
+  const _NoCameraTips();
 
   @override
   Widget build(BuildContext context) => Center(
@@ -111,7 +109,7 @@ class _NoCameraTips extends StatelessWidget {
 }
 
 class _QrcodeScannerDialog extends HookWidget {
-  const _QrcodeScannerDialog({Key? key}) : super(key: key);
+  const _QrcodeScannerDialog();
 
   @override
   Widget build(BuildContext context) {

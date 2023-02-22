@@ -30,11 +30,11 @@ typedef TransactionLayoutBuilder = Widget Function(
 
 class TransactionListBuilder extends StatelessWidget {
   const TransactionListBuilder({
-    Key? key,
     required this.loadMoreItemDb,
     required this.refreshSnapshots,
     required this.builder,
-  }) : super(key: key);
+    super.key,
+  });
 
   final LoadMoreTransactionCallback loadMoreItemDb;
   final RefreshTransactionCallback refreshSnapshots;
@@ -57,12 +57,11 @@ class TransactionListBuilder extends StatelessWidget {
 
 class _TransactionList extends HookWidget {
   const _TransactionList({
-    Key? key,
     required this.loadMoreItemDb,
     required this.refreshSnapshots,
     required this.pageSize,
     required this.builder,
-  }) : super(key: key);
+  });
 
   final LoadMoreTransactionCallback loadMoreItemDb;
   final RefreshTransactionCallback refreshSnapshots;
@@ -113,7 +112,7 @@ class _TransactionList extends HookWidget {
 }
 
 class EmptyTransaction extends StatelessWidget {
-  const EmptyTransaction({Key? key}) : super(key: key);
+  const EmptyTransaction({super.key});
 
   @override
   Widget build(BuildContext context) => Column(

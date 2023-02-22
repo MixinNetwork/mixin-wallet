@@ -53,7 +53,7 @@ Future<void> main() async {
 }
 
 class MyApp extends HookWidget {
-  MyApp({Key? key}) : super(key: key);
+  MyApp({super.key});
 
   final vRouterStateKey = GlobalKey<VRouterState>();
 
@@ -78,8 +78,7 @@ class MyApp extends HookWidget {
 class _Router extends StatelessWidget {
   const _Router({
     required this.vRouterStateKey,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final GlobalKey<VRouterState> vRouterStateKey;
 
