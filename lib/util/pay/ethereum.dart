@@ -17,7 +17,8 @@ class EthereumURI {
 }
 
 const _ethereumChainIdMap = {
-  1: ethereum,
+  1: ChainId.ethereum,
+  137: ChainId.polygon,
 };
 
 extension StringExt on String {
