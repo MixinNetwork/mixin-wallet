@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MixinErrorWidget extends StatelessWidget {
-  const MixinErrorWidget({Key? key, required this.details}) : super(key: key);
+  const MixinErrorWidget({
+    required this.details,
+    super.key,
+  });
 
   static Widget defaultErrorWidgetBuilder(FlutterErrorDetails details) =>
       MixinErrorWidget(details: details);

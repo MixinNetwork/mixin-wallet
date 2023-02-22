@@ -48,9 +48,9 @@ const currencyItems = [
 
 class CurrencyBottomSheetDialog extends StatelessWidget {
   const CurrencyBottomSheetDialog({
-    Key? key,
+    super.key,
     this.selectedCurrency,
-  }) : super(key: key);
+  });
 
   final String? selectedCurrency;
 

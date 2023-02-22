@@ -65,8 +65,10 @@ class NumberInputController extends ValueNotifier<String> {
 }
 
 class NumberInputWidget extends StatelessWidget {
-  const NumberInputWidget({Key? key, required this.controller})
-      : super(key: key);
+  const NumberInputWidget({
+    required this.controller,
+    super.key,
+  });
 
   final NumberInputController controller;
 
@@ -80,11 +82,10 @@ class NumberInputWidget extends StatelessWidget {
 
 class _NumberInputPad extends StatelessWidget {
   const _NumberInputPad({
-    Key? key,
     required this.onNumberInput,
     required this.onDelete,
     required this.onDotInput,
-  }) : super(key: key);
+  });
 
   final InputCallback<int> onNumberInput;
   final VoidCallback onDelete;
@@ -127,9 +128,8 @@ class _NumberInputPad extends StatelessWidget {
 
 class _Row extends StatelessWidget {
   const _Row({
-    Key? key,
     required this.children,
-  }) : super(key: key);
+  });
 
   final List<Widget> children;
 
@@ -142,10 +142,9 @@ class _Row extends StatelessWidget {
 
 class _NumberKeyboardTile extends StatelessWidget {
   const _NumberKeyboardTile({
-    Key? key,
     required this.num,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final int num;
 
@@ -158,10 +157,9 @@ class _NumberKeyboardTile extends StatelessWidget {
 
 class _KeyboardTile extends StatelessWidget {
   const _KeyboardTile({
-    Key? key,
     required this.content,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   factory _KeyboardTile.char({
     required String char,

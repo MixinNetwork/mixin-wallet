@@ -13,8 +13,8 @@ class MixinBottomSheetPage extends Page<void> {
     this.isScrollControlled = false,
     this.isDismissible = true,
     this.enableDrag = true,
-    LocalKey? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
   final bool isScrollControlled;
@@ -221,8 +221,9 @@ class _ModalBottomSheetState<T> extends State<_ModalBottomSheet<T>> {
 
 class ModalBottomSheetRoute<T> extends PopupRoute<T> {
   ModalBottomSheetRoute({
-    this.builder,
     required this.capturedThemes,
+    required this.isScrollControlled,
+    this.builder,
     this.barrierLabel,
     this.backgroundColor,
     this.elevation,
@@ -232,11 +233,10 @@ class ModalBottomSheetRoute<T> extends PopupRoute<T> {
     this.modalBarrierColor,
     this.isDismissible = true,
     this.enableDrag = true,
-    required this.isScrollControlled,
     this.transitionAnimationController,
     this.anchorPoint,
-    RouteSettings? settings,
-  }) : super(settings: settings);
+    super.settings,
+  });
 
   final WidgetBuilder? builder;
   final CapturedThemes capturedThemes;

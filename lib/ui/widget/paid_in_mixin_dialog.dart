@@ -5,12 +5,12 @@ import 'brightness_observer.dart';
 
 class PaidInMixinDialog extends StatelessWidget {
   const PaidInMixinDialog({
-    Key? key,
     required this.onPaid,
+    super.key,
     this.title,
     this.positiveText,
     this.negativeText,
-  }) : super(key: key);
+  });
 
   final VoidCallback onPaid;
   final String? title;
@@ -60,11 +60,10 @@ class PaidInMixinDialog extends StatelessWidget {
 
 class _Button extends StatelessWidget {
   const _Button({
-    Key? key,
     required this.text,
     required this.color,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final String text;
   final Color color;

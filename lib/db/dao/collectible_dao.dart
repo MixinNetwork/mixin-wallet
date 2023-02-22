@@ -14,7 +14,7 @@ part 'collectible_dao.g.dart';
 ])
 class CollectibleDao extends DatabaseAccessor<MixinDatabase>
     with _$CollectibleDaoMixin {
-  CollectibleDao(MixinDatabase attachedDatabase) : super(attachedDatabase);
+  CollectibleDao(super.attachedDatabase);
 
   Selectable<CollectibleItem> getAllCollectibles() => db.collectiblesResult(
         (token, meta, collection) => ignoreWhere,

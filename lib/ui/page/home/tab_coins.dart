@@ -19,9 +19,9 @@ enum AssetSortType {
 
 class CoinsSliverList extends StatelessWidget {
   const CoinsSliverList({
-    Key? key,
     required this.assetList,
-  }) : super(key: key);
+    super.key,
+  });
 
   final List<AssetResult> assetList;
 
@@ -62,9 +62,9 @@ class CoinsSliverList extends StatelessWidget {
 
 class AssetHeader extends StatelessWidget {
   const AssetHeader({
-    Key? key,
     required this.sortType,
-  }) : super(key: key);
+    super.key,
+  });
 
   final AssetSortType sortType;
 

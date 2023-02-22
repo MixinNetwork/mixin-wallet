@@ -7,13 +7,13 @@ import '../../util/web/web_utils.dart';
 class MixinText extends StatelessWidget {
   const MixinText(
     this.data, {
-    Key? key,
+    super.key,
     this.style,
     this.selectable = false,
     this.textAlign,
     this.overflow,
     this.maxLines,
-  }) : super(key: key);
+  });
 
   final String data;
   final TextStyle? style;

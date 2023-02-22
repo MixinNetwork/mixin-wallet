@@ -3,11 +3,11 @@ import 'brightness_observer.dart';
 
 class TransactionInfoTile extends StatelessWidget {
   const TransactionInfoTile({
-    Key? key,
-    required this.title,
     required this.subtitle,
+    required this.title,
+    super.key,
     this.subtitleColor,
-  }) : super(key: key);
+  });
 
   final Widget title;
   final Widget subtitle;

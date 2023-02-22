@@ -14,7 +14,7 @@ import '../widget/symbol.dart';
 import '../widget/transaction_info_tile.dart';
 
 class BuySuccess extends HookWidget {
-  const BuySuccess({Key? key}) : super(key: key);
+  const BuySuccess({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +65,9 @@ class BuySuccess extends HookWidget {
 
 class _Body extends StatelessWidget {
   const _Body({
-    Key? key,
     required this.asset,
     required this.fiat,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
   final WyreFiat fiat;
@@ -132,10 +131,9 @@ class _Body extends StatelessWidget {
 
 class _AssetLayout extends StatelessWidget {
   const _AssetLayout({
-    Key? key,
     required this.asset,
     required this.fiat,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
   final WyreFiat fiat;

@@ -46,7 +46,7 @@ extension _AllTransactionsFilter on BuildContext {
 }
 
 class AllTransactions extends HookWidget {
-  const AllTransactions({Key? key}) : super(key: key);
+  const AllTransactions({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -117,9 +117,8 @@ class AllTransactions extends HookWidget {
 
 class _AllTransactionsBody extends StatelessWidget {
   const _AllTransactionsBody({
-    Key? key,
     required this.filter,
-  }) : super(key: key);
+  });
 
   final TransactionFilter filter;
 
@@ -171,8 +170,9 @@ class _AllTransactionsBody extends StatelessWidget {
 }
 
 class _FilterDropdownMenus extends StatelessWidget {
-  const _FilterDropdownMenus({Key? key, required this.filter})
-      : super(key: key);
+  const _FilterDropdownMenus({
+    required this.filter,
+  });
 
   final TransactionFilter filter;
 
@@ -203,9 +203,8 @@ class _FilterDropdownMenus extends StatelessWidget {
 
 class _ClearConditionsButton extends StatelessWidget {
   const _ClearConditionsButton({
-    Key? key,
     required this.filter,
-  }) : super(key: key);
+  });
 
   final TransactionFilter filter;
 
@@ -230,9 +229,8 @@ class _ClearConditionsButton extends StatelessWidget {
 
 class _TransactionTypeFilterWidget extends StatelessWidget {
   const _TransactionTypeFilterWidget({
-    Key? key,
     required this.filter,
-  }) : super(key: key);
+  });
 
   final TransactionFilter filter;
 
@@ -388,9 +386,8 @@ class TransactionFilter extends Equatable {
 
 class _DateTimeFilterWidget extends StatelessWidget {
   const _DateTimeFilterWidget({
-    Key? key,
     required this.filter,
-  }) : super(key: key);
+  });
   final TransactionFilter filter;
 
   @override
@@ -513,9 +510,8 @@ class _DateTimeFilterWidget extends StatelessWidget {
 
 class _AssetsFilterWidget extends HookWidget {
   const _AssetsFilterWidget({
-    Key? key,
     required this.filter,
-  }) : super(key: key);
+  });
 
   final TransactionFilter filter;
 
@@ -602,9 +598,8 @@ class _AssetsFilterWidget extends HookWidget {
 
 class _AssetItemWidget extends StatelessWidget {
   const _AssetItemWidget({
-    Key? key,
     required this.asset,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
 
@@ -635,12 +630,12 @@ class _AssetItemWidget extends StatelessWidget {
 
 class _FilterPopupMenuWidget<T> extends HookWidget {
   const _FilterPopupMenuWidget({
-    Key? key,
-    required this.itemBuilder,
     required this.child,
+    required this.itemBuilder,
+    super.key,
     this.onCanceled,
     this.onSelected,
-  }) : super(key: key);
+  });
 
   final PopupMenuItemBuilder<T> itemBuilder;
 
@@ -698,7 +693,7 @@ class _FilterPopupMenuWidget<T> extends HookWidget {
 }
 
 class _ExportButton extends StatelessWidget {
-  const _ExportButton({Key? key, required this.filter}) : super(key: key);
+  const _ExportButton({required this.filter});
 
   final TransactionFilter filter;
 

@@ -4,13 +4,13 @@ import '../../util/extension/extension.dart';
 
 class TipTile extends StatelessWidget {
   const TipTile({
-    Key? key,
     required this.text,
+    super.key,
     this.highlight,
     this.highlightColor,
     this.foregroundColor,
     this.fontWeight,
-  }) : super(key: key);
+  });
 
   final String text;
   final String? highlight;
@@ -54,7 +54,10 @@ class TipTile extends StatelessWidget {
 }
 
 class TipListLayout extends StatelessWidget {
-  const TipListLayout({Key? key, required this.children}) : super(key: key);
+  const TipListLayout({
+    required this.children,
+    super.key,
+  });
 
   final List<TipTile> children;
 

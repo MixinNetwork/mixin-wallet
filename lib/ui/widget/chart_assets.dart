@@ -36,9 +36,9 @@ class _AssetChartItem extends PieChartItem {
 
 class AssetsAnalysisChartLayout extends HookWidget {
   const AssetsAnalysisChartLayout({
-    Key? key,
     required this.assets,
-  }) : super(key: key);
+    super.key,
+  });
 
   final List<AssetResult> assets;
 
@@ -93,7 +93,7 @@ class AssetsAnalysisChartLayout extends HookWidget {
 }
 
 class _PieChartLegend extends HookWidget {
-  const _PieChartLegend({Key? key, required this.chartItems}) : super(key: key);
+  const _PieChartLegend({required this.chartItems});
 
   final List<_AssetChartItem> chartItems;
 
@@ -193,10 +193,9 @@ class _PieChartLegend extends HookWidget {
 
 class _ChartDescriptionTile extends StatelessWidget {
   const _ChartDescriptionTile({
-    Key? key,
     required this.item,
     required this.percent,
-  }) : super(key: key);
+  });
 
   final _AssetChartItem item;
 

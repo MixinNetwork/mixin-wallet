@@ -95,14 +95,13 @@ Future<bool?> _showAddressPinBottomSheet(
 
 class _AddressPinBottomSheetContent extends HookWidget {
   const _AddressPinBottomSheetContent({
-    Key? key,
     required this.assetId,
     required this.type,
     required this.address,
     required this.label,
     required this.tag,
     required this.postVerification,
-  }) : super(key: key);
+  });
 
   final String assetId;
   final _AddressModifyType type;

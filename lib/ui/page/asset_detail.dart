@@ -24,7 +24,7 @@ const _kQueryParamSortBy = 'sort';
 const _kQueryParamFilterBy = 'filter';
 
 class AssetDetail extends HookWidget {
-  const AssetDetail({Key? key}) : super(key: key);
+  const AssetDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +42,8 @@ class AssetDetail extends HookWidget {
 
 class _AssetSymbolSearch extends HookWidget {
   const _AssetSymbolSearch({
-    Key? key,
     required this.symbol,
-  }) : super(key: key);
+  });
 
   final String symbol;
 
@@ -70,10 +69,9 @@ class _AssetSymbolSearch extends HookWidget {
 
 class _AssetDetailLoader extends HookWidget {
   const _AssetDetailLoader({
-    Key? key,
     required this.assetId,
     this.needRefresh = true,
-  }) : super(key: key);
+  });
 
   final String assetId;
 
@@ -131,10 +129,9 @@ class _AssetDetailLoader extends HookWidget {
 
 class _AssetDetailPage extends StatelessWidget {
   const _AssetDetailPage({
-    Key? key,
     required this.asset,
     required this.filter,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
 
@@ -176,10 +173,9 @@ class _AssetDetailPage extends StatelessWidget {
 
 class _AssetDetailBody extends StatelessWidget {
   const _AssetDetailBody({
-    Key? key,
     required this.asset,
     required this.filter,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
 
@@ -228,10 +224,9 @@ class _AssetDetailBody extends StatelessWidget {
 
 class _AssetHeader extends HookWidget {
   const _AssetHeader({
-    Key? key,
     required this.asset,
     required this.filter,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
 
@@ -297,7 +292,7 @@ class _AssetHeader extends HookWidget {
 }
 
 class _HeaderButtonBar extends StatelessWidget {
-  const _HeaderButtonBar({Key? key, required this.asset}) : super(key: key);
+  const _HeaderButtonBar({required this.asset});
 
   final AssetResult asset;
 
@@ -333,9 +328,8 @@ bool _shouldHideReceiveButton(AssetResult asset) => asset.assetId == omniUSDT;
 
 class _AssetTransactionsHeader extends StatelessWidget {
   const _AssetTransactionsHeader({
-    Key? key,
     required this.filter,
-  }) : super(key: key);
+  });
 
   final SnapshotFilter filter;
 
@@ -388,9 +382,8 @@ class _AssetTransactionsHeader extends StatelessWidget {
 
 class _AssetDescriptionBottomSheet extends StatelessWidget {
   const _AssetDescriptionBottomSheet({
-    Key? key,
     required this.asset,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
 
@@ -443,10 +436,9 @@ class _AssetDescriptionBottomSheet extends StatelessWidget {
 
 class _AssetBottomSheetTile extends StatelessWidget {
   const _AssetBottomSheetTile({
-    Key? key,
     required this.title,
     required this.subtitle,
-  }) : super(key: key);
+  });
 
   final Widget title;
   final Widget subtitle;

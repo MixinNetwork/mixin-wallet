@@ -46,9 +46,9 @@ extension _AssetExt on AssetResult {
 
 class ChainNetworkLabel extends StatelessWidget {
   const ChainNetworkLabel({
-    Key? key,
     required this.asset,
-  }) : super(key: key);
+    super.key,
+  });
 
   final AssetResult asset;
 

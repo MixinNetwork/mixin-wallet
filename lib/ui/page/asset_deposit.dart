@@ -27,7 +27,7 @@ import '../widget/symbol.dart';
 import '../widget/tip_tile.dart';
 
 class AssetDeposit extends StatelessWidget {
-  const AssetDeposit({Key? key}) : super(key: key);
+  const AssetDeposit({super.key});
 
   @override
   Widget build(BuildContext context) =>
@@ -36,10 +36,9 @@ class AssetDeposit extends StatelessWidget {
 
 class _DepositScaffold extends StatelessWidget {
   const _DepositScaffold({
-    Key? key,
-    this.asset,
     required this.body,
-  }) : super(key: key);
+    this.asset,
+  });
 
   final AssetResult? asset;
   final Widget body;
@@ -76,9 +75,8 @@ class _DepositScaffold extends StatelessWidget {
 
 class _AssetDepositLoader extends HookWidget {
   const _AssetDepositLoader({
-    Key? key,
     required this.assetId,
-  }) : super(key: key);
+  });
 
   final String assetId;
 
@@ -136,7 +134,9 @@ class _AssetDepositLoader extends HookWidget {
 }
 
 class _AssetDepositBody extends HookWidget {
-  const _AssetDepositBody({Key? key, required this.asset}) : super(key: key);
+  const _AssetDepositBody({
+    required this.asset,
+  });
 
   final AssetResult asset;
 
@@ -281,11 +281,9 @@ class _AssetDepositBody extends HookWidget {
 
 class _MemoLayout extends StatelessWidget {
   _MemoLayout({
-    Key? key,
     required this.asset,
     required this.tag,
-  })  : assert(asset.needShowMemo),
-        super(key: key);
+  }) : assert(asset.needShowMemo);
 
   final AssetResult asset;
 
@@ -320,10 +318,9 @@ class _MemoLayout extends StatelessWidget {
 
 class _MemoWarningDialog extends StatelessWidget {
   const _MemoWarningDialog({
-    Key? key,
     required this.symbol,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final String symbol;
   final VoidCallback onTap;
@@ -391,11 +388,10 @@ class _MemoWarningDialog extends StatelessWidget {
 
 class _AddressLayout extends StatelessWidget {
   const _AddressLayout({
-    Key? key,
     required this.asset,
     required this.address,
     required this.showDepositNotice,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
   final String address;
@@ -433,7 +429,7 @@ class _AddressLayout extends StatelessWidget {
 }
 
 class _AddressLoadingWidget extends StatelessWidget {
-  const _AddressLoadingWidget({Key? key}) : super(key: key);
+  const _AddressLoadingWidget();
 
   @override
   Widget build(BuildContext context) => Column(
@@ -458,7 +454,7 @@ class _AddressLoadingWidget extends StatelessWidget {
 }
 
 class _HeaderText extends StatelessWidget {
-  const _HeaderText(this.text, {Key? key}) : super(key: key);
+  const _HeaderText(this.text);
 
   final String text;
 
@@ -478,7 +474,7 @@ class _HeaderText extends StatelessWidget {
 }
 
 class _CopyableText extends StatelessWidget {
-  const _CopyableText(this.text, {Key? key}) : super(key: key);
+  const _CopyableText(this.text);
 
   final String text;
 
@@ -520,10 +516,9 @@ class _CopyableText extends StatelessWidget {
 
 class _QrcodeImage extends StatelessWidget {
   const _QrcodeImage({
-    Key? key,
     required this.data,
     required this.asset,
-  }) : super(key: key);
+  });
 
   final String data;
 
@@ -564,7 +559,7 @@ class _QrcodeImage extends StatelessWidget {
 }
 
 class _UsdtChooseLayout extends StatelessWidget {
-  const _UsdtChooseLayout({Key? key, required this.asset}) : super(key: key);
+  const _UsdtChooseLayout({required this.asset});
 
   final AssetResult asset;
 
@@ -599,12 +594,11 @@ class _UsdtChooseLayout extends StatelessWidget {
 
 class _DepositEntryChooseLayout extends StatelessWidget {
   const _DepositEntryChooseLayout({
-    Key? key,
     required this.entries,
     required this.onSelected,
     required this.asset,
     required this.selectedAddress,
-  }) : super(key: key);
+  });
 
   final List<DepositEntry> entries;
 
@@ -641,11 +635,10 @@ class _DepositEntryChooseLayout extends StatelessWidget {
 
 class _NetworkTypeItem extends StatelessWidget {
   const _NetworkTypeItem({
-    Key? key,
     required this.selected,
     required this.onTap,
     required this.name,
-  }) : super(key: key);
+  });
 
   final bool selected;
   final VoidCallback onTap;

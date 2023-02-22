@@ -7,7 +7,7 @@ part 'fiat_dao.g.dart';
 
 @DriftAccessor(tables: [Fiat])
 class FiatDao extends DatabaseAccessor<MixinDatabase> with _$FiatDaoMixin {
-  FiatDao(MixinDatabase db) : super(db);
+  FiatDao(super.db);
 
   Future<int> insert(Fiat fiat) => into(db.fiats).insertOnConflictUpdate(fiat);
 

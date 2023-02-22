@@ -23,7 +23,7 @@ extension UserMapper on sdk.User {
 
 @DriftAccessor(tables: [User])
 class UserDao extends DatabaseAccessor<MixinDatabase> with _$UserDaoMixin {
-  UserDao(MixinDatabase db) : super(db);
+  UserDao(super.db);
 
   Future<int> insert(User user) => into(db.users).insertOnConflictUpdate(user);
 

@@ -7,14 +7,14 @@ import 'brightness_observer.dart';
 
 class SearchTextFieldWidget extends HookWidget {
   const SearchTextFieldWidget({
-    Key? key,
-    this.focusNode,
     required this.controller,
+    super.key,
+    this.focusNode,
     this.onChanged,
     this.fontSize = 14,
     this.hintText,
     this.autofocus = false,
-  }) : super(key: key);
+  });
 
   final FocusNode? focusNode;
   final TextEditingController controller;
@@ -95,7 +95,7 @@ class SearchTextFieldWidget extends HookWidget {
 }
 
 class _SearchClearIcon extends HookWidget {
-  const _SearchClearIcon(this.controller, {Key? key}) : super(key: key);
+  const _SearchClearIcon(this.controller);
 
   final TextEditingController controller;
 

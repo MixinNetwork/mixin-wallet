@@ -16,9 +16,9 @@ import 'symbol.dart';
 
 class TransferAssetHeader extends StatelessWidget {
   const TransferAssetHeader({
-    Key? key,
     required this.asset,
-  }) : super(key: key);
+    super.key,
+  });
 
   final AssetResult asset;
 
@@ -67,10 +67,10 @@ class TransferAssetHeader extends StatelessWidget {
 
 class TransferAmountWidget extends HookWidget {
   const TransferAmountWidget({
-    Key? key,
     required this.asset,
     required this.amount,
-  }) : super(key: key);
+    super.key,
+  });
 
   final AssetResult asset;
   final ValueNotifier<String> amount;
@@ -240,10 +240,10 @@ extension _NumberFormat on String {
 
 class TransferMemoWidget extends HookWidget {
   const TransferMemoWidget({
-    Key? key,
     required this.onMemoInput,
+    super.key,
     this.initialValue = '',
-  }) : super(key: key);
+  });
 
   final void Function(String) onMemoInput;
 

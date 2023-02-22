@@ -46,10 +46,9 @@ Future<void> showRequestPaymentResultBottomSheet(
 
 class _RequestPaymentResultBottomSheet extends StatelessWidget {
   const _RequestPaymentResultBottomSheet({
-    Key? key,
     required this.url,
     required this.formattedAmount,
-  }) : super(key: key);
+  });
 
   final String url;
 
@@ -149,7 +148,7 @@ class _RequestPaymentResultBottomSheet extends StatelessWidget {
 }
 
 class _CopyButton extends StatelessWidget {
-  const _CopyButton({Key? key, required this.url}) : super(key: key);
+  const _CopyButton({required this.url});
 
   final String url;
 

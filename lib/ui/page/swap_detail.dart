@@ -20,7 +20,7 @@ import '../widget/symbol.dart';
 import '../widget/transaction_info_tile.dart';
 
 class SwapDetail extends HookWidget {
-  const SwapDetail({Key? key}) : super(key: key);
+  const SwapDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +34,8 @@ class SwapDetail extends HookWidget {
 
 class _SwapDetailLoader extends HookWidget {
   const _SwapDetailLoader({
-    Key? key,
     required this.traceId,
-  }) : super(key: key);
+  });
 
   final String traceId;
 
@@ -136,13 +135,12 @@ class _SwapDetailLoader extends HookWidget {
 
 class _Body extends StatelessWidget {
   const _Body({
-    Key? key,
     required this.swapPhase,
     required this.order,
     required this.source,
     required this.dest,
     required this.traceId,
-  }) : super(key: key);
+  });
 
   final SwapPhase swapPhase;
   final Order? order;
@@ -234,9 +232,8 @@ class _Body extends StatelessWidget {
 
 class _BottomLoading extends HookWidget {
   const _BottomLoading({
-    Key? key,
     required this.swapPhase,
-  }) : super(key: key);
+  });
 
   final SwapPhase swapPhase;
 
@@ -265,10 +262,9 @@ class _BottomLoading extends HookWidget {
 
 class _AssetLayout extends StatelessWidget {
   const _AssetLayout({
-    Key? key,
     required this.source,
     required this.dest,
-  }) : super(key: key);
+  });
 
   final AssetResult source;
   final AssetResult dest;

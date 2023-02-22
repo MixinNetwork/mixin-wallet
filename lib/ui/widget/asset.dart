@@ -11,9 +11,9 @@ import 'symbol.dart';
 
 class AssetWidget extends HookWidget {
   const AssetWidget({
-    Key? key,
     required this.data,
-  }) : super(key: key);
+    super.key,
+  });
 
   final AssetResult data;
 
@@ -96,9 +96,9 @@ class AssetWidget extends HookWidget {
 
 class AssetPrice extends HookWidget {
   const AssetPrice({
-    Key? key,
     required this.data,
-  }) : super(key: key);
+    super.key,
+  });
 
   final AssetResult data;
 
@@ -144,11 +144,11 @@ class AssetPrice extends HookWidget {
 class SingleLineEllipsisText extends HookWidget {
   const SingleLineEllipsisText(
     this.text, {
-    Key? key,
-    this.style,
     required this.constraints,
     required this.onTap,
-  }) : super(key: key);
+    super.key,
+    this.style,
+  });
 
   final String text;
   final TextStyle? style;

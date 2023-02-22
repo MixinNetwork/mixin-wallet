@@ -19,11 +19,11 @@ import 'address_pin_bottom_sheet.dart';
 
 class AddressSelectionWidget extends HookWidget {
   const AddressSelectionWidget({
-    Key? key,
     required this.assetId,
     required this.chainId,
+    super.key,
     this.selectedAddress,
-  }) : super(key: key);
+  });
 
   final String assetId;
   final String chainId;
@@ -114,10 +114,9 @@ class AddressSelectionWidget extends HookWidget {
 
 class _AddressItem extends StatelessWidget {
   const _AddressItem({
-    Key? key,
     required this.address,
     required this.selectedAddressId,
-  }) : super(key: key);
+  });
 
   final Addresse address;
   final String? selectedAddressId;
@@ -154,10 +153,9 @@ enum _AddressPopupMenuAction {
 
 class _AddressPopupMenuWrapper extends StatefulWidget {
   const _AddressPopupMenuWrapper({
-    Key? key,
     required this.child,
     required this.address,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final Addresse address;
@@ -256,12 +254,11 @@ class _AddressPopupMenuWrapperState extends State<_AddressPopupMenuWrapper> {
 
 class _AddressSelectionItemTile extends StatelessWidget {
   const _AddressSelectionItemTile({
-    Key? key,
     required this.onTap,
     required this.title,
     required this.subtitle,
     required this.selected,
-  }) : super(key: key);
+  });
 
   final VoidCallback onTap;
   final Widget title;

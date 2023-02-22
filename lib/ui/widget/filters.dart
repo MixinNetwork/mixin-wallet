@@ -4,12 +4,12 @@ import '../../util/extension/extension.dart';
 
 class FilterWidget<T> extends StatelessWidget {
   const FilterWidget({
-    Key? key,
-    required this.value,
     required this.groupValue,
-    this.onChanged,
+    required this.value,
     required this.child,
-  }) : super(key: key);
+    super.key,
+    this.onChanged,
+  });
 
   final T value;
   final T? groupValue;

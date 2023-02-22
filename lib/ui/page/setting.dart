@@ -17,7 +17,7 @@ import '../widget/mixin_appbar.dart';
 import '../widget/toast.dart';
 
 class Setting extends StatelessWidget {
-  const Setting({Key? key}) : super(key: key);
+  const Setting({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -39,7 +39,7 @@ class Setting extends StatelessWidget {
 }
 
 class _SettingsBody extends HookWidget {
-  const _SettingsBody({Key? key}) : super(key: key);
+  const _SettingsBody();
 
   @override
   Widget build(BuildContext context) {
@@ -98,9 +98,7 @@ class _SettingsBody extends HookWidget {
 }
 
 class _CurrencyItem extends StatelessWidget {
-  const _CurrencyItem({
-    Key? key,
-  }) : super(key: key);
+  const _CurrencyItem();
 
   @override
   Widget build(BuildContext context) {

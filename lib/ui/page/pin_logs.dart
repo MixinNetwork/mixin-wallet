@@ -14,7 +14,7 @@ import '../widget/toast.dart';
 import 'home/empty.dart';
 
 class PinLogs extends HookWidget {
-  const PinLogs({Key? key}) : super(key: key);
+  const PinLogs({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class PinLogs extends HookWidget {
 }
 
 class _LoadingLayout extends StatelessWidget {
-  const _LoadingLayout({Key? key}) : super(key: key);
+  const _LoadingLayout();
 
   @override
   Widget build(BuildContext context) => Center(
@@ -94,10 +94,9 @@ class _LoadingLayout extends StatelessWidget {
 
 class _LogsList extends StatelessWidget {
   const _LogsList({
-    Key? key,
     required this.logs,
     required this.loadMore,
-  }) : super(key: key);
+  });
 
   final List<LogResponse> logs;
 
@@ -186,7 +185,7 @@ Tuple2<String, String> _getCodeDescription(BuildContext context, String code) {
 }
 
 class _LogItem extends HookWidget {
-  const _LogItem({Key? key, required this.log}) : super(key: key);
+  const _LogItem({required this.log});
 
   final LogResponse log;
 

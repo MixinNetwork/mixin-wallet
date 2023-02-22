@@ -7,7 +7,7 @@ import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 
 class SwapTransactions extends HookWidget {
-  const SwapTransactions({Key? key}) : super(key: key);
+  const SwapTransactions({super.key});
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
@@ -41,9 +41,7 @@ class SwapTransactions extends HookWidget {
 }
 
 class _TabContent extends StatelessWidget {
-  const _TabContent({
-    Key? key,
-  }) : super(key: key);
+  const _TabContent();
 
   @override
   Widget build(BuildContext context) => const SizedBox();

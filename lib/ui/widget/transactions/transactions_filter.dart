@@ -93,9 +93,8 @@ class SnapshotFilter extends Equatable {
 
 class _SortBottomSheetDialog extends HookWidget {
   const _SortBottomSheetDialog({
-    Key? key,
     required this.initial,
-  }) : super(key: key);
+  });
 
   final SortBy initial;
 
@@ -132,8 +131,7 @@ class _SortBottomSheetDialog extends HookWidget {
 }
 
 class _FilterBottomSheetDialog extends HookWidget {
-  const _FilterBottomSheetDialog(this.initialFilter, {Key? key})
-      : super(key: key);
+  const _FilterBottomSheetDialog(this.initialFilter);
 
   final SnapshotFilter initialFilter;
 
@@ -187,7 +185,7 @@ class _FilterBottomSheetDialog extends HookWidget {
 }
 
 class _FilterSectionTitle extends StatelessWidget {
-  const _FilterSectionTitle(this.title, {Key? key}) : super(key: key);
+  const _FilterSectionTitle(this.title);
 
   final String title;
 
@@ -203,7 +201,7 @@ class _FilterSectionTitle extends StatelessWidget {
 }
 
 class _SortBySection extends StatelessWidget {
-  const _SortBySection(this.sortValue, {Key? key}) : super(key: key);
+  const _SortBySection(this.sortValue);
 
   final ValueNotifier<SortBy> sortValue;
 
@@ -233,7 +231,7 @@ class _SortBySection extends StatelessWidget {
 }
 
 class _FilterBySection extends StatelessWidget {
-  const _FilterBySection(this.filterValue, {Key? key}) : super(key: key);
+  const _FilterBySection(this.filterValue);
 
   final ValueNotifier<FilterBy> filterValue;
 
@@ -297,9 +295,8 @@ class _FilterBySection extends StatelessWidget {
 
 class _Button extends StatelessWidget {
   const _Button({
-    Key? key,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final VoidCallback onTap;
 

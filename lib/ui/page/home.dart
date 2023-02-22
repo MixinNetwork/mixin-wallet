@@ -39,7 +39,7 @@ enum _Tab {
 }
 
 class Home extends HookWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +116,7 @@ class Home extends HookWidget {
 }
 
 class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _HomeAppBar({Key? key}) : super(key: key);
+  const _HomeAppBar();
 
   @override
   Widget build(BuildContext context) {
@@ -165,9 +165,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _ScanButton extends StatelessWidget {
-  const _ScanButton({
-    Key? key,
-  }) : super(key: key);
+  const _ScanButton();
 
   @override
   Widget build(BuildContext context) => ActionButton(
@@ -280,7 +278,7 @@ extension _SortAssets on List<AssetResult> {
 }
 
 class _AccountBottomSheet extends StatelessWidget {
-  const _AccountBottomSheet({Key? key}) : super(key: key);
+  const _AccountBottomSheet();
 
   @override
   Widget build(BuildContext context) {
@@ -339,9 +337,8 @@ class _AccountBottomSheet extends StatelessWidget {
 
 class _TabSwitchBar extends HookWidget implements PreferredSizeWidget {
   const _TabSwitchBar({
-    Key? key,
     required this.selectedTab,
-  }) : super(key: key);
+  });
 
   final _Tab selectedTab;
 

@@ -10,11 +10,11 @@ import '../transfer.dart';
 
 class RequestPaymentBottomSheet extends HookWidget {
   const RequestPaymentBottomSheet({
-    Key? key,
-    required this.asset,
     required this.address,
+    required this.asset,
+    super.key,
     this.tag,
-  }) : super(key: key);
+  });
 
   final AssetResult asset;
 
