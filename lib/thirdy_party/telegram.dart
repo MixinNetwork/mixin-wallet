@@ -15,7 +15,7 @@ class TelegramApi {
 
   Future<TelegramUser> verifyInitData(String initData) async {
     final response = await dio.post<Map<String, dynamic>>(
-      'https://wallet.touge.fun/tg',
+      'https://telegram.mixinwallet.com/tg',
       data: jsonEncode({'init_data': initData}),
     );
     return TelegramUser.fromJson(response.data!);
