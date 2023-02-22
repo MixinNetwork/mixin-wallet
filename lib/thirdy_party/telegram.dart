@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 
 import 'vo/telegram_user.dart';
@@ -13,8 +15,8 @@ class TelegramApi {
 
   Future<TelegramUser> verifyInitData(String initData) async {
     final response = await dio.post<Map<String, dynamic>>(
-      'https://telegram.mixinwallet.com/tg',
-      data: {'init_data': initData},
+      'https://wallet.touge.fun/tg',
+      data: jsonEncode({'init_data': initData}),
     );
     return TelegramUser.fromJson(response.data!);
   }
