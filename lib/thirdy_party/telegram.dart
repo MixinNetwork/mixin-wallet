@@ -9,7 +9,7 @@ class TelegramApi {
 
   static final instance = TelegramApi._internal();
 
-  final Dio dio = Dio();
+  final Dio dio = Dio(BaseOptions(contentType: Headers.jsonContentType));
 
   Future<TelegramUser> verifyInitData(String initData) async {
     final response = await dio.post<Map<String, dynamic>>(

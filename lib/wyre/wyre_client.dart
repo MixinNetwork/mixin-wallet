@@ -13,6 +13,7 @@ class WyreClient {
         kReleaseMode ? 'https://$wyreDomain' : 'https://$wyreTestDomain';
     _dio.options.responseType = ResponseType.json;
     _dio.options.headers['Authorization'] = 'Bearer ${Env.wyreSecret}';
+    _dio.options.contentType = Headers.jsonContentType;
     _dio.interceptors.add(MixinLogInterceptor(HttpLogLevel.none));
 
     _api = WyreApi(dio: dio);
