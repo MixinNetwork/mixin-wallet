@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../db/mixin_database.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import 'text.dart';
 
@@ -28,6 +29,10 @@ bool isDigitsOnly(String? text) {
 
 extension _AssetExt on AssetResult {
   String? get chainNetworkLabel {
+    if (ChainId.mixinVirtualMachine == chainId) {
+      return 'MVM';
+    }
+
     if (chainId == assetId && !_bepChainIds.contains(chainId)) {
       return null;
     }

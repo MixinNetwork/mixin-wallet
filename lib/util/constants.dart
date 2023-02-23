@@ -26,6 +26,8 @@ class ChainId {
   static const dash = '6472e7e3-75fd-48b6-b1dc-28d294ee1476';
   static const solana = '64692c23-8971-4cf4-84a7-4dd1271dd887';
   static const polygon = 'b7938396-3f94-4e0a-9179-d3440718156f';
+
+  static const mixinVirtualMachine = 'a0ffd769-5850-4b48-9651-d2ae44a3e64d';
 }
 
 const topRadius = 20.0;
