@@ -47,14 +47,16 @@ String useAccountFaitCurrency() {
   final authProvider = context.read<AuthProvider>();
 
   final fait = useState<String>(
-    useMemoized(() => authProvider.value!.account.fiatCurrency),
+    // Usually, this value will not be null, but it may be null when user logout.
+    // So we use `?? 'USD'` to avoid crash, and it will be correction by flowing
+    // listener when user login again.
+    useMemoized(() => authProvider.value?.account.fiatCurrency ?? 'USD'),
   );
   useEffect(() {
     void listener() {
       final fiatCurrency = authProvider.value?.account.fiatCurrency;
       if (fiatCurrency == null) {
         // this might happen when user logout.
-        e('fiatCurrency is null.');
         return;
       }
       fait.value = fiatCurrency;
