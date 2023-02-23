@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
-import '../util/web/telegram_web_app.dart';
 import 'vo/telegram_user.dart';
 
 export 'vo/telegram_user.dart';
@@ -21,9 +20,6 @@ class TelegramApi {
       'https://telegram.mixinwallet.com/tg',
       data: jsonEncode({'init_data': initData}),
     );
-    final telegramUserId = Telegram.instance.getTgUserId(initData);
-    return TelegramUser.fromJson(response.data!).copyWith(
-      telegramUserId: telegramUserId,
-    );
+    return TelegramUser.fromJson(response.data!);
   }
 }

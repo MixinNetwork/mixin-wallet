@@ -11,7 +11,6 @@ class TelegramUser with EquatableMixin {
     required this.privateKey,
     required this.sessionId,
     required this.pinToken,
-    this.telegramUserId,
   });
 
   factory TelegramUser.fromJson(Map<String, dynamic> json) =>
@@ -32,27 +31,7 @@ class TelegramUser with EquatableMixin {
   @JsonKey(name: 'pin_token')
   final String pinToken;
 
-  @JsonKey(name: 'telegram_user_id')
-  final String? telegramUserId;
-
   Map<String, dynamic> toJson() => _$TelegramUserToJson(this);
-
-  TelegramUser copyWith({
-    int? userId,
-    String? mixinId,
-    String? privateKey,
-    String? sessionId,
-    String? pinToken,
-    String? telegramUserId,
-  }) =>
-      TelegramUser(
-        userId: userId ?? this.userId,
-        mixinId: mixinId ?? this.mixinId,
-        privateKey: privateKey ?? this.privateKey,
-        sessionId: sessionId ?? this.sessionId,
-        pinToken: pinToken ?? this.pinToken,
-        telegramUserId: telegramUserId ?? this.telegramUserId,
-      );
 
   @override
   List<Object?> get props => [
@@ -61,6 +40,5 @@ class TelegramUser with EquatableMixin {
         privateKey,
         sessionId,
         pinToken,
-        telegramUserId,
       ];
 }

@@ -25,7 +25,7 @@ class Telegram {
     return initData as String;
   }
 
-  String? getTgUserId([String? initData]) {
+  int? getTgUserId([String? initData]) {
     final initDataString = initData ?? getTgInitData();
 
     if (initDataString == null) {
@@ -44,11 +44,7 @@ class Telegram {
       e('tg init data user is null');
       return null;
     }
-    final userId = user['id']?.toString();
-    if (userId == null) {
-      e('tg init data user id is null');
-      return null;
-    }
+    final userId = user['id'] as int?;
     return userId;
   }
 

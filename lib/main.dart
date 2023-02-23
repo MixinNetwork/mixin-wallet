@@ -67,7 +67,7 @@ class MyApp extends HookWidget {
         if (!authProvider.isLoginByCredential) {
           return;
         }
-        final loginTgUserId = authProvider.value?.credential?.telegramUserId;
+        final loginTgUserId = authProvider.value?.credential?.userId;
         if (loginTgUserId == null) {
           return;
         }
@@ -75,6 +75,7 @@ class MyApp extends HookWidget {
           final currentTgUserId = Telegram.instance.getTgUserId();
           // check is the same telegram user.
           if (currentTgUserId != loginTgUserId) {
+            i('logout: current: $currentTgUserId, login: $loginTgUserId');
             authProvider.clear();
           }
         } catch (error, stacktrace) {
