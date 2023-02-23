@@ -5,7 +5,7 @@ class Telegram {
 
   String? getTgInitData() => null;
 
-  String? getTgUserId() => null;
+  String? getTgUserId([String? initData]) => null;
 
   void hapticFeedback() {}
 
