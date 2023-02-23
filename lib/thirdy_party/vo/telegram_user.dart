@@ -34,5 +34,11 @@ class TelegramUser with EquatableMixin {
   Map<String, dynamic> toJson() => _$TelegramUserToJson(this);
 
   @override
-  List<Object?> get props => [userId, mixinId, privateKey, sessionId, pinToken];
+  List<Object?> get props => [
+        userId,
+        mixinId,
+        privateKey,
+        sessionId,
+        pinToken,
+      ];
 }

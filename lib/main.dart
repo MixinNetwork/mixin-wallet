@@ -18,6 +18,7 @@ import 'ui/widget/error_widget.dart';
 import 'util/l10n.dart';
 import 'util/logger.dart';
 import 'util/mixin_context.dart';
+import 'util/web/telegram_web_app.dart';
 import 'util/web/web_utils.dart';
 
 final navigatorObserver = RouteObserver<ModalRoute<dynamic>>();
@@ -60,6 +61,30 @@ class MyApp extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = useMemoized(AuthProvider.new);
+
+    useEffect(
+      () {
+        if (!authProvider.isLoginByCredential) {
+          return;
+        }
+        final loginTgUserId = authProvider.value?.credential?.userId;
+        if (loginTgUserId == null) {
+          return;
+        }
+        try {
+          final currentTgUserId = Telegram.instance.getTgUserId();
+          // check is the same telegram user.
+          if (currentTgUserId != loginTgUserId) {
+            i('logout: current: $currentTgUserId, login: $loginTgUserId');
+            authProvider.clear();
+          }
+        } catch (error, stacktrace) {
+          e('getTgUserId error: $error $stacktrace');
+        }
+      },
+      [authProvider],
+    );
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(

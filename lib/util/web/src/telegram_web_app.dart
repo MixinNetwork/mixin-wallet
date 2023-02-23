@@ -1,4 +1,6 @@
-// ignore: avoid_web_libraries_in_flutter
+// ignore_for_file: avoid_web_libraries_in_flutter
+
+import 'dart:convert';
 import 'dart:js' as js;
 
 import '../../extension/extension.dart';
@@ -23,13 +25,27 @@ class Telegram {
     return initData as String;
   }
 
-  String? getTgUserId() {
-    final initDataUnsafe = webApp['initDataUnsafe'] as js.JsObject;
-    final user = initDataUnsafe['user'];
-    if (user == null) {
+  int? getTgUserId([String? initData]) {
+    final initDataString = initData ?? getTgInitData();
+
+    if (initDataString == null) {
+      e('tg init data is null');
       return null;
     }
-    return (user as js.JsObject)['id'] as String;
+
+    final data = Uri.splitQueryString(initDataString);
+    final userJson = data['user'];
+    if (userJson == null) {
+      e('tg init data user is null');
+      return null;
+    }
+    final user = jsonDecode(userJson) as Map<String, dynamic>?;
+    if (user == null) {
+      e('tg init data user is null');
+      return null;
+    }
+    final userId = user['id'] as int?;
+    return userId;
   }
 
   void hapticFeedback() {
