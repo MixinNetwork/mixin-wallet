@@ -173,6 +173,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币。"),
         "depositing": MessageLookupByLibrary.simpleMessage("充值中"),
+        "dontHaveAssets": MessageLookupByLibrary.simpleMessage("没有资产？"),
         "dontShowAgain": MessageLookupByLibrary.simpleMessage("不再提醒"),
         "download": MessageLookupByLibrary.simpleMessage("下载"),
         "downloadMixinMessengerHint":
