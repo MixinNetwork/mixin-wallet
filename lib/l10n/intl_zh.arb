@@ -262,5 +262,6 @@
   "confirmPin": "确认 PIN",
   "changePinSuccessfully": "PIN 修改成功",
   "invalidPayUrl": "支付链接无法识别：{url}",
-  "externalPayNoAssetFound": "无法找到该资产，请先充值。"
+  "externalPayNoAssetFound": "无法找到该资产，请先充值。",
+  "dontHaveAssets": "没有资产？"
 }

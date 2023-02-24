@@ -2733,6 +2733,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Don't have assets?`
+  String get dontHaveAssets {
+    return Intl.message(
+      'Don\'t have assets?',
+      name: 'dontHaveAssets',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

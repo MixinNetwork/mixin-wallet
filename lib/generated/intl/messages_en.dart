@@ -193,6 +193,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "This address supports all TRC-10 and TRC-20 tokens, such as TRX, USDT-TRON, etc."),
         "depositing": MessageLookupByLibrary.simpleMessage("Depositing"),
+        "dontHaveAssets":
+            MessageLookupByLibrary.simpleMessage("Don\'t have assets?"),
         "dontShowAgain":
             MessageLookupByLibrary.simpleMessage("Don\'t show again"),
         "download": MessageLookupByLibrary.simpleMessage("Download"),
