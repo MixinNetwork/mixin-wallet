@@ -1,4 +1,4 @@
-import 'package:async/async.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import '../../db/dao/extension.dart';
 import '../../db/mixin_database.dart';
 import '../../service/account_provider.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
@@ -17,7 +18,7 @@ import '../../util/transak.dart';
 import '../../wyre/wyre_constants.dart';
 import '../router/mixin_routes.dart';
 import 'chain_network_label.dart';
-import 'mixin_bottom_sheet.dart';
+import 'search_asset_bottom_sheet.dart';
 import 'search_header_widget.dart';
 import 'symbol.dart';
 import 'text.dart';
@@ -45,12 +46,11 @@ class BuyAssetSelectionBottomSheet extends StatelessWidget {
           }
           Navigator.of(context).pop();
         },
-        source: () async* {
+        source: (faitCurrency) async* {
           final assets =
               await context.appServices.findOrSyncAssets(supportedCryptosId);
           yield assets;
         },
-        useSearchApi: false,
         onCancelPressed: () {
           if (context.canPop()) {
             context.pop();
@@ -61,51 +61,249 @@ class BuyAssetSelectionBottomSheet extends StatelessWidget {
       );
 }
 
-Future<AssetResult?> showAssetSelectionBottomSheet({
-  required BuildContext context,
-  String? initialSelected,
-  AssetSourceLoader? source,
-  Set<String> ignoreAssets = const {},
-  bool useSearchApi = false,
-}) =>
-    showMixinBottomSheet<AssetResult>(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => AssetSelectionListWidget(
-        selectedAssetId: initialSelected,
-        onTap: (asset) {
-          Navigator.pop(context, asset);
-        },
-        source: source,
-        ignoreAssets: ignoreAssets,
-        useSearchApi: useSearchApi,
-        onCancelPressed: () => Navigator.pop(context),
-      ),
+class SendAssetSelectionBottomSheet extends HookWidget {
+  const SendAssetSelectionBottomSheet({
+    super.key,
+    this.initialSelected,
+  });
+
+  final String? initialSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final faitCurrency = useAccountFaitCurrency();
+
+    final assetsSnapshot = useMemoizedStream(
+        () => context.mixinDatabase.assetDao
+            .assetResultsWithBalance(faitCurrency)
+            .watch(),
+        keys: [faitCurrency]);
+
+    final keywordStreamController = useStreamController<String>();
+    final keywordStream = useMemoized(
+      () => keywordStreamController.stream.map((e) => e.trim()).distinct(),
+      [keywordStreamController],
+    );
+    final filterKeyword = useMemoizedStream(() => keywordStream.debounceTime(
+              const Duration(milliseconds: 100),
+            )).data ??
+        '';
+
+    final assets = assetsSnapshot.data ?? const [];
+
+    final filterList = useMemoized(
+      () {
+        if (filterKeyword.isEmpty) {
+          return assets;
+        }
+        return assets
+            .where((e) =>
+                e.symbol.containsIgnoreCase(filterKeyword) ||
+                e.name.containsIgnoreCase(filterKeyword))
+            .sortedBy<num>(
+          (e) {
+            if (e.name.equalsIgnoreCase(filterKeyword)) {
+              return 1;
+            }
+            if (e.symbol.equalsIgnoreCase(filterKeyword)) {
+              return 1;
+            }
+            if (e.name.containsIgnoreCase(filterKeyword)) {
+              return 10;
+            }
+            if (e.symbol.containsIgnoreCase(filterKeyword)) {
+              return 10;
+            }
+            return 100;
+          },
+        );
+      },
+      [assets, filterKeyword],
     );
 
-typedef AssetSourceLoader = Stream<List<AssetResult>> Function();
+    final Widget body;
+
+    if (assetsSnapshot.isNoneOrWaiting) {
+      body = Center(
+        child: CircularProgressIndicator(
+          color: context.colorScheme.captionIcon,
+        ),
+      );
+    } else if (assets.isEmpty && filterKeyword.isEmpty) {
+      body = Center(
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Text(context.l10n.dontHaveAssets),
+          ),
+          const SizedBox(height: 12),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: MixinText(
+              context.l10n.deposit,
+              style: TextStyle(
+                color: context.colorScheme.accent,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ));
+    } else {
+      body = NativeScrollBuilder(
+        builder: (context, controller) => ListView.builder(
+          controller: controller,
+          itemCount: filterList.length,
+          itemBuilder: (BuildContext context, int index) => _Item(
+            asset: filterList[index],
+            onTap: (asset) => Navigator.pop(context, asset),
+            selectedAssetId: initialSelected,
+          ),
+        ),
+      );
+    }
+
+    return SizedBox(
+      height: MediaQuery.of(context).size.height - 100,
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          Padding(
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+              child: SearchHeaderWidget(
+                hintText: context.l10n.search,
+                onChanged: keywordStreamController.add,
+                onCancelPressed: () => Navigator.pop(context),
+              )),
+          const SizedBox(height: 10),
+          Expanded(child: body),
+        ],
+      ),
+    );
+  }
+}
+
+class ReceiveAssetSelectionBottomSheet extends HookWidget {
+  const ReceiveAssetSelectionBottomSheet({
+    super.key,
+    this.initialSelected,
+  });
+
+  final String? initialSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final keywordStreamController = useStreamController<String>();
+    final keywordStream = useMemoized(
+        () => keywordStreamController.stream.map((e) => e.trim()).distinct());
+    final hasKeyword =
+        useMemoizedStream(() => keywordStream.map((event) => event.isNotEmpty))
+                .data ??
+            false;
+    const notSupportDepositAssets = {omniUSDT};
+    return SizedBox(
+      height: MediaQuery.of(context).size.height - 100,
+      child: Column(
+        children: [
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 8),
+            child: SearchHeaderWidget(
+              hintText: context.l10n.search,
+              onChanged: keywordStreamController.add,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: IndexedStack(
+              index: hasKeyword ? 1 : 0,
+              children: [
+                _AllAssetList(
+                  initialSelected: initialSelected,
+                  ignoreAssets: notSupportDepositAssets,
+                ),
+                SearchAssetList(
+                  keywordStream: keywordStream,
+                  ignoreAssets: notSupportDepositAssets,
+                  itemBuilder: (context, asset) => _Item(
+                    asset: asset,
+                    onTap: (asset) => Navigator.pop(context, asset),
+                    selectedAssetId: initialSelected,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AllAssetList extends HookWidget {
+  const _AllAssetList({
+    required this.initialSelected,
+    required this.ignoreAssets,
+  });
+
+  final String? initialSelected;
+
+  final Set<String> ignoreAssets;
+
+  @override
+  Widget build(BuildContext context) {
+    final faitCurrency = useAccountFaitCurrency();
+    final assets = useMemoizedStream(
+            () => context.mixinDatabase.assetDao
+                .assetResults(faitCurrency)
+                .watch()
+                .map(
+                  (event) => event
+                      .where(
+                        (element) => !ignoreAssets.contains(element.assetId),
+                      )
+                      .toList(),
+                ),
+            keys: [faitCurrency]).data ??
+        const [];
+
+    return NativeScrollBuilder(
+      builder: (context, controller) => ListView.builder(
+        controller: controller,
+        itemCount: assets.length,
+        itemBuilder: (BuildContext context, int index) => _Item(
+          asset: assets[index],
+          onTap: (asset) => Navigator.pop(context, asset),
+          selectedAssetId: initialSelected,
+        ),
+      ),
+    );
+  }
+}
+
+typedef AssetSourceLoader = Stream<List<AssetResult>> Function(
+  String faitCurrency,
+);
 
 class AssetSelectionListWidget extends HookWidget {
   const AssetSelectionListWidget({
     required this.onTap,
     required this.onCancelPressed,
+    required this.source,
     super.key,
     this.selectedAssetId,
-    this.source,
-    this.ignoreAssets = const {},
-    this.useSearchApi = false,
     this.hasNullChoose = false,
   });
 
   final String? selectedAssetId;
   final AssetSelectCallback onTap;
 
-  final AssetSourceLoader? source;
-
-  /// The assets which was ignore and not show in the list.
-  final Set<String> ignoreAssets;
-
-  final bool useSearchApi;
+  final AssetSourceLoader source;
 
   final VoidCallback onCancelPressed;
 
@@ -115,18 +313,10 @@ class AssetSelectionListWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final faitCurrency = useAccountFaitCurrency();
-    final assetResults = useMemoizedStream(() {
-          if (source != null) {
-            return source!.call();
-          }
-          return context.appServices
-              .assetResults(faitCurrency)
-              .watch()
-              .map((event) => event
-                ..removeWhere(
-                  (element) => ignoreAssets.contains(element.assetId),
-                ));
-        }, keys: [ignoreAssets, source, faitCurrency]).data ??
+    final assetResults = useMemoizedStream(
+          () => source(faitCurrency),
+          keys: [source, faitCurrency],
+        ).data ??
         const [];
 
     final keywordStreamController = useStreamController<String>();
@@ -153,35 +343,10 @@ class AssetSelectionListWidget extends HookWidget {
                   e.name.containsIgnoreCase(filterKeyword) ||
                   (e.chainName?.containsIgnoreCase(filterKeyword) ?? false),
             )
-            .toList();
+            .sortedByKeyword(filterKeyword);
       },
       [filterKeyword, assetResults],
     );
-    useEffect(() {
-      if (!useSearchApi) {
-        return null;
-      }
-      // ignore: strict_raw_type
-      CancelableOperation? lastRequest;
-      final listen = keywordStream
-          .where((event) => event.isNotEmpty)
-          .debounceTime(const Duration(milliseconds: 500))
-          .map(
-        (String keyword) {
-          debugPrint('search keyword: $keyword');
-          return CancelableOperation.fromFuture(
-            context.appServices.searchAndUpdateAsset(keyword),
-          );
-        },
-      ).listen((event) {
-        lastRequest?.cancel();
-        lastRequest = event;
-      });
-      return () {
-        listen.cancel();
-        lastRequest?.cancel();
-      };
-    }, [keywordStream, useSearchApi]);
 
     return SizedBox(
       height: MediaQuery.of(context).size.height - 100,
@@ -338,3 +503,30 @@ class _Item extends StatelessWidget {
 }
 
 typedef AssetSelectCallback = void Function(AssetResult?);
+
+extension _AssetListSort on Iterable<AssetResult> {
+  // sort asset result by keyword the same as AssetDao.searchAssetResults.
+  List<AssetResult> sortedByKeyword(String keyword) => sortedBy<num>(
+        (e) {
+          if (e.symbol.equalsIgnoreCase(keyword)) {
+            return 1;
+          }
+          if (e.name.equalsIgnoreCase(keyword)) {
+            return 1;
+          }
+          if (e.symbol.startsWithIgnoreCase(keyword)) {
+            return 100 + e.symbol.length;
+          }
+          if (e.name.startsWithIgnoreCase(keyword)) {
+            return 100 + e.name.length;
+          }
+          if (e.symbol.containsIgnoreCase(keyword)) {
+            return 200 + e.symbol.length;
+          }
+          if (e.name.containsIgnoreCase(keyword)) {
+            return 200 + e.name.length;
+          }
+          return 1000;
+        },
+      );
+}

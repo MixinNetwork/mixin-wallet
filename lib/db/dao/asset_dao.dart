@@ -103,6 +103,16 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
         (_, __, ___, f) => maxLimit,
       );
 
+  Selectable<AssetResult> assetResultsWithBalance(String currentFiat) =>
+      db.assetResults(
+        currentFiat,
+        (asset, _, ae, f) =>
+            asset.balance.isNotNull() &
+            asset.balance.isNotIn(const ['0', '0.0']),
+        defaultOrderBy,
+        (_, __, ___, f) => maxLimit,
+      );
+
   Selectable<AssetResult> assetResultsNotHidden(String currentFiat) =>
       db.assetResults(
         currentFiat,

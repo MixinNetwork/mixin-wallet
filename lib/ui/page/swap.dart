@@ -413,7 +413,7 @@ class _AssetItem extends HookWidget {
             Navigator.pop(context, asset);
           },
           selectedAssetId: asset.value.assetId,
-          source: () => Stream.value(supportedAssets),
+          source: (faitCurrency) => Stream.value(supportedAssets),
           onCancelPressed: () => Navigator.pop(context, null),
         ),
       );

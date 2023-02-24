@@ -5,12 +5,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../../db/mixin_database.dart';
 import '../../../service/account_provider.dart';
 import '../../../service/profile/profile_manager.dart';
-import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
 import '../../router/mixin_routes.dart';
 import '../../widget/asset_selection_list_widget.dart';
 import '../../widget/buttons.dart';
 import '../../widget/chart_assets.dart';
+import '../../widget/mixin_bottom_sheet.dart';
 
 class Header extends HookWidget {
   const Header({
@@ -112,9 +112,12 @@ class _ButtonBar extends StatelessWidget {
             HeaderButton.text(
               text: context.l10n.send,
               onTap: () async {
-                final asset = await showAssetSelectionBottomSheet(
+                final asset = await showMixinBottomSheet<AssetResult>(
                   context: context,
-                  initialSelected: lastSelectedAddress,
+                  isScrollControlled: true,
+                  builder: (context) => SendAssetSelectionBottomSheet(
+                    initialSelected: lastSelectedAddress,
+                  ),
                 );
                 if (asset == null) {
                   return;
@@ -126,10 +129,12 @@ class _ButtonBar extends StatelessWidget {
             HeaderButton.text(
               text: context.l10n.receive,
               onTap: () async {
-                final asset = await showAssetSelectionBottomSheet(
+                final asset = await showMixinBottomSheet<AssetResult>(
                   context: context,
-                  initialSelected: lastSelectedAddress,
-                  ignoreAssets: const {omniUSDT},
+                  isScrollControlled: true,
+                  builder: (context) => ReceiveAssetSelectionBottomSheet(
+                    initialSelected: lastSelectedAddress,
+                  ),
                 );
                 if (asset == null) {
                   return;

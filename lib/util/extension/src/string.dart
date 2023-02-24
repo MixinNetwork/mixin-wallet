@@ -11,6 +11,9 @@ extension StringExtension on String {
   bool equalsIgnoreCase(String? secondString) =>
       secondString != null && toLowerCase() == secondString.toLowerCase();
 
+  bool startsWithIgnoreCase(String secondString) =>
+      toLowerCase().startsWith(secondString.toLowerCase());
+
   String formatAddress() {
     if (length <= 10) {
       return this;

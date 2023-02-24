@@ -388,6 +388,7 @@ class _DateTimeFilterWidget extends StatelessWidget {
   const _DateTimeFilterWidget({
     required this.filter,
   });
+
   final TransactionFilter filter;
 
   @override
@@ -544,6 +545,8 @@ class _AssetsFilterWidget extends HookWidget {
             Navigator.pop(context, asset.assetId);
           },
           onCancelPressed: () => Navigator.pop(context),
+          source: (String faitCurrency) =>
+              context.appServices.assetResults(faitCurrency).watch(),
         ),
       );
       if (selected == null) {

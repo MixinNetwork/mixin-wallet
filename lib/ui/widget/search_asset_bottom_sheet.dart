@@ -51,7 +51,13 @@ class SearchAssetBottomSheet extends HookWidget {
               index: hasKeyword ? 1 : 0,
               children: [
                 const _EmptyKeywordAssetList(),
-                _SearchAssetList(keywordStream: keywordStream),
+                SearchAssetList(
+                  keywordStream: keywordStream,
+                  itemBuilder: (context, asset) => _Item(
+                    data: asset,
+                    replaceHistory: true,
+                  ),
+                ),
               ],
             ),
           ),
@@ -141,12 +147,22 @@ class _SubTitle extends StatelessWidget {
       );
 }
 
-class _SearchAssetList extends HookWidget {
-  const _SearchAssetList({
+typedef AssetItemBuilder = Widget Function(
+  BuildContext context,
+  AssetResult asset,
+);
+
+class SearchAssetList extends HookWidget {
+  const SearchAssetList({
     required this.keywordStream,
+    required this.itemBuilder,
+    super.key,
+    this.ignoreAssets = const {},
   });
 
   final Stream<String> keywordStream;
+  final AssetItemBuilder itemBuilder;
+  final Set<String> ignoreAssets;
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +206,12 @@ class _SearchAssetList extends HookWidget {
       if (keyword?.isEmpty ?? true) return Stream.value(<AssetResult>[]);
       return context.appServices
           .searchAssetResults(keyword!, faitCurrency)
-          .watch();
+          .watch()
+          .map(
+            (event) => event
+                .where((element) => !ignoreAssets.contains(element.assetId))
+                .toList(),
+          );
     }, keys: [keyword]);
 
     final searchList = searchResult.data ?? const [];
@@ -209,10 +230,8 @@ class _SearchAssetList extends HookWidget {
       builder: (context, controller) => ListView.builder(
         controller: controller,
         itemCount: searchList.length,
-        itemBuilder: (BuildContext context, int index) => _Item(
-          data: searchList[index],
-          replaceHistory: true,
-        ),
+        itemBuilder: (BuildContext context, int index) =>
+            itemBuilder(context, searchList[index]),
       ),
     );
   }
