@@ -18,6 +18,7 @@ import '../../util/transak.dart';
 import '../../wyre/wyre_constants.dart';
 import '../router/mixin_routes.dart';
 import 'chain_network_label.dart';
+import 'mixin_bottom_sheet.dart';
 import 'search_asset_bottom_sheet.dart';
 import 'search_header_widget.dart';
 import 'symbol.dart';
@@ -61,136 +62,64 @@ class BuyAssetSelectionBottomSheet extends StatelessWidget {
       );
 }
 
-class SendAssetSelectionBottomSheet extends HookWidget {
-  const SendAssetSelectionBottomSheet({
-    super.key,
-    this.initialSelected,
-  });
-
-  final String? initialSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final faitCurrency = useAccountFaitCurrency();
-
-    final assetsSnapshot = useMemoizedStream(
-        () => context.mixinDatabase.assetDao
+Future<AssetResult?> showSendAssetSelectionBottomSheet(
+  BuildContext context, {
+  required VoidCallback onDepositPressed,
+  String? initialSelected,
+}) =>
+    showMixinBottomSheet<AssetResult>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => AssetSelectionListWidget(
+        selectedAssetId: initialSelected,
+        onTap: (asset) => Navigator.pop(context, asset),
+        onCancelPressed: () => Navigator.pop(context),
+        source: (faitCurrency) => context.mixinDatabase.assetDao
             .assetResultsWithBalance(faitCurrency)
             .watch(),
-        keys: [faitCurrency]);
-
-    final keywordStreamController = useStreamController<String>();
-    final keywordStream = useMemoized(
-      () => keywordStreamController.stream.map((e) => e.trim()).distinct(),
-      [keywordStreamController],
-    );
-    final filterKeyword = useMemoizedStream(() => keywordStream.debounceTime(
-              const Duration(milliseconds: 100),
-            )).data ??
-        '';
-
-    final assets = assetsSnapshot.data ?? const [];
-
-    final filterList = useMemoized(
-      () {
-        if (filterKeyword.isEmpty) {
-          return assets;
-        }
-        return assets
-            .where((e) =>
-                e.symbol.containsIgnoreCase(filterKeyword) ||
-                e.name.containsIgnoreCase(filterKeyword))
-            .sortedBy<num>(
-          (e) {
-            if (e.name.equalsIgnoreCase(filterKeyword)) {
-              return 1;
-            }
-            if (e.symbol.equalsIgnoreCase(filterKeyword)) {
-              return 1;
-            }
-            if (e.name.containsIgnoreCase(filterKeyword)) {
-              return 10;
-            }
-            if (e.symbol.containsIgnoreCase(filterKeyword)) {
-              return 10;
-            }
-            return 100;
-          },
-        );
-      },
-      [assets, filterKeyword],
-    );
-
-    final Widget body;
-
-    if (assetsSnapshot.isNoneOrWaiting) {
-      body = Center(
-        child: CircularProgressIndicator(
-          color: context.colorScheme.captionIcon,
-        ),
-      );
-    } else if (assets.isEmpty && filterKeyword.isEmpty) {
-      body = Center(
-          child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Text(context.l10n.dontHaveAssets),
-          ),
-          const SizedBox(height: 12),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: MixinText(
-              context.l10n.deposit,
-              style: TextStyle(
-                color: context.colorScheme.accent,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+        emptyBuilder: (context) => Center(
+            child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Text(context.l10n.dontHaveAssets),
+            ),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                onDepositPressed();
+              },
+              child: MixinText(
+                context.l10n.deposit,
+                style: TextStyle(
+                  color: context.colorScheme.accent,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-          ),
-        ],
-      ));
-    } else {
-      body = NativeScrollBuilder(
-        builder: (context, controller) => ListView.builder(
-          controller: controller,
-          itemCount: filterList.length,
-          itemBuilder: (BuildContext context, int index) => _Item(
-            asset: filterList[index],
-            onTap: (asset) => Navigator.pop(context, asset),
-            selectedAssetId: initialSelected,
-          ),
-        ),
-      );
-    }
-
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - 100,
-      child: Column(
-        children: [
-          const SizedBox(height: 20),
-          Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-              child: SearchHeaderWidget(
-                hintText: context.l10n.search,
-                onChanged: keywordStreamController.add,
-                onCancelPressed: () => Navigator.pop(context),
-              )),
-          const SizedBox(height: 10),
-          Expanded(child: body),
-        ],
+          ],
+        )),
       ),
     );
-  }
-}
 
-class ReceiveAssetSelectionBottomSheet extends HookWidget {
-  const ReceiveAssetSelectionBottomSheet({
-    super.key,
+Future<AssetResult?> showAssetWithSearchSelectionBottomSheet(
+  BuildContext context, {
+  String? initialSelected,
+}) =>
+    showMixinBottomSheet<AssetResult>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => _AssetWithNetworkSearchSelectionBottomSheet(
+        initialSelected: initialSelected,
+      ),
+    );
+
+class _AssetWithNetworkSearchSelectionBottomSheet extends HookWidget {
+  const _AssetWithNetworkSearchSelectionBottomSheet({
     this.initialSelected,
   });
 
@@ -298,6 +227,7 @@ class AssetSelectionListWidget extends HookWidget {
     super.key,
     this.selectedAssetId,
     this.hasNullChoose = false,
+    this.emptyBuilder,
   });
 
   final String? selectedAssetId;
@@ -309,6 +239,8 @@ class AssetSelectionListWidget extends HookWidget {
 
   /// Show a null choose item in the list.
   final bool hasNullChoose;
+
+  final WidgetBuilder? emptyBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -348,6 +280,40 @@ class AssetSelectionListWidget extends HookWidget {
       [filterKeyword, assetResults],
     );
 
+    final Widget body;
+    if (assetResults.isEmpty && filterKeyword.isEmpty) {
+      body = emptyBuilder?.call(context) ?? const SizedBox.shrink();
+    } else {
+      body = NativeScrollBuilder(
+        builder: (context, controller) => ListView.builder(
+          controller: controller,
+          itemCount: hasNullChoose ? filterList.length + 1 : filterList.length,
+          itemBuilder: (BuildContext context, int index) {
+            if (!hasNullChoose) {
+              return _Item(
+                asset: filterList[index],
+                selectedAssetId: selectedAssetId,
+                onTap: onTap,
+              );
+            } else {
+              if (index == 0) {
+                return _NoChooseItem(
+                  onTap: () => onTap(null),
+                  selected: selectedAssetId == null,
+                );
+              } else {
+                return _Item(
+                  asset: filterList[index - 1],
+                  selectedAssetId: selectedAssetId,
+                  onTap: onTap,
+                );
+              }
+            }
+          },
+        ),
+      );
+    }
+
     return SizedBox(
       height: MediaQuery.of(context).size.height - 100,
       child: Column(
@@ -361,37 +327,7 @@ class AssetSelectionListWidget extends HookWidget {
                 onCancelPressed: onCancelPressed,
               )),
           const SizedBox(height: 10),
-          Expanded(
-            child: NativeScrollBuilder(
-              builder: (context, controller) => ListView.builder(
-                controller: controller,
-                itemCount:
-                    hasNullChoose ? filterList.length + 1 : filterList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  if (!hasNullChoose) {
-                    return _Item(
-                      asset: filterList[index],
-                      selectedAssetId: selectedAssetId,
-                      onTap: onTap,
-                    );
-                  } else {
-                    if (index == 0) {
-                      return _NoChooseItem(
-                        onTap: () => onTap(null),
-                        selected: selectedAssetId == null,
-                      );
-                    } else {
-                      return _Item(
-                        asset: filterList[index - 1],
-                        selectedAssetId: selectedAssetId,
-                        onTap: onTap,
-                      );
-                    }
-                  }
-                },
-              ),
-            ),
-          ),
+          Expanded(child: body),
         ],
       ),
     );
