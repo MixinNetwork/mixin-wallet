@@ -31,7 +31,6 @@ bool _isWalletScope(String scope) => {
       _scopes[0],
       _scopes[4],
       _scopes[5],
-      _scopes[10],
     }.contains(scope);
 
 Tuple2<String, String> _generateScopeDescription(
