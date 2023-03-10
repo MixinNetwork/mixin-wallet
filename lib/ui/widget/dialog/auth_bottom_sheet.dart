@@ -142,19 +142,11 @@ class _AuthBottomSheet extends HookWidget {
                   ),
                   const SizedBox(height: 16),
                   Expanded(
-                    child: Material(
-                      color: const Color(0xFFF6F7FA),
-                      borderRadius: BorderRadius.circular(8),
-                      child: ListView.builder(
-                        itemCount: scopes.length,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        itemBuilder: (context, index) => _ScopeCheckItem(
-                          scope: scopes[index],
-                          checked: checkedScopes.value.contains(scopes[index]),
-                          onChanged: (scope, check) =>
-                              onCheckedChange(scope, check: check),
-                        ),
-                      ),
+                    child: _ScopeItemList(
+                      scopes: scopes,
+                      checkedScopes: checkedScopes.value,
+                      onChanged: (scope, check) =>
+                          onCheckedChange(scope, check: check),
                     ),
                   ),
                 ],
@@ -288,18 +280,10 @@ class _GroupScopeWidget extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: Material(
-                color: const Color(0xFFF6F7FA),
-                borderRadius: BorderRadius.circular(8),
-                child: ListView.builder(
-                  itemCount: scopes.length,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  itemBuilder: (context, index) => _ScopeCheckItem(
-                    scope: scopes[index],
-                    checked: checkedScopes.contains(scopes[index]),
-                    onChanged: onChanged,
-                  ),
-                ),
+              child: _ScopeItemList(
+                scopes: scopes,
+                checkedScopes: checkedScopes,
+                onChanged: onChanged,
               ),
             ),
             const SizedBox(height: 32),
@@ -313,60 +297,106 @@ class _GroupScopeWidget extends StatelessWidget {
       );
 }
 
+class _ScopeItemList extends StatelessWidget {
+  const _ScopeItemList({
+    required this.scopes,
+    required this.checkedScopes,
+    required this.onChanged,
+  });
+
+  final List<String> scopes;
+  final Set<String> checkedScopes;
+  final void Function(String scope, bool checked) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = <Widget>[];
+    for (var i = 0; i < scopes.length; i++) {
+      final scope = scopes[i];
+      final checked = checkedScopes.contains(scope);
+      final topRounded = i == 0;
+      final bottomRounded = i == scopes.length - 1;
+      items.add(_ScopeCheckItem(
+        scope: scope,
+        checked: checked,
+        onChanged: onChanged,
+        topRounded: topRounded,
+        bottomRounded: bottomRounded,
+      ));
+    }
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      children: items,
+    );
+  }
+}
+
 class _ScopeCheckItem extends StatelessWidget {
   const _ScopeCheckItem({
     required this.scope,
     required this.checked,
     required this.onChanged,
+    this.topRounded = false,
+    this.bottomRounded = false,
   });
 
   final String scope;
   final bool checked;
   final void Function(String scope, bool checked) onChanged;
+  final bool topRounded;
+  final bool bottomRounded;
 
   @override
   Widget build(BuildContext context) {
     final isProfileScope = scope == _scopes[0];
     final description = _generateScopeDescription(context, scope);
-    return InkWell(
-      borderRadius: BorderRadius.circular(8),
-      onTap: isProfileScope
-          ? null
-          : () {
-              onChanged(scope, !checked);
-            },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: _IconCheck(selected: isProfileScope ? null : checked),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    description.item1,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: context.colorScheme.primaryText,
-                    ),
-                  ),
-                  Text(
-                    description.item2.overflow,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: context.colorScheme.secondaryText,
-                    ),
-                  ),
-                ],
+    final borderRadius = BorderRadius.vertical(
+      top: topRounded ? const Radius.circular(12) : Radius.zero,
+      bottom: bottomRounded ? const Radius.circular(12) : Radius.zero,
+    );
+    return Material(
+      borderRadius: borderRadius,
+      color: const Color(0xFFF6F7FA),
+      child: InkWell(
+        borderRadius: borderRadius,
+        onTap: isProfileScope
+            ? null
+            : () {
+                onChanged(scope, !checked);
+              },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: _IconCheck(selected: isProfileScope ? null : checked),
               ),
-            ),
-          ],
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      description.item1,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: context.colorScheme.primaryText,
+                      ),
+                    ),
+                    Text(
+                      description.item2,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: context.colorScheme.secondaryText,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
