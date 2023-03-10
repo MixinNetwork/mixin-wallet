@@ -267,5 +267,15 @@
   "changePinSuccessfully": "Change PIN successfully",
   "invalidPayUrl": "Invalid Pay URL: {url}",
   "externalPayNoAssetFound": "No asset found, please deposit to your wallet first.",
-  "dontHaveAssets": "Don't have assets?"
+  "dontHaveAssets": "Don't have assets?",
+  "requestAuthorization": "Request Authorization",
+  "wallet": "Wallet",
+  "readYourPublicProfile": "Read your public profile",
+  "allowBotAccessProfile": "Allow bot to access your public profile such as name, Mixin ID, avatar, etc.",
+  "readYourAssets": "Read your assets",
+  "allowBotAccessAssets": "Allow bot to access your asset list and balance.",
+  "readYourSnapshots": "Read your snapshots",
+  "allowBotAccessSnapshots": "Allow bot to access your transfer records, including deposits and withdrawals.",
+  "readYourNFTs": "Read your NFTs",
+  "allowBotAccessNFTs": "Allow bot to access your NFT list and balance."
 }

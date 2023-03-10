@@ -98,6 +98,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "addressSearchHint": MessageLookupByLibrary.simpleMessage("标题，地址"),
         "allAssets": MessageLookupByLibrary.simpleMessage("所有币种"),
         "allTransactions": MessageLookupByLibrary.simpleMessage("所有交易"),
+        "allowBotAccessAssets":
+            MessageLookupByLibrary.simpleMessage("允许机器人查看你的所有资产和余额。"),
+        "allowBotAccessNFTs":
+            MessageLookupByLibrary.simpleMessage("允许机器人访问你的 NFT 列表和余额。"),
+        "allowBotAccessProfile": MessageLookupByLibrary.simpleMessage(
+            "允许机器人访问你的个人资料，如：名字、Mixin ID、头像等。"),
+        "allowBotAccessSnapshots":
+            MessageLookupByLibrary.simpleMessage("允许机器人访问你的转账记录，包括充值和提现。"),
         "alreadyHidden": m1,
         "alreadyShown": m2,
         "amount": MessageLookupByLibrary.simpleMessage("金额"),
@@ -329,6 +337,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "pinUnsafe": MessageLookupByLibrary.simpleMessage("PIN 过于简单不安全"),
         "raw": MessageLookupByLibrary.simpleMessage("其他"),
         "rawTransaction": MessageLookupByLibrary.simpleMessage("交易原始值"),
+        "readYourAssets": MessageLookupByLibrary.simpleMessage("读取你的所有资产"),
+        "readYourNFTs": MessageLookupByLibrary.simpleMessage("读取你的 NFT 列表"),
+        "readYourPublicProfile":
+            MessageLookupByLibrary.simpleMessage("读取你的个人资料"),
+        "readYourSnapshots": MessageLookupByLibrary.simpleMessage("读取你的转账记录"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("重新授权"),
         "rebate": MessageLookupByLibrary.simpleMessage("退款"),
         "receive": MessageLookupByLibrary.simpleMessage("接收"),
@@ -337,6 +350,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "recentSearches": MessageLookupByLibrary.simpleMessage("最近搜索"),
         "refund": MessageLookupByLibrary.simpleMessage("退回"),
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("取消授权"),
+        "requestAuthorization": MessageLookupByLibrary.simpleMessage("请求授权"),
         "requestPayment": MessageLookupByLibrary.simpleMessage("请求付款"),
         "requestPaymentAmount": m20,
         "requestPaymentGeneratedTips":
@@ -404,6 +418,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "verifyOldPin": MessageLookupByLibrary.simpleMessage("验证旧的 PIN"),
         "viewEmergencyContact": MessageLookupByLibrary.simpleMessage("查看紧急联系人"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),
+        "wallet": MessageLookupByLibrary.simpleMessage("钱包"),
         "walletTransactionCurrentValue": m23,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),

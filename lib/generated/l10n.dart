@@ -2743,6 +2743,106 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Request Authorization`
+  String get requestAuthorization {
+    return Intl.message(
+      'Request Authorization',
+      name: 'requestAuthorization',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wallet`
+  String get wallet {
+    return Intl.message(
+      'Wallet',
+      name: 'wallet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Read your public profile`
+  String get readYourPublicProfile {
+    return Intl.message(
+      'Read your public profile',
+      name: 'readYourPublicProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow bot to access your public profile such as name, Mixin ID, avatar, etc.`
+  String get allowBotAccessProfile {
+    return Intl.message(
+      'Allow bot to access your public profile such as name, Mixin ID, avatar, etc.',
+      name: 'allowBotAccessProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Read your assets`
+  String get readYourAssets {
+    return Intl.message(
+      'Read your assets',
+      name: 'readYourAssets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow bot to access your asset list and balance.`
+  String get allowBotAccessAssets {
+    return Intl.message(
+      'Allow bot to access your asset list and balance.',
+      name: 'allowBotAccessAssets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Read your snapshots`
+  String get readYourSnapshots {
+    return Intl.message(
+      'Read your snapshots',
+      name: 'readYourSnapshots',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow bot to access your transfer records, including deposits and withdrawals.`
+  String get allowBotAccessSnapshots {
+    return Intl.message(
+      'Allow bot to access your transfer records, including deposits and withdrawals.',
+      name: 'allowBotAccessSnapshots',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Read your NFTs`
+  String get readYourNFTs {
+    return Intl.message(
+      'Read your NFTs',
+      name: 'readYourNFTs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow bot to access your NFT list and balance.`
+  String get allowBotAccessNFTs {
+    return Intl.message(
+      'Allow bot to access your NFT list and balance.',
+      name: 'allowBotAccessNFTs',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

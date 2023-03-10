@@ -1,7 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../db/web/construct_db.dart';
@@ -10,19 +9,15 @@ import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/logger.dart';
 import '../../util/native_scroll.dart';
-import '../../util/pay/external_transfer_uri_parser.dart';
 import '../../util/r.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/avatar.dart';
-import '../widget/dialog/transfer_bottom_sheet.dart';
 import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
 import '../widget/mixin_bottom_sheet.dart';
-import '../widget/qrcode_scanner.dart';
-import '../widget/toast.dart';
+import '../widget/scan_button.dart';
 import 'home/header.dart';
 import 'home/tab_coins.dart';
 import 'home/tab_collectibles.dart';
@@ -149,7 +144,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         if (context.watch<AuthProvider>().isLoginByCredential)
-          const _ScanButton(),
+          const ScanButton(),
         ActionButton(
           name: R.resourcesSettingSvg,
           size: 24,
@@ -162,85 +157,6 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(48);
-}
-
-class _ScanButton extends StatelessWidget {
-  const _ScanButton();
-
-  @override
-  Widget build(BuildContext context) => ActionButton(
-        name: R.resourcesIcScanBlackSvg,
-        size: 24,
-        onTap: () async {
-          final text = await scanTextFromQrcode(context: context);
-          if (text == null) {
-            return;
-          }
-          d('scan text: $text');
-          final loadingEntry = showLoading();
-          ExternalTransfer? result;
-          try {
-            result = await parseExternalTransferUri(
-              text,
-              getAddressFee: (assetId, destination) async {
-                final api = context.appServices.client.accountApi;
-                final resp = await api.getExternalAddressFee(
-                    assetId: assetId, destination: destination);
-                return resp.data;
-              },
-              findAssetIdByAssetKey: (assetKey) async {
-                final assetId = await context.mixinDatabase.assetDao
-                    .findAssetIdByAssetKey(assetKey);
-                return assetId;
-              },
-              getAssetPrecisionById: (assetId) async {
-                final api = context.appServices.client.assetApi;
-                final response = await api.getAssetPrecisionById(assetId);
-                return response.data;
-              },
-            );
-          } on ParseExternalTransferUriException catch (e) {
-            loadingEntry.dismiss();
-
-            final String message;
-            if (e is NoAssetFound) {
-              message = context.l10n.externalPayNoAssetFound;
-            } else {
-              message = context.l10n.invalidPayUrl(text);
-            }
-            showErrorToast(message);
-            return;
-          } catch (error, stacktrace) {
-            loadingEntry.dismiss();
-            e('parseExternalTransferUri error. $error $stacktrace');
-            showErrorToast(error.toDisplayString(context));
-            return;
-          }
-
-          d('parseExternalTransferUri result. $result');
-
-          final asset =
-              await context.appServices.findOrSyncAsset(result.assetId);
-          if (asset == null) {
-            loadingEntry.dismiss();
-            showErrorToast(context.l10n.noAsset);
-            return;
-          }
-          loadingEntry.dismiss();
-          final traceId = const Uuid().v4();
-          final ret = await showTransferToExternalUrlBottomSheet(
-            context: context,
-            asset: asset,
-            transfer: result,
-            traceId: traceId,
-          );
-          if (!ret) {
-            return;
-          }
-          // transaction success, to asset detail page.
-          context.push(assetDetailPath.toUri({'id': asset.assetId}));
-        },
-      );
 }
 
 extension _SortAssets on List<AssetResult> {

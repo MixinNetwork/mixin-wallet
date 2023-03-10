@@ -32,6 +32,9 @@ class R {
   /// {@macro assets_generator.resourcesAuthBgWebp.preview}
   static const String resourcesAuthBgWebp = 'resources/auth_bg.webp';
 
+  /// {@macro assets_generator.resourcesAuthWalletSvg.preview}
+  static const String resourcesAuthWalletSvg = 'resources/auth_wallet.svg';
+
   /// {@macro assets_generator.resourcesBackBlackSvg.preview}
   static const String resourcesBackBlackSvg = 'resources/back_black.svg';
 
@@ -232,6 +235,9 @@ class R {
 
   /// {@macro assets_generator.resourcesScanningSvg.preview}
   static const String resourcesScanningSvg = 'resources/scanning.svg';
+
+  /// {@macro assets_generator.resourcesSelectedSvg.preview}
+  static const String resourcesSelectedSvg = 'resources/selected.svg';
 
   /// {@macro assets_generator.resourcesSendSvg.preview}
   static const String resourcesSendSvg = 'resources/send.svg';
