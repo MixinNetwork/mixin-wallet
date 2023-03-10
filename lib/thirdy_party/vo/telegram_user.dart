@@ -19,7 +19,7 @@ class TelegramUser with EquatableMixin {
   @JsonKey(name: 'user_id')
   final int userId;
 
-  @JsonKey(name: 'mixin_id')
+  @JsonKey(name: 'mixin_user_id')
   final String mixinId;
 
   @JsonKey(name: 'private_key')
