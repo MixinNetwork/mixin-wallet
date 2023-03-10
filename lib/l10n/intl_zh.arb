@@ -263,5 +263,16 @@
   "changePinSuccessfully": "PIN 修改成功",
   "invalidPayUrl": "支付链接无法识别：{url}",
   "externalPayNoAssetFound": "无法找到该资产，请先充值。",
-  "dontHaveAssets": "没有资产？"
+  "dontHaveAssets": "没有资产？",
+  "requestAuthorization": "请求授权",
+  "wallet": "钱包",
+  "readYourPublicProfile": "读取你的个人资料",
+  "allowBotAccessProfile": "允许机器人访问你的个人资料，如：名字、Mixin ID、头像等。",
+  "readYourAssets": "读取你的所有资产",
+  "allowBotAccessAssets": "允许机器人查看你的所有资产和余额。",
+  "readYourSnapshots": "读取你的转账记录",
+  "allowBotAccessSnapshots": "允许机器人访问你的转账记录，包括充值和提现。",
+  "readYourNFTs": "读取你的 NFT 列表",
+  "allowBotAccessNFTs": "允许机器人访问你的 NFT 列表和余额。",
+  "authorized": "已授权"
 }

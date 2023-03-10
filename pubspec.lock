@@ -556,10 +556,10 @@ packages:
     dependency: "direct main"
     description:
       name: mixin_bot_sdk_dart
-      sha256: e663989c5b294de6fdd154a16aea509c20c72abab33083943b9387cdb40bcc79
+      sha256: c8dc06b879638b7c481df47754dd5736a88f5444ab366eb0be4b8c69c40ed215
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.15"
+    version: "0.3.16"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:

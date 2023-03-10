@@ -108,6 +108,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "allAssets": MessageLookupByLibrary.simpleMessage("All assets"),
         "allTransactions":
             MessageLookupByLibrary.simpleMessage("All Transactions"),
+        "allowBotAccessAssets": MessageLookupByLibrary.simpleMessage(
+            "Allow bot to access your asset list and balance."),
+        "allowBotAccessNFTs": MessageLookupByLibrary.simpleMessage(
+            "Allow bot to access your NFT list and balance."),
+        "allowBotAccessProfile": MessageLookupByLibrary.simpleMessage(
+            "Allow bot to access your public profile such as name, Mixin ID, avatar, etc."),
+        "allowBotAccessSnapshots": MessageLookupByLibrary.simpleMessage(
+            "Allow bot to access your transfer records, including deposits and withdrawals."),
         "alreadyHidden": m1,
         "alreadyShown": m2,
         "amount": MessageLookupByLibrary.simpleMessage("Amount"),
@@ -123,6 +131,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "authTips": MessageLookupByLibrary.simpleMessage(
             "An open source cryptocurrency wallet"),
         "authorize": MessageLookupByLibrary.simpleMessage("Sign in with Mixin"),
+        "authorized": MessageLookupByLibrary.simpleMessage("Authorized"),
         "averageArrival": m3,
         "balance": MessageLookupByLibrary.simpleMessage("BALANCE"),
         "balanceOfBtc": m4,
@@ -369,6 +378,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "rawTransaction":
             MessageLookupByLibrary.simpleMessage("Raw Transaction"),
         "rawTransfer": MessageLookupByLibrary.simpleMessage("Raw transfer"),
+        "readYourAssets":
+            MessageLookupByLibrary.simpleMessage("Read your assets"),
+        "readYourNFTs": MessageLookupByLibrary.simpleMessage("Read your NFTs"),
+        "readYourPublicProfile":
+            MessageLookupByLibrary.simpleMessage("Read your public profile"),
+        "readYourSnapshots":
+            MessageLookupByLibrary.simpleMessage("Read your snapshots"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
@@ -378,6 +394,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Recent searches"),
         "refund": MessageLookupByLibrary.simpleMessage("Refund"),
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("Deauthorize"),
+        "requestAuthorization":
+            MessageLookupByLibrary.simpleMessage("Request Authorization"),
         "requestPayment":
             MessageLookupByLibrary.simpleMessage("Request payment"),
         "requestPaymentAmount": m20,
@@ -460,6 +478,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("View emergency contact"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
+        "wallet": MessageLookupByLibrary.simpleMessage("Wallet"),
         "walletTransactionCurrentValue": m23,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
