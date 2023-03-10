@@ -30,7 +30,6 @@ const _scopes = [
 bool _isWalletScope(String scope) => {
       _scopes[0],
       _scopes[4],
-      _scopes[5],
     }.contains(scope);
 
 Tuple2<String, String> _generateScopeDescription(
