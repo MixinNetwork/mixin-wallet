@@ -131,6 +131,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "authTips": MessageLookupByLibrary.simpleMessage(
             "An open source cryptocurrency wallet"),
         "authorize": MessageLookupByLibrary.simpleMessage("Sign in with Mixin"),
+        "authorized": MessageLookupByLibrary.simpleMessage("Authorized"),
         "averageArrival": m3,
         "balance": MessageLookupByLibrary.simpleMessage("BALANCE"),
         "balanceOfBtc": m4,

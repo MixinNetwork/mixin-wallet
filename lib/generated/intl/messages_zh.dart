@@ -120,6 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "authTips":
             MessageLookupByLibrary.simpleMessage("你知道吗？Mixin 是一个开源的加密钱包"),
         "authorize": MessageLookupByLibrary.simpleMessage("使用 Mixin 登录"),
+        "authorized": MessageLookupByLibrary.simpleMessage("已授权"),
         "balance": MessageLookupByLibrary.simpleMessage("余额"),
         "buy": MessageLookupByLibrary.simpleMessage("购买"),
         "buyDisclaimer": MessageLookupByLibrary.simpleMessage(

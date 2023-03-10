@@ -2843,6 +2843,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Authorized`
+  String get authorized {
+    return Intl.message(
+      'Authorized',
+      name: 'authorized',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

@@ -277,5 +277,6 @@
   "readYourSnapshots": "Read your snapshots",
   "allowBotAccessSnapshots": "Allow bot to access your transfer records, including deposits and withdrawals.",
   "readYourNFTs": "Read your NFTs",
-  "allowBotAccessNFTs": "Allow bot to access your NFT list and balance."
+  "allowBotAccessNFTs": "Allow bot to access your NFT list and balance.",
+  "authorized": "Authorized"
 }

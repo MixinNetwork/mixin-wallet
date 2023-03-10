@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:tuple/tuple.dart';
 
 import '../../../generated/r.dart';
+import '../../../service/profile/pin_session.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
 import '../buttons.dart';
 import '../mixin_bottom_sheet.dart';
 import '../pin.dart';
+import '../toast.dart';
 
 const _scopes = [
   'PROFILE:READ',
@@ -128,41 +131,52 @@ class _AuthBottomSheet extends HookWidget {
 
     if (inputPinMode.value) {
       return PinVerifyDialogScaffold(
-        header: Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                _AuthHeader(
-                  name: name,
-                  number: number,
-                  iconUrl: iconUrl,
-                ),
-                const SizedBox(height: 16),
-                Expanded(
-                  child: Material(
-                    color: const Color(0xFFF6F7FA),
-                    borderRadius: BorderRadius.circular(8),
-                    child: ListView.builder(
-                      itemCount: scopes.length,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      itemBuilder: (context, index) => _ScopeCheckItem(
-                        scope: scopes[index],
-                        checked: checkedScopes.value.contains(scopes[index]),
-                        onChanged: (scope, check) =>
-                            onCheckedChange(scope, check: check),
+          header: Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  _AuthHeader(
+                    name: name,
+                    number: number,
+                    iconUrl: iconUrl,
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: Material(
+                      color: const Color(0xFFF6F7FA),
+                      borderRadius: BorderRadius.circular(8),
+                      child: ListView.builder(
+                        itemCount: scopes.length,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        itemBuilder: (context, index) => _ScopeCheckItem(
+                          scope: scopes[index],
+                          checked: checkedScopes.value.contains(scopes[index]),
+                          onChanged: (scope, check) =>
+                              onCheckedChange(scope, check: check),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        tip: null,
-        onErrorConfirmed: null,
-        onVerified: (context, pin) async {},
-      );
+          tip: null,
+          onErrorConfirmed: null,
+          onVerified: (context, pin) async {
+            Navigator.pop(context);
+            showSuccessToast(context.l10n.authorized);
+          },
+          verification: (context, pin) async {
+            await context.appServices.client.oauthApi.authorize(
+              sdk.AuthorizeRequest(
+                authorizationId: authId,
+                scopes: checkedScopes.value.toList(),
+                pin: encryptPin(context, pin),
+              ),
+            );
+          });
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
