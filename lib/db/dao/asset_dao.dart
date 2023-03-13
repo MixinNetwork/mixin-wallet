@@ -8,7 +8,7 @@ import 'extension.dart';
 
 part 'asset_dao.g.dart';
 
-AssetResults$orderBy defaultOrderBy = (asset, _, __, f) {
+AssetResults$orderBy defaultOrderBy = (asset, _, c, __, f) {
   final balance = '${asset.aliasedName}.${asset.balance.$name}';
   final priceUsd = '${asset.aliasedName}.${asset.priceUsd.$name}';
 
@@ -98,54 +98,54 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
 
   Selectable<AssetResult> assetResults(String currentFiat) => db.assetResults(
         currentFiat,
-        (asset, _, ae, f) => ignoreWhere,
+        (asset, _, c, ae, f) => ignoreWhere,
         defaultOrderBy,
-        (_, __, ___, f) => maxLimit,
+        (_, __, c, ___, f) => maxLimit,
       );
 
   Selectable<AssetResult> assetResultsWithBalance(String currentFiat) =>
       db.assetResults(
         currentFiat,
-        (asset, _, ae, f) =>
+        (asset, _, c, ae, f) =>
             asset.balance.isNotNull() &
             asset.balance.isNotIn(const ['0', '0.0']),
         defaultOrderBy,
-        (_, __, ___, f) => maxLimit,
+        (_, __, c, ___, f) => maxLimit,
       );
 
   Selectable<AssetResult> assetResultsNotHidden(String currentFiat) =>
       db.assetResults(
         currentFiat,
-        (asset, _, ae, f) =>
+        (asset, _, c, ae, f) =>
             (ae.hidden.isNull() | ae.hidden.equals(false)) &
             ((asset.balance.isNotNull() &
                     asset.balance.isNotIn(const ['0', '0.0'])) |
                 asset.assetId.equalsExp(asset.chainId)),
         defaultOrderBy,
-        (_, __, ___, f) => maxLimit,
+        (_, __, c, ___, f) => maxLimit,
       );
 
   Selectable<AssetResult> assetResultsOfIn(
           String currentFiat, Iterable<String> assetIds) =>
       db.assetResults(
         currentFiat,
-        (asset, _, __, f) => asset.assetId.isIn(assetIds),
+        (asset, _, c, __, f) => asset.assetId.isIn(assetIds),
         defaultOrderBy,
-        (_, __, ___, f) => maxLimit,
+        (_, __, c, ___, f) => maxLimit,
       );
 
   Selectable<AssetResult> searchAssetResults(
           String currentFiat, String keyword) =>
       db.assetResults(
         currentFiat,
-        (asset, _, __, ae) {
+        (asset, _, c, __, ae) {
           if (keyword.isEmpty) {
             return ignoreWhere;
           }
           final regex = '%$keyword%';
           return asset.symbol.like(regex) | asset.name.like(regex);
         },
-        (asset, _, __, f) {
+        (asset, _, c, __, f) {
           final symbol = '${asset.aliasedName}.${asset.symbol.$name}';
           final name = '${asset.aliasedName}.${asset.name.$name}';
           return OrderBy([
@@ -168,15 +168,15 @@ ELSE 1000 END
             OrderingTerm.asc(asset.name),
           ]);
         },
-        (_, __, ___, f) => maxLimit,
+        (_, __, c, ___, f) => maxLimit,
       );
 
   Selectable<AssetResult> assetResult(String currentFiat, String assetId) =>
       db.assetResults(
           currentFiat,
-          (Assets asset, _, __, ___) => asset.assetId.equals(assetId),
-          (_, __, ___, f) => ignoreOrderBy,
-          (_, __, ___, f) => Limit(1, null));
+          (Assets asset, _, c, __, ___) => asset.assetId.equals(assetId),
+          (_, __, c, ___, f) => ignoreOrderBy,
+          (_, __, c, ___, f) => Limit(1, null));
 
   Selectable<Asset> simpleAssetById(String assetId) => select(db.assets)
     ..where((tbl) => tbl.assetId.equals(assetId))
@@ -184,9 +184,9 @@ ELSE 1000 END
 
   Selectable<AssetResult> hiddenAssets(String currentFiat) => db.assetResults(
         currentFiat,
-        (asset, tempAsset, ae, fiat) => ae.hidden.equals(true),
-        (asset, tempAsset, ae, fiat) => ignoreOrderBy,
-        (asset, tempAsset, ae, fiat) => maxLimit,
+        (asset, tempAsset, c, ae, fiat) => ae.hidden.equals(true),
+        (asset, tempAsset, c, ae, fiat) => ignoreOrderBy,
+        (asset, tempAsset, c, ae, fiat) => maxLimit,
       );
 
   Future<String?> findAssetIdByAssetKey(String assetKey) =>

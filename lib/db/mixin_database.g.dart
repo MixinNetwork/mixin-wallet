@@ -4868,6 +4868,299 @@ class CollectibleOutput extends Table
   bool get dontWriteConstraints => true;
 }
 
+class Chain extends DataClass implements Insertable<Chain> {
+  final String chainId;
+  final String name;
+  final String symbol;
+  final String iconUrl;
+  final int threshold;
+  const Chain(
+      {required this.chainId,
+      required this.name,
+      required this.symbol,
+      required this.iconUrl,
+      required this.threshold});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['chain_id'] = Variable<String>(chainId);
+    map['name'] = Variable<String>(name);
+    map['symbol'] = Variable<String>(symbol);
+    map['icon_url'] = Variable<String>(iconUrl);
+    map['threshold'] = Variable<int>(threshold);
+    return map;
+  }
+
+  ChainsCompanion toCompanion(bool nullToAbsent) {
+    return ChainsCompanion(
+      chainId: Value(chainId),
+      name: Value(name),
+      symbol: Value(symbol),
+      iconUrl: Value(iconUrl),
+      threshold: Value(threshold),
+    );
+  }
+
+  factory Chain.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Chain(
+      chainId: serializer.fromJson<String>(json['chain_id']),
+      name: serializer.fromJson<String>(json['name']),
+      symbol: serializer.fromJson<String>(json['symbol']),
+      iconUrl: serializer.fromJson<String>(json['icon_url']),
+      threshold: serializer.fromJson<int>(json['threshold']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'chain_id': serializer.toJson<String>(chainId),
+      'name': serializer.toJson<String>(name),
+      'symbol': serializer.toJson<String>(symbol),
+      'icon_url': serializer.toJson<String>(iconUrl),
+      'threshold': serializer.toJson<int>(threshold),
+    };
+  }
+
+  Chain copyWith(
+          {String? chainId,
+          String? name,
+          String? symbol,
+          String? iconUrl,
+          int? threshold}) =>
+      Chain(
+        chainId: chainId ?? this.chainId,
+        name: name ?? this.name,
+        symbol: symbol ?? this.symbol,
+        iconUrl: iconUrl ?? this.iconUrl,
+        threshold: threshold ?? this.threshold,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Chain(')
+          ..write('chainId: $chainId, ')
+          ..write('name: $name, ')
+          ..write('symbol: $symbol, ')
+          ..write('iconUrl: $iconUrl, ')
+          ..write('threshold: $threshold')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(chainId, name, symbol, iconUrl, threshold);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Chain &&
+          other.chainId == this.chainId &&
+          other.name == this.name &&
+          other.symbol == this.symbol &&
+          other.iconUrl == this.iconUrl &&
+          other.threshold == this.threshold);
+}
+
+class ChainsCompanion extends UpdateCompanion<Chain> {
+  final Value<String> chainId;
+  final Value<String> name;
+  final Value<String> symbol;
+  final Value<String> iconUrl;
+  final Value<int> threshold;
+  const ChainsCompanion({
+    this.chainId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.symbol = const Value.absent(),
+    this.iconUrl = const Value.absent(),
+    this.threshold = const Value.absent(),
+  });
+  ChainsCompanion.insert({
+    required String chainId,
+    required String name,
+    required String symbol,
+    required String iconUrl,
+    required int threshold,
+  })  : chainId = Value(chainId),
+        name = Value(name),
+        symbol = Value(symbol),
+        iconUrl = Value(iconUrl),
+        threshold = Value(threshold);
+  static Insertable<Chain> custom({
+    Expression<String>? chainId,
+    Expression<String>? name,
+    Expression<String>? symbol,
+    Expression<String>? iconUrl,
+    Expression<int>? threshold,
+  }) {
+    return RawValuesInsertable({
+      if (chainId != null) 'chain_id': chainId,
+      if (name != null) 'name': name,
+      if (symbol != null) 'symbol': symbol,
+      if (iconUrl != null) 'icon_url': iconUrl,
+      if (threshold != null) 'threshold': threshold,
+    });
+  }
+
+  ChainsCompanion copyWith(
+      {Value<String>? chainId,
+      Value<String>? name,
+      Value<String>? symbol,
+      Value<String>? iconUrl,
+      Value<int>? threshold}) {
+    return ChainsCompanion(
+      chainId: chainId ?? this.chainId,
+      name: name ?? this.name,
+      symbol: symbol ?? this.symbol,
+      iconUrl: iconUrl ?? this.iconUrl,
+      threshold: threshold ?? this.threshold,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (chainId.present) {
+      map['chain_id'] = Variable<String>(chainId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (symbol.present) {
+      map['symbol'] = Variable<String>(symbol.value);
+    }
+    if (iconUrl.present) {
+      map['icon_url'] = Variable<String>(iconUrl.value);
+    }
+    if (threshold.present) {
+      map['threshold'] = Variable<int>(threshold.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChainsCompanion(')
+          ..write('chainId: $chainId, ')
+          ..write('name: $name, ')
+          ..write('symbol: $symbol, ')
+          ..write('iconUrl: $iconUrl, ')
+          ..write('threshold: $threshold')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Chains extends Table with TableInfo<Chains, Chain> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  Chains(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _chainIdMeta = const VerificationMeta('chainId');
+  late final GeneratedColumn<String> chainId = GeneratedColumn<String>(
+      'chain_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _symbolMeta = const VerificationMeta('symbol');
+  late final GeneratedColumn<String> symbol = GeneratedColumn<String>(
+      'symbol', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _iconUrlMeta = const VerificationMeta('iconUrl');
+  late final GeneratedColumn<String> iconUrl = GeneratedColumn<String>(
+      'icon_url', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _thresholdMeta = const VerificationMeta('threshold');
+  late final GeneratedColumn<int> threshold = GeneratedColumn<int>(
+      'threshold', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  @override
+  List<GeneratedColumn> get $columns =>
+      [chainId, name, symbol, iconUrl, threshold];
+  @override
+  String get aliasedName => _alias ?? 'chains';
+  @override
+  String get actualTableName => 'chains';
+  @override
+  VerificationContext validateIntegrity(Insertable<Chain> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('chain_id')) {
+      context.handle(_chainIdMeta,
+          chainId.isAcceptableOrUnknown(data['chain_id']!, _chainIdMeta));
+    } else if (isInserting) {
+      context.missing(_chainIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('symbol')) {
+      context.handle(_symbolMeta,
+          symbol.isAcceptableOrUnknown(data['symbol']!, _symbolMeta));
+    } else if (isInserting) {
+      context.missing(_symbolMeta);
+    }
+    if (data.containsKey('icon_url')) {
+      context.handle(_iconUrlMeta,
+          iconUrl.isAcceptableOrUnknown(data['icon_url']!, _iconUrlMeta));
+    } else if (isInserting) {
+      context.missing(_iconUrlMeta);
+    }
+    if (data.containsKey('threshold')) {
+      context.handle(_thresholdMeta,
+          threshold.isAcceptableOrUnknown(data['threshold']!, _thresholdMeta));
+    } else if (isInserting) {
+      context.missing(_thresholdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {chainId};
+  @override
+  Chain map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Chain(
+      chainId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}chain_id'])!,
+      name: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      symbol: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}symbol'])!,
+      iconUrl: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}icon_url'])!,
+      threshold: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}threshold'])!,
+    );
+  }
+
+  @override
+  Chains createAlias(String alias) {
+    return Chains(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const ['PRIMARY KEY(chain_id)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 abstract class _$MixinDatabase extends GeneratedDatabase {
   _$MixinDatabase(QueryExecutor e) : super(e);
   _$MixinDatabase.connect(DatabaseConnection c) : super.connect(c);
@@ -4882,6 +5175,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final CollectibleToken collectibleToken = CollectibleToken(this);
   late final Collections collections = Collections(this);
   late final CollectibleOutput collectibleOutput = CollectibleOutput(this);
+  late final Chains chains = Chains(this);
   late final AddressDao addressDao = AddressDao(this as MixinDatabase);
   late final AssetDao assetDao = AssetDao(this as MixinDatabase);
   late final SnapshotDao snapshotDao = SnapshotDao(this as MixinDatabase);
@@ -4891,6 +5185,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
       AssetsExtraDao(this as MixinDatabase);
   late final CollectibleDao collectibleDao =
       CollectibleDao(this as MixinDatabase);
+  late final ChainDao chainDao = ChainDao(this as MixinDatabase);
   Selectable<CollectibleItem> collectiblesResult(CollectiblesResult$where where,
       CollectiblesResult$orderBy orderBy, CollectiblesResult$limit limit) {
     var $arrayStartIndex = 1;
@@ -5056,8 +5351,12 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
       AssetResults$limit limit) {
     var $arrayStartIndex = 2;
     final generatedwhere = $write(
-        where(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
-            alias(this.assetsExtra, 'ae'), alias(this.fiats, 'fiat')),
+        where(
+            alias(this.assets, 'asset'),
+            alias(this.assets, 'tempAsset'),
+            alias(this.chains, 'c'),
+            alias(this.assetsExtra, 'ae'),
+            alias(this.fiats, 'fiat')),
         hasMultipleTables: true,
         startIndex: $arrayStartIndex);
     $arrayStartIndex += generatedwhere.amountOfVariables;
@@ -5065,6 +5364,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         orderBy?.call(
                 alias(this.assets, 'asset'),
                 alias(this.assets, 'tempAsset'),
+                alias(this.chains, 'c'),
                 alias(this.assetsExtra, 'ae'),
                 alias(this.fiats, 'fiat')) ??
             const OrderBy.nothing(),
@@ -5072,13 +5372,17 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         startIndex: $arrayStartIndex);
     $arrayStartIndex += generatedorderBy.amountOfVariables;
     final generatedlimit = $write(
-        limit(alias(this.assets, 'asset'), alias(this.assets, 'tempAsset'),
-            alias(this.assetsExtra, 'ae'), alias(this.fiats, 'fiat')),
+        limit(
+            alias(this.assets, 'asset'),
+            alias(this.assets, 'tempAsset'),
+            alias(this.chains, 'c'),
+            alias(this.assetsExtra, 'ae'),
+            alias(this.fiats, 'fiat')),
         hasMultipleTables: true,
         startIndex: $arrayStartIndex);
     $arrayStartIndex += generatedlimit.amountOfVariables;
     return customSelect(
-        'SELECT asset.*, tempAsset.symbol AS chainSymbol, tempAsset.icon_url AS chainIconUrl, fiat.rate AS fiatRate, tempAsset.name AS chainName, ae.hidden FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id LEFT JOIN assets_extra AS ae ON ae.asset_id = asset.asset_id INNER JOIN fiats AS fiat ON fiat.code = ?1 WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
+        'SELECT asset.*, c.symbol AS chainSymbol, c.icon_url AS chainIconUrl, c.name AS chainName, tempAsset.price_usd AS chainPriceUsd, fiat.rate AS fiatRate, ae.hidden FROM assets AS asset LEFT JOIN assets AS tempAsset ON asset.chain_id = tempAsset.asset_id LEFT JOIN chains AS c ON asset.chain_id = c.chain_id LEFT JOIN assets_extra AS ae ON ae.asset_id = asset.asset_id INNER JOIN fiats AS fiat ON fiat.code = ?1 WHERE ${generatedwhere.sql} ${generatedorderBy.sql} ${generatedlimit.sql}',
         variables: [
           Variable<String>(currentFiat),
           ...generatedwhere.introducedVariables,
@@ -5086,6 +5390,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
           ...generatedlimit.introducedVariables
         ],
         readsFrom: {
+          chains,
           assets,
           fiats,
           assetsExtra,
@@ -5112,8 +5417,9 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         depositEntries: row.readNullable<String>('deposit_entries'),
         chainSymbol: row.readNullable<String>('chainSymbol'),
         chainIconUrl: row.readNullable<String>('chainIconUrl'),
-        fiatRate: row.read<double>('fiatRate'),
         chainName: row.readNullable<String>('chainName'),
+        chainPriceUsd: row.readNullable<String>('chainPriceUsd'),
+        fiatRate: row.read<double>('fiatRate'),
         hidden: row.readNullable<bool>('hidden'),
       );
     });
@@ -5144,7 +5450,8 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         collectibleTokenMeta,
         collectibleToken,
         collections,
-        collectibleOutput
+        collectibleOutput,
+        chains
       ];
 }
 
@@ -5421,8 +5728,9 @@ class AssetResult {
   final String? depositEntries;
   final String? chainSymbol;
   final String? chainIconUrl;
-  final double fiatRate;
   final String? chainName;
+  final String? chainPriceUsd;
+  final double fiatRate;
   final bool? hidden;
   AssetResult({
     required this.assetId,
@@ -5443,8 +5751,9 @@ class AssetResult {
     this.depositEntries,
     this.chainSymbol,
     this.chainIconUrl,
-    required this.fiatRate,
     this.chainName,
+    this.chainPriceUsd,
+    required this.fiatRate,
     this.hidden,
   });
   @override
@@ -5467,8 +5776,9 @@ class AssetResult {
         depositEntries,
         chainSymbol,
         chainIconUrl,
-        fiatRate,
         chainName,
+        chainPriceUsd,
+        fiatRate,
         hidden
       ]);
   @override
@@ -5493,8 +5803,9 @@ class AssetResult {
           other.depositEntries == this.depositEntries &&
           other.chainSymbol == this.chainSymbol &&
           other.chainIconUrl == this.chainIconUrl &&
-          other.fiatRate == this.fiatRate &&
           other.chainName == this.chainName &&
+          other.chainPriceUsd == this.chainPriceUsd &&
+          other.fiatRate == this.fiatRate &&
           other.hidden == this.hidden);
   @override
   String toString() {
@@ -5517,8 +5828,9 @@ class AssetResult {
           ..write('depositEntries: $depositEntries, ')
           ..write('chainSymbol: $chainSymbol, ')
           ..write('chainIconUrl: $chainIconUrl, ')
-          ..write('fiatRate: $fiatRate, ')
           ..write('chainName: $chainName, ')
+          ..write('chainPriceUsd: $chainPriceUsd, ')
+          ..write('fiatRate: $fiatRate, ')
           ..write('hidden: $hidden')
           ..write(')'))
         .toString();
@@ -5526,8 +5838,8 @@ class AssetResult {
 }
 
 typedef AssetResults$where = Expression<bool> Function(
-    Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat);
+    Assets asset, Assets tempAsset, Chains c, AssetsExtra ae, Fiats fiat);
 typedef AssetResults$orderBy = OrderBy Function(
-    Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat);
+    Assets asset, Assets tempAsset, Chains c, AssetsExtra ae, Fiats fiat);
 typedef AssetResults$limit = Limit Function(
-    Assets asset, Assets tempAsset, AssetsExtra ae, Fiats fiat);
+    Assets asset, Assets tempAsset, Chains c, AssetsExtra ae, Fiats fiat);
