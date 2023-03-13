@@ -262,10 +262,10 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         await mixinDatabase.assetDao.simpleAssetById(assetId).getSingleOrNull();
 
     if (assetExist != null) {
-      final chainExit = await mixinDatabase.chainDao
+      final chainExist = await mixinDatabase.chainDao
           .checkExistsById(assetExist.chainId)
           .getSingle();
-      if (chainExit) {
+      if (chainExist) {
         return null;
       }
       final chain = (await client.assetApi.getChain(assetExist.chainId)).data;
@@ -275,11 +275,11 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     }
     final asset = (await client.assetApi.getAssetById(assetId)).data;
 
-    final chainExit =
+    final chainExist =
         await mixinDatabase.chainDao.checkExistsById(asset.chainId).getSingle();
 
     sdk.Chain? chain;
-    if (!chainExit) {
+    if (!chainExist) {
       chain = (await client.assetApi.getChain(asset.chainId)).data;
     }
     return () async {
