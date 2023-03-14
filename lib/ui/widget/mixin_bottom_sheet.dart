@@ -9,8 +9,6 @@ Future<T?> showMixinBottomSheet<T>({
   required BuildContext context,
   required WidgetBuilder builder,
   bool isScrollControlled = false,
-  bool isDismissible = true,
-  bool enableDrag = true,
 }) =>
     showModalBottomSheet(
       context: context,
@@ -27,8 +25,6 @@ Future<T?> showMixinBottomSheet<T>({
         ),
       ),
       isScrollControlled: isScrollControlled,
-      isDismissible: isDismissible,
-      enableDrag: enableDrag,
     );
 
 class MixinBottomSheetTitle extends StatelessWidget {
