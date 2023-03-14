@@ -8,6 +8,7 @@ import '../page/all_transactions.dart';
 import '../page/asset_deposit.dart';
 import '../page/asset_detail.dart';
 import '../page/auth.dart';
+import '../page/authentications.dart';
 import '../page/buy.dart';
 import '../page/buy_success.dart';
 import '../page/change_pin.dart';
@@ -52,6 +53,7 @@ const collectiblePath = '/collectible/:id';
 const createPinPath = '/create_pin';
 const pinLogsPath = '$settingPath/pin_logs';
 const changePinPath = '$settingPath/change_pin';
+const authenticationsPath = '$settingPath/authentications';
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
       VWidget(
@@ -152,6 +154,11 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                         key: const ValueKey('ChangePin'),
                         path: changePinPath,
                         widget: const ChangePin(),
+                      ),
+                      VWidget(
+                        key: const ValueKey('Authentications'),
+                        path: authenticationsPath,
+                        widget: const Authentications(),
                       ),
                     ],
                   ),

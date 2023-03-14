@@ -19,7 +19,7 @@ class Avatar extends StatelessWidget {
     this.borderWidth = 2.0,
   });
 
-  final double? size;
+  final double size;
   final double borderWidth;
   final String? avatarUrl;
   final String userId;
@@ -30,6 +30,7 @@ class Avatar extends StatelessWidget {
     final placeholder = _AvatarPlaceholder(
       userId: userId,
       name: name,
+      size: size,
     );
 
     return ClipOval(
@@ -64,16 +65,18 @@ class _AvatarPlaceholder extends HookWidget {
   const _AvatarPlaceholder({
     required this.userId,
     required this.name,
+    required this.size,
   });
 
   final String userId;
   final String name;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     final color = useMemoized(() => _getAvatarColorById(userId), [userId]);
-    return SizedBox.fromSize(
-      size: const Size.square(32.0),
+    return SizedBox.square(
+      dimension: size,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: color,

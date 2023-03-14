@@ -73,6 +73,10 @@ class R {
   /// {@macro assets_generator.resourcesIcArrowDownSvg.preview}
   static const String resourcesIcArrowDownSvg = 'resources/ic_arrow_down.svg';
 
+  /// {@macro assets_generator.resourcesIcAuthenticationSvg.preview}
+  static const String resourcesIcAuthenticationSvg =
+      'resources/ic_authentication.svg';
+
   /// {@macro assets_generator.resourcesIcBackSvg.preview}
   static const String resourcesIcBackSvg = 'resources/ic_back.svg';
 
