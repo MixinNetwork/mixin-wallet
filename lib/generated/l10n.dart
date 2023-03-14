@@ -2853,6 +2853,26 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Choose network`
+  String get chooseNetwork {
+    return Intl.message(
+      'Choose network',
+      name: 'chooseNetwork',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please ensure the network you choose to deposit that Mixin supports. Otherwise, your assets may be lost.`
+  String get chooseNetworkTip {
+    return Intl.message(
+      'Please ensure the network you choose to deposit that Mixin supports. Otherwise, your assets may be lost.',
+      name: 'chooseNetworkTip',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

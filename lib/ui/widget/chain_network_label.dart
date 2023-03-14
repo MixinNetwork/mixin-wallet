@@ -18,7 +18,6 @@ const _bepChainIds = {
   '1949e683-6a08-49e2-b087-d6b72398588f'
 };
 
-@visibleForTesting
 bool isDigitsOnly(String? text) {
   if (text == null) {
     return false;
