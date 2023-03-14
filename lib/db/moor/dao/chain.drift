@@ -1,0 +1,5 @@
+import '../mixin.drift';
+
+
+checkExistsById:
+SELECT EXISTS(SELECT 1 FROM chains WHERE chain_id = :chainId);

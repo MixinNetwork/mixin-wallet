@@ -2,13 +2,15 @@ import '../mixin.drift';
 
 assetResults(:currentFiat AS TEXT) as AssetResult:
 SELECT asset.*,
-       tempAsset.symbol AS chainSymbol,
-       tempAsset.icon_url AS chainIconUrl,
+       c.symbol AS chainSymbol,
+       c.icon_url AS chainIconUrl,
+       c.name as chainName,
+       tempAsset.price_usd as chainPriceUsd,
        fiat.rate AS fiatRate,
-       tempAsset.name as chainName,
        ae.hidden
 FROM assets asset
 LEFT  JOIN assets tempAsset ON asset.chain_id = tempAsset.asset_id
+LEFT  JOIN chains c ON asset.chain_id = c.chain_id
 LEFT  JOIN assets_extra ae ON ae.asset_id = asset.asset_id
 INNER JOIN fiats fiat ON fiat.code = :currentFiat
 WHERE $where

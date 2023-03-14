@@ -66,3 +66,5 @@ CREATE TABLE collectible_output(
   signed_tx TEXT NOT NULL,
   PRIMARY KEY(output_id)
 );
+
+CREATE TABLE chains (chain_id TEXT NOT NULL, name TEXT NOT NULL, symbol TEXT NOT NULL, icon_url TEXT NOT NULL, threshold INTEGER NOT NULL, PRIMARY KEY(chain_id));

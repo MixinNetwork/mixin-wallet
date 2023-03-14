@@ -8,6 +8,7 @@ import 'converter/user_relationship_converter.dart';
 import 'dao/address_dao.dart';
 import 'dao/asset_dao.dart';
 import 'dao/assets_extra_dao.dart';
+import 'dao/chain_dao.dart';
 import 'dao/collectible_dao.dart';
 import 'dao/fiat_dao.dart';
 import 'dao/snapshot_dao.dart';
@@ -32,6 +33,7 @@ part 'mixin_database.g.dart';
     FiatDao,
     AssetsExtraDao,
     CollectibleDao,
+    ChainDao,
   ],
   queries: {},
 )
@@ -41,7 +43,7 @@ class MixinDatabase extends _$MixinDatabase {
   MixinDatabase.connect(super.c) : super.connect();
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   final eventBus = DataBaseEventBus();
 

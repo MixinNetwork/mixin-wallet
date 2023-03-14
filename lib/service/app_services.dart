@@ -186,9 +186,11 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final list = await Future.wait([
       client.assetApi.getAssets(),
       client.accountApi.getFiats(),
+      client.assetApi.getChains(),
     ]);
-    final assets = (list.first as sdk.MixinResponse<List<sdk.Asset>>).data;
-    final fiats = (list.last as sdk.MixinResponse<List<sdk.Fiat>>).data;
+    final assets = (list[0] as sdk.MixinResponse<List<sdk.Asset>>).data;
+    final fiats = (list[1] as sdk.MixinResponse<List<sdk.Fiat>>).data;
+    final chains = (list[2] as sdk.MixinResponse<List<sdk.Chain>>).data;
 
     final fixedAssets = <sdk.Asset>[];
     for (final a in assets) {
@@ -203,6 +205,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       await mixinDatabase.assetDao.resetAllBalance();
       await mixinDatabase.assetDao.insertAllOnConflictUpdate(fixedAssets);
       await mixinDatabase.fiatDao.insertAllOnConflictUpdate(fiats);
+      await mixinDatabase.chainDao.insertAllOnConflictUpdate(chains);
     });
 
     const presetAssets = {
@@ -225,6 +228,10 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       asset.symbol = 'BTTOLD';
     }
     await mixinDatabase.assetDao.insert(asset);
+
+    final chain = (await client.assetApi.getChain(asset.chainId)).data;
+    await mixinDatabase.chainDao.insertSdkChain(chain);
+
     return asset;
   }
 
@@ -251,15 +258,36 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Future<Future<void> Function()?> _checkAssetExistWithReturnInsert(
       String assetId) async {
-    if (await mixinDatabase.assetDao
-            .simpleAssetById(assetId)
-            .getSingleOrNull() !=
-        null) {
-      return null;
-    }
+    final assetExist =
+        await mixinDatabase.assetDao.simpleAssetById(assetId).getSingleOrNull();
 
+    if (assetExist != null) {
+      final chainExist = await mixinDatabase.chainDao
+          .checkExistsById(assetExist.chainId)
+          .getSingle();
+      if (chainExist) {
+        return null;
+      }
+      final chain = (await client.assetApi.getChain(assetExist.chainId)).data;
+      return () async {
+        await mixinDatabase.chainDao.insertSdkChain(chain);
+      };
+    }
     final asset = (await client.assetApi.getAssetById(assetId)).data;
-    return () => mixinDatabase.assetDao.insert(asset);
+
+    final chainExist =
+        await mixinDatabase.chainDao.checkExistsById(asset.chainId).getSingle();
+
+    sdk.Chain? chain;
+    if (!chainExist) {
+      chain = (await client.assetApi.getChain(asset.chainId)).data;
+    }
+    return () async {
+      await mixinDatabase.assetDao.insert(asset);
+      if (chain != null) {
+        await mixinDatabase.chainDao.insertSdkChain(chain);
+      }
+    };
   }
 
   Future<Future<void> Function()?> _checkUsersExistWithReturnInsert(
@@ -551,13 +579,8 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   Future<AssetResult?> findOrSyncAsset(String assetId) async {
     assert(authProvider.isLogin);
-    final result = await mixinDatabase.assetDao
-        .assetResult(authProvider.value!.account.fiatCurrency, assetId)
-        .getSingleOrNull();
-    if (result != null) return result;
-
-    final asset = (await client.assetApi.getAssetById(assetId)).data;
-    await mixinDatabase.assetDao.insert(asset);
+    final insert = await _checkAssetExistWithReturnInsert(assetId);
+    await insert?.call();
     return mixinDatabase.assetDao
         .assetResult(authProvider.value!.account.fiatCurrency, assetId)
         .getSingleOrNull();
