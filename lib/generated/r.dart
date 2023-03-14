@@ -192,6 +192,9 @@ class R {
   /// {@macro assets_generator.resourcesIcFlagZarPng.preview}
   static const String resourcesIcFlagZarPng = 'resources/ic_flag_zar.png';
 
+  /// {@macro assets_generator.resourcesIcNoticeSvg.preview}
+  static const String resourcesIcNoticeSvg = 'resources/ic_notice.svg';
+
   /// {@macro assets_generator.resourcesIcQuestionSvg.preview}
   static const String resourcesIcQuestionSvg = 'resources/ic_question.svg';
 

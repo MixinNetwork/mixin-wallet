@@ -274,5 +274,7 @@
   "allowBotAccessSnapshots": "允许机器人访问你的转账记录，包括充值和提现。",
   "readYourNFTs": "读取你的 NFT 列表",
   "allowBotAccessNFTs": "允许机器人访问你的 NFT 列表和余额。",
-  "authorized": "已授权"
+  "authorized": "已授权",
+  "chooseNetwork": "选择充值网络",
+  "chooseNetworkTip": "请选择 Mixin 支持的网络进行充值，否则您的充值将不会到账。"
 }

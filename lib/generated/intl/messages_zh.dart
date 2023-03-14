@@ -134,6 +134,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "changePinSuccessfully":
             MessageLookupByLibrary.simpleMessage("PIN 修改成功"),
         "changePinTip": MessageLookupByLibrary.simpleMessage("请输入 6 位 PIN 来验证"),
+        "chooseNetwork": MessageLookupByLibrary.simpleMessage("选择充值网络"),
+        "chooseNetworkTip": MessageLookupByLibrary.simpleMessage(
+            "请选择 Mixin 支持的网络进行充值，否则您的充值将不会到账。"),
         "clearConditions": MessageLookupByLibrary.simpleMessage("清除条件"),
         "coins": MessageLookupByLibrary.simpleMessage("代币"),
         "collectiblesReadFailed":

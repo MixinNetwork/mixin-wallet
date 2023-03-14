@@ -19,6 +19,7 @@ import '../../util/web/web_utils.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';
+import '../widget/dialog/deposit_choose_network_bottom_sheet.dart';
 import '../widget/dialog/request_payment_bottom_sheet.dart';
 import '../widget/dialog/request_payment_result_bottom_sheet.dart';
 import '../widget/mixin_appbar.dart';
@@ -168,23 +169,25 @@ class _AssetDepositBody extends HookWidget {
         ? depositEntry.value?.destination
         : asset.destination;
 
-    useMemoized(() {
+    useMemoized(() async {
+      await Future<void>.delayed(Duration.zero);
+      await showDepositChooseNetworkBottomSheet(context, asset: asset);
       if (tag == null || tag.isEmpty) {
         return;
       }
-      Future.delayed(
-          Duration.zero,
-          () => showDialog<void>(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) => _MemoWarningDialog(
-                  symbol: asset.symbol,
-                  onTap: () {
-                    scheduleMicrotask(() {
-                      Navigator.of(context).pop(true);
-                    });
-                  })));
-    }, [tag]);
+      await showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => _MemoWarningDialog(
+          symbol: asset.symbol,
+          onTap: () {
+            scheduleMicrotask(() {
+              Navigator.of(context).pop(true);
+            });
+          },
+        ),
+      );
+    }, [asset.assetId]);
 
     return NativeScrollBuilder(
       builder: (context, controller) => ListView(

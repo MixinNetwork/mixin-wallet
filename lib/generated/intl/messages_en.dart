@@ -149,6 +149,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Change PIN successfully"),
         "changePinTip": MessageLookupByLibrary.simpleMessage(
             "Please enter the 6 digit PIN to verify."),
+        "chooseNetwork": MessageLookupByLibrary.simpleMessage("Choose network"),
+        "chooseNetworkTip": MessageLookupByLibrary.simpleMessage(
+            "Please ensure the network you choose to deposit that Mixin supports. Otherwise, your assets may be lost."),
         "clearConditions":
             MessageLookupByLibrary.simpleMessage("Clear conditions"),
         "coins": MessageLookupByLibrary.simpleMessage("Coins"),
