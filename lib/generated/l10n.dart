@@ -2873,6 +2873,66 @@ class L10n {
       args: [],
     );
   }
+
+  /// `Authorizations`
+  String get authorizations {
+    return Intl.message(
+      'Authorizations',
+      name: 'authorizations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NO AUTHORIZATIONS`
+  String get noAuthorizations {
+    return Intl.message(
+      'NO AUTHORIZATIONS',
+      name: 'noAuthorizations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Permissions`
+  String get permissions {
+    return Intl.message(
+      'Permissions',
+      name: 'permissions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Approved: {approve}, Last Accessed: {access}`
+  String authApprovedAccessDate(Object approve, Object access) {
+    return Intl.message(
+      'Approved: $approve, Last Accessed: $access',
+      name: 'authApprovedAccessDate',
+      desc: '',
+      args: [approve, access],
+    );
+  }
+
+  /// `Revoke access`
+  String get revokeAccess {
+    return Intl.message(
+      'Revoke access',
+      name: 'revokeAccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Revoke access {name}?`
+  String revokeConfirmation(Object name) {
+    return Intl.message(
+      'Revoke access $name?',
+      name: 'revokeConfirmation',
+      desc: '',
+      args: [name],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

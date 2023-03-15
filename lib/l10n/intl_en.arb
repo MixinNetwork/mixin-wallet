@@ -280,5 +280,11 @@
   "allowBotAccessNFTs": "Allow bot to access your NFT list and balance.",
   "authorized": "Authorized",
   "chooseNetwork": "Choose network",
-  "chooseNetworkTip": "Please ensure the network you choose to deposit that Mixin supports. Otherwise, your assets may be lost."
+  "chooseNetworkTip": "Please ensure the network you choose to deposit that Mixin supports. Otherwise, your assets may be lost.",
+  "authorizations": "Authorizations",
+  "noAuthorizations": "NO AUTHORIZATIONS",
+  "permissions": "Permissions",
+  "authApprovedAccessDate": "Approved: {approve}, Last Accessed: {access}",
+  "revokeAccess": "Revoke access",
+  "revokeConfirmation": "Revoke access {name}?"
 }

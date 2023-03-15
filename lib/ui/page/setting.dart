@@ -86,8 +86,14 @@ class _SettingsBody extends HookWidget {
               MenuItemWidget(
                 title: Text(context.l10n.changePin),
                 topRounded: false,
-                bottomRounded: true,
+                bottomRounded: false,
                 onTap: () => context.push(changePinPath),
+              ),
+              MenuItemWidget(
+                title: Text(context.l10n.authorizations),
+                topRounded: false,
+                bottomRounded: true,
+                onTap: () => context.push(authenticationsPath),
               ),
             ],
           ],

@@ -276,5 +276,11 @@
   "allowBotAccessNFTs": "允许机器人访问你的 NFT 列表和余额。",
   "authorized": "已授权",
   "chooseNetwork": "选择充值网络",
-  "chooseNetworkTip": "请选择 Mixin 支持的网络进行充值，否则您的充值将不会到账。"
+  "chooseNetworkTip": "请选择 Mixin 支持的网络进行充值，否则您的充值将不会到账。",
+  "authorizations": "授权",
+  "noAuthorizations": "没有授权任何机器人",
+  "permissions": "权限列表",
+  "authApprovedAccessDate": "授权时间：{approve}, 上次访问：{access}",
+  "revokeAccess": "取消授权",
+  "revokeConfirmation": "取消 {name} 的授权？"
 }

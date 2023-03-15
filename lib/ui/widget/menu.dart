@@ -49,33 +49,34 @@ class MenuItemWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 16),
                     child: SizedBox.square(dimension: 24, child: leading),
                   ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Spacer(flex: 2),
-                    DefaultTextStyle.merge(
-                      style: TextStyle(
-                        fontSize: 16,
-                        height: 1.5,
-                        color: context.colorScheme.primaryText,
-                      ),
-                      child: title,
-                    ),
-                    if (subtitle != null) ...[
-                      const Spacer(flex: 1),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Spacer(flex: 2),
                       DefaultTextStyle.merge(
                         style: TextStyle(
-                          fontSize: 14,
-                          height: 1,
-                          color: context.colorScheme.thirdText,
+                          fontSize: 16,
+                          height: 1.5,
+                          color: context.colorScheme.primaryText,
                         ),
-                        child: subtitle!,
+                        child: title,
                       ),
+                      if (subtitle != null) ...[
+                        const Spacer(flex: 1),
+                        DefaultTextStyle.merge(
+                          style: TextStyle(
+                            fontSize: 14,
+                            height: 1,
+                            color: context.colorScheme.thirdText,
+                          ),
+                          child: subtitle!,
+                        ),
+                      ],
+                      const Spacer(flex: 2),
                     ],
-                    const Spacer(flex: 2),
-                  ],
+                  ),
                 ),
-                const Spacer(),
                 if (trailing != null)
                   Padding(
                     padding: const EdgeInsets.only(right: 16),

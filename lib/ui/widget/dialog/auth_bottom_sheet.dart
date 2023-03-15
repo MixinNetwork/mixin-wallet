@@ -32,7 +32,7 @@ bool _isWalletScope(String scope) => {
       _scopes[4],
     }.contains(scope);
 
-Tuple2<String, String> _generateScopeDescription(
+Tuple2<String, String> generateScopeDescription(
     BuildContext context, String scope) {
   if (scope == _scopes[0]) {
     return Tuple2(
@@ -348,7 +348,7 @@ class _ScopeCheckItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isProfileScope = scope == _scopes[0];
-    final description = _generateScopeDescription(context, scope);
+    final description = generateScopeDescription(context, scope);
     final borderRadius = BorderRadius.vertical(
       top: topRounded ? const Radius.circular(12) : Radius.zero,
       bottom: bottomRounded ? const Radius.circular(12) : Radius.zero,

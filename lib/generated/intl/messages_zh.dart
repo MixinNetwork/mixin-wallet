@@ -26,49 +26,53 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(value) => "已显示 ${value}";
 
-  static String m5(count) => "${count} items";
+  static String m3(approve, access) => "授权时间：${approve}, 上次访问：${access}";
 
-  static String m6(value) => "删除 ${value} 地址";
+  static String m6(count) => "${count} items";
 
-  static String m7(value) => "充值到账至少需要 ${value} 个区块确认";
+  static String m7(value) => "删除 ${value} 地址";
 
-  static String m8(value) => "地址和 Memo(备注)同时使用才能充值 ${value} 到你的账户。";
+  static String m8(value) => "充值到账至少需要 ${value} 个区块确认";
 
-  static String m9(value) => "首次充值至少 ${value}";
+  static String m9(value) => "地址和 Memo(备注)同时使用才能充值 ${value} 到你的账户。";
 
-  static String m10(value) => "该充值地址仅支持 ${value}.";
+  static String m10(value) => "首次充值至少 ${value}";
 
-  static String m11(arg0) => "错误 20124：手续费不足。请确保钱包至少有 ${arg0} 当作手续费。";
+  static String m11(value) => "该充值地址仅支持 ${value}.";
 
-  static String m12(arg0, arg1) =>
+  static String m12(arg0) => "错误 20124：手续费不足。请确保钱包至少有 ${arg0} 当作手续费。";
+
+  static String m13(arg0, arg1) =>
       "错误 30102：地址格式错误。请输入正确的 ${arg0} ${arg1} 的地址！";
 
-  static String m13(arg0) => "错误 10006：请更新 Mixin（${arg0}） 至最新版。";
+  static String m14(arg0) => "错误 10006：请更新 Mixin（${arg0}） 至最新版。";
 
-  static String m14(count, arg0) =>
+  static String m15(count, arg0) =>
       "${Intl.plural(count, one: '错误 20119：PIN 不正确。你还有 ${arg0} 次机会，使用完需等待 24 小时后再次尝试。', other: '错误 20119：PIN 不正确。你还有 ${arg0} 次机会，使用完需等待 24 小时后再次尝试。')}";
 
-  static String m15(arg0) => "服务器出错，请稍后重试：${arg0}";
-
-  static String m16(arg0) => "错误：${arg0}";
+  static String m16(arg0) => "服务器出错，请稍后重试：${arg0}";
 
   static String m17(arg0) => "错误：${arg0}";
 
-  static String m18(url) => "支付链接无法识别：${url}";
+  static String m18(arg0) => "错误：${arg0}";
 
-  static String m19(value, value2) => "${value}/${value2} 区块确认数";
+  static String m19(url) => "支付链接无法识别：${url}";
 
-  static String m20(value) => "请求付款金额: ${value}";
+  static String m20(value, value2) => "${value}/${value2} 区块确认数";
 
-  static String m21(value) => "发送给 ${value}";
+  static String m21(value) => "请求付款金额: ${value}";
 
-  static String m22(value) => "暂不支持滑点大于 ${value} 的闪兑";
+  static String m22(name) => "取消 ${name} 的授权？";
 
-  static String m23(value) => "价值 ${value}";
+  static String m23(value) => "发送给 ${value}";
 
-  static String m24(value) => "当时价值 ${value}";
+  static String m24(value) => "暂不支持滑点大于 ${value} 的闪兑";
 
-  static String m25(value) => "提现到 ${value}";
+  static String m25(value) => "价值 ${value}";
+
+  static String m26(value) => "当时价值 ${value}";
+
+  static String m27(value) => "提现到 ${value}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -114,11 +118,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "assetTrending": MessageLookupByLibrary.simpleMessage("热门资产"),
         "assetType": MessageLookupByLibrary.simpleMessage("资产类型"),
         "assets": MessageLookupByLibrary.simpleMessage("资产"),
+        "authApprovedAccessDate": m3,
         "authHint": MessageLookupByLibrary.simpleMessage("只读授权无法动用你的资产，请放心使用"),
         "authSlogan": MessageLookupByLibrary.simpleMessage(
             "Mixin 钱包是一款用户友好、安全且功能强大的多链数字钱包。"),
         "authTips":
             MessageLookupByLibrary.simpleMessage("你知道吗？Mixin 是一个开源的加密钱包"),
+        "authorizations": MessageLookupByLibrary.simpleMessage("授权"),
         "authorize": MessageLookupByLibrary.simpleMessage("使用 Mixin 登录"),
         "authorized": MessageLookupByLibrary.simpleMessage("已授权"),
         "balance": MessageLookupByLibrary.simpleMessage("余额"),
@@ -141,7 +147,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "coins": MessageLookupByLibrary.simpleMessage("代币"),
         "collectiblesReadFailed":
             MessageLookupByLibrary.simpleMessage("读取 NFT 失败"),
-        "collectionItemCount": m5,
+        "collectionItemCount": m6,
         "comingSoon": MessageLookupByLibrary.simpleMessage("即将推出"),
         "completed": MessageLookupByLibrary.simpleMessage("已完成"),
         "confirm": MessageLookupByLibrary.simpleMessage("确认"),
@@ -167,14 +173,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("请输入 PIN 来完成删除"),
         "deleteEmergencyContact":
             MessageLookupByLibrary.simpleMessage("删除紧急联系人"),
-        "deleteWithdrawalAddress": m6,
+        "deleteWithdrawalAddress": m7,
         "deposit": MessageLookupByLibrary.simpleMessage("充值"),
-        "depositConfirmation": m7,
+        "depositConfirmation": m8,
         "depositMemoNotice": MessageLookupByLibrary.simpleMessage(
             "提币时务必填写 Memo(备注)，否则您会丢失您的数字币"),
-        "depositNotice": m8,
-        "depositReserve": m9,
-        "depositTip": m10,
+        "depositNotice": m9,
+        "depositReserve": m10,
+        "depositTip": m11,
         "depositTipBtc": MessageLookupByLibrary.simpleMessage("该充值地址仅支持 BTC。"),
         "depositTipEos":
             MessageLookupByLibrary.simpleMessage("该充值地址支持所有基于 EOS 发行的代币。"),
@@ -206,8 +212,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "errorFullGroup": MessageLookupByLibrary.simpleMessage("错误 20116：群组已满"),
         "errorInsufficientBalance":
             MessageLookupByLibrary.simpleMessage("错误 20117：余额不足"),
-        "errorInsufficientTransactionFeeWithAmount": m11,
-        "errorInvalidAddress": m12,
+        "errorInsufficientTransactionFeeWithAmount": m12,
+        "errorInvalidAddress": m13,
         "errorInvalidAddressPlain":
             MessageLookupByLibrary.simpleMessage("错误 30102：地址格式错误。"),
         "errorInvalidCodeTooFrequent":
@@ -227,7 +233,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("不支持的音频格式，请用其他app打开。"),
         "errorNumberReachedLimit":
             MessageLookupByLibrary.simpleMessage("错误 20132： 已达到上限"),
-        "errorOldVersion": m13,
+        "errorOldVersion": m14,
         "errorOpenLocation": MessageLookupByLibrary.simpleMessage("无法找到地图应用"),
         "errorPermission": MessageLookupByLibrary.simpleMessage("请开启相关权限"),
         "errorPhoneInvalidFormat":
@@ -242,10 +248,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "你已经尝试了超过 5 次，请等待 24 小时后再次尝试。"),
         "errorPinIncorrect":
             MessageLookupByLibrary.simpleMessage("错误 20119：PIN 不正确"),
-        "errorPinIncorrectWithTimes": m14,
+        "errorPinIncorrectWithTimes": m15,
         "errorRecaptchaIsInvalid":
             MessageLookupByLibrary.simpleMessage("错误 10004：验证失败"),
-        "errorServer5xxCode": m15,
+        "errorServer5xxCode": m16,
         "errorTooManyRequest":
             MessageLookupByLibrary.simpleMessage("错误 429：请求过于频繁"),
         "errorTooManyStickers":
@@ -258,8 +264,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("请在所有附件下载完成之后再转发"),
         "errorUnableToOpenMedia":
             MessageLookupByLibrary.simpleMessage("无法找到能打开该媒体的应用"),
-        "errorUnknownWithCode": m16,
-        "errorUnknownWithMessage": m17,
+        "errorUnknownWithCode": m17,
+        "errorUnknownWithMessage": m18,
         "errorUsedPhone":
             MessageLookupByLibrary.simpleMessage("错误 20122：电话号码已经被占用。"),
         "errorUserInvalidFormat":
@@ -285,7 +291,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hide": MessageLookupByLibrary.simpleMessage("隐藏"),
         "hideSmallAssets": MessageLookupByLibrary.simpleMessage("隐藏小额资产"),
         "incomplete": MessageLookupByLibrary.simpleMessage("未完成"),
-        "invalidPayUrl": m18,
+        "invalidPayUrl": m19,
         "lastNinetyDays": MessageLookupByLibrary.simpleMessage("最近 90 天"),
         "lastSevenDays": MessageLookupByLibrary.simpleMessage("最近 7 天"),
         "lastThirtyDays": MessageLookupByLibrary.simpleMessage("最近 30 天"),
@@ -305,6 +311,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "next": MessageLookupByLibrary.simpleMessage("下一步"),
         "nfts": MessageLookupByLibrary.simpleMessage("NFTs"),
         "noAsset": MessageLookupByLibrary.simpleMessage("暂无资产"),
+        "noAuthorizations": MessageLookupByLibrary.simpleMessage("没有授权任何机器人"),
         "noCollectiblesFound":
             MessageLookupByLibrary.simpleMessage("No collectibles found"),
         "noCollectionFound":
@@ -327,7 +334,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paidInMixinWarning":
             MessageLookupByLibrary.simpleMessage("如果您已经支付成功，请耐心等待，无需再次支付"),
         "pay": MessageLookupByLibrary.simpleMessage("支付"),
-        "pendingConfirmations": m19,
+        "pendingConfirmations": m20,
+        "permissions": MessageLookupByLibrary.simpleMessage("权限列表"),
         "phoneNumberChange": MessageLookupByLibrary.simpleMessage("修改手机号码"),
         "pinChange": MessageLookupByLibrary.simpleMessage("修改 PIN"),
         "pinConfirmAgainHint":
@@ -356,9 +364,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeAuthorize": MessageLookupByLibrary.simpleMessage("取消授权"),
         "requestAuthorization": MessageLookupByLibrary.simpleMessage("请求授权"),
         "requestPayment": MessageLookupByLibrary.simpleMessage("请求付款"),
-        "requestPaymentAmount": m20,
+        "requestPaymentAmount": m21,
         "requestPaymentGeneratedTips":
             MessageLookupByLibrary.simpleMessage("请求付款链接已生成，请发送给指定联系人。"),
+        "revokeAccess": MessageLookupByLibrary.simpleMessage("取消授权"),
+        "revokeConfirmation": m22,
         "revokeMultisigTransaction":
             MessageLookupByLibrary.simpleMessage("撤销多重签名交易"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
@@ -367,7 +377,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("选择地址或联系人"),
         "send": MessageLookupByLibrary.simpleMessage("发送"),
         "sendLink": MessageLookupByLibrary.simpleMessage("发送链接"),
-        "sendTo": m21,
+        "sendTo": m23,
         "sendToContact": MessageLookupByLibrary.simpleMessage("转账至联系人"),
         "setNewPin": MessageLookupByLibrary.simpleMessage("设置新的 PIN"),
         "setNewPinDesc": MessageLookupByLibrary.simpleMessage("设置新的 6 位数字 PIN"),
@@ -382,7 +392,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signTransaction": MessageLookupByLibrary.simpleMessage("签名交易"),
         "signers": MessageLookupByLibrary.simpleMessage("签名者"),
         "slippage": MessageLookupByLibrary.simpleMessage("滑点"),
-        "slippageOver": m22,
+        "slippageOver": m24,
         "snapshotHash": MessageLookupByLibrary.simpleMessage("Snapshot hash"),
         "sortBy": MessageLookupByLibrary.simpleMessage("排序"),
         "state": MessageLookupByLibrary.simpleMessage("State"),
@@ -423,17 +433,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "viewEmergencyContact": MessageLookupByLibrary.simpleMessage("查看紧急联系人"),
         "waitingActionDone": MessageLookupByLibrary.simpleMessage("等待操作完成..."),
         "wallet": MessageLookupByLibrary.simpleMessage("钱包"),
-        "walletTransactionCurrentValue": m23,
+        "walletTransactionCurrentValue": m25,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("当时价值 暂无"),
-        "walletTransactionThatTimeValue": m24,
+        "walletTransactionThatTimeValue": m26,
         "warningExportInWebView": MessageLookupByLibrary.simpleMessage(
             "当前处于 WebView 中，无法导出数据。请使用浏览器打开。"),
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "本服务由 Wyre 提供。我们仅作为渠道，不额外收取手续费。"),
         "withdrawal": MessageLookupByLibrary.simpleMessage("提现"),
         "withdrawalMemoHint": MessageLookupByLibrary.simpleMessage("备注 (可选)"),
-        "withdrawalTo": m25,
+        "withdrawalTo": m27,
         "withdrawalWithPin": MessageLookupByLibrary.simpleMessage("用 PIN 提现"),
         "wyreServiceStatement": MessageLookupByLibrary.simpleMessage("服务声明"),
         "youPinHasBeenCreated":
