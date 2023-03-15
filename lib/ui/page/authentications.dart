@@ -12,6 +12,7 @@ import '../widget/buttons.dart';
 import '../widget/dialog/auth_bottom_sheet.dart';
 import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
+import '../widget/search_text_field_widget.dart';
 import '../widget/text.dart';
 import '../widget/toast.dart';
 
@@ -101,17 +102,50 @@ class _AuthorizationsList extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final items = useState(this.items);
+    final controller = useTextEditingController();
+
+    final Widget body;
     if (items.value.isEmpty) {
-      return const _EmptyLayout();
+      body = const _EmptyLayout();
+    } else {
+      body = ListView.builder(
+        itemCount: items.value.length,
+        itemBuilder: (context, index) => _AuthorizationItem(
+          item: items.value[index],
+          onDeAuth: () {
+            items.value = items.value.toList()..removeAt(index);
+          },
+        ),
+      );
     }
-    return ListView.builder(
-      itemCount: items.value.length,
-      itemBuilder: (context, index) => _AuthorizationItem(
-        item: items.value[index],
-        onDeAuth: () {
-          items.value = items.value.toList()..removeAt(index);
-        },
-      ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Material(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: SearchTextFieldWidget(
+              onChanged: (k) {
+                if (k.isEmpty) {
+                  items.value = this.items;
+                } else {
+                  items.value = this
+                      .items
+                      .where((e) =>
+                          e.app.name.containsIgnoreCase(k) ||
+                          e.app.appNumber.containsIgnoreCase(k))
+                      .toList();
+                }
+              },
+              fontSize: 16,
+              controller: controller,
+              hintText: context.l10n.contactSearchHint,
+            ),
+          ),
+        ),
+        Expanded(child: body),
+      ],
     );
   }
 }
