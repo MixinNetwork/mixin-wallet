@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../db/dao/extension.dart';
 import '../db/mixin_database.dart';
+import 'constants.dart';
 import 'web/web_utils.dart';
 
 const _kStagingKey = '8a81eca9-c2da-402d-ba4f-f3c570a449a3';
@@ -16,7 +17,7 @@ String generateTransakPayUrl(AssetResult asset) {
       'apiKey': kReleaseMode ? _kProductionKey : _kStagingKey,
       'cryptoCurrencyCode': asset.symbol,
       'walletAddress': walletAddress,
-      'networks': 'ethereum',
+      'networks': asset.assetId == bitcoin ? 'mainnet' : 'ethereum',
       'redirectUrl': '${locationOrigin()}/#/tokens/${asset.assetId}',
     },
   );
