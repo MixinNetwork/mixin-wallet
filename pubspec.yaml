@@ -77,7 +77,7 @@ dependencies:
   fixnum: ^1.0.1
   x25519: ^0.1.1
   csv: ^5.0.1
-  file_saver: ^0.1.1
+  file_saver: ^0.2.1
   calendar_date_picker2:
     git:
       url: https://github.com/boyan01/calendar_date_picker2.git
