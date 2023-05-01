@@ -198,7 +198,7 @@ packages:
       name: csv
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.1"
+    version: "5.0.2"
   dart_jsonwebtoken:
     dependency: transitive
     description:
