@@ -26,7 +26,7 @@ packages:
     source: hosted
     version: "2.0.3"
   analyzer:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: analyzer
       sha256: "1952250bd005bacb895a01bf1b4dc00e3ba1c526cf47dca54dfe24979c65f5b3"
@@ -37,10 +37,10 @@ packages:
     dependency: transitive
     description:
       name: analyzer_plugin
-      sha256: "02b0046b8b9a4c97a238c66f70acd22eec4263dfc8d9205f9dab5cc8630c5a6f"
+      sha256: c1d5f167683de03d5ab6c3b53fc9aeefc5d59476e7810ba7bbddff50c6f4392d
       url: "https://pub.dev"
     source: hosted
-    version: "0.11.1"
+    version: "0.11.2"
   ansicolor:
     dependency: "direct main"
     description:
@@ -336,8 +336,8 @@ packages:
     description:
       path: envify_generator
       ref: main
-      resolved-ref: "5d739438ddedf1c4a5b5aaefbeaf8cd40a1b1f61"
-      url: "https://github.com/techouse/envify.git"
+      resolved-ref: "879937e1e26268a06ebeca2cc322871296b41486"
+      url: "https://github.com/boyan01/envify.git"
     source: git
     version: "2.0.2"
   equatable:
@@ -881,10 +881,10 @@ packages:
     dependency: transitive
     description:
       name: source_gen
-      sha256: "2d79738b6bbf38a43920e2b8d189e9a3ce6cc201f4b8fc76be5e4fe377b1c38d"
+      sha256: "378a173055cd1fcd2a36e94bf254786d6812688b5f53b6038a2fd180a5a5e210"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.6"
+    version: "1.3.1"
   source_helper:
     dependency: transitive
     description:

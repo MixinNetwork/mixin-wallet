@@ -94,12 +94,9 @@ dev_dependencies:
   hive_generator: ^2.0.0
   envify_generator:
     git:
-      url: https://github.com/techouse/envify.git
+      url: https://github.com/boyan01/envify.git
       ref: main
       path: envify_generator
-
-dependency_overrides:
-  analyzer: ^5.1.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

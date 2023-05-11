@@ -2,8 +2,5 @@
 
 part of 'assets_extra_dao.dart';
 
-// **************************************************************************
-// DaoGenerator
-// **************************************************************************
-
+// ignore_for_file: type=lint
 mixin _$AssetsExtraDaoMixin on DatabaseAccessor<MixinDatabase> {}
