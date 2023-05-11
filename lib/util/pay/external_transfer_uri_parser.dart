@@ -53,7 +53,7 @@ typedef GetAddressFeeCallback = Future<AddressFee> Function(
   String destination,
 );
 
-typedef GetAssetPrecisionByIdCallback = Future<AssetPrecision> Function(
+typedef GetAssetPrecisionByIdCallback = Future<Asset> Function(
   String assetId,
 );
 

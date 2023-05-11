@@ -51,7 +51,7 @@ class ERC681 {
     }
 
     erc681
-      ..gasLimit = toBigInteger((query['gas'] ?? query['gasLimit']))
+      ..gasLimit = toBigInteger(query['gas'] ?? query['gasLimit'])
       ..gasPrice = toBigInteger(query['gasPrice'])
       ..value = toBigInteger(query['value']?.split('-').first)
       ..functionParams = data.query

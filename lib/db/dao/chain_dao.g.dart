@@ -2,11 +2,9 @@
 
 part of 'chain_dao.dart';
 
-// **************************************************************************
-// DaoGenerator
-// **************************************************************************
-
+// ignore_for_file: type=lint
 mixin _$ChainDaoMixin on DatabaseAccessor<MixinDatabase> {
+  Chains get chains => attachedDatabase.chains;
   Addresses get addresses => attachedDatabase.addresses;
   Assets get assets => attachedDatabase.assets;
   Snapshots get snapshots => attachedDatabase.snapshots;
@@ -18,7 +16,6 @@ mixin _$ChainDaoMixin on DatabaseAccessor<MixinDatabase> {
   CollectibleToken get collectibleToken => attachedDatabase.collectibleToken;
   Collections get collections => attachedDatabase.collections;
   CollectibleOutput get collectibleOutput => attachedDatabase.collectibleOutput;
-  Chains get chains => attachedDatabase.chains;
   Selectable<bool> checkExistsById(String chainId) {
     return customSelect(
         'SELECT EXISTS (SELECT 1 AS _c1 FROM chains WHERE chain_id = ?1) AS _c0',

@@ -2,8 +2,5 @@
 
 part of 'snapshot_dao.dart';
 
-// **************************************************************************
-// DaoGenerator
-// **************************************************************************
-
+// ignore_for_file: type=lint
 mixin _$SnapshotDaoMixin on DatabaseAccessor<MixinDatabase> {}

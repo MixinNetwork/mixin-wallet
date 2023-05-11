@@ -89,7 +89,7 @@ Future<void> _handleExternalPay(BuildContext context, String text) async {
       },
       getAssetPrecisionById: (assetId) async {
         final api = context.appServices.client.assetApi;
-        final response = await api.getAssetPrecisionById(assetId);
+        final response = await api.getAssetById(assetId);
         return response.data;
       },
     );

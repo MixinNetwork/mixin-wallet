@@ -224,15 +224,26 @@ Future<ExternalTransfer?> _parse(String uri) async {
         '0x2791bca1f2de4661ed88a30c99a7a9449aa84174':
             '80b65786-7c75-3523-bc03-fb25378eae41',
       }[assetKey],
-      getAssetPrecisionById: (assetId) async => AssetPrecision(
-          assetId: assetId,
-          chainId: ChainId.ethereum,
-          precision: const {
-                '4d8c508b-91c5-375b-92b0-ee702ed2dac5': 6, // ERC20 USDT
-                'c94ac88f-4671-3976-b60a-09064f1811e8': 18, // XIN
-                '80b65786-7c75-3523-bc03-fb25378eae41': 6,
-              }[assetId] ??
-              0),
+      getAssetPrecisionById: (assetId) async => Asset(
+        assetId: assetId,
+        chainId: ChainId.ethereum,
+        precision: const {
+              '4d8c508b-91c5-375b-92b0-ee702ed2dac5': 6, // ERC20 USDT
+              'c94ac88f-4671-3976-b60a-09064f1811e8': 18, // XIN
+              '80b65786-7c75-3523-bc03-fb25378eae41': 6,
+            }[assetId] ??
+            0,
+        symbol: '',
+        name: '',
+        iconUrl: '',
+        balance: '',
+        priceBtc: '',
+        priceUsd: '',
+        changeBtc: '',
+        changeUsd: '',
+        confirmations: 0,
+        feeAssetId: '',
+      ),
     );
   } on ParseExternalTransferUriException catch (error) {
     e('ParseExternalTransferUriException: $error');

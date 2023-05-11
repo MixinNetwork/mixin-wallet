@@ -2,8 +2,5 @@
 
 part of 'collectible_dao.dart';
 
-// **************************************************************************
-// DaoGenerator
-// **************************************************************************
-
+// ignore_for_file: type=lint
 mixin _$CollectibleDaoMixin on DatabaseAccessor<MixinDatabase> {}

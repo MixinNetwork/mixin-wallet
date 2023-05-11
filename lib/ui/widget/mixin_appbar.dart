@@ -4,7 +4,7 @@ import '../../util/extension/extension.dart';
 import '../../util/mixin_context.dart';
 import 'buttons.dart';
 
-class MixinAppBar extends StatelessWidget with PreferredSizeWidget {
+class MixinAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MixinAppBar({
     super.key,
     this.leading,
