@@ -805,9 +805,9 @@ class _ExportButton extends StatelessWidget {
             }
             fileName += '.csv';
             await FileSaver.instance.saveFile(
-              fileName,
-              Uint8List.fromList(utf8.encode(csv)),
-              'csv',
+              name: fileName,
+              bytes: Uint8List.fromList(utf8.encode(csv)),
+              ext: 'csv',
             );
           });
         },
