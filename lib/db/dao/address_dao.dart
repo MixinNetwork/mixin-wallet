@@ -39,7 +39,12 @@ class AddressDao extends DatabaseAccessor<MixinDatabase>
       delete(db.addresses).delete(address);
 
   Selectable<Addresse> addressesByAssetId(String assetId) =>
-      select(db.addresses)..where((tbl) => tbl.assetId.equals(assetId));
+      select(db.addresses)
+        ..where((tbl) => tbl.assetId.equals(assetId))
+        ..orderBy([
+          (tbl) =>
+              OrderingTerm(expression: tbl.updatedAt, mode: OrderingMode.desc)
+        ]);
 
   Selectable<Addresse> addressesById(String addressId) =>
       select(db.addresses)..where((tbl) => tbl.addressId.equals(addressId));
