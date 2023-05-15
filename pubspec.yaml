@@ -52,7 +52,7 @@ dependencies:
   ansicolor: ^2.0.1
   decimal: ^2.3.2
   rxdart: ^0.27.6
-  qr_flutter: ^4.0.0
+  qr_flutter: ^4.1.0
   vrouter: ^1.2.0+5
   uuid: ^3.0.7
   envify:
