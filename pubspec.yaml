@@ -67,7 +67,7 @@ dependencies:
       url: https://github.com/MixinNetwork/flutter-plugins.git
       path: packages/web_qrcode
       ref: 7a0703301c6b9b2950f14bb045e2a660c8530c7a
-  share_plus: ^7.0.0
+  share_plus: ^7.0.1
   collection: ^1.16.0
   convert: ^3.1.1
   pointycastle: ^3.6.2
