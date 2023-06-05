@@ -302,10 +302,10 @@ packages:
     dependency: "direct dev"
     description:
       name: drift_dev
-      sha256: "19ba372ceb11a06d7b6a08f50036aa5316ec1d04e75ec71472a72101c5ab3703"
+      sha256: "4704966d9eb8f5717bebad7e722397d8150235f4bb1d64eb8b22c55d4566cf6a"
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.1"
+    version: "2.8.3"
   ed25519_edwards:
     dependency: transitive
     description:
@@ -376,10 +376,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_saver
-      sha256: ec88678780c6d301579cebad4e236d1435eddd51804d31fc55a1db7856ef0595
+      sha256: ea6506816af8fa381e3934ecc730d260b33a089e5391a80ea4ba405d16aa5bc0
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.2"
+    version: "0.2.4"
   fixnum:
     dependency: "direct main"
     description:
