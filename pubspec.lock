@@ -17,14 +17,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  amdjs:
-    dependency: transitive
-    description:
-      name: amdjs
-      sha256: "97e6d96fd0e64d3eeb6fc85f386160322a23b1192662aac1fa4139569add2434"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.3"
   analyzer:
     dependency: transitive
     description:
@@ -65,14 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  async_extension:
-    dependency: transitive
-    description:
-      name: async_extension
-      sha256: "891a2ea770693a70cdf5155f5a0b5e81b0e3a2d3d631d112cffbca4807186468"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -274,14 +258,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.2"
-  dom_tools:
-    dependency: transitive
-    description:
-      name: dom_tools
-      sha256: "275e169f965f34fda5097cf68b72416b2736b7f57ecf97af8aaf7f0634624bec"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.15"
   dotenv:
     dependency: transitive
     description:
@@ -376,10 +352,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_saver
-      sha256: ec88678780c6d301579cebad4e236d1435eddd51804d31fc55a1db7856ef0595
+      sha256: e46d27c95a77f99ae9b1613a4db59ea565d511a251ec1b93b495e80fc4139c76
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.2"
+    version: "0.2.7"
   fixnum:
     dependency: "direct main"
     description:
@@ -476,10 +452,10 @@ packages:
     dependency: transitive
     description:
       name: http
-      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.6"
+    version: "1.1.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -536,14 +512,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.1"
-  json_object_mapper:
-    dependency: transitive
-    description:
-      name: json_object_mapper
-      sha256: "8566947565045eb2a8dd679029c4fcbb84dfd0e10309a1693e67e83e174893a2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   json_serializable:
     dependency: "direct dev"
     description:
@@ -560,14 +528,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-  markdown:
-    dependency: transitive
-    description:
-      name: markdown
-      sha256: "39caf989ccc72c63e87b961851a74257141938599ed2db45fbd9403fee0db423"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.0"
   matcher:
     dependency: transitive
     description:
@@ -824,14 +784,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
-  resource_portable:
-    dependency: transitive
-    description:
-      name: resource_portable
-      sha256: "004f8c5ed07557ad9a21aa075214b6be2b968309a7dfc465fa0aa85e4002518e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.2"
   rxdart:
     dependency: "direct main"
     description:
@@ -844,18 +796,18 @@ packages:
     dependency: "direct main"
     description:
       name: share_plus
-      sha256: "322a1ec9d9fe07e2e2252c098ce93d12dbd06133cc4c00ffe6a4ef505c295c17"
+      sha256: "6cec740fa0943a826951223e76218df002804adb588235a8910dc3d6b0654e11"
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.0"
+    version: "7.1.0"
   share_plus_platform_interface:
     dependency: transitive
     description:
       name: share_plus_platform_interface
-      sha256: "0c6e61471bd71b04a138b8b588fa388e66d8b005e6f2deda63371c5c505a0981"
+      sha256: "357412af4178d8e11d14f41723f80f12caea54cf0d5cd29af9dcdab85d58aea7"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.1"
+    version: "3.3.0"
   shelf:
     dependency: transitive
     description:
@@ -957,14 +909,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  swiss_knife:
-    dependency: transitive
-    description:
-      name: swiss_knife
-      sha256: "3066fc2ed9a90139cf69f1733f6f9714f7a0a4e6a9d668451d5a1e371da8897b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.5"
   term_glyph:
     dependency: transitive
     description:
