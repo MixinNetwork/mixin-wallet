@@ -17,14 +17,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  amdjs:
-    dependency: transitive
-    description:
-      name: amdjs
-      sha256: "97e6d96fd0e64d3eeb6fc85f386160322a23b1192662aac1fa4139569add2434"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.3"
   analyzer:
     dependency: transitive
     description:
@@ -65,14 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  async_extension:
-    dependency: transitive
-    description:
-      name: async_extension
-      sha256: "891a2ea770693a70cdf5155f5a0b5e81b0e3a2d3d631d112cffbca4807186468"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -274,14 +258,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.2"
-  dom_tools:
-    dependency: transitive
-    description:
-      name: dom_tools
-      sha256: "275e169f965f34fda5097cf68b72416b2736b7f57ecf97af8aaf7f0634624bec"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.15"
   dotenv:
     dependency: transitive
     description:
@@ -294,18 +270,18 @@ packages:
     dependency: "direct main"
     description:
       name: drift
-      sha256: "21abd7b1c1a637a264f58f9f05c7b910d29c204aab1cbfcb4d9fada1e98a9303"
+      sha256: a255df2476431d3179f5aba7a7435a3678542642fba43de98c330ae0e0393c2e
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.0"
+    version: "2.11.0"
   drift_dev:
     dependency: "direct dev"
     description:
       name: drift_dev
-      sha256: "19ba372ceb11a06d7b6a08f50036aa5316ec1d04e75ec71472a72101c5ab3703"
+      sha256: "5f63cbc64f9e2346a1fd22bf43c5df8a35369e62cc1f7519ea95410cd5ff8ce5"
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.1"
+    version: "2.11.0"
   ed25519_edwards:
     dependency: transitive
     description:
@@ -376,10 +352,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_saver
-      sha256: ec88678780c6d301579cebad4e236d1435eddd51804d31fc55a1db7856ef0595
+      sha256: "591d25e750e3a4b654f7b0293abc2ed857242f82ca7334051b2a8ceeb369dac8"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.2"
+    version: "0.2.8"
   fixnum:
     dependency: "direct main"
     description:
@@ -476,10 +452,10 @@ packages:
     dependency: transitive
     description:
       name: http
-      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.6"
+    version: "1.1.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -536,14 +512,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.1"
-  json_object_mapper:
-    dependency: transitive
-    description:
-      name: json_object_mapper
-      sha256: "8566947565045eb2a8dd679029c4fcbb84dfd0e10309a1693e67e83e174893a2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   json_serializable:
     dependency: "direct dev"
     description:
@@ -560,14 +528,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-  markdown:
-    dependency: transitive
-    description:
-      name: markdown
-      sha256: "39caf989ccc72c63e87b961851a74257141938599ed2db45fbd9403fee0db423"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.0"
   matcher:
     dependency: transitive
     description:
@@ -824,14 +784,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
-  resource_portable:
-    dependency: transitive
-    description:
-      name: resource_portable
-      sha256: "004f8c5ed07557ad9a21aa075214b6be2b968309a7dfc465fa0aa85e4002518e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.2"
   rxdart:
     dependency: "direct main"
     description:
@@ -913,18 +865,18 @@ packages:
     dependency: transitive
     description:
       name: sqlite3
-      sha256: "2cef47b59d310e56f8275b13734ee80a9cf4a48a43172020cb55a620121fbf66"
+      sha256: db65233e6b99e99b2548932f55a987961bc06d82a31a0665451fa0b4fff4c3fb
       url: "https://pub.dev"
     source: hosted
-    version: "1.11.1"
+    version: "2.1.0"
   sqlparser:
     dependency: transitive
     description:
       name: sqlparser
-      sha256: "0d2c9a3b554baa10b2560d69a1c7cabd4687cc08041a7dd3d2dc6992f607b400"
+      sha256: "60249badd8052dec4ad8d4bf5923da7533dad0009e92e224f8abd221665bfa22"
       url: "https://pub.dev"
     source: hosted
-    version: "0.30.0"
+    version: "0.31.0"
   stack_trace:
     dependency: transitive
     description:
@@ -957,14 +909,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  swiss_knife:
-    dependency: transitive
-    description:
-      name: swiss_knife
-      sha256: "3066fc2ed9a90139cf69f1733f6f9714f7a0a4e6a9d668451d5a1e371da8897b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.5"
   term_glyph:
     dependency: transitive
     description:
