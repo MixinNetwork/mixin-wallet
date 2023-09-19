@@ -1,22 +1,30 @@
-import 'package:envify/envify.dart';
+import 'package:envied/envied.dart';
 import 'package:flutter/foundation.dart';
 
 part 'env.g.dart';
 
-@Envify(path: '.development.env')
+@Envied(path: '.development.env')
 abstract class _DevEnv {
-  static const clientId = __DevEnv.clientId;
-  static const clientSecret = __DevEnv.clientSecret;
-  static const wyreAccount = __DevEnv.wyreAccount;
-  static const wyreSecret = __DevEnv.wyreSecret;
+  @EnviedField(varName: 'CLIENT_ID')
+  static const String clientId = __DevEnv.clientId;
+  @EnviedField(varName: 'CLIENT_SECRET')
+  static const String clientSecret = __DevEnv.clientSecret;
+  @EnviedField(varName: 'WYRE_ACCOUNT')
+  static const String wyreAccount = __DevEnv.wyreAccount;
+  @EnviedField(varName: 'WYRE_SECRET')
+  static const String wyreSecret = __DevEnv.wyreSecret;
 }
 
-@Envify(path: '.production.env')
+@Envied(path: '.production.env')
 abstract class _ProdEnv {
-  static const clientId = __ProdEnv.clientId;
-  static const clientSecret = __ProdEnv.clientSecret;
-  static const wyreAccount = __ProdEnv.wyreAccount;
-  static const wyreSecret = __ProdEnv.wyreSecret;
+  @EnviedField(varName: 'CLIENT_ID')
+  static const String clientId = __ProdEnv.clientId;
+  @EnviedField(varName: 'CLIENT_SECRET')
+  static const String clientSecret = __ProdEnv.clientSecret;
+  @EnviedField(varName: 'WYRE_ACCOUNT')
+  static const String wyreAccount = __ProdEnv.wyreAccount;
+  @EnviedField(varName: 'WYRE_SECRET')
+  static const String wyreSecret = __ProdEnv.wyreSecret;
 }
 
 class Env {
