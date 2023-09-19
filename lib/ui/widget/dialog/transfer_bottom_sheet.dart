@@ -50,7 +50,7 @@ Future<bool> showTransferToAddressBottomSheet(
             await context.appServices.mixinDatabase.snapshotDao
                 .insertAll([response.data]);
             Navigator.of(context).pop(true);
-          } on DioError catch (error) {
+          } on DioException catch (error) {
             final mixinError = error.optionMixinError;
             if (mixinError?.code == sdk.insufficientTransactionFee) {
               final message = context.l10n
@@ -97,7 +97,7 @@ Future<bool> showTransferToExternalUrlBottomSheet({
           await context.appServices.mixinDatabase.snapshotDao
               .insertAll([response.data]);
           Navigator.of(context).pop(true);
-        } on DioError catch (error) {
+        } on DioException catch (error) {
           final mixinError = error.optionMixinError;
           if (mixinError?.code == sdk.insufficientTransactionFee) {
             final message = context.l10n

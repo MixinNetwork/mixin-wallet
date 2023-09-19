@@ -30,7 +30,7 @@ void usePinVerificationEffect(PinInputController controller) {
         } catch (error, stacktrace) {
           e('verify pin error $error, $stacktrace');
           controller.clear();
-          if (error is DioError) {
+          if (error is DioException) {
             final mixinError = error.optionMixinError;
             if (mixinError != null) {
               if (mixinError.code == sdk.tooManyRequest) {
@@ -332,7 +332,7 @@ class PinVerifyDialogScaffold extends HookWidget {
           await onVerified(context, pin);
         } catch (error, stacktrace) {
           e('verify pin error $error, $stacktrace');
-          if (error is DioError) {
+          if (error is DioException) {
             final mixinError = error.optionMixinError;
             if (mixinError != null) {
               if (mixinError.code == sdk.tooManyRequest) {

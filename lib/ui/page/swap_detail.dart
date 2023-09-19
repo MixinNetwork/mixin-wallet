@@ -113,7 +113,7 @@ class _SwapDetailLoader extends HookWidget {
               swapPhase.value = SwapPhase.trading;
             }
           } catch (error, stack) {
-            if (error is DioError &&
+            if (error is DioException &&
                 error.response?.statusCode == mixSwapRetryErrorCode) {
               swapPhase.value = SwapPhase.checking;
             } else {

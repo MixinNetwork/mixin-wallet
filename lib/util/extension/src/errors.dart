@@ -4,7 +4,7 @@ import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../extension.dart';
 
-extension MixinErrorHandle on DioError {
+extension MixinErrorHandle on DioException {
   MixinError? get optionMixinError {
     if (error is MixinError) {
       return error! as MixinError;
@@ -30,13 +30,13 @@ extension ErrorExtenstion on Object {
     if (this is MixinError) {
       return (this as MixinError).toDisplayString(context);
     }
-    if (this is DioError) {
-      final mixinError = (this as DioError).optionMixinError;
+    if (this is DioException) {
+      final mixinError = (this as DioException).optionMixinError;
       if (mixinError != null) {
         return mixinError.toDisplayString(context);
       } else {
         return context.l10n
-            .errorUnknownWithMessage((this as DioError).error.toString());
+            .errorUnknownWithMessage((this as DioException).error.toString());
       }
     }
     return context.l10n.errorUnknownWithMessage(toString());

@@ -309,8 +309,8 @@ class _InputPreview extends HookWidget {
       if (quote.hasData) {
         desc = '≈ ${quote.data!.destAmount} ${asset.symbol}';
       } else {
-        if (quote.error is DioError) {
-          final response = (quote.error! as DioError).response;
+        if (quote.error is DioException) {
+          final response = (quote.error! as DioException).response;
           if (response != null) {
             // ignore: avoid_dynamic_calls
             final errorCode = response.data['errorCode'];
