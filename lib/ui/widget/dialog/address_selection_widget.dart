@@ -229,7 +229,7 @@ class _AddressPopupMenuWrapperState extends State<_AddressPopupMenuWrapper> {
                   .getAddressById(address.addressId);
               return false;
             } catch (error) {
-              if (error is DioError) {
+              if (error is DioException) {
                 final mixinError = error.error as sdk.MixinError?;
                 if (mixinError?.code == 404) {
                   return true;

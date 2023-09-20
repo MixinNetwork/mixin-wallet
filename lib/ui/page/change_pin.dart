@@ -160,7 +160,7 @@ class _PinInputLayout extends HookWidget {
               } catch (error, stacktrace) {
                 pinInputController.clear();
                 e('verify pin error $error, $stacktrace');
-                if (error is DioError) {
+                if (error is DioException) {
                   final mixinError = error.optionMixinError;
                   if (mixinError != null) {
                     if (mixinError.code == sdk.tooManyRequest) {

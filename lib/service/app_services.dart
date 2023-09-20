@@ -90,7 +90,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
             handler.next(options);
           },
           onError: (
-            DioError e,
+            DioException e,
             ErrorInterceptorHandler handler,
           ) async {
             if (e is sdk.MixinApiError &&
@@ -497,7 +497,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       final friends = await client.accountApi.getFriends();
       await mixinDatabase.userDao
           .insertAll(friends.data.map((e) => e.toDbUser()).toList());
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.optionMixinError?.isForbidden ?? false) {
         rethrow;
       }
@@ -646,7 +646,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       await mixinDatabase.collectibleDao.updateOutputs(utxos);
       mixinDatabase.collectibleDao.removeNotExist(tokenIds);
       await refreshCollectiblesTokenIfNotExist(tokenIds);
-    } on DioError catch (e, s) {
+    } on DioException catch (e, s) {
       if (e.optionMixinError?.isForbidden ?? false) {
         rethrow;
       }

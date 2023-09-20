@@ -190,6 +190,6 @@ class _AmountSqlExpression extends Expression<Object> {
 
   @override
   void writeInto(GenerationContext context) {
-    context.buffer.write('abs(${s.amount.escapedName})');
+    context.buffer.write('abs(${s.amount.escapedNameFor(context.dialect)})');
   }
 }

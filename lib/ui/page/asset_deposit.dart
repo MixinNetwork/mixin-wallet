@@ -534,7 +534,7 @@ class _QrcodeImage extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            QrImage(
+            QrImageView(
               data: data,
               size: 160,
               padding: EdgeInsets.zero,

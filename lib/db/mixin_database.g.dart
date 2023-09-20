@@ -5397,36 +5397,34 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
           ...generatedwhere.watchedTables,
           ...generatedorderBy.watchedTables,
           ...generatedlimit.watchedTables,
-        }).map((QueryRow row) {
-      return CollectibleItem(
-        type: row.read<String>('type'),
-        tokenId: row.read<String>('token_id'),
-        group: row.read<String>('group'),
-        token: row.read<String>('token'),
-        mixinId: row.read<String>('mixin_id'),
-        nfo: row.read<String>('nfo'),
-        createdAt: CollectibleToken.$convertercreatedAt
-            .fromSql(row.read<int>('created_at')),
-        metaHash: row.read<String>('meta_hash'),
-        collectionId: row.read<String>('collection_id'),
-        group1: row.readNullable<String>('group'),
-        name: row.readNullable<String>('name'),
-        description: row.readNullable<String>('description'),
-        iconUrl: row.readNullable<String>('icon_url'),
-        mediaUrl: row.readNullable<String>('media_url'),
-        mime: row.readNullable<String>('mime'),
-        hash: row.readNullable<String>('hash'),
-        tokenId1: row.readNullable<String>('token_id'),
-        collectionType: row.readNullable<String>('collection_type'),
-        collectionName: row.readNullable<String>('collection_name'),
-        collectionDescription:
-            row.readNullable<String>('collection_description'),
-        collectionIconUrl: row.readNullable<String>('collection_icon_url'),
-        collectionCreatedAt: NullAwareTypeConverter.wrapFromSql(
-            Collections.$convertercreatedAt,
-            row.readNullable<int>('collection_created_at')),
-      );
-    });
+        }).map((QueryRow row) => CollectibleItem(
+          type: row.read<String>('type'),
+          tokenId: row.read<String>('token_id'),
+          group: row.read<String>('group'),
+          token: row.read<String>('token'),
+          mixinId: row.read<String>('mixin_id'),
+          nfo: row.read<String>('nfo'),
+          createdAt: CollectibleToken.$convertercreatedAt
+              .fromSql(row.read<int>('created_at')),
+          metaHash: row.read<String>('meta_hash'),
+          collectionId: row.read<String>('collection_id'),
+          group1: row.readNullable<String>('group'),
+          name: row.readNullable<String>('name'),
+          description: row.readNullable<String>('description'),
+          iconUrl: row.readNullable<String>('icon_url'),
+          mediaUrl: row.readNullable<String>('media_url'),
+          mime: row.readNullable<String>('mime'),
+          hash: row.readNullable<String>('hash'),
+          tokenId1: row.readNullable<String>('token_id'),
+          collectionType: row.readNullable<String>('collection_type'),
+          collectionName: row.readNullable<String>('collection_name'),
+          collectionDescription:
+              row.readNullable<String>('collection_description'),
+          collectionIconUrl: row.readNullable<String>('collection_icon_url'),
+          collectionCreatedAt: NullAwareTypeConverter.wrapFromSql(
+              Collections.$convertercreatedAt,
+              row.readNullable<int>('collection_created_at')),
+        ));
   }
 
   Selectable<User> findFriendsNotBot() {
@@ -5474,31 +5472,29 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
           ...generatedwhere.watchedTables,
           ...generatedorder.watchedTables,
           ...generatedlimit.watchedTables,
-        }).map((QueryRow row) {
-      return SnapshotItem(
-        snapshotId: row.read<String>('snapshot_id'),
-        type: row.read<String>('type'),
-        assetId: row.read<String>('asset_id'),
-        amount: row.read<String>('amount'),
-        createdAt:
-            Snapshots.$convertercreatedAt.fromSql(row.read<int>('created_at')),
-        opponentId: row.readNullable<String>('opponent_id'),
-        traceId: row.readNullable<String>('trace_id'),
-        transactionHash: row.readNullable<String>('transaction_hash'),
-        sender: row.readNullable<String>('sender'),
-        receiver: row.readNullable<String>('receiver'),
-        memo: row.readNullable<String>('memo'),
-        confirmations: row.readNullable<int>('confirmations'),
-        snapshotHash: row.readNullable<String>('snapshot_hash'),
-        snapshotAt: Snapshots.$convertersnapshotAt
-            .fromSql(row.readNullable<int>('snapshot_at')),
-        state: row.readNullable<String>('state'),
-        avatarUrl: row.readNullable<String>('avatar_url'),
-        opponentFulName: row.readNullable<String>('opponent_ful_name'),
-        assetSymbol: row.readNullable<String>('asset_symbol'),
-        assetConfirmations: row.readNullable<int>('asset_confirmations'),
-      );
-    });
+        }).map((QueryRow row) => SnapshotItem(
+          snapshotId: row.read<String>('snapshot_id'),
+          type: row.read<String>('type'),
+          assetId: row.read<String>('asset_id'),
+          amount: row.read<String>('amount'),
+          createdAt: Snapshots.$convertercreatedAt
+              .fromSql(row.read<int>('created_at')),
+          opponentId: row.readNullable<String>('opponent_id'),
+          traceId: row.readNullable<String>('trace_id'),
+          transactionHash: row.readNullable<String>('transaction_hash'),
+          sender: row.readNullable<String>('sender'),
+          receiver: row.readNullable<String>('receiver'),
+          memo: row.readNullable<String>('memo'),
+          confirmations: row.readNullable<int>('confirmations'),
+          snapshotHash: row.readNullable<String>('snapshot_hash'),
+          snapshotAt: Snapshots.$convertersnapshotAt
+              .fromSql(row.readNullable<int>('snapshot_at')),
+          state: row.readNullable<String>('state'),
+          avatarUrl: row.readNullable<String>('avatar_url'),
+          opponentFulName: row.readNullable<String>('opponent_ful_name'),
+          assetSymbol: row.readNullable<String>('asset_symbol'),
+          assetConfirmations: row.readNullable<int>('asset_confirmations'),
+        ));
   }
 
   Future<int> clearPendingDepositsBy(ClearPendingDepositsBy$where where) {
@@ -5567,32 +5563,30 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
           ...generatedwhere.watchedTables,
           ...generatedorderBy.watchedTables,
           ...generatedlimit.watchedTables,
-        }).map((QueryRow row) {
-      return AssetResult(
-        assetId: row.read<String>('asset_id'),
-        symbol: row.read<String>('symbol'),
-        name: row.read<String>('name'),
-        iconUrl: row.read<String>('icon_url'),
-        balance: row.read<String>('balance'),
-        destination: row.readNullable<String>('destination'),
-        tag: row.readNullable<String>('tag'),
-        priceBtc: row.read<String>('price_btc'),
-        priceUsd: row.read<String>('price_usd'),
-        chainId: row.read<String>('chain_id'),
-        changeUsd: row.read<String>('change_usd'),
-        changeBtc: row.read<String>('change_btc'),
-        confirmations: row.read<int>('confirmations'),
-        assetKey: row.readNullable<String>('asset_key'),
-        reserve: row.readNullable<String>('reserve'),
-        depositEntries: row.readNullable<String>('deposit_entries'),
-        chainSymbol: row.readNullable<String>('chainSymbol'),
-        chainIconUrl: row.readNullable<String>('chainIconUrl'),
-        chainName: row.readNullable<String>('chainName'),
-        chainPriceUsd: row.readNullable<String>('chainPriceUsd'),
-        fiatRate: row.read<double>('fiatRate'),
-        hidden: row.readNullable<bool>('hidden'),
-      );
-    });
+        }).map((QueryRow row) => AssetResult(
+          assetId: row.read<String>('asset_id'),
+          symbol: row.read<String>('symbol'),
+          name: row.read<String>('name'),
+          iconUrl: row.read<String>('icon_url'),
+          balance: row.read<String>('balance'),
+          destination: row.readNullable<String>('destination'),
+          tag: row.readNullable<String>('tag'),
+          priceBtc: row.read<String>('price_btc'),
+          priceUsd: row.read<String>('price_usd'),
+          chainId: row.read<String>('chain_id'),
+          changeUsd: row.read<String>('change_usd'),
+          changeBtc: row.read<String>('change_btc'),
+          confirmations: row.read<int>('confirmations'),
+          assetKey: row.readNullable<String>('asset_key'),
+          reserve: row.readNullable<String>('reserve'),
+          depositEntries: row.readNullable<String>('deposit_entries'),
+          chainSymbol: row.readNullable<String>('chainSymbol'),
+          chainIconUrl: row.readNullable<String>('chainIconUrl'),
+          chainName: row.readNullable<String>('chainName'),
+          chainPriceUsd: row.readNullable<String>('chainPriceUsd'),
+          fiatRate: row.read<double>('fiatRate'),
+          hidden: row.readNullable<bool>('hidden'),
+        ));
   }
 
   Selectable<String> findAssetIdByAssetKey(String assetKey) {

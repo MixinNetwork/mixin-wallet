@@ -91,7 +91,7 @@ class _RequestPaymentResultBottomSheet extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 26),
-                QrImage(
+                QrImageView(
                   data: url,
                   size: 160,
                   padding: EdgeInsets.zero,
