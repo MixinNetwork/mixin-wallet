@@ -15,7 +15,6 @@ import '../../util/logger.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../../util/transak.dart';
-import '../../wyre/wyre_constants.dart';
 import '../router/mixin_routes.dart';
 import 'chain_network_label.dart';
 import 'mixin_bottom_sheet.dart';
@@ -49,7 +48,7 @@ class BuyAssetSelectionBottomSheet extends StatelessWidget {
         },
         source: (faitCurrency) async* {
           final assets =
-              await context.appServices.findOrSyncAssets(supportedCryptosId);
+              await context.appServices.findOrSyncAssets(supportedBuyCryptosId);
           yield assets;
         },
         onCancelPressed: () {

@@ -9,8 +9,6 @@ import '../page/asset_deposit.dart';
 import '../page/asset_detail.dart';
 import '../page/auth.dart';
 import '../page/authentications.dart';
-import '../page/buy.dart';
-import '../page/buy_success.dart';
 import '../page/change_pin.dart';
 import '../page/collectible_detail.dart';
 import '../page/collectibles_collection.dart';
@@ -42,7 +40,6 @@ const transactionsSnapshotDetailPath = '/transactions/snapshots/:id';
 final hiddenAssetsUri = Uri(path: '/hiddenAssets');
 const settingPath = '/setting';
 const buyChoosePath = '/buy';
-const buyPath = '/buy/:id';
 const buySuccessPath = '/buySuccess';
 const swapPath = '/swap';
 const swapTransactionsPath = '/swap/transactions';
@@ -161,16 +158,6 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                         widget: const Authentications(),
                       ),
                     ],
-                  ),
-                  VWidget(
-                    key: const ValueKey('Buy'),
-                    path: buyPath,
-                    widget: const Buy(),
-                  ),
-                  VWidget(
-                    key: const ValueKey('BuySuccess'),
-                    path: buySuccessPath,
-                    widget: const BuySuccess(),
                   ),
                   VWidget(
                     key: const ValueKey('Swap'),
