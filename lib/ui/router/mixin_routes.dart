@@ -5,7 +5,6 @@ import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../page/all_transactions.dart';
-import '../page/asset_deposit.dart';
 import '../page/asset_detail.dart';
 import '../page/auth.dart';
 import '../page/authentications.dart';
@@ -19,13 +18,6 @@ import '../page/not_found.dart';
 import '../page/pin_logs.dart';
 import '../page/setting.dart';
 import '../page/snapshot_detail.dart';
-import '../page/swap.dart';
-import '../page/swap_detail.dart';
-import '../page/swap_transactions.dart';
-import '../page/withdrawal.dart';
-import '../page/withdrawal_transactions.dart';
-import '../widget/asset_selection_list_widget.dart';
-import '../widget/bottom_sheet.dart';
 
 final homeUri = Uri(path: '/');
 final authUri = Uri(path: '/auth');
@@ -88,17 +80,6 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                 widget: const Home(),
                 stackedRoutes: [
                   VWidget(
-                      key: const ValueKey('Withdrawal'),
-                      path: withdrawalPath,
-                      widget: const Withdrawal(),
-                      stackedRoutes: [
-                        VWidget(
-                          key: const ValueKey('WithdrawalTransactions'),
-                          path: withdrawalTransactionsPath,
-                          widget: const WithdrawalTransactions(),
-                        )
-                      ]),
-                  VWidget(
                     key: const ValueKey('AssetDetail'),
                     path: assetDetailPath,
                     widget: const AssetDetail(),
@@ -109,11 +90,6 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                         widget: const SnapshotDetail(),
                       ),
                     ],
-                  ),
-                  VWidget(
-                    key: const ValueKey('AssetDeposit'),
-                    path: assetDepositPath,
-                    widget: const AssetDeposit(),
                   ),
                   VWidget(
                     key: const ValueKey('NotFound'),
@@ -160,21 +136,6 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     ],
                   ),
                   VWidget(
-                    key: const ValueKey('Swap'),
-                    path: swapPath,
-                    widget: const Swap(),
-                  ),
-                  VWidget(
-                    key: const ValueKey('SwapDetail'),
-                    path: swapDetailPath,
-                    widget: const SwapDetail(),
-                  ),
-                  VWidget(
-                    key: const ValueKey('SwapTransactions'),
-                    path: swapTransactionsPath,
-                    widget: const SwapTransactions(),
-                  ),
-                  VWidget(
                     path: collectiblesCollectionPath,
                     key: const ValueKey('CollectiblesGroup'),
                     widget: const CollectiblesCollection(),
@@ -185,15 +146,6 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                         widget: const CollectibleDetail(),
                       ),
                     ],
-                  ),
-                  VPage(
-                    path: buyChoosePath,
-                    pageBuilder: (key, child, name) => MixinBottomSheetPage(
-                      key: key,
-                      child: child,
-                      isScrollControlled: true,
-                    ),
-                    widget: const BuyAssetSelectionBottomSheet(),
                   ),
                 ]),
           ]),

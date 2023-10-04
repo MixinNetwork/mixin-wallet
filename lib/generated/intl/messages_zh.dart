@@ -120,8 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "assets": MessageLookupByLibrary.simpleMessage("资产"),
         "authApprovedAccessDate": m3,
         "authHint": MessageLookupByLibrary.simpleMessage("只读授权无法动用你的资产，请放心使用"),
-        "authSlogan": MessageLookupByLibrary.simpleMessage(
-            "Mixin 钱包是一款用户友好、安全且功能强大的多链数字钱包。"),
+        "authSlogan": MessageLookupByLibrary.simpleMessage("查看旧钱包的资产和转账记录"),
         "authTips":
             MessageLookupByLibrary.simpleMessage("你知道吗？Mixin 是一个开源的加密钱包"),
         "authorizations": MessageLookupByLibrary.simpleMessage("授权"),
@@ -302,7 +301,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "minerFee": MessageLookupByLibrary.simpleMessage("挖矿手续费"),
         "minimumReserve": MessageLookupByLibrary.simpleMessage("最少保留数量："),
         "minimumWithdrawal": MessageLookupByLibrary.simpleMessage("最小提现数量："),
-        "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin 钱包"),
+        "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin 旧钱包"),
         "multisigTransaction": MessageLookupByLibrary.simpleMessage("多重签名交易"),
         "networkFee": MessageLookupByLibrary.simpleMessage("网络手续费："),
         "networkFeeTip": MessageLookupByLibrary.simpleMessage(

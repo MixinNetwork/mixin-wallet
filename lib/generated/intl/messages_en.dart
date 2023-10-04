@@ -133,7 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "authHint": MessageLookupByLibrary.simpleMessage(
             "Read-only authorization cannot use your assets, please rest assured"),
         "authSlogan": MessageLookupByLibrary.simpleMessage(
-            "Mixin Wallet is a user-friendly, secure and powerful multi-chain digital wallet."),
+            "View the assets and transfer records of the legacy wallet"),
         "authTips": MessageLookupByLibrary.simpleMessage(
             "An open source cryptocurrency wallet"),
         "authorizations":
@@ -337,7 +337,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Minimum reserve:"),
         "minimumWithdrawal":
             MessageLookupByLibrary.simpleMessage("Minimum withdrawal:"),
-        "mixinWallet": MessageLookupByLibrary.simpleMessage("Mixin Wallet"),
+        "mixinWallet":
+            MessageLookupByLibrary.simpleMessage("Mixin Legacy Wallet"),
         "multisigTransaction":
             MessageLookupByLibrary.simpleMessage("Multisig transaction"),
         "networkFee": MessageLookupByLibrary.simpleMessage("Network fee:"),

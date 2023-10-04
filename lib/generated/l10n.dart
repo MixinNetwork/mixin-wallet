@@ -820,20 +820,20 @@ class L10n {
     );
   }
 
-  /// `Mixin Wallet`
+  /// `Mixin Legacy Wallet`
   String get mixinWallet {
     return Intl.message(
-      'Mixin Wallet',
+      'Mixin Legacy Wallet',
       name: 'mixinWallet',
       desc: '',
       args: [],
     );
   }
 
-  /// `Mixin Wallet is a user-friendly, secure and powerful multi-chain digital wallet.`
+  /// `View the assets and transfer records of the legacy wallet`
   String get authSlogan {
     return Intl.message(
-      'Mixin Wallet is a user-friendly, secure and powerful multi-chain digital wallet.',
+      'View the assets and transfer records of the legacy wallet',
       name: 'authSlogan',
       desc: '',
       args: [],
