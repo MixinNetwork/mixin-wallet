@@ -63,7 +63,6 @@ class BuyAssetSelectionBottomSheet extends StatelessWidget {
 
 Future<AssetResult?> showSendAssetSelectionBottomSheet(
   BuildContext context, {
-  required VoidCallback onDepositPressed,
   String? initialSelected,
 }) =>
     showMixinBottomSheet<AssetResult>(
@@ -83,22 +82,7 @@ Future<AssetResult?> showSendAssetSelectionBottomSheet(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Text(context.l10n.dontHaveAssets),
-            ),
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                onDepositPressed();
-              },
-              child: MixinText(
-                context.l10n.deposit,
-                style: TextStyle(
-                  color: context.colorScheme.accent,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              child: Text(context.l10n.noAsset),
             ),
           ],
         )),

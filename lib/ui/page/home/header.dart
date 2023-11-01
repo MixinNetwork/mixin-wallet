@@ -1,14 +1,11 @@
 import 'package:decimal/decimal.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../service/account_provider.dart';
 import '../../../service/profile/profile_manager.dart';
 import '../../../util/extension/extension.dart';
-import '../../../util/mixin_context.dart';
 import '../../router/mixin_routes.dart';
 import '../../widget/asset_selection_list_widget.dart';
 import '../../widget/buttons.dart';
@@ -107,59 +104,25 @@ class _ButtonBar extends StatelessWidget {
   const _ButtonBar();
 
   @override
-  Widget build(BuildContext context) {
-    Future<void> onReceiveTap() async {
-      final asset = await showAssetWithSearchSelectionBottomSheet(
-        context,
-        initialSelected: lastSelectedAddress,
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: HeaderButtonBarLayout(
+          buttons: [
+            HeaderButton.text(
+              text: context.l10n.send,
+              onTap: () async {
+                final asset = await showSendAssetSelectionBottomSheet(
+                  context,
+                  initialSelected: lastSelectedAddress,
+                );
+                if (asset == null) {
+                  return;
+                }
+                lastSelectedAddress = asset.assetId;
+                context.push(withdrawalPath.toUri({'id': asset.assetId}));
+              },
+            ),
+          ],
+        ),
       );
-      if (asset == null) {
-        return;
-      }
-      lastSelectedAddress = asset.assetId;
-      context.push(assetDepositPath.toUri({'id': asset.assetId}));
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: HeaderButtonBarLayout(
-        buttons: [
-          HeaderButton.text(
-            text: context.l10n.send,
-            onTap: () async {
-              final asset = await showSendAssetSelectionBottomSheet(
-                context,
-                initialSelected: lastSelectedAddress,
-                onDepositPressed: onReceiveTap,
-              );
-              if (asset == null) {
-                return;
-              }
-              lastSelectedAddress = asset.assetId;
-              context.push(withdrawalPath.toUri({'id': asset.assetId}));
-            },
-          ),
-          HeaderButton.text(
-            text: context.l10n.receive,
-            onTap: onReceiveTap,
-          ),
-          HeaderButton.text(
-            text: context.l10n.buy,
-            onTap: () async {
-              if (isInMixinApp() &&
-                  defaultTargetPlatform == TargetPlatform.android) {
-                await launchUrlString('mixin://buy');
-              } else {
-                context.push(buyChoosePath);
-              }
-            },
-          ),
-          HeaderButton.text(
-            text: context.l10n.swap,
-            onTap: () => context.push(swapPath),
-          ),
-        ],
-      ),
-    );
-  }
 }

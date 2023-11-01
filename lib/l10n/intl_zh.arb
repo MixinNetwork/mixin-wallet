@@ -72,8 +72,8 @@
   "networkFee": "网络手续费：",
   "minimumWithdrawal": "最小提现数量：",
   "minimumReserve": "最少保留数量：",
-  "mixinWallet": "Mixin 钱包",
-  "authSlogan": "Mixin 钱包是一款用户友好、安全且功能强大的多链数字钱包。",
+  "mixinWallet": "Mixin 旧钱包",
+  "authSlogan": "查看旧钱包的资产和转账记录",
   "authHint": "只读授权无法动用你的资产，请放心使用",
   "authorize": "使用 Mixin 登录",
   "authTips": "你知道吗？Mixin 是一个开源的加密钱包",
@@ -282,5 +282,6 @@
   "permissions": "权限列表",
   "authApprovedAccessDate": "授权时间：{approve}, 上次访问：{access}",
   "revokeAccess": "取消授权",
-  "revokeConfirmation": "取消 {name} 的授权？"
+  "revokeConfirmation": "取消 {name} 的授权？",
+  "selectContact": "选择联系人"
 }
