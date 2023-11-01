@@ -422,6 +422,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Revoke multisig transaction"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "selectContact":
+            MessageLookupByLibrary.simpleMessage("Choose a contact"),
         "selectContactOrAddress":
             MessageLookupByLibrary.simpleMessage("Choose a address or contact"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),

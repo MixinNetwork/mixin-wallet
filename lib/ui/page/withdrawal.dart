@@ -426,7 +426,7 @@ class _TransferTarget extends StatelessWidget {
       );
     } else {
       content = SelectableText(
-        context.l10n.selectContactOrAddress,
+        context.l10n.selectContact,
         enableInteractiveSelection: false,
         onTap: onTap,
         style: TextStyle(

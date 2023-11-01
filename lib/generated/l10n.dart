@@ -2933,6 +2933,16 @@ class L10n {
       args: [name],
     );
   }
+
+  /// `Choose a contact`
+  String get selectContact {
+    return Intl.message(
+      'Choose a contact',
+      name: 'selectContact',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

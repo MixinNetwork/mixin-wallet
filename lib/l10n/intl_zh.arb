@@ -282,5 +282,6 @@
   "permissions": "权限列表",
   "authApprovedAccessDate": "授权时间：{approve}, 上次访问：{access}",
   "revokeAccess": "取消授权",
-  "revokeConfirmation": "取消 {name} 的授权？"
+  "revokeConfirmation": "取消 {name} 的授权？",
+  "selectContact": "选择联系人"
 }

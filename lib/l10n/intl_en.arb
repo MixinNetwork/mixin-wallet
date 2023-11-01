@@ -286,5 +286,6 @@
   "permissions": "Permissions",
   "authApprovedAccessDate": "Approved: {approve}, Last Accessed: {access}",
   "revokeAccess": "Revoke access",
-  "revokeConfirmation": "Revoke access {name}?"
+  "revokeConfirmation": "Revoke access {name}?",
+  "selectContact": "Choose a contact"
 }

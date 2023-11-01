@@ -4,7 +4,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../db/mixin_database.dart';
 import '../../../service/account_provider.dart';
+import '../../../service/profile/profile_manager.dart';
 import '../../../util/extension/extension.dart';
+import '../../router/mixin_routes.dart';
+import '../../widget/asset_selection_list_widget.dart';
+import '../../widget/buttons.dart';
 import '../../widget/chart_assets.dart';
 
 class Header extends HookWidget {
@@ -88,8 +92,37 @@ class Header extends HookWidget {
             child: AssetsAnalysisChartLayout(assets: data),
           ),
         ),
+        const SizedBox(height: 32),
+        const _ButtonBar(),
         const SizedBox(height: 24),
       ],
     );
   }
+}
+
+class _ButtonBar extends StatelessWidget {
+  const _ButtonBar();
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: HeaderButtonBarLayout(
+          buttons: [
+            HeaderButton.text(
+              text: context.l10n.send,
+              onTap: () async {
+                final asset = await showSendAssetSelectionBottomSheet(
+                  context,
+                  initialSelected: lastSelectedAddress,
+                );
+                if (asset == null) {
+                  return;
+                }
+                lastSelectedAddress = asset.assetId;
+                context.push(withdrawalPath.toUri({'id': asset.assetId}));
+              },
+            ),
+          ],
+        ),
+      );
 }

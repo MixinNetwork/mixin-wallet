@@ -89,6 +89,12 @@ class Home extends HookWidget {
               child: Header(data: assetList, bitcoin: bitcoinAsset),
             ),
             SliverToBoxAdapter(
+              child: Container(
+                height: 10,
+                color: const Color(0xFFF6F7FA),
+              ),
+            ),
+            SliverToBoxAdapter(
               child: _TabSwitchBar(selectedTab: selectedTab),
             ),
             if (selectedTab == _Tab.coins) ...[
@@ -133,15 +139,6 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     name: account.fullName ?? '',
                     size: 32,
                   ),
-          ),
-        ),
-      ),
-      title: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Text(
-          context.l10n.mixinWallet,
-          style: TextStyle(
-            color: context.colorScheme.primaryText,
           ),
         ),
       ),

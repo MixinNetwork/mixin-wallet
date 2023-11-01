@@ -372,6 +372,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("撤销多重签名交易"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "search": MessageLookupByLibrary.simpleMessage("搜索"),
+        "selectContact": MessageLookupByLibrary.simpleMessage("选择联系人"),
         "selectContactOrAddress":
             MessageLookupByLibrary.simpleMessage("选择地址或联系人"),
         "send": MessageLookupByLibrary.simpleMessage("发送"),

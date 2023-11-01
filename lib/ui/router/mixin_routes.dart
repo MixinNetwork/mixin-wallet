@@ -18,6 +18,7 @@ import '../page/not_found.dart';
 import '../page/pin_logs.dart';
 import '../page/setting.dart';
 import '../page/snapshot_detail.dart';
+import '../page/withdrawal.dart';
 
 final homeUri = Uri(path: '/');
 final authUri = Uri(path: '/auth');
@@ -90,6 +91,11 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                         widget: const SnapshotDetail(),
                       ),
                     ],
+                  ),
+                  VWidget(
+                    key: const ValueKey('AssetWithdrawal'),
+                    path: withdrawalPath,
+                    widget: const Withdrawal(),
                   ),
                   VWidget(
                     key: const ValueKey('NotFound'),

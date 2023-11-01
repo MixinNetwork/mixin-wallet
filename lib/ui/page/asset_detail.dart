@@ -281,10 +281,31 @@ class _AssetHeader extends HookWidget {
           enableInteractiveSelection: false,
         ),
         const SizedBox(height: 24),
+        _HeaderButtonBar(asset: asset),
+        const SizedBox(height: 24),
         _AssetTransactionsHeader(filter: filter),
       ],
     );
   }
+}
+
+class _HeaderButtonBar extends StatelessWidget {
+  const _HeaderButtonBar({required this.asset});
+
+  final AssetResult asset;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 38),
+        child: HeaderButtonBarLayout(buttons: [
+          HeaderButton.text(
+            text: context.l10n.send,
+            onTap: () => context.push(withdrawalPath.toUri({
+              'id': asset.assetId,
+            })),
+          ),
+        ]),
+      );
 }
 
 class _AssetTransactionsHeader extends StatelessWidget {
