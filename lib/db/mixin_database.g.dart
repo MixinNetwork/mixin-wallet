@@ -5427,9 +5427,9 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
         ));
   }
 
-  Selectable<User> findFriendsNotBot() {
+  Selectable<User> findFriends() {
     return customSelect(
-        'SELECT * FROM users WHERE relationship = \'FRIEND\' AND app_id IS NULL ORDER BY full_name, identity_number ASC',
+        'SELECT * FROM users WHERE relationship = \'FRIEND\' ORDER BY full_name, identity_number ASC',
         variables: [],
         readsFrom: {
           users,
