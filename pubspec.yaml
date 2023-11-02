@@ -34,7 +34,7 @@ dependencies:
     sdk: flutter
 
   mixin_bot_sdk_dart: ^0.3.17
-  very_good_analysis: ^4.0.0+1
+  very_good_analysis: ^5.1.0
   intl: ^0.18.0
   json_annotation: ^4.8.1
   flutter_hooks: ^0.18.6
