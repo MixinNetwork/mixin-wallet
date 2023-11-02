@@ -489,7 +489,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     return addresses;
   }
 
-  Selectable<User> friends() => mixinDatabase.findFriendsNotBot();
+  Selectable<User> friends() => mixinDatabase.findFriends();
 
   Future<void> updateFriends() async {
     assert(authProvider.isLogin);
