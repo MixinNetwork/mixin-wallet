@@ -1075,15 +1075,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.4-beta"
-  web_qrcode:
-    dependency: "direct main"
-    description:
-      path: "packages/web_qrcode"
-      ref: "7a0703301c6b9b2950f14bb045e2a660c8530c7a"
-      resolved-ref: "7a0703301c6b9b2950f14bb045e2a660c8530c7a"
-      url: "https://github.com/MixinNetwork/flutter-plugins.git"
-    source: git
-    version: "0.0.1"
   web_socket_channel:
     dependency: transitive
     description:

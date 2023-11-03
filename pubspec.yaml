@@ -57,11 +57,6 @@ dependencies:
   uuid: ^3.0.7
   path_to_regexp: ^0.4.0
   mixswap_sdk_dart: ^0.2.0
-  web_qrcode:
-    git:
-      url: https://github.com/MixinNetwork/flutter-plugins.git
-      path: packages/web_qrcode
-      ref: 7a0703301c6b9b2950f14bb045e2a660c8530c7a
   share_plus: ^7.2.1
   collection: ^1.16.0
   convert: ^3.1.1

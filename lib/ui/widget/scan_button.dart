@@ -10,7 +10,6 @@ import '../router/mixin_routes.dart';
 import 'action_button.dart';
 import 'dialog/auth_bottom_sheet.dart';
 import 'dialog/transfer_bottom_sheet.dart';
-import 'qrcode_scanner.dart';
 import 'toast.dart';
 
 extension _UrlExtension on String {
@@ -25,14 +24,7 @@ class ScanButton extends StatelessWidget {
   Widget build(BuildContext context) => ActionButton(
         name: R.resourcesIcScanBlackSvg,
         size: 24,
-        onTap: () async {
-          final text = await scanTextFromQrcode(context: context);
-          if (text == null) {
-            return;
-          }
-          d('scan text: $text');
-          await handleUrl(context, text);
-        },
+        onTap: () async {},
       );
 }
 
