@@ -7,7 +7,6 @@ import '../../generated/r.dart';
 import '../../service/profile/pin_session.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
-import '../../util/web/telegram_web_app.dart';
 import 'buttons.dart';
 import 'mixin_bottom_sheet.dart';
 import 'toast.dart';
@@ -190,10 +189,7 @@ class _DeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _ButtonWrapper(
-        onTap: () {
-          controller.delete();
-          Telegram.instance.hapticFeedback();
-        },
+        onTap: controller.delete,
         background: const Color(0xFF999999),
         child: Center(
           child: Image.asset(
@@ -262,7 +258,6 @@ class _NumPadButton extends StatelessWidget {
             return;
           }
           controller.append(value);
-          Telegram.instance.hapticFeedback();
         },
         child: Center(
           child: Text(

@@ -20,7 +20,6 @@ import '../thirdy_party/telegram.dart';
 import '../util/constants.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
-import '../util/web/telegram_web_app.dart';
 import 'account_provider.dart';
 import 'env.dart';
 import 'profile/auth.dart';
@@ -55,28 +54,12 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   }
 
   Future<void> _checkLogin() async {
-    Future<void> refreshAccount() async {
+    if (authProvider.isLogin) {
       try {
         final response = await client.accountApi.getMe();
         await authProvider.updateAccount(response.data);
       } catch (error) {
         d('refresh account failed. $error');
-      }
-    }
-
-    if (authProvider.isLogin) {
-      final tgInitData = Telegram.instance.getTgInitData();
-      if (tgInitData?.isNotEmpty ?? false) {
-        // in telegram web app
-        final data = await TelegramApi.instance.verifyInitData(tgInitData!);
-        if (data.mixinId == authProvider.account!.userId) {
-          await refreshAccount();
-        } else {
-          await authProvider.clear();
-          vRouterStateKey.currentState?.to('/auth', isReplacement: true);
-        }
-      } else {
-        await refreshAccount();
       }
     }
   }
