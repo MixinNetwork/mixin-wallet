@@ -1,4 +1,4 @@
 import '../mixin.drift';
 
-findFriends:
-SELECT * FROM users WHERE relationship = 'FRIEND' ORDER BY full_name, identity_number ASC;
+findFriendsNotBot:
+SELECT * FROM users WHERE relationship = 'FRIEND' AND app_id IS NULL ORDER BY full_name, identity_number ASC;
