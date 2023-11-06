@@ -122,20 +122,6 @@ class _ButtonBar extends StatelessWidget {
                 context.push(withdrawalPath.toUri({'id': asset.assetId}));
               },
             ),
-            HeaderButton.text(
-              text: context.l10n.receive,
-              onTap: () async {
-                final asset = await showAssetWithSearchSelectionBottomSheet(
-                  context,
-                  initialSelected: lastSelectedAddress,
-                );
-                if (asset == null) {
-                  return;
-                }
-                lastSelectedAddress = asset.assetId;
-                context.push(assetDepositPath.toUri({'id': asset.assetId}));
-              },
-            ),
           ],
         ),
       );
