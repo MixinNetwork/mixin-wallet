@@ -5,6 +5,7 @@ import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../page/all_transactions.dart';
+import '../page/asset_deposit.dart';
 import '../page/asset_detail.dart';
 import '../page/auth.dart';
 import '../page/authentications.dart';
@@ -96,6 +97,11 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     key: const ValueKey('AssetWithdrawal'),
                     path: withdrawalPath,
                     widget: const Withdrawal(),
+                  ),
+                  VWidget(
+                    key: const ValueKey('AssetDeposit'),
+                    path: assetDepositPath,
+                    widget: const AssetDeposit(),
                   ),
                   VWidget(
                     key: const ValueKey('NotFound'),
