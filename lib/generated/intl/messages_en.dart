@@ -212,6 +212,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Do not support smart contract transfers."),
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "This address supports all TRC-10 and TRC-20 tokens, such as TRX, USDT-TRON, etc."),
+        "depositUnsupported": MessageLookupByLibrary.simpleMessage(
+            "This address is an old network address, and deposits to this address are no longer supported."),
         "depositing": MessageLookupByLibrary.simpleMessage("Depositing"),
         "dontHaveAssets":
             MessageLookupByLibrary.simpleMessage("Don\'t have assets?"),

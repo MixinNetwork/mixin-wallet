@@ -19,7 +19,6 @@ import '../../util/web/web_utils.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';
-import '../widget/dialog/deposit_choose_network_bottom_sheet.dart';
 import '../widget/dialog/request_payment_bottom_sheet.dart';
 import '../widget/dialog/request_payment_result_bottom_sheet.dart';
 import '../widget/mixin_appbar.dart';
@@ -171,15 +170,10 @@ class _AssetDepositBody extends HookWidget {
 
     useMemoized(() async {
       await Future<void>.delayed(Duration.zero);
-      await showDepositChooseNetworkBottomSheet(context, asset: asset);
-      if (tag == null || tag.isEmpty) {
-        return;
-      }
       await showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (context) => _MemoWarningDialog(
-          symbol: asset.symbol,
+        builder: (context) => _DepositUnsupportedDialog(
           onTap: () {
             scheduleMicrotask(() {
               Navigator.of(context).pop(true);
@@ -209,7 +203,6 @@ class _AssetDepositBody extends HookWidget {
             _AddressLayout(
               asset: asset,
               address: address,
-              showDepositNotice: tag != null && tag.isNotEmpty,
             )
           else
             const _AddressLoadingWidget(),
@@ -304,7 +297,7 @@ class _MemoLayout extends StatelessWidget {
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: SelectableText(
-              context.l10n.depositMemoNotice,
+              context.l10n.depositUnsupported,
               enableInteractiveSelection: false,
               style: TextStyle(
                 fontSize: 13,
@@ -319,13 +312,11 @@ class _MemoLayout extends StatelessWidget {
       );
 }
 
-class _MemoWarningDialog extends StatelessWidget {
-  const _MemoWarningDialog({
-    required this.symbol,
+class _DepositUnsupportedDialog extends StatelessWidget {
+  const _DepositUnsupportedDialog({
     required this.onTap,
   });
 
-  final String symbol;
   final VoidCallback onTap;
 
   @override
@@ -350,7 +341,7 @@ class _MemoWarningDialog extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 0, horizontal: 32),
-                        child: Text(context.l10n.depositNotice(symbol),
+                        child: Text(context.l10n.depositUnsupported,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               color: Color(0xFFFF6550),
@@ -393,13 +384,10 @@ class _AddressLayout extends StatelessWidget {
   const _AddressLayout({
     required this.asset,
     required this.address,
-    required this.showDepositNotice,
   });
 
   final AssetResult asset;
   final String address;
-
-  final bool showDepositNotice;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -409,21 +397,20 @@ class _AddressLayout extends StatelessWidget {
           _HeaderText(context.l10n.address),
           const SizedBox(height: 8),
           _CopyableText(address),
-          if (showDepositNotice)
-            Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: SelectableText(
-                  context.l10n.depositNotice(asset.symbol),
-                  enableInteractiveSelection: false,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: context.colorScheme.red,
-                  ),
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: SelectableText(
+                context.l10n.depositUnsupported,
+                enableInteractiveSelection: false,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: context.colorScheme.red,
                 ),
               ),
             ),
+          ),
           const SizedBox(height: 32),
           _QrcodeImage(data: address, asset: asset),
           const SizedBox(height: 32),

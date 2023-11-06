@@ -189,6 +189,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("不支持合约充值。"),
         "depositTipTron": MessageLookupByLibrary.simpleMessage(
             "该充值地址支持 TRX 和所有符合 TRC-10 TRC-20 标准的代币。"),
+        "depositUnsupported":
+            MessageLookupByLibrary.simpleMessage("此地址为旧网络地址，已不支持充值到此地址"),
         "depositing": MessageLookupByLibrary.simpleMessage("充值中"),
         "dontHaveAssets": MessageLookupByLibrary.simpleMessage("没有资产？"),
         "dontShowAgain": MessageLookupByLibrary.simpleMessage("不再提醒"),
