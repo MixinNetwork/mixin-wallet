@@ -192,7 +192,7 @@ class _AuthorizeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onTap() {
-      final uri = Uri.https('mixin-www.zeromesh.net', 'oauth/authorize', {
+      final uri = Uri.https('mixin.one', 'oauth/authorize', {
         'client_id': Env.clientId,
         'scope': authScope,
         'response_type': 'code',
