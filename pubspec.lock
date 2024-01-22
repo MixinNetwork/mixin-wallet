@@ -93,10 +93,10 @@ packages:
     dependency: transitive
     description:
       name: build_resolvers
-      sha256: d912852cce27c9e80a93603db721c267716894462e7033165178b91138587972
+      sha256: "339086358431fa15d7eca8b6a36e5d783728cf025e559b834f4609a1fcfb7b0a"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.4.2"
   build_runner:
     dependency: "direct dev"
     description:
@@ -262,18 +262,18 @@ packages:
     dependency: "direct main"
     description:
       name: drift
-      sha256: "0acf8f1f584ebc9fe7462049736f65a699a2557eed9a2f77fc6465a84dd4a716"
+      sha256: b50a8342c6ddf05be53bda1d246404cbad101b64dc73e8d6d1ac1090d119b4e2
       url: "https://pub.dev"
     source: hosted
-    version: "2.11.1"
+    version: "2.15.0"
   drift_dev:
     dependency: "direct dev"
     description:
       name: drift_dev
-      sha256: "544f2d34635bb62887068a05348cc7a29ecc310d10aefefd4a9cf07242b4cd0a"
+      sha256: c037d9431b6f8dc633652b1469e5f53aaec6e4eb405ed29dd232fa888ef10d88
       url: "https://pub.dev"
     source: hosted
-    version: "2.11.2"
+    version: "2.15.0"
   ed25519_edwards:
     dependency: transitive
     description:
@@ -847,18 +847,18 @@ packages:
     dependency: transitive
     description:
       name: sqlite3
-      sha256: db65233e6b99e99b2548932f55a987961bc06d82a31a0665451fa0b4fff4c3fb
+      sha256: c4a4c5a4b2a32e2d0f6837b33d7c91a67903891a5b7dbe706cf4b1f6b0c798c5
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.3.0"
   sqlparser:
     dependency: transitive
     description:
       name: sqlparser
-      sha256: b3062cc9ec1151348f57af44b88d67c91b81858db3be76395cfa5ec094c59ce8
+      sha256: dc384bb1f56d1384ce078edb5ff8247976abdab79d0c83e437210c85f06ecb61
       url: "https://pub.dev"
     source: hosted
-    version: "0.31.1"
+    version: "0.34.0"
   stack_trace:
     dependency: transitive
     description:
