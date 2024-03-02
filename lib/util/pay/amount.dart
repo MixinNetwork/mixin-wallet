@@ -94,6 +94,7 @@ class EtherAmount {
   int get hashCode => getInWei.hashCode;
 
   @override
+  // ignore: non_nullable_equals_parameter
   bool operator ==(dynamic other) =>
       other is EtherAmount && other.getInWei == getInWei;
 }
