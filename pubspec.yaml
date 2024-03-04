@@ -41,7 +41,7 @@ dependencies:
   equatable: ^2.0.5
   flutter_svg: ^2.0.9
   path_provider: ^2.0.2
-  provider: ^6.0.4
+  provider: ^6.1.2
   isolate: ^2.1.1
   path: ^1.8.0
   dio: ^5.4.1
