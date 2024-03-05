@@ -287,5 +287,6 @@
   "authApprovedAccessDate": "Approved: {approve}, Last Accessed: {access}",
   "revokeAccess": "Revoke access",
   "revokeConfirmation": "Revoke access {name}?",
-  "selectContact": "Choose a contact"
+  "selectContact": "Choose a contact",
+  "depositUnsupported": "This address is an old network address, and deposits to this address are no longer supported."
 }

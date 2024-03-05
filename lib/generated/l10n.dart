@@ -2943,6 +2943,16 @@ class L10n {
       args: [],
     );
   }
+
+  /// `This address is an old network address, and deposits to this address are no longer supported.`
+  String get depositUnsupported {
+    return Intl.message(
+      'This address is an old network address, and deposits to this address are no longer supported.',
+      name: 'depositUnsupported',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<L10n> {

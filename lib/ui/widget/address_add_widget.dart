@@ -9,7 +9,6 @@ import 'action_button.dart';
 import 'dialog/address_pin_bottom_sheet.dart';
 import 'external_action_confirm.dart';
 import 'mixin_bottom_sheet.dart';
-import 'qrcode_scanner.dart';
 import 'round_container.dart';
 
 class AddressAddWidget extends HookWidget {
@@ -96,13 +95,7 @@ class AddressAddWidget extends HookWidget {
                   )),
                   ActionButton(
                     name: R.resourcesScanningSvg,
-                    onTap: () async {
-                      final text = await scanTextFromQrcode(context: context);
-                      if (text == null) {
-                        return;
-                      }
-                      addressController.text = text;
-                    },
+                    onTap: () async {},
                   )
                 ],
               ),
@@ -133,14 +126,7 @@ class AddressAddWidget extends HookWidget {
                         ),
                         ActionButton(
                           name: R.resourcesScanningSvg,
-                          onTap: () async {
-                            final text =
-                                await scanTextFromQrcode(context: context);
-                            if (text == null) {
-                              return;
-                            }
-                            memoController.text = text;
-                          },
+                          onTap: () async {},
                         ),
                       ],
                     )),

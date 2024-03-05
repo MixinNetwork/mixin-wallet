@@ -39,17 +39,17 @@ dependencies:
   json_annotation: ^4.8.1
   flutter_hooks: ^0.18.6
   equatable: ^2.0.5
-  flutter_svg: ^2.0.6
+  flutter_svg: ^2.0.9
   path_provider: ^2.0.2
   provider: ^6.0.4
   isolate: ^2.1.1
   path: ^1.8.0
-  dio: ^5.0.0
+  dio: ^5.4.1
   drift: ^2.8.0
   tuple: ^2.0.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  ansicolor: ^2.0.1
+  ansicolor: ^2.0.2
   decimal: ^2.3.2
   rxdart: ^0.27.6
   qr_flutter: ^4.0.0
@@ -57,12 +57,7 @@ dependencies:
   uuid: ^3.0.7
   path_to_regexp: ^0.4.0
   mixswap_sdk_dart: ^0.2.0
-  web_qrcode:
-    git:
-      url: https://github.com/MixinNetwork/flutter-plugins.git
-      path: packages/web_qrcode
-      ref: 7a0703301c6b9b2950f14bb045e2a660c8530c7a
-  share_plus: ^7.0.0
+  share_plus: ^7.2.1
   collection: ^1.16.0
   convert: ^3.1.1
   pointycastle: ^3.6.2
@@ -71,14 +66,14 @@ dependencies:
   overlay_support: ^2.1.0
   fixnum: ^1.0.1
   x25519: ^0.1.1
-  csv: ^5.0.2
+  csv: ^5.1.1
   file_saver: ^0.2.2
   calendar_date_picker2:
     git:
       url: https://github.com/boyan01/calendar_date_picker2.git
       ref: 69b1d268a63e628565574b50b3b2b64591ac0dbb
   rational: ^2.2.2
-  envied: ^0.3.0+3
+  envied: ^0.5.2
 
 dev_dependencies:
   flutter_test:
@@ -88,7 +83,7 @@ dev_dependencies:
   json_serializable: ^6.6.2
   drift_dev: ^2.8.1
   hive_generator: ^2.0.0
-  envied_generator: ^0.3.0+3
+  envied_generator: ^0.5.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

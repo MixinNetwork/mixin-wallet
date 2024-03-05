@@ -5,6 +5,8 @@ import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/account_provider.dart';
+import '../../service/profile/profile_manager.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/native_scroll.dart';
@@ -304,9 +306,20 @@ class _HeaderButtonBar extends StatelessWidget {
               'id': asset.assetId,
             })),
           ),
+          if (!_shouldHideReceiveButton(asset))
+            HeaderButton.text(
+              text: context.l10n.receive,
+              onTap: () {
+                lastSelectedAddress = asset.assetId;
+                context.push(assetDepositPath.toUri({'id': asset.assetId}));
+              },
+            ),
         ]),
       );
 }
+
+// hide receive button for https://mixin.one/snapshots/815b0b1a-2764-3736-8faa-42d694fa620a.
+bool _shouldHideReceiveButton(AssetResult asset) => asset.assetId == omniUSDT;
 
 class _AssetTransactionsHeader extends StatelessWidget {
   const _AssetTransactionsHeader({

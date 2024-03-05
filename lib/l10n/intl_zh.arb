@@ -283,5 +283,6 @@
   "authApprovedAccessDate": "授权时间：{approve}, 上次访问：{access}",
   "revokeAccess": "取消授权",
   "revokeConfirmation": "取消 {name} 的授权？",
-  "selectContact": "选择联系人"
+  "selectContact": "选择联系人",
+  "depositUnsupported": "此地址为旧网络地址，已不支持充值到此地址"
 }
