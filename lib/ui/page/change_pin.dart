@@ -24,19 +24,14 @@ class ChangePin extends HookWidget {
     switch (step.value) {
       case _ChangePinStep.verifyOldPin:
         title = context.l10n.verifyOldPin;
-        break;
       case _ChangePinStep.createNewPin:
         title = context.l10n.createPin;
-        break;
       case _ChangePinStep.confirmNewPin1:
         title = context.l10n.confirmPin;
-        break;
       case _ChangePinStep.confirmNewPin2:
         title = context.l10n.confirmPin;
-        break;
       case _ChangePinStep.confirmNewPin3:
         title = context.l10n.confirmPin;
-        break;
     }
 
     return Scaffold(
@@ -46,13 +41,10 @@ class ChangePin extends HookWidget {
             switch (step.value) {
               case _ChangePinStep.confirmNewPin1:
                 step.value = _ChangePinStep.createNewPin;
-                break;
               case _ChangePinStep.confirmNewPin2:
                 step.value = _ChangePinStep.confirmNewPin1;
-                break;
               case _ChangePinStep.confirmNewPin3:
                 step.value = _ChangePinStep.confirmNewPin2;
-                break;
               case _ChangePinStep.verifyOldPin:
               case _ChangePinStep.createNewPin:
                 context.pop();
@@ -104,6 +96,7 @@ class _PinInputLayout extends HookWidget {
   const _PinInputLayout({
     required this.step,
   });
+
   final ValueNotifier<_ChangePinStep> step;
 
   @override
@@ -114,20 +107,15 @@ class _PinInputLayout extends HookWidget {
     switch (step.value) {
       case _ChangePinStep.verifyOldPin:
         message = context.l10n.changePinTip;
-        break;
       case _ChangePinStep.createNewPin:
         message = context.l10n.setNewPinDesc;
-        break;
       case _ChangePinStep.confirmNewPin1:
         message = '${context.l10n.pinConfirmHint}\n${context.l10n.pinLostHint}';
-        break;
       case _ChangePinStep.confirmNewPin2:
         message =
             '${context.l10n.pinConfirmAgainHint}\n${context.l10n.thirdPinConfirmHint}';
-        break;
       case _ChangePinStep.confirmNewPin3:
         message = context.l10n.fourthPinConfirmHint;
-        break;
     }
 
     final newPin = useRef<String>('');
@@ -182,7 +170,6 @@ class _PinInputLayout extends HookWidget {
               oldPin.value = pinInputController.value;
               step.value = _ChangePinStep.createNewPin;
             });
-            break;
           case _ChangePinStep.createNewPin:
             bool validatePin() {
               final pin = pinInputController.value;
@@ -210,21 +197,18 @@ class _PinInputLayout extends HookWidget {
 
             newPin.value = pinInputController.value;
             step.value = _ChangePinStep.confirmNewPin1;
-            break;
           case _ChangePinStep.confirmNewPin1:
             if (newPin.value != pinInputController.value) {
               onConfirmNewPinFailed();
               return;
             }
             step.value = _ChangePinStep.confirmNewPin2;
-            break;
           case _ChangePinStep.confirmNewPin2:
             if (newPin.value != pinInputController.value) {
               onConfirmNewPinFailed();
               return;
             }
             step.value = _ChangePinStep.confirmNewPin3;
-            break;
           case _ChangePinStep.confirmNewPin3:
             if (newPin.value != pinInputController.value) {
               onConfirmNewPinFailed();
@@ -251,7 +235,6 @@ class _PinInputLayout extends HookWidget {
                 return;
               }
             });
-            break;
         }
       }
 

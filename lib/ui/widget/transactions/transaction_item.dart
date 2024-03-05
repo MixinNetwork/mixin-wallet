@@ -139,25 +139,18 @@ class TransactionTypeWidget extends StatelessWidget {
     switch (item.type) {
       case SnapshotType.pending:
         title = context.l10n.depositing;
-        break;
       case SnapshotType.deposit:
         title = context.l10n.deposit;
-        break;
       case SnapshotType.transfer:
         title = context.l10n.transfer;
-        break;
       case SnapshotType.withdrawal:
         title = context.l10n.withdrawal;
-        break;
       case SnapshotType.fee:
         title = context.l10n.fee;
-        break;
       case SnapshotType.rebate:
         title = context.l10n.rebate;
-        break;
       case SnapshotType.raw:
         title = context.l10n.raw;
-        break;
       default:
         title = item.type;
         break;

@@ -21,13 +21,10 @@ class CommonEthereumURIData {
       switch (currentState) {
         case ParseState.chain:
           data.chainId = BigInt.tryParse(currentSegment);
-          break;
         case ParseState.function:
           data.function = currentSegment;
-          break;
         case ParseState.address:
           data.address = currentSegment;
-          break;
         case ParseState.query:
           final queryString = currentSegment;
           data.query = queryString
@@ -41,7 +38,6 @@ class CommonEthereumURIData {
               return MapEntry(e.substring(0, index), e.substring(index + 1));
             }
           }).toList();
-          break;
       }
       currentState = newState;
       currentSegment = '';

@@ -64,16 +64,12 @@ class AllTransactions extends HookWidget {
       switch (type) {
         case DateRangeType.all:
           range = const DateRange.all();
-          break;
         case DateRangeType.lastSevenDays:
           range = const DateRange.lastSevenDays();
-          break;
         case DateRangeType.lastThirtyDays:
           range = const DateRange.lastThirtyDays();
-          break;
         case DateRangeType.lastNinetyDays:
           range = const DateRange.lastNinetyDays();
-          break;
         case DateRangeType.custom:
           final startDate = DateTime.tryParse(start);
           final endDate = DateTime.tryParse(end);
@@ -82,7 +78,6 @@ class AllTransactions extends HookWidget {
           } else {
             range = const DateRange.all();
           }
-          break;
       }
       return TransactionFilter(
         filterBy: FilterBy.values.byNameOrNull(filterBy) ?? FilterBy.all,
@@ -408,22 +403,18 @@ class _DateTimeFilterWidget extends StatelessWidget {
             context.updateFilter(
               filter.copyWith(range: const DateRange.all()),
             );
-            break;
           case DateRangeType.lastSevenDays:
             context.updateFilter(
               filter.copyWith(range: const DateRange.lastSevenDays()),
             );
-            break;
           case DateRangeType.lastThirtyDays:
             context.updateFilter(
               filter.copyWith(range: const DateRange.lastThirtyDays()),
             );
-            break;
           case DateRangeType.lastNinetyDays:
             context.updateFilter(
               filter.copyWith(range: const DateRange.lastNinetyDays()),
             );
-            break;
           case DateRangeType.custom:
             final range = await showCalendarDatePicker2Dialog(
               context: context,
@@ -471,7 +462,6 @@ class _DateTimeFilterWidget extends StatelessWidget {
             context.updateFilter(
               filter.copyWith(range: DateRange.custom(range[0]!, range[1]!)),
             );
-            break;
         }
       },
       child: DefaultTextStyle.merge(

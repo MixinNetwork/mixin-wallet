@@ -182,13 +182,10 @@ extension _SortAssets on List<AssetResult> {
           if (result != 0) return result;
           return 0;
         });
-        break;
       case AssetSortType.decrease:
         this.sort((a, b) => assetAmplitude(a).compareTo(assetAmplitude(b)));
-        break;
       case AssetSortType.increase:
         this.sort((a, b) => assetAmplitude(b).compareTo(assetAmplitude(a)));
-        break;
     }
   }
 }

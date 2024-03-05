@@ -21,13 +21,10 @@ class ERC831 {
       switch (currentState) {
         case ParseState.schema:
           erc831.scheme = currentSegment;
-          break;
         case ParseState.prefix:
           erc831.prefix = currentSegment;
-          break;
         case ParseState.payload:
           erc831.payload = currentSegment;
-          break;
       }
       currentState = newState;
       currentSegment = '';

@@ -311,7 +311,6 @@ class _From extends StatelessWidget {
       case SnapshotType.deposit:
       case SnapshotType.pending:
         sender = snapshot.sender ?? '';
-        break;
       case SnapshotType.transfer:
         if (snapshot.isPositive) {
           sender = snapshot.opponentFulName ?? '';
@@ -319,7 +318,6 @@ class _From extends StatelessWidget {
           final account = context.watch<AuthProvider>().value!.account;
           sender = account.fullName ?? '';
         }
-        break;
       default:
         sender = snapshot.transactionHash ?? '';
         title = context.l10n.transactionHash;
@@ -352,7 +350,6 @@ class _To extends StatelessWidget {
       case SnapshotType.pending:
         receiver = snapshot.transactionHash ?? '';
         title = context.l10n.transactionHash;
-        break;
       case SnapshotType.transfer:
         if (!snapshot.isPositive) {
           receiver = snapshot.opponentFulName ?? '';
@@ -360,7 +357,6 @@ class _To extends StatelessWidget {
           final account = context.watch<AuthProvider>().value!.account;
           receiver = account.fullName ?? '';
         }
-        break;
       default:
         receiver = snapshot.receiver ?? '';
         if (asset.tag != null && asset.tag!.isNotEmpty) {
