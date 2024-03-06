@@ -460,7 +460,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     await mixinDatabase.snapshotDao.insertPendingDeposit(snapshots);
   }
 
-  Selectable<Addresse> addresses(String assetId) {
+  Selectable<Addresses> addresses(String assetId) {
     assert(authProvider.isLogin);
     return mixinDatabase.addressDao.addressesByAssetId(assetId);
   }

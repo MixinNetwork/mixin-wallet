@@ -82,9 +82,10 @@ class CollectibleToken extends Table
         collectionId
       ];
   @override
-  String get aliasedName => _alias ?? 'collectible_token';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'collectible_token';
+  String get actualTableName => $name;
+  static const String $name = 'collectible_token';
   @override
   VerificationContext validateIntegrity(
       Insertable<CollectibleTokenData> instance,
@@ -217,8 +218,8 @@ class CollectibleTokenData extends DataClass
     map['mixin_id'] = Variable<String>(mixinId);
     map['nfo'] = Variable<String>(nfo);
     {
-      final converter = CollectibleToken.$convertercreatedAt;
-      map['created_at'] = Variable<int>(converter.toSql(createdAt));
+      map['created_at'] =
+          Variable<int>(CollectibleToken.$convertercreatedAt.toSql(createdAt));
     }
     map['meta_hash'] = Variable<String>(metaHash);
     map['collection_id'] = Variable<String>(collectionId);
@@ -441,8 +442,8 @@ class CollectibleTokenCompanion extends UpdateCompanion<CollectibleTokenData> {
       map['nfo'] = Variable<String>(nfo.value);
     }
     if (createdAt.present) {
-      final converter = CollectibleToken.$convertercreatedAt;
-      map['created_at'] = Variable<int>(converter.toSql(createdAt.value));
+      map['created_at'] = Variable<int>(
+          CollectibleToken.$convertercreatedAt.toSql(createdAt.value));
     }
     if (metaHash.present) {
       map['meta_hash'] = Variable<String>(metaHash.value);
@@ -536,9 +537,10 @@ class CollectibleTokenMeta extends Table
   List<GeneratedColumn> get $columns =>
       [group, name, description, iconUrl, mediaUrl, mime, hash, tokenId];
   @override
-  String get aliasedName => _alias ?? 'collectible_token_meta';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'collectible_token_meta';
+  String get actualTableName => $name;
+  static const String $name = 'collectible_token_meta';
   @override
   VerificationContext validateIntegrity(
       Insertable<CollectibleTokenMetaData> instance,
@@ -948,9 +950,10 @@ class Collections extends Table with TableInfo<Collections, Collection> {
   List<GeneratedColumn> get $columns =>
       [type, collectionId, name, description, iconUrl, createdAt];
   @override
-  String get aliasedName => _alias ?? 'collections';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'collections';
+  String get actualTableName => $name;
+  static const String $name = 'collections';
   @override
   VerificationContext validateIntegrity(Insertable<Collection> instance,
       {bool isInserting = false}) {
@@ -1052,8 +1055,8 @@ class Collection extends DataClass implements Insertable<Collection> {
     map['description'] = Variable<String>(description);
     map['icon_url'] = Variable<String>(iconUrl);
     {
-      final converter = Collections.$convertercreatedAt;
-      map['created_at'] = Variable<int>(converter.toSql(createdAt));
+      map['created_at'] =
+          Variable<int>(Collections.$convertercreatedAt.toSql(createdAt));
     }
     return map;
   }
@@ -1226,8 +1229,8 @@ class CollectionsCompanion extends UpdateCompanion<Collection> {
       map['icon_url'] = Variable<String>(iconUrl.value);
     }
     if (createdAt.present) {
-      final converter = Collections.$convertercreatedAt;
-      map['created_at'] = Variable<int>(converter.toSql(createdAt.value));
+      map['created_at'] =
+          Variable<int>(Collections.$convertercreatedAt.toSql(createdAt.value));
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -1361,9 +1364,10 @@ class Users extends Table with TableInfo<Users, User> {
         isScam
       ];
   @override
-  String get aliasedName => _alias ?? 'users';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'users';
+  String get actualTableName => $name;
+  static const String $name = 'users';
   @override
   VerificationContext validateIntegrity(Insertable<User> instance,
       {bool isInserting = false}) {
@@ -1510,8 +1514,8 @@ class User extends DataClass implements Insertable<User> {
     map['user_id'] = Variable<String>(userId);
     map['identity_number'] = Variable<String>(identityNumber);
     if (!nullToAbsent || relationship != null) {
-      final converter = Users.$converterrelationship;
-      map['relationship'] = Variable<String>(converter.toSql(relationship));
+      map['relationship'] =
+          Variable<String>(Users.$converterrelationship.toSql(relationship));
     }
     if (!nullToAbsent || fullName != null) {
       map['full_name'] = Variable<String>(fullName);
@@ -1526,12 +1530,12 @@ class User extends DataClass implements Insertable<User> {
       map['is_verified'] = Variable<bool>(isVerified);
     }
     if (!nullToAbsent || createdAt != null) {
-      final converter = Users.$convertercreatedAt;
-      map['created_at'] = Variable<int>(converter.toSql(createdAt));
+      map['created_at'] =
+          Variable<int>(Users.$convertercreatedAt.toSql(createdAt));
     }
     if (!nullToAbsent || muteUntil != null) {
-      final converter = Users.$convertermuteUntil;
-      map['mute_until'] = Variable<int>(converter.toSql(muteUntil));
+      map['mute_until'] =
+          Variable<int>(Users.$convertermuteUntil.toSql(muteUntil));
     }
     if (!nullToAbsent || hasPin != null) {
       map['has_pin'] = Variable<int>(hasPin);
@@ -1833,9 +1837,8 @@ class UsersCompanion extends UpdateCompanion<User> {
       map['identity_number'] = Variable<String>(identityNumber.value);
     }
     if (relationship.present) {
-      final converter = Users.$converterrelationship;
-      map['relationship'] =
-          Variable<String>(converter.toSql(relationship.value));
+      map['relationship'] = Variable<String>(
+          Users.$converterrelationship.toSql(relationship.value));
     }
     if (fullName.present) {
       map['full_name'] = Variable<String>(fullName.value);
@@ -1850,12 +1853,12 @@ class UsersCompanion extends UpdateCompanion<User> {
       map['is_verified'] = Variable<bool>(isVerified.value);
     }
     if (createdAt.present) {
-      final converter = Users.$convertercreatedAt;
-      map['created_at'] = Variable<int>(converter.toSql(createdAt.value));
+      map['created_at'] =
+          Variable<int>(Users.$convertercreatedAt.toSql(createdAt.value));
     }
     if (muteUntil.present) {
-      final converter = Users.$convertermuteUntil;
-      map['mute_until'] = Variable<int>(converter.toSql(muteUntil.value));
+      map['mute_until'] =
+          Variable<int>(Users.$convertermuteUntil.toSql(muteUntil.value));
     }
     if (hasPin.present) {
       map['has_pin'] = Variable<int>(hasPin.value);
@@ -2023,9 +2026,10 @@ class Snapshots extends Table with TableInfo<Snapshots, Snapshot> {
         state
       ];
   @override
-  String get aliasedName => _alias ?? 'snapshots';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'snapshots';
+  String get actualTableName => $name;
+  static const String $name = 'snapshots';
   @override
   VerificationContext validateIntegrity(Insertable<Snapshot> instance,
       {bool isInserting = false}) {
@@ -2202,8 +2206,8 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
     map['asset_id'] = Variable<String>(assetId);
     map['amount'] = Variable<String>(amount);
     {
-      final converter = Snapshots.$convertercreatedAt;
-      map['created_at'] = Variable<int>(converter.toSql(createdAt));
+      map['created_at'] =
+          Variable<int>(Snapshots.$convertercreatedAt.toSql(createdAt));
     }
     if (!nullToAbsent || opponentId != null) {
       map['opponent_id'] = Variable<String>(opponentId);
@@ -2230,8 +2234,8 @@ class Snapshot extends DataClass implements Insertable<Snapshot> {
       map['snapshot_hash'] = Variable<String>(snapshotHash);
     }
     if (!nullToAbsent || snapshotAt != null) {
-      final converter = Snapshots.$convertersnapshotAt;
-      map['snapshot_at'] = Variable<int>(converter.toSql(snapshotAt));
+      map['snapshot_at'] =
+          Variable<int>(Snapshots.$convertersnapshotAt.toSql(snapshotAt));
     }
     if (!nullToAbsent || state != null) {
       map['state'] = Variable<String>(state);
@@ -2563,8 +2567,8 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
       map['amount'] = Variable<String>(amount.value);
     }
     if (createdAt.present) {
-      final converter = Snapshots.$convertercreatedAt;
-      map['created_at'] = Variable<int>(converter.toSql(createdAt.value));
+      map['created_at'] =
+          Variable<int>(Snapshots.$convertercreatedAt.toSql(createdAt.value));
     }
     if (opponentId.present) {
       map['opponent_id'] = Variable<String>(opponentId.value);
@@ -2591,8 +2595,8 @@ class SnapshotsCompanion extends UpdateCompanion<Snapshot> {
       map['snapshot_hash'] = Variable<String>(snapshotHash.value);
     }
     if (snapshotAt.present) {
-      final converter = Snapshots.$convertersnapshotAt;
-      map['snapshot_at'] = Variable<int>(converter.toSql(snapshotAt.value));
+      map['snapshot_at'] =
+          Variable<int>(Snapshots.$convertersnapshotAt.toSql(snapshotAt.value));
     }
     if (state.present) {
       map['state'] = Variable<String>(state.value);
@@ -2672,7 +2676,7 @@ class Assets extends Table with TableInfo<Assets, Asset> {
       'destination', aliasedName, true,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      $customConstraints: '');
+      $customConstraints: 'NULL');
   static const VerificationMeta _tagMeta = const VerificationMeta('tag');
   late final GeneratedColumn<String> tag = GeneratedColumn<String>(
       'tag', aliasedName, true,
@@ -2762,9 +2766,10 @@ class Assets extends Table with TableInfo<Assets, Asset> {
         depositEntries
       ];
   @override
-  String get aliasedName => _alias ?? 'assets';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'assets';
+  String get actualTableName => $name;
+  static const String $name = 'assets';
   @override
   VerificationContext validateIntegrity(Insertable<Asset> instance,
       {bool isInserting = false}) {
@@ -3422,9 +3427,10 @@ class Chains extends Table with TableInfo<Chains, Chain> {
   List<GeneratedColumn> get $columns =>
       [chainId, name, symbol, iconUrl, threshold];
   @override
-  String get aliasedName => _alias ?? 'chains';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'chains';
+  String get actualTableName => $name;
+  static const String $name = 'chains';
   @override
   VerificationContext validateIntegrity(Insertable<Chain> instance,
       {bool isInserting = false}) {
@@ -3708,9 +3714,10 @@ class AssetsExtra extends Table with TableInfo<AssetsExtra, AssetsExtraData> {
   @override
   List<GeneratedColumn> get $columns => [assetId, hidden];
   @override
-  String get aliasedName => _alias ?? 'assets_extra';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'assets_extra';
+  String get actualTableName => $name;
+  static const String $name = 'assets_extra';
   @override
   VerificationContext validateIntegrity(Insertable<AssetsExtraData> instance,
       {bool isInserting = false}) {
@@ -3898,9 +3905,10 @@ class Fiats extends Table with TableInfo<Fiats, Fiat> {
   @override
   List<GeneratedColumn> get $columns => [code, rate];
   @override
-  String get aliasedName => _alias ?? 'fiats';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'fiats';
+  String get actualTableName => $name;
+  static const String $name = 'fiats';
   @override
   VerificationContext validateIntegrity(Insertable<Fiat> instance,
       {bool isInserting = false}) {
@@ -4064,11 +4072,11 @@ class FiatsCompanion extends UpdateCompanion<Fiat> {
   }
 }
 
-class Addresses extends Table with TableInfo<Addresses, Addresse> {
+class AddressesTable extends Table with TableInfo<AddressesTable, Addresses> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Addresses(this.attachedDatabase, [this._alias]);
+  AddressesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _addressIdMeta =
       const VerificationMeta('addressId');
   late final GeneratedColumn<String> addressId = GeneratedColumn<String>(
@@ -4109,7 +4117,7 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
               type: DriftSqlType.int,
               requiredDuringInsert: true,
               $customConstraints: 'NOT NULL')
-          .withConverter<DateTime>(Addresses.$converterupdatedAt);
+          .withConverter<DateTime>(AddressesTable.$converterupdatedAt);
   static const VerificationMeta _reserveMeta =
       const VerificationMeta('reserve');
   late final GeneratedColumn<String> reserve = GeneratedColumn<String>(
@@ -4157,11 +4165,12 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
         feeAssetId
       ];
   @override
-  String get aliasedName => _alias ?? 'addresses';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'addresses';
+  String get actualTableName => $name;
+  static const String $name = 'addresses';
   @override
-  VerificationContext validateIntegrity(Insertable<Addresse> instance,
+  VerificationContext validateIntegrity(Insertable<Addresses> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -4232,9 +4241,9 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
   @override
   Set<GeneratedColumn> get $primaryKey => {addressId};
   @override
-  Addresse map(Map<String, dynamic> data, {String? tablePrefix}) {
+  Addresses map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Addresse(
+    return Addresses(
       addressId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}address_id'])!,
       type: attachedDatabase.typeMapping
@@ -4245,7 +4254,7 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
           .read(DriftSqlType.string, data['${effectivePrefix}destination'])!,
       label: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}label'])!,
-      updatedAt: Addresses.$converterupdatedAt.fromSql(attachedDatabase
+      updatedAt: AddressesTable.$converterupdatedAt.fromSql(attachedDatabase
           .typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!),
       reserve: attachedDatabase.typeMapping
@@ -4262,8 +4271,8 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
   }
 
   @override
-  Addresses createAlias(String alias) {
-    return Addresses(attachedDatabase, alias);
+  AddressesTable createAlias(String alias) {
+    return AddressesTable(attachedDatabase, alias);
   }
 
   static TypeConverter<DateTime, int> $converterupdatedAt =
@@ -4274,7 +4283,7 @@ class Addresses extends Table with TableInfo<Addresses, Addresse> {
   bool get dontWriteConstraints => true;
 }
 
-class Addresse extends DataClass implements Insertable<Addresse> {
+class Addresses extends DataClass implements Insertable<Addresses> {
   final String addressId;
   final String type;
   final String assetId;
@@ -4286,7 +4295,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
   final String? tag;
   final String? dust;
   final String feeAssetId;
-  const Addresse(
+  const Addresses(
       {required this.addressId,
       required this.type,
       required this.assetId,
@@ -4307,8 +4316,8 @@ class Addresse extends DataClass implements Insertable<Addresse> {
     map['destination'] = Variable<String>(destination);
     map['label'] = Variable<String>(label);
     {
-      final converter = Addresses.$converterupdatedAt;
-      map['updated_at'] = Variable<int>(converter.toSql(updatedAt));
+      map['updated_at'] =
+          Variable<int>(AddressesTable.$converterupdatedAt.toSql(updatedAt));
     }
     map['reserve'] = Variable<String>(reserve);
     map['fee'] = Variable<String>(fee);
@@ -4338,10 +4347,10 @@ class Addresse extends DataClass implements Insertable<Addresse> {
     );
   }
 
-  factory Addresse.fromJson(Map<String, dynamic> json,
+  factory Addresses.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Addresse(
+    return Addresses(
       addressId: serializer.fromJson<String>(json['address_id']),
       type: serializer.fromJson<String>(json['type']),
       assetId: serializer.fromJson<String>(json['asset_id']),
@@ -4373,7 +4382,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
     };
   }
 
-  Addresse copyWith(
+  Addresses copyWith(
           {String? addressId,
           String? type,
           String? assetId,
@@ -4385,7 +4394,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
           Value<String?> tag = const Value.absent(),
           Value<String?> dust = const Value.absent(),
           String? feeAssetId}) =>
-      Addresse(
+      Addresses(
         addressId: addressId ?? this.addressId,
         type: type ?? this.type,
         assetId: assetId ?? this.assetId,
@@ -4400,7 +4409,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
       );
   @override
   String toString() {
-    return (StringBuffer('Addresse(')
+    return (StringBuffer('Addresses(')
           ..write('addressId: $addressId, ')
           ..write('type: $type, ')
           ..write('assetId: $assetId, ')
@@ -4422,7 +4431,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Addresse &&
+      (other is Addresses &&
           other.addressId == this.addressId &&
           other.type == this.type &&
           other.assetId == this.assetId &&
@@ -4436,7 +4445,7 @@ class Addresse extends DataClass implements Insertable<Addresse> {
           other.feeAssetId == this.feeAssetId);
 }
 
-class AddressesCompanion extends UpdateCompanion<Addresse> {
+class AddressesCompanion extends UpdateCompanion<Addresses> {
   final Value<String> addressId;
   final Value<String> type;
   final Value<String> assetId;
@@ -4485,7 +4494,7 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
         reserve = Value(reserve),
         fee = Value(fee),
         feeAssetId = Value(feeAssetId);
-  static Insertable<Addresse> custom({
+  static Insertable<Addresses> custom({
     Expression<String>? addressId,
     Expression<String>? type,
     Expression<String>? assetId,
@@ -4563,8 +4572,8 @@ class AddressesCompanion extends UpdateCompanion<Addresse> {
       map['label'] = Variable<String>(label.value);
     }
     if (updatedAt.present) {
-      final converter = Addresses.$converterupdatedAt;
-      map['updated_at'] = Variable<int>(converter.toSql(updatedAt.value));
+      map['updated_at'] = Variable<int>(
+          AddressesTable.$converterupdatedAt.toSql(updatedAt.value));
     }
     if (reserve.present) {
       map['reserve'] = Variable<String>(reserve.value);
@@ -4736,9 +4745,10 @@ class CollectibleOutput extends Table
         signedTx
       ];
   @override
-  String get aliasedName => _alias ?? 'collectible_output';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'collectible_output';
+  String get actualTableName => $name;
+  static const String $name = 'collectible_output';
   @override
   VerificationContext validateIntegrity(
       Insertable<CollectibleOutputData> instance,
@@ -4940,12 +4950,12 @@ class CollectibleOutputData extends DataClass
     map['receivers'] = Variable<String>(receivers);
     map['state'] = Variable<String>(state);
     {
-      final converter = CollectibleOutput.$convertercreatedAt;
-      map['created_at'] = Variable<int>(converter.toSql(createdAt));
+      map['created_at'] =
+          Variable<int>(CollectibleOutput.$convertercreatedAt.toSql(createdAt));
     }
     {
-      final converter = CollectibleOutput.$converterupdatedAt;
-      map['updated_at'] = Variable<int>(converter.toSql(updatedAt));
+      map['updated_at'] =
+          Variable<int>(CollectibleOutput.$converterupdatedAt.toSql(updatedAt));
     }
     map['signed_by'] = Variable<String>(signedBy);
     map['signed_tx'] = Variable<String>(signedTx);
@@ -5288,12 +5298,12 @@ class CollectibleOutputCompanion
       map['state'] = Variable<String>(state.value);
     }
     if (createdAt.present) {
-      final converter = CollectibleOutput.$convertercreatedAt;
-      map['created_at'] = Variable<int>(converter.toSql(createdAt.value));
+      map['created_at'] = Variable<int>(
+          CollectibleOutput.$convertercreatedAt.toSql(createdAt.value));
     }
     if (updatedAt.present) {
-      final converter = CollectibleOutput.$converterupdatedAt;
-      map['updated_at'] = Variable<int>(converter.toSql(updatedAt.value));
+      map['updated_at'] = Variable<int>(
+          CollectibleOutput.$converterupdatedAt.toSql(updatedAt.value));
     }
     if (signedBy.present) {
       map['signed_by'] = Variable<String>(signedBy.value);
@@ -5343,7 +5353,7 @@ abstract class _$MixinDatabase extends GeneratedDatabase {
   late final Chains chains = Chains(this);
   late final AssetsExtra assetsExtra = AssetsExtra(this);
   late final Fiats fiats = Fiats(this);
-  late final Addresses addresses = Addresses(this);
+  late final AddressesTable addresses = AddressesTable(this);
   late final CollectibleOutput collectibleOutput = CollectibleOutput(this);
   late final AddressDao addressDao = AddressDao(this as MixinDatabase);
   late final AssetDao assetDao = AssetDao(this as MixinDatabase);

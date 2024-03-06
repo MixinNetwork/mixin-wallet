@@ -5,7 +5,7 @@ part of 'chain_dao.dart';
 // ignore_for_file: type=lint
 mixin _$ChainDaoMixin on DatabaseAccessor<MixinDatabase> {
   Chains get chains => attachedDatabase.chains;
-  Addresses get addresses => attachedDatabase.addresses;
+  AddressesTable get addresses => attachedDatabase.addresses;
   Assets get assets => attachedDatabase.assets;
   Snapshots get snapshots => attachedDatabase.snapshots;
   Users get users => attachedDatabase.users;

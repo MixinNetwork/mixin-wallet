@@ -1,11 +1,11 @@
 import 'package:drift/drift.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' show Chain;
 
-import '../mixin_database.dart';
+import '../mixin_database.dart' hide Chain;
 
 part 'chain_dao.g.dart';
 
-extension ChainConverter on sdk.Chain {
+extension ChainConverter on Chain {
   ChainsCompanion get asChainsCompanion => ChainsCompanion.insert(
         chainId: chainId,
         name: name,
@@ -16,17 +16,15 @@ extension ChainConverter on sdk.Chain {
 }
 
 @DriftAccessor(
-  tables: [Chains],
   include: {'../moor/dao/chain.drift'},
 )
 class ChainDao extends DatabaseAccessor<MixinDatabase> with _$ChainDaoMixin {
   ChainDao(super.db);
 
-  Future<int> insertSdkChain(sdk.Chain chain) =>
+  Future<int> insertSdkChain(Chain chain) =>
       into(db.chains).insertOnConflictUpdate(chain.asChainsCompanion);
 
-  Future<void> insertAllOnConflictUpdate(List<sdk.Chain> chains) =>
-      batch((batch) {
+  Future<void> insertAllOnConflictUpdate(List<Chain> chains) => batch((batch) {
         batch.insertAllOnConflictUpdate(
           db.chains,
           chains.map((chain) => chain.asChainsCompanion).toList(),

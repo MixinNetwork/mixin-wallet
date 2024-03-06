@@ -83,7 +83,7 @@ class _AvatarPlaceholder extends HookWidget {
         ),
         child: Center(
           child: Text(
-            name[0].toUpperCase(),
+            (name.characters.firstOrNull?.toString() ?? '').toUpperCase(),
             style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
