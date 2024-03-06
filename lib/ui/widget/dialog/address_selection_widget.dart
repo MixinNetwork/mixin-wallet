@@ -200,7 +200,6 @@ class _AddressPopupMenuWrapperState extends State<_AddressPopupMenuWrapper> {
         return;
       case _AddressPopupMenuAction.delete:
         await _deleteAddress();
-        break;
     }
   }
 
