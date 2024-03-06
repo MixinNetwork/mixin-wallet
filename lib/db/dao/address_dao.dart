@@ -26,7 +26,7 @@ class AddressDao extends DatabaseAccessor<MixinDatabase>
     with _$AddressDaoMixin {
   AddressDao(super.db);
 
-  Future<List<Addresse>> getAll() => select(db.addresses).get();
+  Future<List<Addresses>> getAll() => select(db.addresses).get();
 
   Future<void> insertAllOnConflictUpdate(List<sdk.Address> addresses) =>
       batch((batch) => batch.insertAll(
@@ -35,10 +35,10 @@ class AddressDao extends DatabaseAccessor<MixinDatabase>
             mode: InsertMode.insertOrReplace,
           ));
 
-  Future<void> deleteAddress(Addresse address) =>
+  Future<void> deleteAddress(Addresses address) =>
       delete(db.addresses).delete(address);
 
-  Selectable<Addresse> addressesByAssetId(String assetId) =>
+  Selectable<Addresses> addressesByAssetId(String assetId) =>
       select(db.addresses)
         ..where((tbl) => tbl.assetId.equals(assetId))
         ..orderBy([
@@ -46,6 +46,6 @@ class AddressDao extends DatabaseAccessor<MixinDatabase>
               OrderingTerm(expression: tbl.updatedAt, mode: OrderingMode.desc)
         ]);
 
-  Selectable<Addresse> addressesById(String addressId) =>
+  Selectable<Addresses> addressesById(String addressId) =>
       select(db.addresses)..where((tbl) => tbl.addressId.equals(addressId));
 }

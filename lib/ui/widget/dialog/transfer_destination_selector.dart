@@ -11,7 +11,7 @@ Future<dynamic> showTransferDestinationSelectorDialog({
   dynamic initialSelected,
 }) async {
   assert(initialSelected == null ||
-      initialSelected is Addresse ||
+      initialSelected is Addresses ||
       initialSelected is User);
   return showMixinBottomSheet(
     context: context,

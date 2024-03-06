@@ -27,7 +27,7 @@ class AddressSelectionWidget extends HookWidget {
 
   final String assetId;
   final String chainId;
-  final Addresse? selectedAddress;
+  final Addresses? selectedAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +118,7 @@ class _AddressItem extends StatelessWidget {
     required this.selectedAddressId,
   });
 
-  final Addresse address;
+  final Addresses address;
   final String? selectedAddressId;
 
   @override
@@ -158,7 +158,7 @@ class _AddressPopupMenuWrapper extends StatefulWidget {
   });
 
   final Widget child;
-  final Addresse address;
+  final Addresses address;
 
   @override
   State<_AddressPopupMenuWrapper> createState() =>
@@ -203,7 +203,7 @@ class _AddressPopupMenuWrapperState extends State<_AddressPopupMenuWrapper> {
     }
   }
 
-  Addresse get address => widget.address;
+  Addresses get address => widget.address;
 
   Future<bool> _confirmDeleteAddress() async {
     if (context.read<AuthProvider>().isLoginByCredential) {

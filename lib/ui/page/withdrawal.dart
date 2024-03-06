@@ -55,7 +55,7 @@ class _WithdrawalPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final address = useState<Addresse?>(null);
+    final address = useState<Addresses?>(null);
     final user = useState<User?>(null);
 
     final amount = useValueNotifier('');
@@ -267,7 +267,7 @@ class _FeeText extends StatelessWidget {
     required this.feeAsset,
   });
 
-  final Addresse address;
+  final Addresses address;
   final AssetResult asset;
   final AssetResult? feeAsset;
 
@@ -328,7 +328,7 @@ class _TransferTarget extends StatelessWidget {
   });
 
   final ValueNotifier<User?> user;
-  final ValueNotifier<Addresse?> address;
+  final ValueNotifier<Addresses?> address;
   final AssetResult asset;
 
   @override
@@ -339,7 +339,7 @@ class _TransferTarget extends StatelessWidget {
         asset: asset,
         initialSelected: user.value ?? address.value,
       );
-      if (result is Addresse) {
+      if (result is Addresses) {
         address.value = result;
         user.value = null;
       } else if (result is User) {
