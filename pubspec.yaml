@@ -73,7 +73,7 @@ dependencies:
       url: https://github.com/boyan01/calendar_date_picker2.git
       ref: 69b1d268a63e628565574b50b3b2b64591ac0dbb
   rational: ^2.2.2
-  envied: ^0.5.2
+  envied: ^0.5.3
 
 dev_dependencies:
   flutter_test:
