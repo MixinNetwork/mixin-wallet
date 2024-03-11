@@ -182,10 +182,10 @@ packages:
     dependency: transitive
     description:
       name: code_builder
-      sha256: "315a598c7fbe77f22de1c9da7cfd6fd21816312f16ffa124453b4fc679e540f1"
+      sha256: f692079e25e7869c14132d39f223f8eec9830eb76131925143b2129c4bb01b37
       url: "https://pub.dev"
     source: hosted
-    version: "4.6.0"
+    version: "4.10.0"
   collection:
     dependency: "direct main"
     description:
@@ -302,10 +302,10 @@ packages:
     dependency: "direct dev"
     description:
       name: envied_generator
-      sha256: "637901d274db3974afb3919ca9ba2e1a97f110fd57350ac13a3adcd20ad7d530"
+      sha256: b8655d5cb39b4d1d449a79ff6f1367b252c23955ff17ec7c03aacdff938598bd
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.2"
+    version: "0.5.3"
   equatable:
     dependency: "direct main"
     description:
