@@ -57,7 +57,7 @@ dependencies:
   uuid: ^3.0.7
   path_to_regexp: ^0.4.0
   mixswap_sdk_dart: ^0.2.0
-  share_plus: ^7.2.1
+  share_plus: ^7.2.2
   collection: ^1.16.0
   convert: ^3.1.1
   pointycastle: ^3.6.2
