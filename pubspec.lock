@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  base_x:
+    dependency: transitive
+    description:
+      name: base_x
+      sha256: "519abcdafd637d4b6bd7e72fabd8f9264935f804b9b9f6c5d8411c7d52cbf8fd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -230,10 +238,10 @@ packages:
     dependency: transitive
     description:
       name: dart_jsonwebtoken
-      sha256: "1c36cca992d210230d2a4221adeb2c3131d897da1a92278f3bbd58a5e649e00a"
+      sha256: "40dc3a4788c02a44bc97ea0c8c4a078ae58c9a45acc2312ee6a689b0e8f5b5b9"
       url: "https://pub.dev"
     source: hosted
-    version: "2.11.0"
+    version: "2.13.0"
   dart_style:
     dependency: transitive
     description:
@@ -282,6 +290,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
+  edwards25519:
+    dependency: transitive
+    description:
+      name: edwards25519
+      sha256: "48e4678136e362bed9790dfb716ebe8e2f34f026bdb900b058214620672c6273"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   enum_to_string:
     dependency: transitive
     description:
@@ -578,10 +594,10 @@ packages:
     dependency: "direct main"
     description:
       name: mixin_bot_sdk_dart
-      sha256: "9b6e749c5c440465294d7f79135f008a73a8266dda4f4015d27eb94099e6394c"
+      sha256: "04f6a2e64a418a4835bd342cb418842a01de5eaa107ca5ac777dce0cbe29e826"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.17"
+    version: "1.2.1"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:
@@ -722,10 +738,10 @@ packages:
     dependency: "direct main"
     description:
       name: pointycastle
-      sha256: "7c1e5f0d23c9016c5bbd8b1473d0d3fb3fc851b876046039509e18e0c7485f2c"
+      sha256: "43ac87de6e10afabc85c445745a7b799e04de84cebaa4fd7bf55a5e1e9604d29"
       url: "https://pub.dev"
     source: hosted
-    version: "3.7.3"
+    version: "3.7.4"
   pool:
     dependency: transitive
     description:
@@ -931,6 +947,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.1"
+  thirds:
+    dependency: transitive
+    description:
+      name: thirds
+      sha256: c4b90a4e7f2deac52ebcf22dc7ebbc702578a063a739b3c31e4259a884abb951
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0-alpha.1"
   timing:
     dependency: transitive
     description:
