@@ -9,9 +9,8 @@ import '../../service/profile/profile_manager.dart';
 import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/native_scroll.dart';
 import '../../util/r.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
@@ -20,32 +19,46 @@ import '../widget/symbol.dart';
 import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
 
-const _kQueryParamSortBy = 'sort';
-const _kQueryParamFilterBy = 'filter';
-
 class AssetDetail extends HookWidget {
-  const AssetDetail({super.key});
+  const AssetDetail({
+    required this.asset,
+    super.key,
+    this.filterBy,
+    this.sortBy,
+  });
+
+  final String asset;
+  final String? sortBy;
+  final String? filterBy;
 
   @override
   Widget build(BuildContext context) {
-    final id = usePathParameter('id', path: assetDetailPath);
     final isAssetId = Uuid.isValidUUID(
-      fromString: id,
+      fromString: asset,
       validationMode: ValidationMode.nonStrict,
     );
     if (isAssetId) {
-      return _AssetDetailLoader(assetId: id);
+      return _AssetDetailLoader(
+          assetId: asset, sortBy: sortBy, filterBy: filterBy);
     }
-    return _AssetSymbolSearch(symbol: id);
+    return _AssetSymbolSearch(
+      symbol: asset,
+      sortBy: sortBy,
+      filterBy: filterBy,
+    );
   }
 }
 
 class _AssetSymbolSearch extends HookWidget {
   const _AssetSymbolSearch({
     required this.symbol,
+    this.sortBy,
+    this.filterBy,
   });
 
   final String symbol;
+  final String? sortBy;
+  final String? filterBy;
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +84,13 @@ class _AssetDetailLoader extends HookWidget {
   const _AssetDetailLoader({
     required this.assetId,
     this.needRefresh = true,
+    this.filterBy,
+    this.sortBy,
   });
 
   final String assetId;
+  final String? sortBy;
+  final String? filterBy;
 
   final bool needRefresh;
 
@@ -93,23 +110,11 @@ class _AssetDetailLoader extends HookWidget {
       keys: [assetId, faitCurrency],
     ).data;
 
-    // useEffect(() {
-    //   if (notFound) {
-    //     context
-    //         .read<MixinRouterDelegate>()
-    //         .pushNewUri(notFoundUri);
-    //   }
-    // }, [notFound]);
-
     useEffect(() {
       if (data != null) {
         context.appServices.refreshPendingDeposits(data);
       }
     }, [data?.assetId]);
-
-    final sortBy = useQueryParameter(_kQueryParamSortBy, path: assetDetailPath);
-    final filterBy =
-        useQueryParameter(_kQueryParamFilterBy, path: assetDetailPath);
 
     final filter = useMemoized(
       () => SnapshotFilter(
@@ -202,21 +207,18 @@ class _AssetDetailBody extends StatelessWidget {
               ],
             );
           }
-          return NativeScrollBuilder(
-            builder: (context, controller) => CustomScrollView(
-              controller: controller,
-              slivers: [
-                SliverToBoxAdapter(
-                  child: _AssetHeader(asset: asset, filter: filter),
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: _AssetHeader(asset: asset, filter: filter),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => TransactionItem(item: snapshots[index]),
+                  childCount: snapshots.length,
                 ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => TransactionItem(item: snapshots[index]),
-                    childCount: snapshots.length,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           );
         },
       );
@@ -285,7 +287,10 @@ class _AssetHeader extends HookWidget {
         const SizedBox(height: 24),
         _HeaderButtonBar(asset: asset),
         const SizedBox(height: 24),
-        _AssetTransactionsHeader(filter: filter),
+        _AssetTransactionsHeader(
+          filter: filter,
+          assetId: asset.assetId,
+        ),
       ],
     );
   }
@@ -302,16 +307,14 @@ class _HeaderButtonBar extends StatelessWidget {
         child: HeaderButtonBarLayout(buttons: [
           HeaderButton.text(
             text: context.l10n.send,
-            onTap: () => context.push(withdrawalPath.toUri({
-              'id': asset.assetId,
-            })),
+            onTap: () => AssetWithdrawalRoute(asset.assetId).go(context),
           ),
           if (!_shouldHideReceiveButton(asset))
             HeaderButton.text(
               text: context.l10n.receive,
               onTap: () {
                 lastSelectedAddress = asset.assetId;
-                context.push(assetDepositPath.toUri({'id': asset.assetId}));
+                AssetDepositRoute(asset.assetId).go(context);
               },
             ),
         ]),
@@ -324,9 +327,11 @@ bool _shouldHideReceiveButton(AssetResult asset) => asset.assetId == omniUSDT;
 class _AssetTransactionsHeader extends StatelessWidget {
   const _AssetTransactionsHeader({
     required this.filter,
+    required this.assetId,
   });
 
   final SnapshotFilter filter;
+  final String assetId;
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -353,10 +358,11 @@ class _AssetTransactionsHeader extends StatelessWidget {
                 if (filter == null) {
                   return;
                 }
-                context.push(Uri.parse(context.url).replace(queryParameters: {
-                  _kQueryParamSortBy: filter.sortBy.name,
-                  _kQueryParamFilterBy: filter.filterBy.name,
-                }));
+                AssetDetailRoute(
+                  assetId,
+                  filterBy: filter.filterBy.name,
+                  sortBy: filter.sortBy.name,
+                ).replace(context);
               },
               radius: 20,
               child: SvgPicture.asset(

@@ -6,7 +6,7 @@ import '../../../db/mixin_database.dart';
 import '../../../service/account_provider.dart';
 import '../../../service/profile/profile_manager.dart';
 import '../../../util/extension/extension.dart';
-import '../../router/mixin_routes.dart';
+import '../../route.dart';
 import '../../widget/asset_selection_list_widget.dart';
 import '../../widget/buttons.dart';
 import '../../widget/chart_assets.dart';
@@ -119,7 +119,7 @@ class _ButtonBar extends StatelessWidget {
                   return;
                 }
                 lastSelectedAddress = asset.assetId;
-                context.push(withdrawalPath.toUri({'id': asset.assetId}));
+                AssetWithdrawalRoute(asset.assetId).go(context);
               },
             ),
           ],

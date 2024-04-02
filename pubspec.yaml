@@ -35,7 +35,7 @@ dependencies:
 
   mixin_bot_sdk_dart: ^0.3.17
   very_good_analysis: ^5.1.0
-  intl: ^0.18.0
+  intl: ^0.19.0
   json_annotation: ^4.8.1
   flutter_hooks: ^0.18.6
   equatable: ^2.0.5
@@ -53,27 +53,25 @@ dependencies:
   decimal: ^2.3.2
   rxdart: ^0.27.6
   qr_flutter: ^4.0.0
-  vrouter: ^1.2.0+5
   uuid: ^3.0.7
   path_to_regexp: ^0.4.0
   mixswap_sdk_dart: ^0.2.0
-  share_plus: ^7.2.2
+  share_plus: ^8.0.2
   collection: ^1.16.0
   convert: ^3.1.1
   pointycastle: ^3.6.2
-  url_launcher: ^6.1.8
+  url_launcher: ^6.2.5
   async: ^2.9.0
   overlay_support: ^2.1.0
   fixnum: ^1.0.1
   x25519: ^0.1.1
   csv: ^6.0.0
-  file_saver: ^0.2.2
-  calendar_date_picker2:
-    git:
-      url: https://github.com/boyan01/calendar_date_picker2.git
-      ref: 69b1d268a63e628565574b50b3b2b64591ac0dbb
+  file_saver: ^0.2.12
+  calendar_date_picker2: ^0.5.5
   rational: ^2.2.2
   envied: ^0.5.2
+  go_router: ^13.2.0
+  web: ^0.5.0
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +82,23 @@ dev_dependencies:
   drift_dev: ^2.16.0
   hive_generator: ^2.0.0
   envied_generator: ^0.5.2
+  go_router_builder: ^2.3.3
+
+dependency_overrides:
+  pointycastle:
+    git:
+      url: https://github.com/konsultaner/pc-dart.git
+      ref: db6872721df67bf0bdb00c93cae0bf490ff0d0fc
+  file_saver:
+    path: ../../temp/file_saver
+  sqlite3:
+    git:
+      url: https://github.com/simolus3/sqlite3.dart.git
+      path: sqlite3
+      ref: 5d71d95587695ca1a4ca116af9c27912925a8db6
+  drift:
+    path: ../../temp/drift/drift
+  web: 0.5.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

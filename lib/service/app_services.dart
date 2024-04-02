@@ -7,9 +7,9 @@ import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
 import 'package:pointycastle/digests/sha3.dart';
-import 'package:vrouter/vrouter.dart';
 
 import '../db/dao/extension.dart';
 import '../db/dao/snapshot_dao.dart';
@@ -17,6 +17,7 @@ import '../db/dao/user_dao.dart';
 import '../db/mixin_database.dart';
 import '../db/web/construct_db.dart';
 import '../thirdy_party/telegram.dart';
+import '../ui/route.dart';
 import '../util/constants.dart';
 import '../util/extension/extension.dart';
 import '../util/logger.dart';
@@ -27,7 +28,7 @@ import 'profile/profile_manager.dart';
 
 class AppServices extends ChangeNotifier with EquatableMixin {
   AppServices({
-    required this.vRouterStateKey,
+    required this.router,
     required this.authProvider,
   }) {
     if (authProvider.isLoginByCredential) {
@@ -80,14 +81,14 @@ class AppServices extends ChangeNotifier with EquatableMixin {
                 (e.error! as sdk.MixinError).code == sdk.authentication) {
               i('api error code is 401 ');
               await authProvider.clear();
-              vRouterStateKey.currentState?.to('/auth', isReplacement: true);
+              await router.replace<void>(const AuthRoute().location);
             }
             handler.next(e);
           },
         )
       ];
 
-  final GlobalKey<VRouterState> vRouterStateKey;
+  final GoRouter router;
   final AuthProvider authProvider;
   late sdk.Client client;
 

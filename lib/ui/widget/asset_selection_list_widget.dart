@@ -15,7 +15,7 @@ import '../../util/logger.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../../util/transak.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import 'chain_network_label.dart';
 import 'mixin_bottom_sheet.dart';
 import 'search_asset_bottom_sheet.dart';
@@ -55,7 +55,7 @@ class BuyAssetSelectionBottomSheet extends StatelessWidget {
           if (context.canPop()) {
             context.pop();
           } else {
-            context.replace(homeUri);
+            const HomeRoute().go(context);
           }
         },
       );

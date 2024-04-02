@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart';
 
 import '../../generated/r.dart';
-import '../../service/account_provider.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
-import '../../util/logger.dart';
 import '../../util/native_scroll.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import '../widget/buttons.dart';
-import '../widget/dialog/currency_bottom_sheet.dart';
 import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
-import '../widget/toast.dart';
 
 class Setting extends StatelessWidget {
   const Setting({super.key});
@@ -54,13 +49,13 @@ class _SettingsBody extends HookWidget {
               topRounded: true,
               leading: SvgPicture.asset(R.resourcesAllTransactionsSvg),
               title: Text(context.l10n.allTransactions),
-              onTap: () => context.push(transactionsUri),
+              onTap: () => const AllTransactionsRoute().go(context),
             ),
             MenuItemWidget(
               bottomRounded: true,
               leading: SvgPicture.asset(R.resourcesHiddenSvg),
               title: Text(context.l10n.hiddenAssets),
-              onTap: () => context.push(hiddenAssetsUri),
+              onTap: () => const HiddenAssetsRoute().go(context),
             ),
             const SizedBox(height: 10),
             MenuItemWidget(
@@ -74,70 +69,9 @@ class _SettingsBody extends HookWidget {
                 onChanged: (bool value) => isSmallAssetsHidden.value = value,
               ),
             ),
-            const SizedBox(height: 10),
-            if (context.watch<AuthProvider>().isLoginByCredential) ...[
-              const _CurrencyItem(),
-              MenuItemWidget(
-                title: Text(context.l10n.logs),
-                topRounded: false,
-                bottomRounded: false,
-                onTap: () => context.push(pinLogsPath),
-              ),
-              MenuItemWidget(
-                title: Text(context.l10n.changePin),
-                topRounded: false,
-                bottomRounded: false,
-                onTap: () => context.push(changePinPath),
-              ),
-              MenuItemWidget(
-                title: Text(context.l10n.authorizations),
-                topRounded: false,
-                bottomRounded: true,
-                onTap: () => context.push(authenticationsPath),
-              ),
-            ],
           ],
         ),
       ),
-    );
-  }
-}
-
-class _CurrencyItem extends StatelessWidget {
-  const _CurrencyItem();
-
-  @override
-  Widget build(BuildContext context) {
-    final currency = context.watch<AuthProvider>().account?.fiatCurrency;
-    return MenuItemWidget(
-      topRounded: true,
-      bottomRounded: false,
-      title: Text(context.l10n.currency),
-      trailing: Text(
-        currency ?? '',
-        style: TextStyle(
-          color: context.colorScheme.secondaryText,
-          fontSize: 12,
-        ),
-      ),
-      onTap: () async {
-        d('currency: $currency');
-        final selected = await showCurrencyBottomSheet(
-          context,
-          selectedCurrency: currency,
-        );
-        if (selected == null) {
-          return;
-        }
-        final succeed = await runWithLoading(() async {
-          final account = await context.appServices.client.accountApi
-              .preferences(AccountUpdateRequest(fiatCurrency: selected.name));
-          await context.read<AuthProvider>().updateAccount(account.data);
-        });
-        if (!succeed) {
-          return;
-        }
-      },
     );
   }
 }

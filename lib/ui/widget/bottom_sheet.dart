@@ -46,7 +46,7 @@ class MixinBottomSheetPage extends Page<void> {
 
 const Duration _bottomSheetEnterDuration = Duration(milliseconds: 250);
 const Duration _bottomSheetExitDuration = Duration(milliseconds: 200);
-const Curve _modalBottomSheetCurve = decelerateEasing;
+const Curve _modalBottomSheetCurve = Easing.legacyDecelerate;
 
 class _BottomSheetSuspendedCurve extends ParametricCurve<double> {
   /// Creates a suspended curve.

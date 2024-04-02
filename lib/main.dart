@@ -4,23 +4,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'package:vrouter/vrouter.dart';
 
 import 'service/account_provider.dart';
 import 'service/app_services.dart';
 import 'service/profile/profile_manager.dart';
 import 'ui/brightness_theme_data.dart';
-import 'ui/router/mixin_routes.dart';
+import 'ui/route.dart';
 import 'ui/widget/brightness_observer.dart';
 import 'ui/widget/error_widget.dart';
 import 'util/l10n.dart';
 import 'util/logger.dart';
 import 'util/mixin_context.dart';
 import 'util/web/web_utils.dart';
-
-final navigatorObserver = RouteObserver<ModalRoute<dynamic>>();
 
 Future<void> main() async {
   await initStorage();
@@ -34,7 +32,7 @@ Future<void> main() async {
   ErrorWidget.builder = MixinErrorWidget.defaultErrorWidgetBuilder;
 
   runZonedGuarded(
-    () => runApp(OverlaySupport.global(child: MyApp())),
+    () => runApp(const OverlaySupport.global(child: MyApp())),
     (Object error, StackTrace stack) {
       if (!kLogMode) return;
       e('$error, $stack');
@@ -53,9 +51,7 @@ Future<void> main() async {
 }
 
 class MyApp extends HookWidget {
-  MyApp({super.key});
-
-  final vRouterStateKey = GlobalKey<VRouterState>();
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,34 +67,44 @@ class MyApp extends HookWidget {
       [authProvider],
     );
 
+    final router = useMemoized(
+      () => GoRouter(
+        routes: $appRoutes,
+        initialLocation: const HomeRoute().location,
+        redirect: (BuildContext context, GoRouterState state) {
+          final authProvider = context.read<AuthProvider>();
+          if (!authProvider.isLogin) {
+            return const AuthRoute().location;
+          }
+          return state.uri.toString();
+        },
+      ),
+    );
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (BuildContext context) => AppServices(
-            vRouterStateKey: vRouterStateKey,
+            router: router,
             authProvider: authProvider,
           ),
         ),
         ChangeNotifierProvider<AuthProvider>.value(value: authProvider),
       ],
-      child: _Router(vRouterStateKey: vRouterStateKey),
+      child: _WalletApp(router),
     );
   }
 }
 
-class _Router extends StatelessWidget {
-  const _Router({
-    required this.vRouterStateKey,
-  });
+class _WalletApp extends HookWidget {
+  const _WalletApp(this.router);
 
-  final GlobalKey<VRouterState> vRouterStateKey;
+  final GoRouter router;
 
   @override
-  Widget build(BuildContext context) => VRouter(
-        key: vRouterStateKey,
+  Widget build(BuildContext context) => MaterialApp.router(
         title: 'Mixin Wallet',
         debugShowCheckedModeBanner: false,
-        navigatorObservers: [navigatorObserver],
         localizationsDelegates: const [
           L10n.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -120,7 +126,7 @@ class _Router extends StatelessWidget {
           ),
           fontFamily: getFallbackFontFamily(),
         ),
-        builder: (BuildContext context, Widget child) => DefaultTextStyle(
+        builder: (BuildContext context, Widget? child) => DefaultTextStyle(
           style: TextStyle(
             height: 1,
             // Add underline decoration for Safari.
@@ -133,10 +139,10 @@ class _Router extends StatelessWidget {
           ),
           child: BrightnessObserver(
             lightThemeData: lightBrightnessThemeData,
-            child: child,
+            child: child!,
           ),
         ),
-        routes: buildMixinRoutes(context),
+        routerConfig: router,
       );
 }
 

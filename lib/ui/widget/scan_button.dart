@@ -6,7 +6,7 @@ import '../../generated/r.dart';
 import '../../util/extension/extension.dart';
 import '../../util/logger.dart';
 import '../../util/pay/external_transfer_uri_parser.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import 'action_button.dart';
 import 'dialog/auth_bottom_sheet.dart';
 import 'dialog/transfer_bottom_sheet.dart';
@@ -123,5 +123,5 @@ Future<void> _handleExternalPay(BuildContext context, String text) async {
     return;
   }
   // transaction success, to asset detail page.
-  context.push(assetDetailPath.toUri({'id': asset.assetId}));
+  AssetDetailRoute(asset.assetId).go(context);
 }

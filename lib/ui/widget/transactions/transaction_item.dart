@@ -11,7 +11,7 @@ import '../../../db/mixin_database.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
 import '../../../util/r.dart';
-import '../../router/mixin_routes.dart';
+import '../../route.dart';
 import '../asset.dart';
 import '../avatar.dart';
 import '../text.dart';
@@ -43,7 +43,7 @@ class TransactionItem extends HookWidget {
         this.onTap!();
         return;
       }
-      context.push(snapshotDetailPath.toUri({'id': item.snapshotId}));
+      SnapshotDetailRoute(item.snapshotId).go(context);
     }
 
     final isPositive = item.isPositive;

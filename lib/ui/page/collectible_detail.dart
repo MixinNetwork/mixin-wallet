@@ -7,9 +7,7 @@ import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
-import '../../util/native_scroll.dart';
 import '../../util/transaction.dart';
-import '../router/mixin_routes.dart';
 import '../widget/buttons.dart';
 import '../widget/dialog/contact_selection_widget.dart';
 import '../widget/dialog/transaction_submit_bottom_sheet.dart';
@@ -18,11 +16,12 @@ import '../widget/mixin_bottom_sheet.dart';
 import '../widget/toast.dart';
 
 class CollectibleDetail extends HookWidget {
-  const CollectibleDetail({super.key});
+  const CollectibleDetail({required this.tokenId, super.key});
+
+  final String tokenId;
 
   @override
   Widget build(BuildContext context) {
-    final tokenId = usePathParameter('id', path: collectiblePath);
     final snapshot = useMemoizedStream(
       () => context.mixinDatabase.collectibleDao
           .collectibleItemByTokenId(tokenId)
@@ -104,57 +103,54 @@ class _Body extends StatelessWidget {
   final CollectibleItem item;
 
   @override
-  Widget build(BuildContext context) => NativeScrollBuilder(
-        builder: (context, controller) => SingleChildScrollView(
-          controller: controller,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minWidth: double.infinity),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 500),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(13),
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: Image.network(item.mediaUrl ?? ''),
-                      ),
+  Widget build(BuildContext context) => SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: double.infinity),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 500),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(13),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Image.network(item.mediaUrl ?? ''),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  SelectableText(
-                    item.name ?? '',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: context.colorScheme.primaryText,
-                    ),
-                    maxLines: 1,
+                ),
+                const SizedBox(height: 20),
+                SelectableText(
+                  item.name ?? '',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: context.colorScheme.primaryText,
                   ),
-                  const SizedBox(height: 6),
-                  SelectableText(
-                    '#${item.token}',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: context.colorScheme.thirdText,
-                    ),
-                    maxLines: 1,
+                  maxLines: 1,
+                ),
+                const SizedBox(height: 6),
+                SelectableText(
+                  '#${item.token}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: context.colorScheme.thirdText,
                   ),
-                  const SizedBox(height: 12),
-                  SelectableText(
-                    item.description ?? '',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: context.colorScheme.secondaryText,
-                    ),
+                  maxLines: 1,
+                ),
+                const SizedBox(height: 12),
+                SelectableText(
+                  item.description ?? '',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: context.colorScheme.secondaryText,
                   ),
-                  if (!context.watch<AuthProvider>().isLoginByCredential)
-                    _SendButton(item: item),
-                ],
-              ),
+                ),
+                if (!context.watch<AuthProvider>().isLoginByCredential)
+                  _SendButton(item: item),
+              ],
             ),
           ),
         ),

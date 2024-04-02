@@ -6,7 +6,7 @@ import '../../../service/env.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
-import '../../router/mixin_routes.dart';
+import '../../route.dart';
 import 'empty.dart';
 
 class CollectiblesGroupSliverGrid extends HookWidget {
@@ -101,11 +101,9 @@ class _CollectiblesGroupTile extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (items.length == 1) {
-          context.push(collectiblePath.toUri({'id': items.single.tokenId}));
+          CollectibleDetailRoute(items.single.tokenId).go(context);
         } else {
-          context.push(
-            collectiblesCollectionPath.toUri({'id': items.first.collectionId}),
-          );
+          CollectiblesCollectionRoute(items.first.collectionId).go(context);
         }
       },
       borderRadius: BorderRadius.circular(8),

@@ -13,7 +13,7 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import 'asset.dart';
 import 'chain_network_label.dart';
 import 'search_header_widget.dart';
@@ -252,7 +252,7 @@ class _Item extends StatelessWidget {
       if (replaceHistory) {
         putSearchAssetHistory(data.assetId);
       }
-      context.push(assetDetailPath.toUri({'id': data.assetId}));
+      AssetDetailRoute(data.assetId).go(context);
     }
 
     return Material(

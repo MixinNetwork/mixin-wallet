@@ -1,7 +1,6 @@
-// ignore_for_file: avoid_dynamic_calls, avoid_web_libraries_in_flutter
-
 import 'dart:convert';
-import 'dart:js' as js;
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 
 import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
@@ -98,11 +97,11 @@ Future<String> buildTransaction({
 }
 
 String _buildTransaction(Map<String, dynamic> tx) {
-  final mixinGo = js.context['mixinGo'];
+  final mixinGo = globalContext.getProperty<JSObject?>('mixinGo'.toJS);
   assert(mixinGo != null, 'mixinGo is null');
-  final buildTransaction = mixinGo['buildTransaction'] as js.JsFunction;
-  final raw = buildTransaction.apply([jsonEncode(tx)]);
-  return raw as String;
+  final raw = mixinGo!
+      .callMethod<JSString>('buildTransaction'.toJS, jsonEncode(tx).toJS);
+  return raw.toDart;
 }
 
 String _buildThresholdScript(int threshold) {

@@ -12,18 +12,22 @@ import '../widget/transactions/transaction_list.dart';
 import '../widget/transactions/transactions_filter.dart';
 
 class WithdrawalTransactions extends HookWidget {
-  const WithdrawalTransactions({super.key});
+  const WithdrawalTransactions({
+    required this.assetId,
+    super.key,
+    this.destination,
+    this.tag,
+    this.opponentId,
+  });
+
+  final String assetId;
+  final String? destination;
+  final String? tag;
+  final String? opponentId;
 
   @override
   Widget build(BuildContext context) {
     final sort = useState(SortBy.time);
-
-    final assetId = context.pathParameters['id']!;
-
-    final destination = context.queryParameters['destination'];
-    final tag = context.queryParameters['tag'];
-
-    final opponentId = context.queryParameters['opponent'];
 
     return Scaffold(
       backgroundColor: context.colorScheme.background,
@@ -40,7 +44,7 @@ class WithdrawalTransactions extends HookWidget {
         ),
         backgroundColor: context.colorScheme.background,
         actions: [
-          if (opponentId != null && opponentId.isNotEmpty)
+          if (opponentId != null && opponentId!.isNotEmpty)
             ActionButton(
               name: R.resourcesFilterSvg,
               size: 24,
@@ -57,7 +61,7 @@ class WithdrawalTransactions extends HookWidget {
             )
         ],
       ),
-      body: opponentId != null && opponentId.isNotEmpty
+      body: opponentId != null && opponentId!.isNotEmpty
           ? _UserTransactionsBody(
               assetId: assetId, opponent: opponentId, sort: sort.value)
           : LayoutBuilder(builder: (context, constraints) {

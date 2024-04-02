@@ -15,7 +15,12 @@ import '../widget/transaction_info_tile.dart';
 import '../widget/transactions/transaction_item.dart';
 
 class SnapshotDetail extends StatelessWidget {
-  const SnapshotDetail({super.key});
+  const SnapshotDetail({
+    required this.snapshotId,
+    super.key,
+  });
+
+  final String snapshotId;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -33,7 +38,7 @@ class SnapshotDetail extends StatelessWidget {
           ),
         ),
         backgroundColor: context.colorScheme.background,
-        body: _SnapshotDetailPageBody(context.pathParameters['id']!),
+        body: _SnapshotDetailPageBody(snapshotId),
       );
 }
 

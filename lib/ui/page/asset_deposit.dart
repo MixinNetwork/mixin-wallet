@@ -16,7 +16,7 @@ import '../../util/hook.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../../util/web/web_utils.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import '../widget/action_button.dart';
 import '../widget/buttons.dart';
 import '../widget/dialog/request_payment_bottom_sheet.dart';
@@ -27,11 +27,12 @@ import '../widget/symbol.dart';
 import '../widget/tip_tile.dart';
 
 class AssetDeposit extends StatelessWidget {
-  const AssetDeposit({super.key});
+  const AssetDeposit({required this.assetId, super.key});
+
+  final String assetId;
 
   @override
-  Widget build(BuildContext context) =>
-      _AssetDepositLoader(assetId: context.pathParameters['id']!);
+  Widget build(BuildContext context) => _AssetDepositLoader(assetId: assetId);
 }
 
 class _DepositScaffold extends StatelessWidget {
@@ -85,7 +86,7 @@ class _AssetDepositLoader extends HookWidget {
     useEffect(() {
       if (assetId == omniUSDT) {
         scheduleMicrotask(() {
-          context.replace(notFoundUri);
+          const NotFoundRoute().go(context);
         });
         return null;
       }
@@ -351,20 +352,19 @@ class _DepositUnsupportedDialog extends StatelessWidget {
                     const SizedBox(height: 32),
                     ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith(
+                          backgroundColor: WidgetStateColor.resolveWith(
                               (states) => const Color(0xFF4B7CDD)),
-                          padding: MaterialStateProperty.all(
+                          padding: WidgetStateProperty.all(
                               const EdgeInsets.symmetric(
                             vertical: 16,
                             horizontal: 24,
                           )),
                           minimumSize:
-                              MaterialStateProperty.all(const Size(110, 48)),
-                          foregroundColor: MaterialStateProperty.all(
+                              WidgetStateProperty.all(const Size(110, 48)),
+                          foregroundColor: WidgetStateProperty.all(
                               context.colorScheme.background),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50))),
+                          shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50))),
                         ),
                         onPressed: onTap,
                         child: SelectableText(
@@ -569,9 +569,7 @@ class _UsdtChooseLayout extends StatelessWidget {
                 _NetworkTypeItem(
                   selected: assetId == asset.assetId,
                   onTap: () {
-                    context.replace(
-                      assetDepositPath.toUri({'id': assetId}),
-                    );
+                    AssetDepositRoute(assetId).go(context);
                   },
                   name: usdtAssets[assetId]!,
                 ),

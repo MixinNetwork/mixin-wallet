@@ -4,11 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../db/mixin_database.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/r.dart';
-import '../../router/mixin_routes.dart';
+import '../../route.dart';
 import '../../widget/asset.dart';
 import '../../widget/mixin_bottom_sheet.dart';
 import '../../widget/search_asset_bottom_sheet.dart';
-import '../home.dart';
 import 'empty.dart';
 
 enum AssetSortType {
@@ -105,10 +104,8 @@ class AssetHeader extends StatelessWidget {
             InkResponse(
               radius: 24,
               onTap: () {
-                final params =
-                    Map<String, String>.from(context.queryParameters);
-                params[kQueryParameterSort] = sortType.next.name;
-                context.replace(homeUri.replace(queryParameters: params));
+                // TODO
+                HomeRoute(sort: sortType.next.name).go(context);
               },
               child: SvgPicture.asset(
                 R.resourcesAmplitudeSvg,

@@ -11,18 +11,18 @@ import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/mixin_context.dart';
 import '../../util/r.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import '../widget/text.dart';
 import '../widget/toast.dart';
 
 class AuthPage extends HookWidget {
-  const AuthPage({super.key});
+  const AuthPage({super.key, this.oauthCode});
+
+  final String? oauthCode;
 
   @override
   Widget build(BuildContext context) {
     final loading = useState(false);
-
-    final oauthCode = context.queryParameters['code'];
 
     useMemoizedFuture(() async {
       if (oauthCode?.isEmpty ?? true) {
@@ -32,7 +32,7 @@ class AuthPage extends HookWidget {
       loading.value = true;
       try {
         await context.appServices.loginByMixinAuth(oauthCode!);
-        context.replace(homeUri);
+        const HomeRoute().go(context);
       } catch (error, s) {
         e('$error, $s');
         showErrorToast(error.toDisplayString(context));

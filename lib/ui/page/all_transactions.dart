@@ -16,10 +16,9 @@ import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
-import '../../util/native_scroll.dart';
 import '../../util/r.dart';
 import '../../util/web/web_utils.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import '../widget/asset_selection_list_widget.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
@@ -33,30 +32,33 @@ import '../widget/transactions/transactions_filter.dart';
 extension _AllTransactionsFilter on BuildContext {
   void updateFilter(TransactionFilter filter) {
     final range = filter.range.range;
-    replace(transactionsUri.replace(queryParameters: {
-      'filterBy': filter.filterBy.name,
-      'rangeType': filter.range.type.name,
-      if (filter.range.type == DateRangeType.custom) ...{
-        'start': range!.start.toIso8601String(),
-        'end': range.end.toIso8601String(),
-      },
-      if (filter.assetId != null) 'asset': filter.assetId,
-    }));
+    AllTransactionsRoute(
+      filterBy: filter.filterBy.name,
+      rangeType: filter.range.type.name,
+      start: range?.start.toIso8601String(),
+      end: range?.end.toIso8601String(),
+    ).replace(this);
   }
 }
 
 class AllTransactions extends HookWidget {
-  const AllTransactions({super.key});
+  const AllTransactions({
+    super.key,
+    this.rangeType,
+    this.filterBy,
+    this.start = '',
+    this.end = '',
+    this.assetId = '',
+  });
+
+  final String? filterBy;
+  final String? rangeType;
+  final String start;
+  final String end;
+  final String assetId;
 
   @override
   Widget build(BuildContext context) {
-    final filterBy = useQueryParameter('filterBy', path: transactionsUri.path);
-    final rangeType =
-        useQueryParameter('rangeType', path: transactionsUri.path);
-    final start = useQueryParameter('start', path: transactionsUri.path);
-    final end = useQueryParameter('end', path: transactionsUri.path);
-    final assetId = useQueryParameter('asset', path: transactionsUri.path);
-
     final filter = useMemoized(() {
       final type =
           DateRangeType.values.byNameOrNull(rangeType) ?? DateRangeType.all;
@@ -146,18 +148,14 @@ class _AllTransactionsBody extends StatelessWidget {
           if (snapshots.isEmpty) {
             return const EmptyTransaction();
           }
-          return NativeScrollBuilder(
-            builder: (context, controller) => ListView.builder(
-              controller: controller,
-              itemCount: snapshots.length,
-              itemBuilder: (context, index) => TransactionItem(
-                item: snapshots[index],
-                onTap: () {
-                  context.push(transactionsSnapshotDetailPath.toUri(
-                    {'id': snapshots[index].snapshotId},
-                  ));
-                },
-              ),
+          return ListView.builder(
+            itemCount: snapshots.length,
+            itemBuilder: (context, index) => TransactionItem(
+              item: snapshots[index],
+              onTap: () {
+                SnapshotDetailRoute(snapshots[index].snapshotId)
+                    .go(context);
+              },
             ),
           );
         },
@@ -436,7 +434,7 @@ class _DateTimeFilterWidget extends StatelessWidget {
                     height: 24,
                   ),
                 ),
-                toggleIcon: SvgPicture.asset(
+                customModePickerIcon: SvgPicture.asset(
                   R.resourcesIcArrowDownSvg,
                   width: 24,
                   height: 24,

@@ -6,11 +6,10 @@ import 'package:uuid/uuid.dart';
 import '../../db/mixin_database.dart';
 import '../../generated/r.dart';
 import '../../service/account_provider.dart';
-import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import '../widget/action_button.dart';
 import '../widget/avatar.dart';
 import '../widget/buttons.dart';
@@ -21,16 +20,12 @@ import '../widget/mixin_appbar.dart';
 import '../widget/transfer.dart';
 
 class Withdrawal extends HookWidget {
-  const Withdrawal({super.key});
+  const Withdrawal({required this.assetId, super.key});
+
+  final String assetId;
 
   @override
   Widget build(BuildContext context) {
-    var assetId = usePathParameter('id', path: withdrawalPath);
-
-    if (assetId.isEmpty) {
-      assetId = bitcoin;
-    }
-
     final faitCurrency = useAccountFaitCurrency();
 
     final data = useMemoizedFuture(
@@ -110,27 +105,19 @@ class _WithdrawalPage extends HookWidget {
             size: 24,
             enable: address.value != null || user.value != null,
             onTap: () {
-              final parameter = <String, String?>{};
-
               if (address.value != null) {
                 final addressValue = address.value!;
-                parameter.addAll({
-                  'destination': addressValue.destination,
-                  'tag': addressValue.tag
-                });
+                WithdrawalTransactionRoute(
+                  asset.assetId,
+                  destination: addressValue.destination,
+                  tag: addressValue.destination,
+                ).go(context);
               } else if (user.value != null) {
-                final userValue = user.value!;
-                parameter.addAll({
-                  'opponent': userValue.userId,
-                });
+                WithdrawalTransactionRoute(
+                  asset.assetId,
+                  opponentId: user.value!.userId,
+                ).go(context);
               }
-
-              if (parameter.isEmpty) {
-                return;
-              }
-              final uri = withdrawalTransactionsPath.toUri(
-                  {'id': asset.assetId}).replace(queryParameters: parameter);
-              context.push(uri);
             },
           ),
         ],

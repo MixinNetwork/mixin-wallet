@@ -11,7 +11,7 @@ import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/native_scroll.dart';
 import '../../util/r.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import '../widget/action_button.dart';
 import '../widget/avatar.dart';
 import '../widget/menu.dart';
@@ -34,7 +34,14 @@ enum _Tab {
 }
 
 class Home extends HookWidget {
-  const Home({super.key});
+  const Home({
+    super.key,
+    this.sort,
+    this.tab,
+  });
+
+  final String? sort;
+  final String? tab;
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +49,9 @@ class Home extends HookWidget {
 
     useMemoizedFuture(() => context.appServices.updateAssets());
 
-    final sortParam =
-        useQueryParameter(kQueryParameterSort, path: homeUri.path);
-
     final sortType = useMemoized(
-        () =>
-            AssetSortType.values.byNameOrNull(sortParam) ??
-            AssetSortType.amount,
-        [sortParam]);
+        () => AssetSortType.values.byNameOrNull(sort) ?? AssetSortType.amount,
+        [sort]);
 
     final faitCurrency = useAccountFaitCurrency();
 
@@ -76,8 +78,7 @@ class Home extends HookWidget {
       return target ??= await context.appServices.findOrSyncAsset(bitcoin);
     }, keys: [assetResults]).data;
 
-    final tabParam = useQueryParameter(kQueryParameterTab, path: homeUri.path);
-    final selectedTab = _Tab.values.byNameOrNull(tabParam) ?? _Tab.coins;
+    final selectedTab = _Tab.values.byNameOrNull(tab) ?? _Tab.coins;
     return Scaffold(
       backgroundColor: context.theme.background,
       appBar: const _HomeAppBar(),
@@ -148,7 +149,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ActionButton(
           name: R.resourcesSettingSvg,
           size: 24,
-          onTap: () => context.push(settingPath),
+          onTap: () => const SettingRoute().go(context),
         ),
       ],
       backgroundColor: context.colorScheme.background,
@@ -239,7 +240,7 @@ class _AccountBottomSheet extends StatelessWidget {
             await authProvider.clear();
             await profileBox.clear();
             await deleteDatabase(id);
-            context.replace(authUri.path);
+            const AuthRoute().go(context);
           },
         ),
         const SizedBox(height: 100),
@@ -263,9 +264,8 @@ class _TabSwitchBar extends HookWidget implements PreferredSizeWidget {
     );
     useEffect(() {
       void onTabChanged() {
-        final params = Map<String, String>.from(context.queryParameters);
-        params[kQueryParameterTab] = _Tab.values[controller.index].name;
-        context.replace(homeUri.replace(queryParameters: params));
+        // TODO
+        HomeRoute(tab: _Tab.values[controller.index].name).replace(context);
       }
 
       controller.addListener(onTabChanged);

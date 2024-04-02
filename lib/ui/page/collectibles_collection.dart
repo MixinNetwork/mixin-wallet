@@ -5,20 +5,17 @@ import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/native_scroll.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 
 class CollectiblesCollection extends HookWidget {
-  const CollectiblesCollection({super.key});
+  const CollectiblesCollection({required this.collectionId, super.key});
+
+  final String collectionId;
 
   @override
   Widget build(BuildContext context) {
-    final collectionId = usePathParameter(
-      'id',
-      path: collectiblesCollectionPath,
-    );
-
     useEffect(() {
       context.appServices.refreshCollection([collectionId], force: true);
     }, [collectionId]);
@@ -219,7 +216,7 @@ class _CollectiblesItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: () => context.push(collectiblePath.toUri({'id': item.tokenId})),
+        onTap: () => CollectibleDetailRoute(item.tokenId).go(context),
         borderRadius: BorderRadius.circular(8),
         child: DecoratedBox(
           decoration: BoxDecoration(

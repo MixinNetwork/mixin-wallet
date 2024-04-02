@@ -1,25 +1,31 @@
 import 'dart:convert';
-
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
-
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
+import 'dart:js_interop' as js;
+import 'dart:js_interop_unsafe';
 import 'dart:ui';
+
+import 'package:web/web.dart';
 
 Map<String, dynamic> getMixinContext() {
   // see https://developers.mixin.one/docs/js-bridge#getcontext
-  if (js.context['webkit'] != null &&
+  if (js.globalContext['webkit'] != null &&
       // ignore: avoid_dynamic_calls
-      js.context['webkit']['messageHandlers'] != null &&
+      js.globalContext
+              .getProperty<js.JSObject>('webkit'.toJS)['messageHandlers'] !=
+          null &&
       // ignore: avoid_dynamic_calls
-      js.context['webkit']['messageHandlers']['MixinContext'] != null) {
-    final context =
-        js.context.callMethod('prompt', ['MixinContext.getContext()']);
-    return jsonDecode(context as String) as Map<String, dynamic>;
-  } else if (js.context['MixinContext'] != null) {
-    final mixinContext = js.context['MixinContext'] as js.JsObject;
-    return jsonDecode(mixinContext.callMethod('getContext').toString())
+      js.globalContext
+              .getProperty<js.JSObject>('webkit'.toJS)
+              .getProperty<js.JSObject>(
+                  'messageHandlers'.toJS)['MixinContext'] !=
+          null) {
+    final context = js.globalContext.callMethod<js.JSString>(
+        'prompt'.toJS, 'MixinContext.getContext()'.toJS);
+    return jsonDecode(context.toDart) as Map<String, dynamic>;
+  } else if (js.globalContext['MixinContext'] != null) {
+    final mixinContext =
+        js.globalContext.getProperty<js.JSObject>('MixinContext'.toJS);
+    return jsonDecode(
+            mixinContext.callMethod<js.JSString>('getContext'.toJS).toDart)
         as Map<String, dynamic>;
   }
   return const {};
@@ -48,4 +54,4 @@ Locale? getMixinLocale() {
 }
 
 Locale getMixinLocaleOrPlatformLocale() =>
-    getMixinLocale() ?? Locale(html.window.navigator.language);
+    getMixinLocale() ?? Locale(window.navigator.language);

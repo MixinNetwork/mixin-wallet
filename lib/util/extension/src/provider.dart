@@ -1,27 +1,23 @@
 part of '../extension.dart';
 
 extension ProviderExtension on BuildContext {
-  Map<String, String> get pathParameters => vRouter.pathParameters;
-
-  Map<String, String> get queryParameters => vRouter.queryParameters;
-
   AppServices get appServices => read<AppServices>();
 
   MixinDatabase get mixinDatabase => appServices.mixinDatabase;
 
-  void replace(Object url) => vRouter.to(url.toString(), isReplacement: true);
+  String get url =>
+      GoRouter.of(this).routerDelegate.currentConfiguration.uri.toString();
 
-  void push(Object url, {Map<String, String> queryParameters = const {}}) =>
-      vRouter.to(url.toString(), queryParameters: queryParameters);
+  GoRouter get router => GoRouter.of(this);
 
-  String get url => vRouter.url;
+  void toExternal(Object url, {bool openNewTab = false}) => launchUrlString(
+        url.toString(),
+        mode: openNewTab
+            ? LaunchMode.externalApplication
+            : LaunchMode.platformDefault,
+      );
 
-  String get path => vRouter.path;
+  void pop() => router.pop();
 
-  void toExternal(Object url, {bool openNewTab = false}) =>
-      vRouter.toExternal(url.toString(), openNewTab: openNewTab);
-
-  void pop() => vRouter.historyBack();
-
-  bool canPop() => vRouter.historyCanBack();
+  bool canPop() => router.canPop();
 }

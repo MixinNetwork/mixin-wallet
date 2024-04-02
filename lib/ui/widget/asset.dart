@@ -6,7 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../db/mixin_database.dart';
 import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
-import '../router/mixin_routes.dart';
+import '../route.dart';
 import 'symbol.dart';
 
 class AssetWidget extends HookWidget {
@@ -20,7 +20,7 @@ class AssetWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
     void onTap() {
-      context.push(assetDetailPath.toUri({'id': data.assetId}));
+      AssetDetailRoute(data.assetId).go(context);
     }
 
     final faitCurrency = useAccountFaitCurrency();

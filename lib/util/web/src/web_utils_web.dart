@@ -1,14 +1,11 @@
-// ignore_for_file: avoid_web_libraries_in_flutter
-
-import 'dart:html';
-
 import 'package:flutter/foundation.dart';
+import 'package:web/web.dart';
 
 import '../../mixin_context.dart';
 
 void fixSafariIndexDb() {
   // fix safari indexedDb bug: https://bugs.webkit.org/show_bug.cgi?id=226547
-  window.indexedDB!.open('dummy');
+  window.indexedDB.open('dummy');
 }
 
 /// https://github.com/zenorocha/clipboard.js/blob/master/src/actions/copy.js
@@ -40,7 +37,7 @@ String? getFallbackFontFamily() {
   return null;
 }
 
-void _select(TextAreaElement element) {
+void _select(HTMLTextAreaElement element) {
   final isReadOnly = element.hasAttribute('readonly');
 
   if (!isReadOnly) {
@@ -49,7 +46,7 @@ void _select(TextAreaElement element) {
 
   element
     ..select()
-    ..setSelectionRange(0, element.value?.length ?? 0);
+    ..setSelectionRange(0, element.value.length);
 
   if (!isReadOnly) {
     element.removeAttribute('readonly');
@@ -57,9 +54,10 @@ void _select(TextAreaElement element) {
 }
 
 /// https://github.com/zenorocha/clipboard.js/blob/master/src/common/create-fake-element.js
-TextAreaElement _createCopyFakeElement(String value) {
+HTMLTextAreaElement _createCopyFakeElement(String value) {
   final isRtl = document.documentElement?.getAttribute('dir') == 'rtl';
-  final fakeElement = TextAreaElement()
+
+  final fakeElement = HTMLTextAreaElement()
     // Prevent zooming on iOS
     ..style.fontSize = '12pt'
     // Reset box model
@@ -70,8 +68,8 @@ TextAreaElement _createCopyFakeElement(String value) {
     ..style.setProperty(isRtl ? 'right' : 'left', '-9999px');
 
   // Move element to the same position vertically
-  final yPosition =
-      window.pageYOffset | (document.documentElement?.scrollTop ?? 0);
+  final yPosition = window.pageYOffset.toInt() |
+      (document.documentElement?.scrollTop.toInt() ?? 0);
   fakeElement
     ..style.top = '${yPosition}px'
     ..setAttribute('readonly', '')
