@@ -290,13 +290,36 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .insertAll(users.data.map((user) => user.toDbUser()).toList());
   }
 
+  Future<sdk.MixinResponse<List<sdk.Snapshot>>> _getSnapshots({
+    String? assetId,
+    String? offset,
+    int limit = 30,
+    String? opponent,
+    String? destination,
+    String? tag,
+  }) async {
+    final resp = await client.dio.get<Map<String, dynamic>>('/snapshots',
+        queryParameters: <String, dynamic>{
+          'asset': assetId,
+          'offset': offset,
+          'limit': limit,
+          'opponent': opponent,
+          'destination': destination,
+          'tag': tag,
+        });
+    return sdk.MixinResponse((resp.data!['data'] as List)
+        .whereNotNull()
+        .map((e) => sdk.Snapshot.fromJson(e as Map<String, dynamic>))
+        .toList());
+  }
+
   Future<List<sdk.Snapshot>> updateAssetSnapshots(
     String assetId, {
     String? offset,
     int limit = 30,
   }) async {
     final result = await Future.wait([
-      client.snapshotApi.getSnapshots(
+      _getSnapshots(
         assetId: assetId,
         offset: offset,
         limit: limit,
@@ -328,7 +351,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     String? tag,
   }) async {
     final result = await Future.wait([
-      client.snapshotApi.getSnapshots(
+      _getSnapshots(
         assetId: assetId,
         offset: offset,
         limit: limit,
@@ -360,9 +383,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     String? opponent,
     int limit = 30,
   }) async {
-    final snapshots = await client.snapshotApi
-        .getSnapshots(offset: offset, limit: limit, opponent: opponent)
-        .then((value) => value.data);
+    final snapshots =
+        await _getSnapshots(offset: offset, limit: limit, opponent: opponent)
+            .then((value) => value.data);
 
     final closures = [
       await _checkUsersExistWithReturnInsert(

@@ -28,8 +28,7 @@ class AssetWidget extends HookWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: 72,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
             SymbolIconWithBorder(

@@ -33,11 +33,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  mixin_bot_sdk_dart: ^0.3.17
-  very_good_analysis: ^5.1.0
-  intl: ^0.18.0
+  mixin_bot_sdk_dart: ^0.4.3
+  very_good_analysis: ^6.0.0
+  intl: ^0.19.0
   json_annotation: ^4.8.1
-  flutter_hooks: ^0.18.6
+  flutter_hooks: ^0.20.5
   equatable: ^2.0.5
   flutter_svg: ^2.0.9
   path_provider: ^2.0.2
@@ -50,14 +50,17 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   ansicolor: ^2.0.2
-  decimal: ^2.3.2
-  rxdart: ^0.27.6
+  decimal: ^3.0.2
+  rxdart: ^0.28.0
   qr_flutter: ^4.0.0
-  vrouter: ^1.2.0+5
-  uuid: ^3.0.7
+  vrouter:
+    git:
+      url: https://github.com/boyan01/vrouter.git
+      ref: 0e6937bb9381eaef438c2aa51f12cd9298ef43df
+  uuid: ^4.5.0
   path_to_regexp: ^0.4.0
   mixswap_sdk_dart: ^0.2.0
-  share_plus: ^7.2.2
+  share_plus: ^10.0.2
   collection: ^1.16.0
   convert: ^3.1.1
   pointycastle: ^3.6.2
@@ -71,7 +74,7 @@ dependencies:
   calendar_date_picker2:
     git:
       url: https://github.com/boyan01/calendar_date_picker2.git
-      ref: 69b1d268a63e628565574b50b3b2b64591ac0dbb
+      ref: ea2e56e3acbd96cd97adc7c2452f55cdce44a933
   rational: ^2.2.2
   envied: ^0.5.2
 

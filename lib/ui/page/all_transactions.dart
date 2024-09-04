@@ -720,7 +720,9 @@ class _ExportButton extends StatelessWidget {
                   limit: limit,
                 );
               }
-              if (snapshots.isEmpty || snapshots.length < limit) {
+              // this should compare snapshots.length < limit. but service might has null item
+              // so we use snapshots.length < 10
+              if (snapshots.length < 10) {
                 break;
               }
               if (range != null &&
