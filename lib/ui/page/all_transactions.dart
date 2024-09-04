@@ -706,7 +706,7 @@ class _ExportButton extends StatelessWidget {
             var offset = range?.end.toIso8601String();
             while (true) {
               final List<sdk.Snapshot> snapshots;
-              const limit = 100;
+              const limit = 300;
               if (asset != null) {
                 snapshots = await context.appServices.updateAssetSnapshots(
                   asset.assetId,
