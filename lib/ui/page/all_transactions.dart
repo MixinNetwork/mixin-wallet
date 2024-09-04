@@ -639,50 +639,49 @@ class _FilterPopupMenuWidget<T> extends HookWidget {
   final PopupMenuItemSelected<T>? onSelected;
 
   @override
-  Widget build(BuildContext context) {
-    final isMounted = useIsMounted();
-    return InkWell(
-      borderRadius: BorderRadius.circular(8),
-      onTap: () async {
-        const padding = EdgeInsets.all(8.0);
-        final popupMenuTheme = PopupMenuTheme.of(context);
-        final button = context.findRenderObject()! as RenderBox;
-        final overlay = Navigator.of(context)
-            .overlay!
-            .context
-            .findRenderObject()! as RenderBox;
-        final offset = Offset(0.0, button.size.height - (padding.vertical / 2));
-        final position = RelativeRect.fromRect(
-          Rect.fromPoints(
-            button.localToGlobal(offset, ancestor: overlay),
-            button.localToGlobal(button.size.bottomRight(Offset.zero) + offset,
-                ancestor: overlay),
-          ),
-          Offset.zero & overlay.size,
-        );
-        final item = await showMenu<T?>(
-          context: context,
-          elevation: popupMenuTheme.elevation,
-          items: itemBuilder(context),
-          position: position,
-          shape: popupMenuTheme.shape,
-          color: popupMenuTheme.color,
-        );
-        if (!isMounted()) {
-          return;
-        }
-        if (item == null) {
-          onCanceled?.call();
-          return;
-        }
-        onSelected?.call(item);
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: child,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: () async {
+          const padding = EdgeInsets.all(8.0);
+          final popupMenuTheme = PopupMenuTheme.of(context);
+          final button = context.findRenderObject()! as RenderBox;
+          final overlay = Navigator.of(context)
+              .overlay!
+              .context
+              .findRenderObject()! as RenderBox;
+          final offset =
+              Offset(0.0, button.size.height - (padding.vertical / 2));
+          final position = RelativeRect.fromRect(
+            Rect.fromPoints(
+              button.localToGlobal(offset, ancestor: overlay),
+              button.localToGlobal(
+                  button.size.bottomRight(Offset.zero) + offset,
+                  ancestor: overlay),
+            ),
+            Offset.zero & overlay.size,
+          );
+          final item = await showMenu<T?>(
+            context: context,
+            elevation: popupMenuTheme.elevation,
+            items: itemBuilder(context),
+            position: position,
+            shape: popupMenuTheme.shape,
+            color: popupMenuTheme.color,
+          );
+          if (!context.mounted) {
+            return;
+          }
+          if (item == null) {
+            onCanceled?.call();
+            return;
+          }
+          onSelected?.call(item);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: child,
+        ),
+      );
 }
 
 class _ExportButton extends StatelessWidget {
@@ -720,7 +719,9 @@ class _ExportButton extends StatelessWidget {
                   limit: limit,
                 );
               }
-              if (snapshots.isEmpty || snapshots.length < limit) {
+              // this should compare snapshots.length < limit. but service might has null item
+              // so we use snapshots.length < 10
+              if (snapshots.length < 10) {
                 break;
               }
               if (range != null &&

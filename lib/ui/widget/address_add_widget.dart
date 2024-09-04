@@ -270,20 +270,20 @@ class _SaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateColor.resolveWith((states) {
-            if (states.contains(MaterialState.disabled)) {
+          backgroundColor: WidgetStateColor.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
               return context.colorScheme.primaryText.withOpacity(0.2);
             }
             return context.colorScheme.primaryText;
           }),
-          padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
+          padding: WidgetStateProperty.all(const EdgeInsets.symmetric(
             vertical: 16,
             horizontal: 24,
           )),
-          minimumSize: MaterialStateProperty.all(const Size(110, 48)),
+          minimumSize: WidgetStateProperty.all(const Size(110, 48)),
           foregroundColor:
-              MaterialStateProperty.all(context.colorScheme.background),
-          shape: MaterialStateProperty.all(
+              WidgetStateProperty.all(context.colorScheme.background),
+          shape: WidgetStateProperty.all(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
         ),
         onPressed: enable ? onTap : null,

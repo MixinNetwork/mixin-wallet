@@ -26,8 +26,9 @@ extension StringCurrencyExtension on String {
   String numberFormat() {
     if (isEmpty) return this;
     try {
-      return NumberFormat(asDecimal.toString().getPattern(count: 32))
-          .format(DecimalIntl(asDecimal));
+      return DecimalFormatter(
+              NumberFormat(asDecimal.toString().getPattern(count: 32)))
+          .format(asDecimal);
     } catch (error) {
       return this;
     }
@@ -111,7 +112,7 @@ extension SnapshotItemExtension on SnapshotItem {
   bool get isPositive => (double.tryParse(amount) ?? 0) > 0;
 }
 
-extension AddressExtension on Addresses {
+extension AddressExtension on AddressesData {
   String displayAddress() {
     if (tag == null || (tag?.isEmpty ?? false)) {
       return '$destination$tag';

@@ -13,7 +13,7 @@ import '../symbol.dart';
 
 Future<bool> showDeleteAddressByPinBottomSheet(
   BuildContext context, {
-  required Addresses address,
+  required AddressesData address,
 }) async {
   final ret = await _showAddressPinBottomSheet(
     context,

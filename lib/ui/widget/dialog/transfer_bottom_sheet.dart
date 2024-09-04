@@ -14,7 +14,7 @@ import '../symbol.dart';
 
 Future<bool> showTransferToAddressBottomSheet(
   BuildContext context, {
-  required Addresses address,
+  required AddressesData address,
   required AssetResult asset,
   required AssetResult feeAsset,
   required String amount,
@@ -241,7 +241,7 @@ class _FeeText extends StatelessWidget {
     required this.feeAsset,
   });
 
-  final Addresses address;
+  final AddressesData address;
   final AssetResult asset;
   final AssetResult feeAsset;
 
