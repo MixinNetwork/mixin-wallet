@@ -351,20 +351,19 @@ class _DepositUnsupportedDialog extends StatelessWidget {
                     const SizedBox(height: 32),
                     ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith(
+                          backgroundColor: WidgetStateColor.resolveWith(
                               (states) => const Color(0xFF4B7CDD)),
-                          padding: MaterialStateProperty.all(
+                          padding: WidgetStateProperty.all(
                               const EdgeInsets.symmetric(
                             vertical: 16,
                             horizontal: 24,
                           )),
                           minimumSize:
-                              MaterialStateProperty.all(const Size(110, 48)),
-                          foregroundColor: MaterialStateProperty.all(
+                              WidgetStateProperty.all(const Size(110, 48)),
+                          foregroundColor: WidgetStateProperty.all(
                               context.colorScheme.background),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50))),
+                          shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50))),
                         ),
                         onPressed: onTap,
                         child: SelectableText(

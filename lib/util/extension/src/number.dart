@@ -112,7 +112,7 @@ extension SnapshotItemExtension on SnapshotItem {
   bool get isPositive => (double.tryParse(amount) ?? 0) > 0;
 }
 
-extension AddressExtension on Addresses {
+extension AddressExtension on AddressesData {
   String displayAddress() {
     if (tag == null || (tag?.isEmpty ?? false)) {
       return '$destination$tag';

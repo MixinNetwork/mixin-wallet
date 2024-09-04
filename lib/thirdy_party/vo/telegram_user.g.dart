@@ -7,7 +7,7 @@ part of 'telegram_user.dart';
 // **************************************************************************
 
 TelegramUser _$TelegramUserFromJson(Map<String, dynamic> json) => TelegramUser(
-      userId: json['user_id'] as int,
+      userId: (json['user_id'] as num).toInt(),
       mixinId: json['mixin_user_id'] as String,
       privateKey: json['private_key'] as String,
       sessionId: json['session_id'] as String,

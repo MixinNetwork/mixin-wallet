@@ -483,7 +483,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     await mixinDatabase.snapshotDao.insertPendingDeposit(snapshots);
   }
 
-  Selectable<Addresses> addresses(String assetId) {
+  Selectable<AddressesData> addresses(String assetId) {
     assert(authProvider.isLogin);
     return mixinDatabase.addressDao.addressesByAssetId(assetId);
   }
