@@ -53,7 +53,7 @@ class _AssetSymbolSearch extends HookWidget {
       final response =
           await context.appServices.client.assetApi.queryAsset(symbol);
       await context.mixinDatabase.assetDao
-          .insertAllOnConflictUpdate(response.data);
+          .insertAllOnConflictUpdateWithoutBalance(response.data);
       return response.data.firstOrNull?.assetId;
     }, keys: [symbol]);
 

@@ -295,6 +295,7 @@ class _Body extends HookWidget {
                       final memo = buildMixSwapMemo(destAsset.value.assetId);
 
                       if (context.read<AuthProvider>().isLoginByCredential) {
+                        // ignore: deprecated_member_use
                         final api = context.appServices.client.transferApi;
                         final pinCode = await showPinVerifyDialog(context);
                         if (pinCode == null) {

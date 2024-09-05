@@ -7,7 +7,7 @@ import '../../../db/mixin_database.dart';
 import '../../../util/logger.dart';
 import 'transaction_list.dart';
 
-const _kLoadLimit = 5;
+const _kLoadLimit = 200;
 
 class TransactionListController {
   TransactionListController(
@@ -37,7 +37,7 @@ class TransactionListController {
 
   var _disposed = false;
 
-  Future<void> loadMoreItem() => _loadMoreItem(_pageSize);
+  Future<void> loadMoreItem() => _loadMoreItem(200);
 
   Future<void> _loadMoreItem(int limit) async {
     if (_loading) {
@@ -103,16 +103,16 @@ class TransactionListController {
       return;
     }
 
-    final moreNeedLoad = pageSize - _snapshotItems.length;
+    final moreNeedLoad = pageSize > _snapshotItems.length;
     _pageSize = pageSize;
 
-    if (moreNeedLoad <= 0) {
+    if (!moreNeedLoad) {
       return;
     }
     _autoFillTask?.cancel();
     _autoFillTask = Timer(const Duration(milliseconds: 800), () {
       _autoFillTask = null;
-      _loadMoreItem(moreNeedLoad);
+      loadMoreItem();
     });
   }
 

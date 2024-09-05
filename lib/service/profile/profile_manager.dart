@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -64,10 +65,9 @@ set lastSelectedAddress(String? value) =>
 class _AuthAdapter extends TypeAdapter<Auth?> {
   @override
   Auth? read(BinaryReader reader) {
-    final map = reader.readMap();
+    final json = reader.readString();
     try {
-      return Auth.fromJson(map.map(
-          (key, value) => MapEntry<String, dynamic>(key as String, value)));
+      return Auth.fromJson(jsonDecode(json) as Map<String, dynamic>);
     } catch (error, stacktrace) {
       e('_AuthAdapter: read auth error: $error, $stacktrace');
       return null;
@@ -79,6 +79,10 @@ class _AuthAdapter extends TypeAdapter<Auth?> {
 
   @override
   void write(BinaryWriter writer, Auth? obj) {
-    writer.writeMap(obj?.toJson() ?? {});
+    if (obj == null) {
+      writer.writeString('');
+    } else {
+      writer.writeString(jsonEncode(obj));
+    }
   }
 }

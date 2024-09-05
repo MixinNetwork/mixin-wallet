@@ -35,7 +35,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       client = sdk.Client(
         userId: credential.mixinId,
         sessionId: credential.sessionId,
-        privateKey: credential.privateKey,
+        sessionPrivateKey: sdk.Key.fromBase64(credential.privateKey),
         interceptors: interceptors,
         httpLogLevel: null,
       );
@@ -112,7 +112,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final client = sdk.Client(
       userId: data.mixinId,
       sessionId: data.sessionId,
-      privateKey: data.privateKey,
+      sessionPrivateKey: sdk.Key.fromBase64(data.privateKey),
       interceptors: interceptors,
     );
 
@@ -542,12 +542,13 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   Future<void> searchAndUpdateAsset(String keyword) async {
     if (keyword.isEmpty) return;
     final mixinResponse = await client.assetApi.queryAsset(keyword);
-    final fixedAssets = <sdk.Asset>[];
-    for (final a in mixinResponse.data) {
+    final fixedAssets = <sdk.Token>[];
+    for (var a in mixinResponse.data) {
       if (a.assetId == '47b13785-25e2-3c5c-ac6b-3713e9c31c22') {
-        a.name = 'BitTorrent Old';
-        // ignore: cascade_invocations
-        a.symbol = 'BTTOLD';
+        final json = a.toJson();
+        json['symbol'] = 'BTTOLD';
+        json['name'] = 'BitTorrent Old';
+        a = sdk.Token.fromJson(json);
       }
       fixedAssets.add(a);
     }

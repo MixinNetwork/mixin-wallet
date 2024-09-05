@@ -1,11 +1,7 @@
 import 'package:decimal/decimal.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
-import 'package:uuid/uuid.dart';
 
 import '../../../db/mixin_database.dart';
-import '../../../service/profile/pin_session.dart';
 import '../../../util/constants.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/pay/external_transfer_uri_parser.dart';
@@ -19,51 +15,23 @@ Future<bool> showTransferToAddressBottomSheet(
   required AssetResult feeAsset,
   required String amount,
   String? memo,
-}) async {
-  final traceId = const Uuid().v4();
-
-  return _showTransferBottomSheet(
-      context,
-      _TransferVerifyBottomSheetBody(
-        displayAddress: address.displayAddress(),
-        asset: asset,
-        amount: amount,
-        description: _FeeText(
-          address: address,
+}) async =>
+    _showTransferBottomSheet(
+        context,
+        _TransferVerifyBottomSheetBody(
+          displayAddress: address.displayAddress(),
           asset: asset,
-          feeAsset: feeAsset,
-        ),
-        addressLabel: address.label,
-        verification: (context, pin) async {
-          try {
-            final api = context.appServices.client.transferApi;
-            final response = await api.withdrawal(
-              sdk.WithdrawalRequest(
-                addressId: address.addressId,
-                amount: amount,
-                pin: encryptPin(context, pin)!,
-                traceId: traceId,
-                memo: memo,
-                fee: address.fee,
-              ),
-            );
-            await context.appServices.mixinDatabase.snapshotDao
-                .insertAll([response.data]);
-            Navigator.of(context).pop(true);
-          } on DioException catch (error) {
-            final mixinError = error.optionMixinError;
-            if (mixinError?.code == sdk.insufficientTransactionFee) {
-              final message = context.l10n
-                  .errorInsufficientTransactionFeeWithAmount(
-                      '${address.fee} ${feeAsset.symbol}');
-              throw ErrorWithFormattedMessage(message);
-            } else {
-              rethrow;
-            }
-          }
-        },
-      ));
-}
+          amount: amount,
+          description: _FeeText(
+            address: address,
+            asset: asset,
+            feeAsset: feeAsset,
+          ),
+          addressLabel: address.label,
+          verification: (context, pin) async {
+            throw UnimplementedError();
+          },
+        ));
 
 Future<bool> showTransferToExternalUrlBottomSheet({
   required BuildContext context,
@@ -80,34 +48,7 @@ Future<bool> showTransferToExternalUrlBottomSheet({
       asset: asset,
       showWithdrawalWithPinTip: false,
       verification: (context, pin) async {
-        try {
-          final api = context.appServices.client.transferApi;
-          final response = await api.withdrawal(
-            sdk.WithdrawalRequest(
-              assetId: asset.assetId,
-              amount: transfer.amount,
-              pin: encryptPin(context, pin)!,
-              traceId: traceId,
-              memo: transfer.memo,
-              fee: fee,
-              destination: transfer.destination,
-              tag: null,
-            ),
-          );
-          await context.appServices.mixinDatabase.snapshotDao
-              .insertAll([response.data]);
-          Navigator.of(context).pop(true);
-        } on DioException catch (error) {
-          final mixinError = error.optionMixinError;
-          if (mixinError?.code == sdk.insufficientTransactionFee) {
-            final message = context.l10n
-                .errorInsufficientTransactionFeeWithAmount(
-                    '$fee ${asset.chainSymbol}');
-            throw ErrorWithFormattedMessage(message);
-          } else {
-            rethrow;
-          }
-        }
+        throw UnimplementedError();
       },
       description: Text('${context.l10n.fee} $fee ${asset.chainSymbol}'),
       displayAddress: transfer.destination,

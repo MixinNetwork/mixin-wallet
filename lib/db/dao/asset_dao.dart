@@ -21,6 +21,22 @@ AssetResults$orderBy defaultOrderBy = (asset, _, c, __, f) {
   ]);
 };
 
+extension on sdk.Token {
+  AssetsCompanion get asAssetsCompanion => AssetsCompanion(
+        assetId: Value(assetId),
+        symbol: Value(symbol),
+        name: Value(name),
+        iconUrl: Value(iconUrl),
+        assetKey: Value(assetKey),
+        priceBtc: Value(priceBtc),
+        priceUsd: Value(priceUsd),
+        chainId: Value(chainId),
+        changeUsd: Value(changeUsd),
+        changeBtc: Value(changeBtc),
+        confirmations: Value(confirmations),
+      );
+}
+
 extension AssetConverter on sdk.Asset {
   AssetsCompanion get asAssetsCompanion => AssetsCompanion.insert(
         assetId: assetId,
@@ -72,11 +88,11 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
   Future<void> deleteAsset(Asset asset) => delete(db.assets).delete(asset);
 
   Future<void> insertAllOnConflictUpdateWithoutBalance(
-      List<sdk.Asset> assets) async {
+      List<sdk.Token> assets) async {
     await db.batch((batch) {
       batch.insertAllOnConflictUpdate(
         db.assets,
-        assets.map((asset) => asset.asAssetsCompanionWithoutBalance).toList(),
+        assets.map((asset) => asset.asAssetsCompanion).toList(),
       );
     });
   }
