@@ -62,6 +62,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  base_x:
+    dependency: transitive
+    description:
+      name: base_x
+      sha256: "519abcdafd637d4b6bd7e72fabd8f9264935f804b9b9f6c5d8411c7d52cbf8fd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -295,6 +303,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
+  edwards25519:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: "11aea6ee033099e5634f3b21558bf6e34cd3bec6"
+      resolved-ref: "11aea6ee033099e5634f3b21558bf6e34cd3bec6"
+      url: "https://github.com/boyan01/edwards25519.git"
+    source: git
+    version: "1.0.4"
   enum_to_string:
     dependency: transitive
     description:
@@ -599,10 +616,10 @@ packages:
     dependency: "direct main"
     description:
       name: mixin_bot_sdk_dart
-      sha256: "86ea58291c4a0c408de1c3fcec9fa69f9b055d807ccd66d338f0169340f5c6fb"
+      sha256: "639885724c4f9545590e3175b7237b8a50f0f747cb401847c3a7f746116eded4"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.3"
+    version: "1.2.6"
   mixswap_sdk_dart:
     dependency: "direct main"
     description:
@@ -952,6 +969,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.2"
+  thirds:
+    dependency: transitive
+    description:
+      name: thirds
+      sha256: c4b90a4e7f2deac52ebcf22dc7ebbc702578a063a739b3c31e4259a884abb951
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0-alpha.1"
   timing:
     dependency: transitive
     description:

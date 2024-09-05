@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -79,6 +80,10 @@ class _AuthAdapter extends TypeAdapter<Auth?> {
 
   @override
   void write(BinaryWriter writer, Auth? obj) {
-    writer.writeMap(obj?.toJson() ?? {});
+    if (obj == null) {
+      writer.writeMap({});
+    } else {
+      writer.writeMap(jsonDecode(jsonEncode(obj)) as Map<String, dynamic>);
+    }
   }
 }
