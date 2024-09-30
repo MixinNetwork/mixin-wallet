@@ -57,7 +57,7 @@ dependencies:
     git:
       url: https://github.com/boyan01/vrouter.git
       ref: 0e6937bb9381eaef438c2aa51f12cd9298ef43df
-  uuid: ^4.5.0
+  uuid: ^4.5.1
   path_to_regexp: ^0.4.0
   mixswap_sdk_dart: ^0.2.0
   share_plus: ^10.0.2
