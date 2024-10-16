@@ -5850,103 +5850,117 @@ typedef $CollectibleTokenUpdateCompanionBuilder = CollectibleTokenCompanion
 });
 
 class $CollectibleTokenFilterComposer
-    extends FilterComposer<_$MixinDatabase, CollectibleToken> {
-  $CollectibleTokenFilterComposer(super.$state);
-  ColumnFilters<String> get type => $state.composableBuilder(
-      column: $state.table.type,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+    extends Composer<_$MixinDatabase, CollectibleToken> {
+  $CollectibleTokenFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get tokenId => $state.composableBuilder(
-      column: $state.table.tokenId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get tokenId => $composableBuilder(
+      column: $table.tokenId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get group => $state.composableBuilder(
-      column: $state.table.group,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get group => $composableBuilder(
+      column: $table.group, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get token => $state.composableBuilder(
-      column: $state.table.token,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get token => $composableBuilder(
+      column: $table.token, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get mixinId => $state.composableBuilder(
-      column: $state.table.mixinId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get mixinId => $composableBuilder(
+      column: $table.mixinId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get nfo => $state.composableBuilder(
-      column: $state.table.nfo,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get nfo => $composableBuilder(
+      column: $table.nfo, builder: (column) => ColumnFilters(column));
 
   ColumnWithTypeConverterFilters<DateTime, DateTime, int> get createdAt =>
-      $state.composableBuilder(
-          column: $state.table.createdAt,
-          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
-              column,
-              joinBuilders: joinBuilders));
+      $composableBuilder(
+          column: $table.createdAt,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
-  ColumnFilters<String> get metaHash => $state.composableBuilder(
-      column: $state.table.metaHash,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get metaHash => $composableBuilder(
+      column: $table.metaHash, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get collectionId => $state.composableBuilder(
-      column: $state.table.collectionId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get collectionId => $composableBuilder(
+      column: $table.collectionId, builder: (column) => ColumnFilters(column));
 }
 
 class $CollectibleTokenOrderingComposer
-    extends OrderingComposer<_$MixinDatabase, CollectibleToken> {
-  $CollectibleTokenOrderingComposer(super.$state);
-  ColumnOrderings<String> get type => $state.composableBuilder(
-      column: $state.table.type,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+    extends Composer<_$MixinDatabase, CollectibleToken> {
+  $CollectibleTokenOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get tokenId => $state.composableBuilder(
-      column: $state.table.tokenId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get tokenId => $composableBuilder(
+      column: $table.tokenId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get group => $state.composableBuilder(
-      column: $state.table.group,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get group => $composableBuilder(
+      column: $table.group, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get token => $state.composableBuilder(
-      column: $state.table.token,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get token => $composableBuilder(
+      column: $table.token, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get mixinId => $state.composableBuilder(
-      column: $state.table.mixinId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get mixinId => $composableBuilder(
+      column: $table.mixinId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get nfo => $state.composableBuilder(
-      column: $state.table.nfo,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get nfo => $composableBuilder(
+      column: $table.nfo, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get createdAt => $state.composableBuilder(
-      column: $state.table.createdAt,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get metaHash => $state.composableBuilder(
-      column: $state.table.metaHash,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get metaHash => $composableBuilder(
+      column: $table.metaHash, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get collectionId => $state.composableBuilder(
-      column: $state.table.collectionId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get collectionId => $composableBuilder(
+      column: $table.collectionId,
+      builder: (column) => ColumnOrderings(column));
+}
+
+class $CollectibleTokenAnnotationComposer
+    extends Composer<_$MixinDatabase, CollectibleToken> {
+  $CollectibleTokenAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get tokenId =>
+      $composableBuilder(column: $table.tokenId, builder: (column) => column);
+
+  GeneratedColumn<String> get group =>
+      $composableBuilder(column: $table.group, builder: (column) => column);
+
+  GeneratedColumn<String> get token =>
+      $composableBuilder(column: $table.token, builder: (column) => column);
+
+  GeneratedColumn<String> get mixinId =>
+      $composableBuilder(column: $table.mixinId, builder: (column) => column);
+
+  GeneratedColumn<String> get nfo =>
+      $composableBuilder(column: $table.nfo, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get metaHash =>
+      $composableBuilder(column: $table.metaHash, builder: (column) => column);
+
+  GeneratedColumn<String> get collectionId => $composableBuilder(
+      column: $table.collectionId, builder: (column) => column);
 }
 
 class $CollectibleTokenTableManager extends RootTableManager<
@@ -5955,6 +5969,7 @@ class $CollectibleTokenTableManager extends RootTableManager<
     CollectibleTokenData,
     $CollectibleTokenFilterComposer,
     $CollectibleTokenOrderingComposer,
+    $CollectibleTokenAnnotationComposer,
     $CollectibleTokenCreateCompanionBuilder,
     $CollectibleTokenUpdateCompanionBuilder,
     (
@@ -5967,10 +5982,12 @@ class $CollectibleTokenTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $CollectibleTokenFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $CollectibleTokenOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $CollectibleTokenFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $CollectibleTokenOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $CollectibleTokenAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> type = const Value.absent(),
             Value<String> tokenId = const Value.absent(),
@@ -6032,6 +6049,7 @@ typedef $CollectibleTokenProcessedTableManager = ProcessedTableManager<
     CollectibleTokenData,
     $CollectibleTokenFilterComposer,
     $CollectibleTokenOrderingComposer,
+    $CollectibleTokenAnnotationComposer,
     $CollectibleTokenCreateCompanionBuilder,
     $CollectibleTokenUpdateCompanionBuilder,
     (
@@ -6066,91 +6084,105 @@ typedef $CollectibleTokenMetaUpdateCompanionBuilder
 });
 
 class $CollectibleTokenMetaFilterComposer
-    extends FilterComposer<_$MixinDatabase, CollectibleTokenMeta> {
-  $CollectibleTokenMetaFilterComposer(super.$state);
-  ColumnFilters<String> get group => $state.composableBuilder(
-      column: $state.table.group,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+    extends Composer<_$MixinDatabase, CollectibleTokenMeta> {
+  $CollectibleTokenMetaFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get group => $composableBuilder(
+      column: $table.group, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get description => $state.composableBuilder(
-      column: $state.table.description,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get iconUrl => $state.composableBuilder(
-      column: $state.table.iconUrl,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get iconUrl => $composableBuilder(
+      column: $table.iconUrl, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get mediaUrl => $state.composableBuilder(
-      column: $state.table.mediaUrl,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get mediaUrl => $composableBuilder(
+      column: $table.mediaUrl, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get mime => $state.composableBuilder(
-      column: $state.table.mime,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get mime => $composableBuilder(
+      column: $table.mime, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get hash => $state.composableBuilder(
-      column: $state.table.hash,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get hash => $composableBuilder(
+      column: $table.hash, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get tokenId => $state.composableBuilder(
-      column: $state.table.tokenId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get tokenId => $composableBuilder(
+      column: $table.tokenId, builder: (column) => ColumnFilters(column));
 }
 
 class $CollectibleTokenMetaOrderingComposer
-    extends OrderingComposer<_$MixinDatabase, CollectibleTokenMeta> {
-  $CollectibleTokenMetaOrderingComposer(super.$state);
-  ColumnOrderings<String> get group => $state.composableBuilder(
-      column: $state.table.group,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+    extends Composer<_$MixinDatabase, CollectibleTokenMeta> {
+  $CollectibleTokenMetaOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get group => $composableBuilder(
+      column: $table.group, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get description => $state.composableBuilder(
-      column: $state.table.description,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get iconUrl => $state.composableBuilder(
-      column: $state.table.iconUrl,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get iconUrl => $composableBuilder(
+      column: $table.iconUrl, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get mediaUrl => $state.composableBuilder(
-      column: $state.table.mediaUrl,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get mediaUrl => $composableBuilder(
+      column: $table.mediaUrl, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get mime => $state.composableBuilder(
-      column: $state.table.mime,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get mime => $composableBuilder(
+      column: $table.mime, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get hash => $state.composableBuilder(
-      column: $state.table.hash,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get hash => $composableBuilder(
+      column: $table.hash, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get tokenId => $state.composableBuilder(
-      column: $state.table.tokenId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get tokenId => $composableBuilder(
+      column: $table.tokenId, builder: (column) => ColumnOrderings(column));
+}
+
+class $CollectibleTokenMetaAnnotationComposer
+    extends Composer<_$MixinDatabase, CollectibleTokenMeta> {
+  $CollectibleTokenMetaAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get group =>
+      $composableBuilder(column: $table.group, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => column);
+
+  GeneratedColumn<String> get iconUrl =>
+      $composableBuilder(column: $table.iconUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get mediaUrl =>
+      $composableBuilder(column: $table.mediaUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get mime =>
+      $composableBuilder(column: $table.mime, builder: (column) => column);
+
+  GeneratedColumn<String> get hash =>
+      $composableBuilder(column: $table.hash, builder: (column) => column);
+
+  GeneratedColumn<String> get tokenId =>
+      $composableBuilder(column: $table.tokenId, builder: (column) => column);
 }
 
 class $CollectibleTokenMetaTableManager extends RootTableManager<
@@ -6159,6 +6191,7 @@ class $CollectibleTokenMetaTableManager extends RootTableManager<
     CollectibleTokenMetaData,
     $CollectibleTokenMetaFilterComposer,
     $CollectibleTokenMetaOrderingComposer,
+    $CollectibleTokenMetaAnnotationComposer,
     $CollectibleTokenMetaCreateCompanionBuilder,
     $CollectibleTokenMetaUpdateCompanionBuilder,
     (
@@ -6173,10 +6206,12 @@ class $CollectibleTokenMetaTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $CollectibleTokenMetaFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $CollectibleTokenMetaOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $CollectibleTokenMetaFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $CollectibleTokenMetaOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $CollectibleTokenMetaAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> group = const Value.absent(),
             Value<String> name = const Value.absent(),
@@ -6234,6 +6269,7 @@ typedef $CollectibleTokenMetaProcessedTableManager = ProcessedTableManager<
     CollectibleTokenMetaData,
     $CollectibleTokenMetaFilterComposer,
     $CollectibleTokenMetaOrderingComposer,
+    $CollectibleTokenMetaAnnotationComposer,
     $CollectibleTokenMetaCreateCompanionBuilder,
     $CollectibleTokenMetaUpdateCompanionBuilder,
     (
@@ -6263,73 +6299,90 @@ typedef $CollectionsUpdateCompanionBuilder = CollectionsCompanion Function({
 });
 
 class $CollectionsFilterComposer
-    extends FilterComposer<_$MixinDatabase, Collections> {
-  $CollectionsFilterComposer(super.$state);
-  ColumnFilters<String> get type => $state.composableBuilder(
-      column: $state.table.type,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+    extends Composer<_$MixinDatabase, Collections> {
+  $CollectionsFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get collectionId => $state.composableBuilder(
-      column: $state.table.collectionId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get collectionId => $composableBuilder(
+      column: $table.collectionId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get description => $state.composableBuilder(
-      column: $state.table.description,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get iconUrl => $state.composableBuilder(
-      column: $state.table.iconUrl,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get iconUrl => $composableBuilder(
+      column: $table.iconUrl, builder: (column) => ColumnFilters(column));
 
   ColumnWithTypeConverterFilters<DateTime, DateTime, int> get createdAt =>
-      $state.composableBuilder(
-          column: $state.table.createdAt,
-          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
-              column,
-              joinBuilders: joinBuilders));
+      $composableBuilder(
+          column: $table.createdAt,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 }
 
 class $CollectionsOrderingComposer
-    extends OrderingComposer<_$MixinDatabase, Collections> {
-  $CollectionsOrderingComposer(super.$state);
-  ColumnOrderings<String> get type => $state.composableBuilder(
-      column: $state.table.type,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+    extends Composer<_$MixinDatabase, Collections> {
+  $CollectionsOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get collectionId => $state.composableBuilder(
-      column: $state.table.collectionId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get collectionId => $composableBuilder(
+      column: $table.collectionId,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get description => $state.composableBuilder(
-      column: $state.table.description,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get iconUrl => $state.composableBuilder(
-      column: $state.table.iconUrl,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get iconUrl => $composableBuilder(
+      column: $table.iconUrl, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get createdAt => $state.composableBuilder(
-      column: $state.table.createdAt,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+}
+
+class $CollectionsAnnotationComposer
+    extends Composer<_$MixinDatabase, Collections> {
+  $CollectionsAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get collectionId => $composableBuilder(
+      column: $table.collectionId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => column);
+
+  GeneratedColumn<String> get iconUrl =>
+      $composableBuilder(column: $table.iconUrl, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
 class $CollectionsTableManager extends RootTableManager<
@@ -6338,6 +6391,7 @@ class $CollectionsTableManager extends RootTableManager<
     Collection,
     $CollectionsFilterComposer,
     $CollectionsOrderingComposer,
+    $CollectionsAnnotationComposer,
     $CollectionsCreateCompanionBuilder,
     $CollectionsUpdateCompanionBuilder,
     (Collection, BaseReferences<_$MixinDatabase, Collections, Collection>),
@@ -6347,10 +6401,12 @@ class $CollectionsTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $CollectionsFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $CollectionsOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $CollectionsFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $CollectionsOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $CollectionsAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> type = const Value.absent(),
             Value<String> collectionId = const Value.absent(),
@@ -6400,6 +6456,7 @@ typedef $CollectionsProcessedTableManager = ProcessedTableManager<
     Collection,
     $CollectionsFilterComposer,
     $CollectionsOrderingComposer,
+    $CollectionsAnnotationComposer,
     $CollectionsCreateCompanionBuilder,
     $CollectionsUpdateCompanionBuilder,
     (Collection, BaseReferences<_$MixinDatabase, Collections, Collection>),
@@ -6438,146 +6495,158 @@ typedef $UsersUpdateCompanionBuilder = UsersCompanion Function({
   Value<int> rowid,
 });
 
-class $UsersFilterComposer extends FilterComposer<_$MixinDatabase, Users> {
-  $UsersFilterComposer(super.$state);
-  ColumnFilters<String> get userId => $state.composableBuilder(
-      column: $state.table.userId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+class $UsersFilterComposer extends Composer<_$MixinDatabase, Users> {
+  $UsersFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get identityNumber => $state.composableBuilder(
-      column: $state.table.identityNumber,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get identityNumber => $composableBuilder(
+      column: $table.identityNumber,
+      builder: (column) => ColumnFilters(column));
 
   ColumnWithTypeConverterFilters<UserRelationship?, UserRelationship, String>
-      get relationship => $state.composableBuilder(
-          column: $state.table.relationship,
-          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
-              column,
-              joinBuilders: joinBuilders));
+      get relationship => $composableBuilder(
+          column: $table.relationship,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
-  ColumnFilters<String> get fullName => $state.composableBuilder(
-      column: $state.table.fullName,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get fullName => $composableBuilder(
+      column: $table.fullName, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get avatarUrl => $state.composableBuilder(
-      column: $state.table.avatarUrl,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get avatarUrl => $composableBuilder(
+      column: $table.avatarUrl, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get phone => $state.composableBuilder(
-      column: $state.table.phone,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get phone => $composableBuilder(
+      column: $table.phone, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<bool> get isVerified => $state.composableBuilder(
-      column: $state.table.isVerified,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<bool> get isVerified => $composableBuilder(
+      column: $table.isVerified, builder: (column) => ColumnFilters(column));
 
   ColumnWithTypeConverterFilters<DateTime?, DateTime, int> get createdAt =>
-      $state.composableBuilder(
-          column: $state.table.createdAt,
-          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
-              column,
-              joinBuilders: joinBuilders));
+      $composableBuilder(
+          column: $table.createdAt,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
   ColumnWithTypeConverterFilters<DateTime?, DateTime, int> get muteUntil =>
-      $state.composableBuilder(
-          column: $state.table.muteUntil,
-          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
-              column,
-              joinBuilders: joinBuilders));
+      $composableBuilder(
+          column: $table.muteUntil,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
-  ColumnFilters<int> get hasPin => $state.composableBuilder(
-      column: $state.table.hasPin,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<int> get hasPin => $composableBuilder(
+      column: $table.hasPin, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get appId => $state.composableBuilder(
-      column: $state.table.appId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get appId => $composableBuilder(
+      column: $table.appId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get biography => $state.composableBuilder(
-      column: $state.table.biography,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get biography => $composableBuilder(
+      column: $table.biography, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get isScam => $state.composableBuilder(
-      column: $state.table.isScam,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<int> get isScam => $composableBuilder(
+      column: $table.isScam, builder: (column) => ColumnFilters(column));
 }
 
-class $UsersOrderingComposer extends OrderingComposer<_$MixinDatabase, Users> {
-  $UsersOrderingComposer(super.$state);
-  ColumnOrderings<String> get userId => $state.composableBuilder(
-      column: $state.table.userId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+class $UsersOrderingComposer extends Composer<_$MixinDatabase, Users> {
+  $UsersOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get identityNumber => $state.composableBuilder(
-      column: $state.table.identityNumber,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get identityNumber => $composableBuilder(
+      column: $table.identityNumber,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get relationship => $state.composableBuilder(
-      column: $state.table.relationship,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get relationship => $composableBuilder(
+      column: $table.relationship,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get fullName => $state.composableBuilder(
-      column: $state.table.fullName,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get fullName => $composableBuilder(
+      column: $table.fullName, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get avatarUrl => $state.composableBuilder(
-      column: $state.table.avatarUrl,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get avatarUrl => $composableBuilder(
+      column: $table.avatarUrl, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get phone => $state.composableBuilder(
-      column: $state.table.phone,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get phone => $composableBuilder(
+      column: $table.phone, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<bool> get isVerified => $state.composableBuilder(
-      column: $state.table.isVerified,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<bool> get isVerified => $composableBuilder(
+      column: $table.isVerified, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get createdAt => $state.composableBuilder(
-      column: $state.table.createdAt,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get muteUntil => $state.composableBuilder(
-      column: $state.table.muteUntil,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get muteUntil => $composableBuilder(
+      column: $table.muteUntil, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get hasPin => $state.composableBuilder(
-      column: $state.table.hasPin,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get hasPin => $composableBuilder(
+      column: $table.hasPin, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get appId => $state.composableBuilder(
-      column: $state.table.appId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get appId => $composableBuilder(
+      column: $table.appId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get biography => $state.composableBuilder(
-      column: $state.table.biography,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get biography => $composableBuilder(
+      column: $table.biography, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get isScam => $state.composableBuilder(
-      column: $state.table.isScam,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get isScam => $composableBuilder(
+      column: $table.isScam, builder: (column) => ColumnOrderings(column));
+}
+
+class $UsersAnnotationComposer extends Composer<_$MixinDatabase, Users> {
+  $UsersAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get identityNumber => $composableBuilder(
+      column: $table.identityNumber, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<UserRelationship?, String>
+      get relationship => $composableBuilder(
+          column: $table.relationship, builder: (column) => column);
+
+  GeneratedColumn<String> get fullName =>
+      $composableBuilder(column: $table.fullName, builder: (column) => column);
+
+  GeneratedColumn<String> get avatarUrl =>
+      $composableBuilder(column: $table.avatarUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get phone =>
+      $composableBuilder(column: $table.phone, builder: (column) => column);
+
+  GeneratedColumn<bool> get isVerified => $composableBuilder(
+      column: $table.isVerified, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime?, int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime?, int> get muteUntil =>
+      $composableBuilder(column: $table.muteUntil, builder: (column) => column);
+
+  GeneratedColumn<int> get hasPin =>
+      $composableBuilder(column: $table.hasPin, builder: (column) => column);
+
+  GeneratedColumn<String> get appId =>
+      $composableBuilder(column: $table.appId, builder: (column) => column);
+
+  GeneratedColumn<String> get biography =>
+      $composableBuilder(column: $table.biography, builder: (column) => column);
+
+  GeneratedColumn<int> get isScam =>
+      $composableBuilder(column: $table.isScam, builder: (column) => column);
 }
 
 class $UsersTableManager extends RootTableManager<
@@ -6586,6 +6655,7 @@ class $UsersTableManager extends RootTableManager<
     User,
     $UsersFilterComposer,
     $UsersOrderingComposer,
+    $UsersAnnotationComposer,
     $UsersCreateCompanionBuilder,
     $UsersUpdateCompanionBuilder,
     (User, BaseReferences<_$MixinDatabase, Users, User>),
@@ -6595,8 +6665,12 @@ class $UsersTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer: $UsersFilterComposer(ComposerState(db, table)),
-          orderingComposer: $UsersOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $UsersFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $UsersOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $UsersAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> userId = const Value.absent(),
             Value<String> identityNumber = const Value.absent(),
@@ -6674,6 +6748,7 @@ typedef $UsersProcessedTableManager = ProcessedTableManager<
     User,
     $UsersFilterComposer,
     $UsersOrderingComposer,
+    $UsersAnnotationComposer,
     $UsersCreateCompanionBuilder,
     $UsersUpdateCompanionBuilder,
     (User, BaseReferences<_$MixinDatabase, Users, User>),
@@ -6716,166 +6791,176 @@ typedef $SnapshotsUpdateCompanionBuilder = SnapshotsCompanion Function({
   Value<int> rowid,
 });
 
-class $SnapshotsFilterComposer
-    extends FilterComposer<_$MixinDatabase, Snapshots> {
-  $SnapshotsFilterComposer(super.$state);
-  ColumnFilters<String> get snapshotId => $state.composableBuilder(
-      column: $state.table.snapshotId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+class $SnapshotsFilterComposer extends Composer<_$MixinDatabase, Snapshots> {
+  $SnapshotsFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get snapshotId => $composableBuilder(
+      column: $table.snapshotId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get type => $state.composableBuilder(
-      column: $state.table.type,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get assetId => $state.composableBuilder(
-      column: $state.table.assetId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get assetId => $composableBuilder(
+      column: $table.assetId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get amount => $state.composableBuilder(
-      column: $state.table.amount,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnFilters(column));
 
   ColumnWithTypeConverterFilters<DateTime, DateTime, int> get createdAt =>
-      $state.composableBuilder(
-          column: $state.table.createdAt,
-          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
-              column,
-              joinBuilders: joinBuilders));
+      $composableBuilder(
+          column: $table.createdAt,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
-  ColumnFilters<String> get opponentId => $state.composableBuilder(
-      column: $state.table.opponentId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get opponentId => $composableBuilder(
+      column: $table.opponentId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get traceId => $state.composableBuilder(
-      column: $state.table.traceId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get traceId => $composableBuilder(
+      column: $table.traceId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get transactionHash => $state.composableBuilder(
-      column: $state.table.transactionHash,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get transactionHash => $composableBuilder(
+      column: $table.transactionHash,
+      builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get sender => $state.composableBuilder(
-      column: $state.table.sender,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get sender => $composableBuilder(
+      column: $table.sender, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get receiver => $state.composableBuilder(
-      column: $state.table.receiver,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get receiver => $composableBuilder(
+      column: $table.receiver, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get memo => $state.composableBuilder(
-      column: $state.table.memo,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get memo => $composableBuilder(
+      column: $table.memo, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get confirmations => $state.composableBuilder(
-      column: $state.table.confirmations,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<int> get confirmations => $composableBuilder(
+      column: $table.confirmations, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get snapshotHash => $state.composableBuilder(
-      column: $state.table.snapshotHash,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get snapshotHash => $composableBuilder(
+      column: $table.snapshotHash, builder: (column) => ColumnFilters(column));
 
   ColumnWithTypeConverterFilters<DateTime?, DateTime, int> get snapshotAt =>
-      $state.composableBuilder(
-          column: $state.table.snapshotAt,
-          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
-              column,
-              joinBuilders: joinBuilders));
+      $composableBuilder(
+          column: $table.snapshotAt,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
-  ColumnFilters<String> get state => $state.composableBuilder(
-      column: $state.table.state,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get state => $composableBuilder(
+      column: $table.state, builder: (column) => ColumnFilters(column));
 }
 
-class $SnapshotsOrderingComposer
-    extends OrderingComposer<_$MixinDatabase, Snapshots> {
-  $SnapshotsOrderingComposer(super.$state);
-  ColumnOrderings<String> get snapshotId => $state.composableBuilder(
-      column: $state.table.snapshotId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+class $SnapshotsOrderingComposer extends Composer<_$MixinDatabase, Snapshots> {
+  $SnapshotsOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get snapshotId => $composableBuilder(
+      column: $table.snapshotId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get type => $state.composableBuilder(
-      column: $state.table.type,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get assetId => $state.composableBuilder(
-      column: $state.table.assetId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get assetId => $composableBuilder(
+      column: $table.assetId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get amount => $state.composableBuilder(
-      column: $state.table.amount,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get createdAt => $state.composableBuilder(
-      column: $state.table.createdAt,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get opponentId => $state.composableBuilder(
-      column: $state.table.opponentId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get opponentId => $composableBuilder(
+      column: $table.opponentId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get traceId => $state.composableBuilder(
-      column: $state.table.traceId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get traceId => $composableBuilder(
+      column: $table.traceId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get transactionHash => $state.composableBuilder(
-      column: $state.table.transactionHash,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get transactionHash => $composableBuilder(
+      column: $table.transactionHash,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get sender => $state.composableBuilder(
-      column: $state.table.sender,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get sender => $composableBuilder(
+      column: $table.sender, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get receiver => $state.composableBuilder(
-      column: $state.table.receiver,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get receiver => $composableBuilder(
+      column: $table.receiver, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get memo => $state.composableBuilder(
-      column: $state.table.memo,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get memo => $composableBuilder(
+      column: $table.memo, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get confirmations => $state.composableBuilder(
-      column: $state.table.confirmations,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get confirmations => $composableBuilder(
+      column: $table.confirmations,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get snapshotHash => $state.composableBuilder(
-      column: $state.table.snapshotHash,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get snapshotHash => $composableBuilder(
+      column: $table.snapshotHash,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get snapshotAt => $state.composableBuilder(
-      column: $state.table.snapshotAt,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get snapshotAt => $composableBuilder(
+      column: $table.snapshotAt, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get state => $state.composableBuilder(
-      column: $state.table.state,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get state => $composableBuilder(
+      column: $table.state, builder: (column) => ColumnOrderings(column));
+}
+
+class $SnapshotsAnnotationComposer
+    extends Composer<_$MixinDatabase, Snapshots> {
+  $SnapshotsAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get snapshotId => $composableBuilder(
+      column: $table.snapshotId, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get assetId =>
+      $composableBuilder(column: $table.assetId, builder: (column) => column);
+
+  GeneratedColumn<String> get amount =>
+      $composableBuilder(column: $table.amount, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get opponentId => $composableBuilder(
+      column: $table.opponentId, builder: (column) => column);
+
+  GeneratedColumn<String> get traceId =>
+      $composableBuilder(column: $table.traceId, builder: (column) => column);
+
+  GeneratedColumn<String> get transactionHash => $composableBuilder(
+      column: $table.transactionHash, builder: (column) => column);
+
+  GeneratedColumn<String> get sender =>
+      $composableBuilder(column: $table.sender, builder: (column) => column);
+
+  GeneratedColumn<String> get receiver =>
+      $composableBuilder(column: $table.receiver, builder: (column) => column);
+
+  GeneratedColumn<String> get memo =>
+      $composableBuilder(column: $table.memo, builder: (column) => column);
+
+  GeneratedColumn<int> get confirmations => $composableBuilder(
+      column: $table.confirmations, builder: (column) => column);
+
+  GeneratedColumn<String> get snapshotHash => $composableBuilder(
+      column: $table.snapshotHash, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime?, int> get snapshotAt =>
+      $composableBuilder(
+          column: $table.snapshotAt, builder: (column) => column);
+
+  GeneratedColumn<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => column);
 }
 
 class $SnapshotsTableManager extends RootTableManager<
@@ -6884,6 +6969,7 @@ class $SnapshotsTableManager extends RootTableManager<
     Snapshot,
     $SnapshotsFilterComposer,
     $SnapshotsOrderingComposer,
+    $SnapshotsAnnotationComposer,
     $SnapshotsCreateCompanionBuilder,
     $SnapshotsUpdateCompanionBuilder,
     (Snapshot, BaseReferences<_$MixinDatabase, Snapshots, Snapshot>),
@@ -6893,9 +6979,12 @@ class $SnapshotsTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer: $SnapshotsFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $SnapshotsOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $SnapshotsFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $SnapshotsOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $SnapshotsAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> snapshotId = const Value.absent(),
             Value<String> type = const Value.absent(),
@@ -6981,6 +7070,7 @@ typedef $SnapshotsProcessedTableManager = ProcessedTableManager<
     Snapshot,
     $SnapshotsFilterComposer,
     $SnapshotsOrderingComposer,
+    $SnapshotsAnnotationComposer,
     $SnapshotsCreateCompanionBuilder,
     $SnapshotsUpdateCompanionBuilder,
     (Snapshot, BaseReferences<_$MixinDatabase, Snapshots, Snapshot>),
@@ -7025,171 +7115,178 @@ typedef $AssetsUpdateCompanionBuilder = AssetsCompanion Function({
   Value<int> rowid,
 });
 
-class $AssetsFilterComposer extends FilterComposer<_$MixinDatabase, Assets> {
-  $AssetsFilterComposer(super.$state);
-  ColumnFilters<String> get assetId => $state.composableBuilder(
-      column: $state.table.assetId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+class $AssetsFilterComposer extends Composer<_$MixinDatabase, Assets> {
+  $AssetsFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get assetId => $composableBuilder(
+      column: $table.assetId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get symbol => $state.composableBuilder(
-      column: $state.table.symbol,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get symbol => $composableBuilder(
+      column: $table.symbol, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get iconUrl => $state.composableBuilder(
-      column: $state.table.iconUrl,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get iconUrl => $composableBuilder(
+      column: $table.iconUrl, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get balance => $state.composableBuilder(
-      column: $state.table.balance,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get balance => $composableBuilder(
+      column: $table.balance, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get destination => $state.composableBuilder(
-      column: $state.table.destination,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get destination => $composableBuilder(
+      column: $table.destination, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get tag => $state.composableBuilder(
-      column: $state.table.tag,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get tag => $composableBuilder(
+      column: $table.tag, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get priceBtc => $state.composableBuilder(
-      column: $state.table.priceBtc,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get priceBtc => $composableBuilder(
+      column: $table.priceBtc, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get priceUsd => $state.composableBuilder(
-      column: $state.table.priceUsd,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get priceUsd => $composableBuilder(
+      column: $table.priceUsd, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get chainId => $state.composableBuilder(
-      column: $state.table.chainId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get chainId => $composableBuilder(
+      column: $table.chainId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get changeUsd => $state.composableBuilder(
-      column: $state.table.changeUsd,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get changeUsd => $composableBuilder(
+      column: $table.changeUsd, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get changeBtc => $state.composableBuilder(
-      column: $state.table.changeBtc,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get changeBtc => $composableBuilder(
+      column: $table.changeBtc, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get confirmations => $state.composableBuilder(
-      column: $state.table.confirmations,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<int> get confirmations => $composableBuilder(
+      column: $table.confirmations, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get assetKey => $state.composableBuilder(
-      column: $state.table.assetKey,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get assetKey => $composableBuilder(
+      column: $table.assetKey, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get reserve => $state.composableBuilder(
-      column: $state.table.reserve,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get reserve => $composableBuilder(
+      column: $table.reserve, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get depositEntries => $state.composableBuilder(
-      column: $state.table.depositEntries,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get depositEntries => $composableBuilder(
+      column: $table.depositEntries,
+      builder: (column) => ColumnFilters(column));
 }
 
-class $AssetsOrderingComposer
-    extends OrderingComposer<_$MixinDatabase, Assets> {
-  $AssetsOrderingComposer(super.$state);
-  ColumnOrderings<String> get assetId => $state.composableBuilder(
-      column: $state.table.assetId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+class $AssetsOrderingComposer extends Composer<_$MixinDatabase, Assets> {
+  $AssetsOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get assetId => $composableBuilder(
+      column: $table.assetId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get symbol => $state.composableBuilder(
-      column: $state.table.symbol,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get symbol => $composableBuilder(
+      column: $table.symbol, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get iconUrl => $state.composableBuilder(
-      column: $state.table.iconUrl,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get iconUrl => $composableBuilder(
+      column: $table.iconUrl, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get balance => $state.composableBuilder(
-      column: $state.table.balance,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get balance => $composableBuilder(
+      column: $table.balance, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get destination => $state.composableBuilder(
-      column: $state.table.destination,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get destination => $composableBuilder(
+      column: $table.destination, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get tag => $state.composableBuilder(
-      column: $state.table.tag,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get tag => $composableBuilder(
+      column: $table.tag, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get priceBtc => $state.composableBuilder(
-      column: $state.table.priceBtc,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get priceBtc => $composableBuilder(
+      column: $table.priceBtc, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get priceUsd => $state.composableBuilder(
-      column: $state.table.priceUsd,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get priceUsd => $composableBuilder(
+      column: $table.priceUsd, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get chainId => $state.composableBuilder(
-      column: $state.table.chainId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get chainId => $composableBuilder(
+      column: $table.chainId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get changeUsd => $state.composableBuilder(
-      column: $state.table.changeUsd,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get changeUsd => $composableBuilder(
+      column: $table.changeUsd, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get changeBtc => $state.composableBuilder(
-      column: $state.table.changeBtc,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get changeBtc => $composableBuilder(
+      column: $table.changeBtc, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get confirmations => $state.composableBuilder(
-      column: $state.table.confirmations,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get confirmations => $composableBuilder(
+      column: $table.confirmations,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get assetKey => $state.composableBuilder(
-      column: $state.table.assetKey,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get assetKey => $composableBuilder(
+      column: $table.assetKey, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get reserve => $state.composableBuilder(
-      column: $state.table.reserve,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get reserve => $composableBuilder(
+      column: $table.reserve, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get depositEntries => $state.composableBuilder(
-      column: $state.table.depositEntries,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get depositEntries => $composableBuilder(
+      column: $table.depositEntries,
+      builder: (column) => ColumnOrderings(column));
+}
+
+class $AssetsAnnotationComposer extends Composer<_$MixinDatabase, Assets> {
+  $AssetsAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get assetId =>
+      $composableBuilder(column: $table.assetId, builder: (column) => column);
+
+  GeneratedColumn<String> get symbol =>
+      $composableBuilder(column: $table.symbol, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get iconUrl =>
+      $composableBuilder(column: $table.iconUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get balance =>
+      $composableBuilder(column: $table.balance, builder: (column) => column);
+
+  GeneratedColumn<String> get destination => $composableBuilder(
+      column: $table.destination, builder: (column) => column);
+
+  GeneratedColumn<String> get tag =>
+      $composableBuilder(column: $table.tag, builder: (column) => column);
+
+  GeneratedColumn<String> get priceBtc =>
+      $composableBuilder(column: $table.priceBtc, builder: (column) => column);
+
+  GeneratedColumn<String> get priceUsd =>
+      $composableBuilder(column: $table.priceUsd, builder: (column) => column);
+
+  GeneratedColumn<String> get chainId =>
+      $composableBuilder(column: $table.chainId, builder: (column) => column);
+
+  GeneratedColumn<String> get changeUsd =>
+      $composableBuilder(column: $table.changeUsd, builder: (column) => column);
+
+  GeneratedColumn<String> get changeBtc =>
+      $composableBuilder(column: $table.changeBtc, builder: (column) => column);
+
+  GeneratedColumn<int> get confirmations => $composableBuilder(
+      column: $table.confirmations, builder: (column) => column);
+
+  GeneratedColumn<String> get assetKey =>
+      $composableBuilder(column: $table.assetKey, builder: (column) => column);
+
+  GeneratedColumn<String> get reserve =>
+      $composableBuilder(column: $table.reserve, builder: (column) => column);
+
+  GeneratedColumn<String> get depositEntries => $composableBuilder(
+      column: $table.depositEntries, builder: (column) => column);
 }
 
 class $AssetsTableManager extends RootTableManager<
@@ -7198,6 +7295,7 @@ class $AssetsTableManager extends RootTableManager<
     Asset,
     $AssetsFilterComposer,
     $AssetsOrderingComposer,
+    $AssetsAnnotationComposer,
     $AssetsCreateCompanionBuilder,
     $AssetsUpdateCompanionBuilder,
     (Asset, BaseReferences<_$MixinDatabase, Assets, Asset>),
@@ -7207,8 +7305,12 @@ class $AssetsTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer: $AssetsFilterComposer(ComposerState(db, table)),
-          orderingComposer: $AssetsOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $AssetsFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $AssetsOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $AssetsAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> assetId = const Value.absent(),
             Value<String> symbol = const Value.absent(),
@@ -7298,6 +7400,7 @@ typedef $AssetsProcessedTableManager = ProcessedTableManager<
     Asset,
     $AssetsFilterComposer,
     $AssetsOrderingComposer,
+    $AssetsAnnotationComposer,
     $AssetsCreateCompanionBuilder,
     $AssetsUpdateCompanionBuilder,
     (Asset, BaseReferences<_$MixinDatabase, Assets, Asset>),
@@ -7320,61 +7423,76 @@ typedef $ChainsUpdateCompanionBuilder = ChainsCompanion Function({
   Value<int> rowid,
 });
 
-class $ChainsFilterComposer extends FilterComposer<_$MixinDatabase, Chains> {
-  $ChainsFilterComposer(super.$state);
-  ColumnFilters<String> get chainId => $state.composableBuilder(
-      column: $state.table.chainId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+class $ChainsFilterComposer extends Composer<_$MixinDatabase, Chains> {
+  $ChainsFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get chainId => $composableBuilder(
+      column: $table.chainId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get symbol => $state.composableBuilder(
-      column: $state.table.symbol,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get symbol => $composableBuilder(
+      column: $table.symbol, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get iconUrl => $state.composableBuilder(
-      column: $state.table.iconUrl,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get iconUrl => $composableBuilder(
+      column: $table.iconUrl, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get threshold => $state.composableBuilder(
-      column: $state.table.threshold,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<int> get threshold => $composableBuilder(
+      column: $table.threshold, builder: (column) => ColumnFilters(column));
 }
 
-class $ChainsOrderingComposer
-    extends OrderingComposer<_$MixinDatabase, Chains> {
-  $ChainsOrderingComposer(super.$state);
-  ColumnOrderings<String> get chainId => $state.composableBuilder(
-      column: $state.table.chainId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+class $ChainsOrderingComposer extends Composer<_$MixinDatabase, Chains> {
+  $ChainsOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get chainId => $composableBuilder(
+      column: $table.chainId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get symbol => $state.composableBuilder(
-      column: $state.table.symbol,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get symbol => $composableBuilder(
+      column: $table.symbol, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get iconUrl => $state.composableBuilder(
-      column: $state.table.iconUrl,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get iconUrl => $composableBuilder(
+      column: $table.iconUrl, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get threshold => $state.composableBuilder(
-      column: $state.table.threshold,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get threshold => $composableBuilder(
+      column: $table.threshold, builder: (column) => ColumnOrderings(column));
+}
+
+class $ChainsAnnotationComposer extends Composer<_$MixinDatabase, Chains> {
+  $ChainsAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get chainId =>
+      $composableBuilder(column: $table.chainId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get symbol =>
+      $composableBuilder(column: $table.symbol, builder: (column) => column);
+
+  GeneratedColumn<String> get iconUrl =>
+      $composableBuilder(column: $table.iconUrl, builder: (column) => column);
+
+  GeneratedColumn<int> get threshold =>
+      $composableBuilder(column: $table.threshold, builder: (column) => column);
 }
 
 class $ChainsTableManager extends RootTableManager<
@@ -7383,6 +7501,7 @@ class $ChainsTableManager extends RootTableManager<
     Chain,
     $ChainsFilterComposer,
     $ChainsOrderingComposer,
+    $ChainsAnnotationComposer,
     $ChainsCreateCompanionBuilder,
     $ChainsUpdateCompanionBuilder,
     (Chain, BaseReferences<_$MixinDatabase, Chains, Chain>),
@@ -7392,8 +7511,12 @@ class $ChainsTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer: $ChainsFilterComposer(ComposerState(db, table)),
-          orderingComposer: $ChainsOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $ChainsFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $ChainsOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $ChainsAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> chainId = const Value.absent(),
             Value<String> name = const Value.absent(),
@@ -7439,6 +7562,7 @@ typedef $ChainsProcessedTableManager = ProcessedTableManager<
     Chain,
     $ChainsFilterComposer,
     $ChainsOrderingComposer,
+    $ChainsAnnotationComposer,
     $ChainsCreateCompanionBuilder,
     $ChainsUpdateCompanionBuilder,
     (Chain, BaseReferences<_$MixinDatabase, Chains, Chain>),
@@ -7456,31 +7580,51 @@ typedef $AssetsExtraUpdateCompanionBuilder = AssetsExtraCompanion Function({
 });
 
 class $AssetsExtraFilterComposer
-    extends FilterComposer<_$MixinDatabase, AssetsExtra> {
-  $AssetsExtraFilterComposer(super.$state);
-  ColumnFilters<String> get assetId => $state.composableBuilder(
-      column: $state.table.assetId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+    extends Composer<_$MixinDatabase, AssetsExtra> {
+  $AssetsExtraFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get assetId => $composableBuilder(
+      column: $table.assetId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<bool> get hidden => $state.composableBuilder(
-      column: $state.table.hidden,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<bool> get hidden => $composableBuilder(
+      column: $table.hidden, builder: (column) => ColumnFilters(column));
 }
 
 class $AssetsExtraOrderingComposer
-    extends OrderingComposer<_$MixinDatabase, AssetsExtra> {
-  $AssetsExtraOrderingComposer(super.$state);
-  ColumnOrderings<String> get assetId => $state.composableBuilder(
-      column: $state.table.assetId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+    extends Composer<_$MixinDatabase, AssetsExtra> {
+  $AssetsExtraOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get assetId => $composableBuilder(
+      column: $table.assetId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<bool> get hidden => $state.composableBuilder(
-      column: $state.table.hidden,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<bool> get hidden => $composableBuilder(
+      column: $table.hidden, builder: (column) => ColumnOrderings(column));
+}
+
+class $AssetsExtraAnnotationComposer
+    extends Composer<_$MixinDatabase, AssetsExtra> {
+  $AssetsExtraAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get assetId =>
+      $composableBuilder(column: $table.assetId, builder: (column) => column);
+
+  GeneratedColumn<bool> get hidden =>
+      $composableBuilder(column: $table.hidden, builder: (column) => column);
 }
 
 class $AssetsExtraTableManager extends RootTableManager<
@@ -7489,6 +7633,7 @@ class $AssetsExtraTableManager extends RootTableManager<
     AssetsExtraData,
     $AssetsExtraFilterComposer,
     $AssetsExtraOrderingComposer,
+    $AssetsExtraAnnotationComposer,
     $AssetsExtraCreateCompanionBuilder,
     $AssetsExtraUpdateCompanionBuilder,
     (
@@ -7501,10 +7646,12 @@ class $AssetsExtraTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $AssetsExtraFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $AssetsExtraOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $AssetsExtraFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $AssetsExtraOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $AssetsExtraAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> assetId = const Value.absent(),
             Value<bool?> hidden = const Value.absent(),
@@ -7538,6 +7685,7 @@ typedef $AssetsExtraProcessedTableManager = ProcessedTableManager<
     AssetsExtraData,
     $AssetsExtraFilterComposer,
     $AssetsExtraOrderingComposer,
+    $AssetsExtraAnnotationComposer,
     $AssetsExtraCreateCompanionBuilder,
     $AssetsExtraUpdateCompanionBuilder,
     (
@@ -7557,30 +7705,49 @@ typedef $FiatsUpdateCompanionBuilder = FiatsCompanion Function({
   Value<int> rowid,
 });
 
-class $FiatsFilterComposer extends FilterComposer<_$MixinDatabase, Fiats> {
-  $FiatsFilterComposer(super.$state);
-  ColumnFilters<String> get code => $state.composableBuilder(
-      column: $state.table.code,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+class $FiatsFilterComposer extends Composer<_$MixinDatabase, Fiats> {
+  $FiatsFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get code => $composableBuilder(
+      column: $table.code, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<double> get rate => $state.composableBuilder(
-      column: $state.table.rate,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<double> get rate => $composableBuilder(
+      column: $table.rate, builder: (column) => ColumnFilters(column));
 }
 
-class $FiatsOrderingComposer extends OrderingComposer<_$MixinDatabase, Fiats> {
-  $FiatsOrderingComposer(super.$state);
-  ColumnOrderings<String> get code => $state.composableBuilder(
-      column: $state.table.code,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+class $FiatsOrderingComposer extends Composer<_$MixinDatabase, Fiats> {
+  $FiatsOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get code => $composableBuilder(
+      column: $table.code, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<double> get rate => $state.composableBuilder(
-      column: $state.table.rate,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<double> get rate => $composableBuilder(
+      column: $table.rate, builder: (column) => ColumnOrderings(column));
+}
+
+class $FiatsAnnotationComposer extends Composer<_$MixinDatabase, Fiats> {
+  $FiatsAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  GeneratedColumn<double> get rate =>
+      $composableBuilder(column: $table.rate, builder: (column) => column);
 }
 
 class $FiatsTableManager extends RootTableManager<
@@ -7589,6 +7756,7 @@ class $FiatsTableManager extends RootTableManager<
     Fiat,
     $FiatsFilterComposer,
     $FiatsOrderingComposer,
+    $FiatsAnnotationComposer,
     $FiatsCreateCompanionBuilder,
     $FiatsUpdateCompanionBuilder,
     (Fiat, BaseReferences<_$MixinDatabase, Fiats, Fiat>),
@@ -7598,8 +7766,12 @@ class $FiatsTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer: $FiatsFilterComposer(ComposerState(db, table)),
-          orderingComposer: $FiatsOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $FiatsFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $FiatsOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $FiatsAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> code = const Value.absent(),
             Value<double> rate = const Value.absent(),
@@ -7633,6 +7805,7 @@ typedef $FiatsProcessedTableManager = ProcessedTableManager<
     Fiat,
     $FiatsFilterComposer,
     $FiatsOrderingComposer,
+    $FiatsAnnotationComposer,
     $FiatsCreateCompanionBuilder,
     $FiatsUpdateCompanionBuilder,
     (Fiat, BaseReferences<_$MixinDatabase, Fiats, Fiat>),
@@ -7667,124 +7840,133 @@ typedef $AddressesUpdateCompanionBuilder = AddressesCompanion Function({
   Value<int> rowid,
 });
 
-class $AddressesFilterComposer
-    extends FilterComposer<_$MixinDatabase, Addresses> {
-  $AddressesFilterComposer(super.$state);
-  ColumnFilters<String> get addressId => $state.composableBuilder(
-      column: $state.table.addressId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+class $AddressesFilterComposer extends Composer<_$MixinDatabase, Addresses> {
+  $AddressesFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get addressId => $composableBuilder(
+      column: $table.addressId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get type => $state.composableBuilder(
-      column: $state.table.type,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get assetId => $state.composableBuilder(
-      column: $state.table.assetId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get assetId => $composableBuilder(
+      column: $table.assetId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get destination => $state.composableBuilder(
-      column: $state.table.destination,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get destination => $composableBuilder(
+      column: $table.destination, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get label => $state.composableBuilder(
-      column: $state.table.label,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get label => $composableBuilder(
+      column: $table.label, builder: (column) => ColumnFilters(column));
 
   ColumnWithTypeConverterFilters<DateTime, DateTime, int> get updatedAt =>
-      $state.composableBuilder(
-          column: $state.table.updatedAt,
-          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
-              column,
-              joinBuilders: joinBuilders));
+      $composableBuilder(
+          column: $table.updatedAt,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
-  ColumnFilters<String> get reserve => $state.composableBuilder(
-      column: $state.table.reserve,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get reserve => $composableBuilder(
+      column: $table.reserve, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get fee => $state.composableBuilder(
-      column: $state.table.fee,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get fee => $composableBuilder(
+      column: $table.fee, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get tag => $state.composableBuilder(
-      column: $state.table.tag,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get tag => $composableBuilder(
+      column: $table.tag, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get dust => $state.composableBuilder(
-      column: $state.table.dust,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get dust => $composableBuilder(
+      column: $table.dust, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get feeAssetId => $state.composableBuilder(
-      column: $state.table.feeAssetId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get feeAssetId => $composableBuilder(
+      column: $table.feeAssetId, builder: (column) => ColumnFilters(column));
 }
 
-class $AddressesOrderingComposer
-    extends OrderingComposer<_$MixinDatabase, Addresses> {
-  $AddressesOrderingComposer(super.$state);
-  ColumnOrderings<String> get addressId => $state.composableBuilder(
-      column: $state.table.addressId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+class $AddressesOrderingComposer extends Composer<_$MixinDatabase, Addresses> {
+  $AddressesOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get addressId => $composableBuilder(
+      column: $table.addressId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get type => $state.composableBuilder(
-      column: $state.table.type,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get assetId => $state.composableBuilder(
-      column: $state.table.assetId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get assetId => $composableBuilder(
+      column: $table.assetId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get destination => $state.composableBuilder(
-      column: $state.table.destination,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get destination => $composableBuilder(
+      column: $table.destination, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get label => $state.composableBuilder(
-      column: $state.table.label,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get label => $composableBuilder(
+      column: $table.label, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get updatedAt => $state.composableBuilder(
-      column: $state.table.updatedAt,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get reserve => $state.composableBuilder(
-      column: $state.table.reserve,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get reserve => $composableBuilder(
+      column: $table.reserve, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get fee => $state.composableBuilder(
-      column: $state.table.fee,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get fee => $composableBuilder(
+      column: $table.fee, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get tag => $state.composableBuilder(
-      column: $state.table.tag,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get tag => $composableBuilder(
+      column: $table.tag, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get dust => $state.composableBuilder(
-      column: $state.table.dust,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get dust => $composableBuilder(
+      column: $table.dust, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get feeAssetId => $state.composableBuilder(
-      column: $state.table.feeAssetId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get feeAssetId => $composableBuilder(
+      column: $table.feeAssetId, builder: (column) => ColumnOrderings(column));
+}
+
+class $AddressesAnnotationComposer
+    extends Composer<_$MixinDatabase, Addresses> {
+  $AddressesAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get addressId =>
+      $composableBuilder(column: $table.addressId, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get assetId =>
+      $composableBuilder(column: $table.assetId, builder: (column) => column);
+
+  GeneratedColumn<String> get destination => $composableBuilder(
+      column: $table.destination, builder: (column) => column);
+
+  GeneratedColumn<String> get label =>
+      $composableBuilder(column: $table.label, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get reserve =>
+      $composableBuilder(column: $table.reserve, builder: (column) => column);
+
+  GeneratedColumn<String> get fee =>
+      $composableBuilder(column: $table.fee, builder: (column) => column);
+
+  GeneratedColumn<String> get tag =>
+      $composableBuilder(column: $table.tag, builder: (column) => column);
+
+  GeneratedColumn<String> get dust =>
+      $composableBuilder(column: $table.dust, builder: (column) => column);
+
+  GeneratedColumn<String> get feeAssetId => $composableBuilder(
+      column: $table.feeAssetId, builder: (column) => column);
 }
 
 class $AddressesTableManager extends RootTableManager<
@@ -7793,6 +7975,7 @@ class $AddressesTableManager extends RootTableManager<
     AddressesData,
     $AddressesFilterComposer,
     $AddressesOrderingComposer,
+    $AddressesAnnotationComposer,
     $AddressesCreateCompanionBuilder,
     $AddressesUpdateCompanionBuilder,
     (AddressesData, BaseReferences<_$MixinDatabase, Addresses, AddressesData>),
@@ -7802,9 +7985,12 @@ class $AddressesTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer: $AddressesFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $AddressesOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $AddressesFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $AddressesOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $AddressesAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> addressId = const Value.absent(),
             Value<String> type = const Value.absent(),
@@ -7874,6 +8060,7 @@ typedef $AddressesProcessedTableManager = ProcessedTableManager<
     AddressesData,
     $AddressesFilterComposer,
     $AddressesOrderingComposer,
+    $AddressesAnnotationComposer,
     $AddressesCreateCompanionBuilder,
     $AddressesUpdateCompanionBuilder,
     (AddressesData, BaseReferences<_$MixinDatabase, Addresses, AddressesData>),
@@ -7919,165 +8106,178 @@ typedef $CollectibleOutputUpdateCompanionBuilder = CollectibleOutputCompanion
 });
 
 class $CollectibleOutputFilterComposer
-    extends FilterComposer<_$MixinDatabase, CollectibleOutput> {
-  $CollectibleOutputFilterComposer(super.$state);
-  ColumnFilters<String> get userId => $state.composableBuilder(
-      column: $state.table.userId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+    extends Composer<_$MixinDatabase, CollectibleOutput> {
+  $CollectibleOutputFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get outputId => $state.composableBuilder(
-      column: $state.table.outputId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get outputId => $composableBuilder(
+      column: $table.outputId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get tokenId => $state.composableBuilder(
-      column: $state.table.tokenId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get tokenId => $composableBuilder(
+      column: $table.tokenId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get transactionHash => $state.composableBuilder(
-      column: $state.table.transactionHash,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get transactionHash => $composableBuilder(
+      column: $table.transactionHash,
+      builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get outputIndex => $state.composableBuilder(
-      column: $state.table.outputIndex,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<int> get outputIndex => $composableBuilder(
+      column: $table.outputIndex, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get amount => $state.composableBuilder(
-      column: $state.table.amount,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get sendersThreshold => $state.composableBuilder(
-      column: $state.table.sendersThreshold,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<int> get sendersThreshold => $composableBuilder(
+      column: $table.sendersThreshold,
+      builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get senders => $state.composableBuilder(
-      column: $state.table.senders,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get senders => $composableBuilder(
+      column: $table.senders, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get receiversThreshold => $state.composableBuilder(
-      column: $state.table.receiversThreshold,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<int> get receiversThreshold => $composableBuilder(
+      column: $table.receiversThreshold,
+      builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get receivers => $state.composableBuilder(
-      column: $state.table.receivers,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get receivers => $composableBuilder(
+      column: $table.receivers, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get state => $state.composableBuilder(
-      column: $state.table.state,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get state => $composableBuilder(
+      column: $table.state, builder: (column) => ColumnFilters(column));
 
   ColumnWithTypeConverterFilters<DateTime, DateTime, int> get createdAt =>
-      $state.composableBuilder(
-          column: $state.table.createdAt,
-          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
-              column,
-              joinBuilders: joinBuilders));
+      $composableBuilder(
+          column: $table.createdAt,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
   ColumnWithTypeConverterFilters<DateTime, DateTime, int> get updatedAt =>
-      $state.composableBuilder(
-          column: $state.table.updatedAt,
-          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
-              column,
-              joinBuilders: joinBuilders));
+      $composableBuilder(
+          column: $table.updatedAt,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
-  ColumnFilters<String> get signedBy => $state.composableBuilder(
-      column: $state.table.signedBy,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get signedBy => $composableBuilder(
+      column: $table.signedBy, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get signedTx => $state.composableBuilder(
-      column: $state.table.signedTx,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get signedTx => $composableBuilder(
+      column: $table.signedTx, builder: (column) => ColumnFilters(column));
 }
 
 class $CollectibleOutputOrderingComposer
-    extends OrderingComposer<_$MixinDatabase, CollectibleOutput> {
-  $CollectibleOutputOrderingComposer(super.$state);
-  ColumnOrderings<String> get userId => $state.composableBuilder(
-      column: $state.table.userId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+    extends Composer<_$MixinDatabase, CollectibleOutput> {
+  $CollectibleOutputOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get outputId => $state.composableBuilder(
-      column: $state.table.outputId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get outputId => $composableBuilder(
+      column: $table.outputId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get tokenId => $state.composableBuilder(
-      column: $state.table.tokenId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get tokenId => $composableBuilder(
+      column: $table.tokenId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get transactionHash => $state.composableBuilder(
-      column: $state.table.transactionHash,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get transactionHash => $composableBuilder(
+      column: $table.transactionHash,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get outputIndex => $state.composableBuilder(
-      column: $state.table.outputIndex,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get outputIndex => $composableBuilder(
+      column: $table.outputIndex, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get amount => $state.composableBuilder(
-      column: $state.table.amount,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get sendersThreshold => $state.composableBuilder(
-      column: $state.table.sendersThreshold,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get sendersThreshold => $composableBuilder(
+      column: $table.sendersThreshold,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get senders => $state.composableBuilder(
-      column: $state.table.senders,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get senders => $composableBuilder(
+      column: $table.senders, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get receiversThreshold => $state.composableBuilder(
-      column: $state.table.receiversThreshold,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get receiversThreshold => $composableBuilder(
+      column: $table.receiversThreshold,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get receivers => $state.composableBuilder(
-      column: $state.table.receivers,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get receivers => $composableBuilder(
+      column: $table.receivers, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get state => $state.composableBuilder(
-      column: $state.table.state,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get state => $composableBuilder(
+      column: $table.state, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get createdAt => $state.composableBuilder(
-      column: $state.table.createdAt,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get updatedAt => $state.composableBuilder(
-      column: $state.table.updatedAt,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get signedBy => $state.composableBuilder(
-      column: $state.table.signedBy,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get signedBy => $composableBuilder(
+      column: $table.signedBy, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get signedTx => $state.composableBuilder(
-      column: $state.table.signedTx,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get signedTx => $composableBuilder(
+      column: $table.signedTx, builder: (column) => ColumnOrderings(column));
+}
+
+class $CollectibleOutputAnnotationComposer
+    extends Composer<_$MixinDatabase, CollectibleOutput> {
+  $CollectibleOutputAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get outputId =>
+      $composableBuilder(column: $table.outputId, builder: (column) => column);
+
+  GeneratedColumn<String> get tokenId =>
+      $composableBuilder(column: $table.tokenId, builder: (column) => column);
+
+  GeneratedColumn<String> get transactionHash => $composableBuilder(
+      column: $table.transactionHash, builder: (column) => column);
+
+  GeneratedColumn<int> get outputIndex => $composableBuilder(
+      column: $table.outputIndex, builder: (column) => column);
+
+  GeneratedColumn<String> get amount =>
+      $composableBuilder(column: $table.amount, builder: (column) => column);
+
+  GeneratedColumn<int> get sendersThreshold => $composableBuilder(
+      column: $table.sendersThreshold, builder: (column) => column);
+
+  GeneratedColumn<String> get senders =>
+      $composableBuilder(column: $table.senders, builder: (column) => column);
+
+  GeneratedColumn<int> get receiversThreshold => $composableBuilder(
+      column: $table.receiversThreshold, builder: (column) => column);
+
+  GeneratedColumn<String> get receivers =>
+      $composableBuilder(column: $table.receivers, builder: (column) => column);
+
+  GeneratedColumn<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get signedBy =>
+      $composableBuilder(column: $table.signedBy, builder: (column) => column);
+
+  GeneratedColumn<String> get signedTx =>
+      $composableBuilder(column: $table.signedTx, builder: (column) => column);
 }
 
 class $CollectibleOutputTableManager extends RootTableManager<
@@ -8086,6 +8286,7 @@ class $CollectibleOutputTableManager extends RootTableManager<
     CollectibleOutputData,
     $CollectibleOutputFilterComposer,
     $CollectibleOutputOrderingComposer,
+    $CollectibleOutputAnnotationComposer,
     $CollectibleOutputCreateCompanionBuilder,
     $CollectibleOutputUpdateCompanionBuilder,
     (
@@ -8098,10 +8299,12 @@ class $CollectibleOutputTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $CollectibleOutputFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $CollectibleOutputOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $CollectibleOutputFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $CollectibleOutputOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $CollectibleOutputAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> userId = const Value.absent(),
             Value<String> outputId = const Value.absent(),
@@ -8187,6 +8390,7 @@ typedef $CollectibleOutputProcessedTableManager = ProcessedTableManager<
     CollectibleOutputData,
     $CollectibleOutputFilterComposer,
     $CollectibleOutputOrderingComposer,
+    $CollectibleOutputAnnotationComposer,
     $CollectibleOutputCreateCompanionBuilder,
     $CollectibleOutputUpdateCompanionBuilder,
     (
