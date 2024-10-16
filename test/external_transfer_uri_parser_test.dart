@@ -235,6 +235,8 @@ Future<ExternalTransfer?> _parse(String uri) async {
             0,
         symbol: '',
         name: '',
+        displaySymbol: '',
+        displayName: '',
         iconUrl: '',
         balance: '',
         priceBtc: '',
