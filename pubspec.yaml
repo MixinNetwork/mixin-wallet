@@ -86,7 +86,7 @@ dev_dependencies:
   json_serializable: ^6.6.2
   drift_dev: ^2.20.3
   hive_generator: ^2.0.0
-  envied_generator: ^0.5.2
+  envied_generator: ^1.0.0
 
 dependency_overrides:
   edwards25519:
