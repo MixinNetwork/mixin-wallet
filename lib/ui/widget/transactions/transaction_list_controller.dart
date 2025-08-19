@@ -25,7 +25,7 @@ class TransactionListController {
 
   int? _pendingPageSize;
 
-  final snapshots = ValueNotifier(const <SnapshotItem>[]);
+  final ValueNotifier<List<SnapshotItem>> snapshots = ValueNotifier(const <SnapshotItem>[]);
 
   final _snapshotItems = <SnapshotItem>[];
 

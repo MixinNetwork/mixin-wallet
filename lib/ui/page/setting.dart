@@ -70,7 +70,7 @@ class _SettingsBody extends HookWidget {
               leading: SvgPicture.asset(R.resourcesHideAssetsSvg),
               trailing: Switch(
                 value: hideSmallAssets,
-                activeColor: const Color(0xff333333),
+                activeThumbColor: const Color(0xff333333),
                 onChanged: (bool value) => isSmallAssetsHidden.value = value,
               ),
             ),

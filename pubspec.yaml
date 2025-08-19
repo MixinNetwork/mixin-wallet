@@ -33,11 +33,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  mixin_bot_sdk_dart: ^1.2.6
-  very_good_analysis: ^6.0.0
-  intl: ^0.19.0
+  mixin_bot_sdk_dart: 1.2.8
+  very_good_analysis: ^9.0.0
+  intl: ^0.20.2
   json_annotation: ^4.8.1
-  flutter_hooks: ^0.20.5
+  flutter_hooks: ^0.21.3
   equatable: ^2.0.5
   flutter_svg: ^2.0.9
   path_provider: ^2.0.2
@@ -45,7 +45,7 @@ dependencies:
   isolate: ^2.1.1
   path: ^1.8.0
   dio: ^5.4.1
-  drift: ^2.20.3
+  drift: ^2.28.1
   tuple: ^2.0.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -56,43 +56,37 @@ dependencies:
   vrouter:
     git:
       url: https://github.com/boyan01/vrouter.git
-      ref: 0e6937bb9381eaef438c2aa51f12cd9298ef43df
+      ref: 1055bd6f0500ee72da3861d0a42f65ed638f1267
   uuid: ^4.5.1
   path_to_regexp: ^0.4.0
   mixswap_sdk_dart: ^0.2.0
-  share_plus: ^10.0.3
+  share_plus: ^11.1.0
   collection: ^1.16.0
   convert: ^3.1.1
   pointycastle: ^3.6.2
   url_launcher: ^6.1.8
-  async: ^2.9.0
+  async: ^2.13.0
   overlay_support: ^2.1.0
   fixnum: ^1.0.1
   x25519: ^0.1.1
   csv: ^6.0.0
-  file_saver: ^0.2.2
+  file_saver: ^0.3.1
   calendar_date_picker2:
     git:
       url: https://github.com/boyan01/calendar_date_picker2.git
       ref: ea2e56e3acbd96cd97adc7c2452f55cdce44a933
   rational: ^2.2.2
-  envied: ^0.5.2
+  envied: ^1.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^2.4.13
-  json_serializable: ^6.6.2
-  drift_dev: ^2.20.3
-  hive_generator: ^2.0.0
-  envied_generator: ^0.5.2
+  build_runner: ^2.7.0
+  json_serializable: ^6.10.0
+  drift_dev: ^2.28.1
+  envied_generator: ^1.2.0
 
-dependency_overrides:
-  edwards25519:
-    git:
-      url: https://github.com/boyan01/edwards25519.git
-      ref: 11aea6ee033099e5634f3b21558bf6e34cd3bec6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -16,7 +16,7 @@ class EthereumURI {
   ERC681 toERC681() => ERC681.fromEthereumURI(this);
 }
 
-const _ethereumChainIdMap = {
+const Map<int, String> _ethereumChainIdMap = {
   1: ChainId.ethereum,
   137: ChainId.polygon,
 };

@@ -38,7 +38,7 @@ extension StringExtension on String {
   }
 }
 
-const externalTransferAssetIdMap = {
+const Map<String, String> externalTransferAssetIdMap = {
   'bitcoin': ChainId.bitcoin,
   'ethereum': ChainId.ethereum,
   'litecoin': ChainId.litecoin,

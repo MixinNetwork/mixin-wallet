@@ -18,8 +18,10 @@ class L10n {
   static L10n? _current;
 
   static L10n get current {
-    assert(_current != null,
-        'No instance of L10n was loaded. Try to initialize the L10n delegate before accessing L10n.current.');
+    assert(
+      _current != null,
+      'No instance of L10n was loaded. Try to initialize the L10n delegate before accessing L10n.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +43,10 @@ class L10n {
 
   static L10n of(BuildContext context) {
     final instance = L10n.maybeOf(context);
-    assert(instance != null,
-        'No instance of L10n present in the widget tree. Did you add L10n.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of L10n present in the widget tree. Did you add L10n.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -72,42 +76,22 @@ class L10n {
 
   /// `N/A`
   String get none {
-    return Intl.message(
-      'N/A',
-      name: 'none',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('N/A', name: 'none', desc: '', args: []);
   }
 
   /// `Send`
   String get send {
-    return Intl.message(
-      'Send',
-      name: 'send',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Send', name: 'send', desc: '', args: []);
   }
 
   /// `Receive`
   String get receive {
-    return Intl.message(
-      'Receive',
-      name: 'receive',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Receive', name: 'receive', desc: '', args: []);
   }
 
   /// `Assets`
   String get assets {
-    return Intl.message(
-      'Assets',
-      name: 'assets',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Assets', name: 'assets', desc: '', args: []);
   }
 
   /// `Transactions`
@@ -122,52 +106,27 @@ class L10n {
 
   /// `Deposit`
   String get deposit {
-    return Intl.message(
-      'Deposit',
-      name: 'deposit',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Deposit', name: 'deposit', desc: '', args: []);
   }
 
   /// `Address`
   String get address {
-    return Intl.message(
-      'Address',
-      name: 'address',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Address', name: 'address', desc: '', args: []);
   }
 
   /// `Memo`
   String get memo {
-    return Intl.message(
-      'Memo',
-      name: 'memo',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Memo', name: 'memo', desc: '', args: []);
   }
 
   /// `Notice`
   String get notice {
-    return Intl.message(
-      'Notice',
-      name: 'notice',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Notice', name: 'notice', desc: '', args: []);
   }
 
   /// `OK`
   String get ok {
-    return Intl.message(
-      'OK',
-      name: 'ok',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('OK', name: 'ok', desc: '', args: []);
   }
 
   /// `Both a Memo and an Address are required to successfully deposit your {value} to your account.`
@@ -282,62 +241,32 @@ class L10n {
 
   /// `Withdrawal`
   String get withdrawal {
-    return Intl.message(
-      'Withdrawal',
-      name: 'withdrawal',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Withdrawal', name: 'withdrawal', desc: '', args: []);
   }
 
   /// `Fee`
   String get fee {
-    return Intl.message(
-      'Fee',
-      name: 'fee',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Fee', name: 'fee', desc: '', args: []);
   }
 
   /// `Rebate`
   String get rebate {
-    return Intl.message(
-      'Rebate',
-      name: 'rebate',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Rebate', name: 'rebate', desc: '', args: []);
   }
 
   /// `Transfer`
   String get transfer {
-    return Intl.message(
-      'Transfer',
-      name: 'transfer',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Transfer', name: 'transfer', desc: '', args: []);
   }
 
   /// `Depositing`
   String get depositing {
-    return Intl.message(
-      'Depositing',
-      name: 'depositing',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Depositing', name: 'depositing', desc: '', args: []);
   }
 
   /// `Raw`
   String get raw {
-    return Intl.message(
-      'Raw',
-      name: 'raw',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Raw', name: 'raw', desc: '', args: []);
   }
 
   /// `Transaction Id`
@@ -372,82 +301,42 @@ class L10n {
 
   /// `From`
   String get from {
-    return Intl.message(
-      'From',
-      name: 'from',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('From', name: 'from', desc: '', args: []);
   }
 
   /// `To`
   String get to {
-    return Intl.message(
-      'To',
-      name: 'to',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('To', name: 'to', desc: '', args: []);
   }
 
   /// `Time`
   String get time {
-    return Intl.message(
-      'Time',
-      name: 'time',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Time', name: 'time', desc: '', args: []);
   }
 
   /// `Date`
   String get date {
-    return Intl.message(
-      'Date',
-      name: 'date',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Date', name: 'date', desc: '', args: []);
   }
 
   /// `Trace`
   String get trace {
-    return Intl.message(
-      'Trace',
-      name: 'trace',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Trace', name: 'trace', desc: '', args: []);
   }
 
   /// `Asset Type`
   String get assetType {
-    return Intl.message(
-      'Asset Type',
-      name: 'assetType',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Asset Type', name: 'assetType', desc: '', args: []);
   }
 
   /// `Search`
   String get search {
-    return Intl.message(
-      'Search',
-      name: 'search',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Search', name: 'search', desc: '', args: []);
   }
 
   /// `Cancel`
   String get cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'cancel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
   }
 
   /// `value now {value}`
@@ -482,32 +371,17 @@ class L10n {
 
   /// `Symbol`
   String get symbol {
-    return Intl.message(
-      'Symbol',
-      name: 'symbol',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Symbol', name: 'symbol', desc: '', args: []);
   }
 
   /// `Chain`
   String get chain {
-    return Intl.message(
-      'Chain',
-      name: 'chain',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Chain', name: 'chain', desc: '', args: []);
   }
 
   /// `Asset Key`
   String get contract {
-    return Intl.message(
-      'Asset Key',
-      name: 'contract',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Asset Key', name: 'contract', desc: '', args: []);
   }
 
   /// `Asset key is NOT a deposit address!`
@@ -532,92 +406,47 @@ class L10n {
 
   /// `Add address`
   String get addAddress {
-    return Intl.message(
-      'Add address',
-      name: 'addAddress',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add address', name: 'addAddress', desc: '', args: []);
   }
 
   /// `Delete`
   String get delete {
-    return Intl.message(
-      'Delete',
-      name: 'delete',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
   }
 
   /// `Filter`
   String get filterTitle {
-    return Intl.message(
-      'Filter',
-      name: 'filterTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Filter', name: 'filterTitle', desc: '', args: []);
   }
 
   /// `Apply`
   String get filterApply {
-    return Intl.message(
-      'Apply',
-      name: 'filterApply',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Apply', name: 'filterApply', desc: '', args: []);
   }
 
   /// `FILTER BY`
   String get filterBy {
-    return Intl.message(
-      'FILTER BY',
-      name: 'filterBy',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('FILTER BY', name: 'filterBy', desc: '', args: []);
   }
 
   /// `SORT BY`
   String get sortBy {
-    return Intl.message(
-      'SORT BY',
-      name: 'sortBy',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('SORT BY', name: 'sortBy', desc: '', args: []);
   }
 
   /// `Amount`
   String get amount {
-    return Intl.message(
-      'Amount',
-      name: 'amount',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Amount', name: 'amount', desc: '', args: []);
   }
 
   /// `All`
   String get filterAll {
-    return Intl.message(
-      'All',
-      name: 'filterAll',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('All', name: 'filterAll', desc: '', args: []);
   }
 
   /// `Miner Fee`
   String get minerFee {
-    return Intl.message(
-      'Miner Fee',
-      name: 'minerFee',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Miner Fee', name: 'minerFee', desc: '', args: []);
   }
 
   /// `{value}/{value2} confirmations`
@@ -642,12 +471,7 @@ class L10n {
 
   /// `Save`
   String get save {
-    return Intl.message(
-      'Save',
-      name: 'save',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Save', name: 'save', desc: '', args: []);
   }
 
   /// `All Transactions`
@@ -662,12 +486,7 @@ class L10n {
 
   /// `Trending`
   String get assetTrending {
-    return Intl.message(
-      'Trending',
-      name: 'assetTrending',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Trending', name: 'assetTrending', desc: '', args: []);
   }
 
   /// `Recent searches`
@@ -772,32 +591,17 @@ class L10n {
 
   /// `Memo`
   String get memoHint {
-    return Intl.message(
-      'Memo',
-      name: 'memoHint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Memo', name: 'memoHint', desc: '', args: []);
   }
 
   /// `Tag`
   String get tagHint {
-    return Intl.message(
-      'Tag',
-      name: 'tagHint',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tag', name: 'tagHint', desc: '', args: []);
   }
 
   /// `Network fee:`
   String get networkFee {
-    return Intl.message(
-      'Network fee:',
-      name: 'networkFee',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Network fee:', name: 'networkFee', desc: '', args: []);
   }
 
   /// `Minimum withdrawal:`
@@ -892,22 +696,12 @@ class L10n {
 
   /// `Hide`
   String get hide {
-    return Intl.message(
-      'Hide',
-      name: 'hide',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Hide', name: 'hide', desc: '', args: []);
   }
 
   /// `Show`
   String get show {
-    return Intl.message(
-      'Show',
-      name: 'show',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Show', name: 'show', desc: '', args: []);
   }
 
   /// `{value} has been hidden`
@@ -932,12 +726,7 @@ class L10n {
 
   /// `UNDO`
   String get undo {
-    return Intl.message(
-      'UNDO',
-      name: 'undo',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('UNDO', name: 'undo', desc: '', args: []);
   }
 
   /// `Empty amount`
@@ -972,12 +761,7 @@ class L10n {
 
   /// `Contact`
   String get contact {
-    return Intl.message(
-      'Contact',
-      name: 'contact',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Contact', name: 'contact', desc: '', args: []);
   }
 
   /// `Send to contact`
@@ -1032,12 +816,7 @@ class L10n {
 
   /// `Reauthorize`
   String get reauthorize {
-    return Intl.message(
-      'Reauthorize',
-      name: 'reauthorize',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Reauthorize', name: 'reauthorize', desc: '', args: []);
   }
 
   /// `Transaction Hash`
@@ -1052,52 +831,27 @@ class L10n {
 
   /// `Buy`
   String get buy {
-    return Intl.message(
-      'Buy',
-      name: 'buy',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Buy', name: 'buy', desc: '', args: []);
   }
 
   /// `Swap`
   String get swap {
-    return Intl.message(
-      'Swap',
-      name: 'swap',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Swap', name: 'swap', desc: '', args: []);
   }
 
   /// `Other`
   String get other {
-    return Intl.message(
-      'Other',
-      name: 'other',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Other', name: 'other', desc: '', args: []);
   }
 
   /// `Settings`
   String get settings {
-    return Intl.message(
-      'Settings',
-      name: 'settings',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Settings', name: 'settings', desc: '', args: []);
   }
 
   /// `NO ASSET`
   String get noAsset {
-    return Intl.message(
-      'NO ASSET',
-      name: 'noAsset',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('NO ASSET', name: 'noAsset', desc: '', args: []);
   }
 
   /// `Network type`
@@ -1112,12 +866,7 @@ class L10n {
 
   /// `Coming soon`
   String get comingSoon {
-    return Intl.message(
-      'Coming soon',
-      name: 'comingSoon',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Coming soon', name: 'comingSoon', desc: '', args: []);
   }
 
   /// `Deauthorize`
@@ -1132,22 +881,12 @@ class L10n {
 
   /// `NO RESULT`
   String get noResult {
-    return Intl.message(
-      'NO RESULT',
-      name: 'noResult',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('NO RESULT', name: 'noResult', desc: '', args: []);
   }
 
   /// `Transaction`
   String get transaction {
-    return Intl.message(
-      'Transaction',
-      name: 'transaction',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Transaction', name: 'transaction', desc: '', args: []);
   }
 
   /// `Service statement`
@@ -1182,12 +921,7 @@ class L10n {
 
   /// `Got it`
   String get gotIt {
-    return Intl.message(
-      'Got it',
-      name: 'gotIt',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Got it', name: 'gotIt', desc: '', args: []);
   }
 
   /// `Transaction fee:`
@@ -1222,42 +956,22 @@ class L10n {
 
   /// `Pay`
   String get pay {
-    return Intl.message(
-      'Pay',
-      name: 'pay',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Pay', name: 'pay', desc: '', args: []);
   }
 
   /// `BALANCE`
   String get balance {
-    return Intl.message(
-      'BALANCE',
-      name: 'balance',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('BALANCE', name: 'balance', desc: '', args: []);
   }
 
   /// `No camera`
   String get errorNoCamera {
-    return Intl.message(
-      'No camera',
-      name: 'errorNoCamera',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No camera', name: 'errorNoCamera', desc: '', args: []);
   }
 
   /// `Swap type`
   String get swapType {
-    return Intl.message(
-      'Swap type',
-      name: 'swapType',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Swap type', name: 'swapType', desc: '', args: []);
   }
 
   /// `Transfer details`
@@ -1302,32 +1016,17 @@ class L10n {
 
   /// `Done`
   String get transactionDone {
-    return Intl.message(
-      'Done',
-      name: 'transactionDone',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Done', name: 'transactionDone', desc: '', args: []);
   }
 
   /// `Received`
   String get received {
-    return Intl.message(
-      'Received',
-      name: 'received',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Received', name: 'received', desc: '', args: []);
   }
 
   /// `Refund`
   String get refund {
-    return Intl.message(
-      'Refund',
-      name: 'refund',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Refund', name: 'refund', desc: '', args: []);
   }
 
   /// `Have you paid in Mixin?`
@@ -1352,52 +1051,27 @@ class L10n {
 
   /// `Paid`
   String get paid {
-    return Intl.message(
-      'Paid',
-      name: 'paid',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Paid', name: 'paid', desc: '', args: []);
   }
 
   /// `Unpaid`
   String get unpaid {
-    return Intl.message(
-      'Unpaid',
-      name: 'unpaid',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Unpaid', name: 'unpaid', desc: '', args: []);
   }
 
   /// `Incomplete`
   String get incomplete {
-    return Intl.message(
-      'Incomplete',
-      name: 'incomplete',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Incomplete', name: 'incomplete', desc: '', args: []);
   }
 
   /// `Completed`
   String get completed {
-    return Intl.message(
-      'Completed',
-      name: 'completed',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Completed', name: 'completed', desc: '', args: []);
   }
 
   /// `Slippage`
   String get slippage {
-    return Intl.message(
-      'Slippage',
-      name: 'slippage',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Slippage', name: 'slippage', desc: '', args: []);
   }
 
   /// `Swap with slippage greater than {value} is not currently supported`
@@ -1412,12 +1086,7 @@ class L10n {
 
   /// `Go pay`
   String get goPay {
-    return Intl.message(
-      'Go pay',
-      name: 'goPay',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Go pay', name: 'goPay', desc: '', args: []);
   }
 
   /// `Services provided by MixSwap`
@@ -1472,22 +1141,12 @@ class L10n {
 
   /// `Coins`
   String get coins {
-    return Intl.message(
-      'Coins',
-      name: 'coins',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Coins', name: 'coins', desc: '', args: []);
   }
 
   /// `NFTs`
   String get nfts {
-    return Intl.message(
-      'NFTs',
-      name: 'nfts',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('NFTs', name: 'nfts', desc: '', args: []);
   }
 
   /// `No collectibles found`
@@ -1542,32 +1201,17 @@ class L10n {
 
   /// `Continue`
   String get continueText {
-    return Intl.message(
-      'Continue',
-      name: 'continueText',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Continue', name: 'continueText', desc: '', args: []);
   }
 
   /// `Send link`
   String get sendLink {
-    return Intl.message(
-      'Send link',
-      name: 'sendLink',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Send link', name: 'sendLink', desc: '', args: []);
   }
 
   /// `Copy link`
   String get copyLink {
-    return Intl.message(
-      'Copy link',
-      name: 'copyLink',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Copy link', name: 'copyLink', desc: '', args: []);
   }
 
   /// `A request payment link has been generated, please send it to the specified contact.`
@@ -1602,12 +1246,7 @@ class L10n {
 
   /// `State`
   String get state {
-    return Intl.message(
-      'State',
-      name: 'state',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('State', name: 'state', desc: '', args: []);
   }
 
   /// `Snapshot hash`
@@ -1622,12 +1261,7 @@ class L10n {
 
   /// `Download`
   String get download {
-    return Intl.message(
-      'Download',
-      name: 'download',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Download', name: 'download', desc: '', args: []);
   }
 
   /// `Don’t have Mixin Messenger?`
@@ -1652,12 +1286,7 @@ class L10n {
 
   /// `Create PIN`
   String get createPin {
-    return Intl.message(
-      'Create PIN',
-      name: 'createPin',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Create PIN', name: 'createPin', desc: '', args: []);
   }
 
   /// `Please create a PIN to protect your assets`
@@ -1672,12 +1301,7 @@ class L10n {
 
   /// `Confirm`
   String get confirm {
-    return Intl.message(
-      'Confirm',
-      name: 'confirm',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Confirm', name: 'confirm', desc: '', args: []);
   }
 
   /// `Access denied`
@@ -2196,22 +1820,12 @@ class L10n {
 
   /// `Receivers`
   String get receivers {
-    return Intl.message(
-      'Receivers',
-      name: 'receivers',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Receivers', name: 'receivers', desc: '', args: []);
   }
 
   /// `Signers`
   String get signers {
-    return Intl.message(
-      'Signers',
-      name: 'signers',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Signers', name: 'signers', desc: '', args: []);
   }
 
   /// `Export transactions data`
@@ -2226,12 +1840,7 @@ class L10n {
 
   /// `date range`
   String get dateRange {
-    return Intl.message(
-      'date range',
-      name: 'dateRange',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('date range', name: 'dateRange', desc: '', args: []);
   }
 
   /// `Last 7 days`
@@ -2276,32 +1885,17 @@ class L10n {
 
   /// `Export`
   String get export {
-    return Intl.message(
-      'Export',
-      name: 'export',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Export', name: 'export', desc: '', args: []);
   }
 
   /// `All assets`
   String get allAssets {
-    return Intl.message(
-      'All assets',
-      name: 'allAssets',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('All assets', name: 'allAssets', desc: '', args: []);
   }
 
   /// `No limit`
   String get noLimit {
-    return Intl.message(
-      'No limit',
-      name: 'noLimit',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No limit', name: 'noLimit', desc: '', args: []);
   }
 
   /// `Clear conditions`
@@ -2316,12 +1910,7 @@ class L10n {
 
   /// `Type`
   String get type {
-    return Intl.message(
-      'Type',
-      name: 'type',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Type', name: 'type', desc: '', args: []);
   }
 
   /// `Exporting data in webview is not supported, please open in browser.`
@@ -2336,32 +1925,17 @@ class L10n {
 
   /// `Currency`
   String get currency {
-    return Intl.message(
-      'Currency',
-      name: 'currency',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Currency', name: 'currency', desc: '', args: []);
   }
 
   /// `Logs`
   String get logs {
-    return Intl.message(
-      'Logs',
-      name: 'logs',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Logs', name: 'logs', desc: '', args: []);
   }
 
   /// `No logs`
   String get noLogs {
-    return Intl.message(
-      'No logs',
-      name: 'noLogs',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('No logs', name: 'noLogs', desc: '', args: []);
   }
 
   /// `PIN incorrect`
@@ -2376,12 +1950,7 @@ class L10n {
 
   /// `Verify`
   String get verify {
-    return Intl.message(
-      'Verify',
-      name: 'verify',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Verify', name: 'verify', desc: '', args: []);
   }
 
   /// `Raw transfer`
@@ -2416,12 +1985,7 @@ class L10n {
 
   /// `PIN change`
   String get pinChange {
-    return Intl.message(
-      'PIN change',
-      name: 'pinChange',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('PIN change', name: 'pinChange', desc: '', args: []);
   }
 
   /// `Emergency contact`
@@ -2456,12 +2020,7 @@ class L10n {
 
   /// `Sign in`
   String get signIn {
-    return Intl.message(
-      'Sign in',
-      name: 'signIn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Sign in', name: 'signIn', desc: '', args: []);
   }
 
   /// `Sign in with phone number`
@@ -2566,22 +2125,12 @@ class L10n {
 
   /// `Change PIN`
   String get changePin {
-    return Intl.message(
-      'Change PIN',
-      name: 'changePin',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Change PIN', name: 'changePin', desc: '', args: []);
   }
 
   /// `Old PIN`
   String get verifyOldPin {
-    return Intl.message(
-      'Old PIN',
-      name: 'verifyOldPin',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Old PIN', name: 'verifyOldPin', desc: '', args: []);
   }
 
   /// `Please enter the 6 digit PIN to verify.`
@@ -2596,12 +2145,7 @@ class L10n {
 
   /// `Next`
   String get next {
-    return Intl.message(
-      'Next',
-      name: 'next',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Next', name: 'next', desc: '', args: []);
   }
 
   /// `Please set a new 6 digit PIN`
@@ -2686,22 +2230,12 @@ class L10n {
 
   /// `Set a new PIN`
   String get setNewPin {
-    return Intl.message(
-      'Set a new PIN',
-      name: 'setNewPin',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Set a new PIN', name: 'setNewPin', desc: '', args: []);
   }
 
   /// `Confirm PIN`
   String get confirmPin {
-    return Intl.message(
-      'Confirm PIN',
-      name: 'confirmPin',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Confirm PIN', name: 'confirmPin', desc: '', args: []);
   }
 
   /// `Change PIN successfully`
@@ -2756,12 +2290,7 @@ class L10n {
 
   /// `Wallet`
   String get wallet {
-    return Intl.message(
-      'Wallet',
-      name: 'wallet',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Wallet', name: 'wallet', desc: '', args: []);
   }
 
   /// `Read your public profile`
@@ -2846,12 +2375,7 @@ class L10n {
 
   /// `Authorized`
   String get authorized {
-    return Intl.message(
-      'Authorized',
-      name: 'authorized',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Authorized', name: 'authorized', desc: '', args: []);
   }
 
   /// `Choose network`
@@ -2896,12 +2420,7 @@ class L10n {
 
   /// `Permissions`
   String get permissions {
-    return Intl.message(
-      'Permissions',
-      name: 'permissions',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Permissions', name: 'permissions', desc: '', args: []);
   }
 
   /// `Approved: {approve}, Last Accessed: {access}`

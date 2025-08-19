@@ -296,6 +296,7 @@ class _TabSwitchBar extends HookWidget implements PreferredSizeWidget {
         ),
         indicatorPadding: const EdgeInsets.only(bottom: 16, top: 41),
         controller: controller,
+        dividerColor: Colors.transparent,
       ),
     );
   }

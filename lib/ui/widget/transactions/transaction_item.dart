@@ -153,7 +153,6 @@ class TransactionTypeWidget extends StatelessWidget {
         title = context.l10n.raw;
       default:
         title = item.type;
-        break;
     }
 
     return SelectableText(
@@ -206,7 +205,7 @@ class _TransactionIcon extends StatelessWidget {
             width: 40,
           ),
           Positioned.fill(
-              child: ColoredBox(color: Colors.black.withOpacity(0.5))),
+              child: ColoredBox(color: Colors.black.withValues(alpha: 0.5))),
           Text(
             '${(progress * 100).round()}%',
             style: const TextStyle(

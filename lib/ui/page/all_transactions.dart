@@ -11,8 +11,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
+import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' show SnapshotType;
 
 import '../../db/mixin_database.dart';
+import '../../service/account_provider.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
@@ -762,25 +764,47 @@ class _ExportButton extends StatelessWidget {
 
             final table = [
               header,
-              ...snapshots.map((e) => [
-                    e.assetSymbol,
-                    e.snapshotId,
-                    e.type,
-                    '${e.isPositive ? '+' : ''}${e.amount}',
-                    e.sender ?? '',
-                    e.receiver ?? '',
-                    if (e.type == sdk.SnapshotType.pending)
-                      '${e.confirmations ?? 0}/${e.assetConfirmations ?? 0}'
-                    else
-                      '',
-                    e.transactionHash ?? '',
-                    e.createdAt.toIso8601String(),
-                    e.memo,
-                    e.traceId ?? '',
-                    e.state ?? '',
-                    e.snapshotHash ?? '',
-                    e.opponentId ?? '',
-                  ]),
+              ...snapshots.map((e) {
+                final String sender;
+                final String receiver;
+                switch (e.type) {
+                  case SnapshotType.deposit:
+                  case SnapshotType.pending:
+                    sender = e.sender ?? '';
+                    receiver = e.transactionHash ?? '';
+                  case SnapshotType.transfer:
+                    final account = context.read<AuthProvider>().value!.account;
+                    if (e.isPositive) {
+                      sender = e.opponentFulName ?? '';
+                      receiver = account.fullName ?? '';
+                    } else {
+                      sender = account.fullName ?? '';
+                      receiver = e.opponentFulName ?? '';
+                    }
+                  default:
+                    sender = e.transactionHash ?? '';
+                    receiver = e.receiver ?? '';
+                }
+                return [
+                  e.assetSymbol,
+                  e.snapshotId,
+                  e.type,
+                  '${e.isPositive ? '+' : ''}${e.amount}',
+                  sender,
+                  receiver,
+                  if (e.type == sdk.SnapshotType.pending)
+                    '${e.confirmations ?? 0}/${e.assetConfirmations ?? 0}'
+                  else
+                    '',
+                  e.transactionHash ?? '',
+                  e.createdAt.toIso8601String(),
+                  e.memo,
+                  e.traceId ?? '',
+                  e.state ?? '',
+                  e.snapshotHash ?? '',
+                  e.opponentId ?? '',
+                ];
+              }),
             ];
             final csv = const ListToCsvConverter().convert(table);
             var fileName = 'transactions_';
@@ -794,11 +818,13 @@ class _ExportButton extends StatelessWidget {
               fileName += '${DateFormat('yyyy_MM_dd').format(range.start)}_';
               fileName += '${DateFormat('yyyy_MM_dd').format(range.end)}_';
             }
-            fileName += '.csv';
+            if (fileName.endsWith('_')) {
+              fileName = fileName.substring(0, fileName.length - 1);
+            }
             await FileSaver.instance.saveFile(
               name: fileName,
               bytes: Uint8List.fromList(utf8.encode(csv)),
-              ext: 'csv',
+              fileExtension: 'csv',
             );
           });
         },
