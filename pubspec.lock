@@ -1102,9 +1102,11 @@ packages:
   vrouter:
     dependency: "direct main"
     description:
-      path: "../../temp/vrouter"
-      relative: true
-    source: path
+      path: "."
+      ref: "1055bd6f0500ee72da3861d0a42f65ed638f1267"
+      resolved-ref: "1055bd6f0500ee72da3861d0a42f65ed638f1267"
+      url: "https://github.com/boyan01/vrouter.git"
+    source: git
     version: "1.2.1"
   watcher:
     dependency: transitive

@@ -54,7 +54,9 @@ dependencies:
   rxdart: ^0.28.0
   qr_flutter: ^4.0.0
   vrouter:
-    path: ../../temp/vrouter
+    git:
+      url: https://github.com/boyan01/vrouter.git
+      ref: 1055bd6f0500ee72da3861d0a42f65ed638f1267
   uuid: ^4.5.1
   path_to_regexp: ^0.4.0
   mixswap_sdk_dart: ^0.2.0
