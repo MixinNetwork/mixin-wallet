@@ -22,8 +22,8 @@ const supportMaxSlippage = 1;
 const mixSwapRetryErrorCode = 403;
 const mixSwapUserId = '6a4a121d-9673-4a7e-a93e-cb9ca4bb83a2';
 
-const defaultSourceId = pUsd;
-const defaultDestId = xin;
+const String defaultSourceId = pUsd;
+const String defaultDestId = xin;
 
 Box<dynamic> get swapBox => Hive.box('swap');
 

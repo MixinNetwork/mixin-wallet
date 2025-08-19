@@ -272,7 +272,7 @@ class _SaveButton extends StatelessWidget {
         style: ButtonStyle(
           backgroundColor: WidgetStateColor.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
-              return context.colorScheme.primaryText.withOpacity(0.2);
+              return context.colorScheme.primaryText.withValues(alpha: 0.2);
             }
             return context.colorScheme.primaryText;
           }),

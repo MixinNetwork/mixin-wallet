@@ -50,7 +50,7 @@ const authScope =
     'PROFILE:READ+ASSETS:READ+CONTACTS:READ+SNAPSHOTS:READ+COLLECTIBLES:READ';
 
 const supportedBuyCryptos = ['USDT', 'USDC'];
-const supportedBuyCryptosId = [
+const List<String> supportedBuyCryptosId = [
   bitcoin,
   ethereum,
   erc20USDC,

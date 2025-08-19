@@ -25,6 +25,7 @@ import 'env.dart';
 import 'profile/auth.dart';
 import 'profile/profile_manager.dart';
 
+// ignore: must_be_immutable
 class AppServices extends ChangeNotifier with EquatableMixin {
   AppServices({
     required this.vRouterStateKey,
@@ -178,9 +179,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final fixedAssets = <sdk.Asset>[];
     for (final a in assets) {
       if (a.assetId == '47b13785-25e2-3c5c-ac6b-3713e9c31c22') {
-        a.name = 'BitTorrent Old';
-        // ignore: cascade_invocations
-        a.symbol = 'BTTOLD';
+        a
+          ..name = 'BitTorrent Old'
+          ..symbol = 'BTTOLD';
       }
       fixedAssets.add(a);
     }
@@ -206,9 +207,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   Future<sdk.Asset> updateAsset(String assetId) async {
     final asset = (await client.assetApi.getAssetById(assetId)).data;
     if (asset.assetId == '47b13785-25e2-3c5c-ac6b-3713e9c31c22') {
-      asset.name = 'BitTorrent Old';
-      // ignore: cascade_invocations
-      asset.symbol = 'BTTOLD';
+      asset
+        ..name = 'BitTorrent Old'
+        ..symbol = 'BTTOLD';
     }
     await mixinDatabase.assetDao.insert(asset);
 
@@ -308,7 +309,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
           'tag': tag,
         });
     return sdk.MixinResponse((resp.data!['data'] as List)
-        .whereNotNull()
+        .nonNulls
         .map((e) => sdk.Snapshot.fromJson(e as Map<String, dynamic>))
         .toList());
   }
@@ -330,7 +331,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final insertAsset = result[1] as Future<void> Function()?;
 
     final insertUsers = await _checkUsersExistWithReturnInsert(
-        response.data.map((e) => e.opponentId).whereNotNull().toList());
+        response.data.map((e) => e.opponentId).nonNulls.toList());
 
     await mixinDatabase.transaction(() async {
       await Future.wait([
@@ -365,7 +366,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
     final insertAsset = result[1] as Future<void> Function()?;
 
     final insertUsers = await _checkUsersExistWithReturnInsert(
-        response.data.map((e) => e.opponentId).whereNotNull().toList());
+        response.data.map((e) => e.opponentId).nonNulls.toList());
     return mixinDatabase.transaction(() async {
       await Future.wait([
         mixinDatabase.snapshotDao.insertAll(response.data),
@@ -389,7 +390,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
     final closures = [
       await _checkUsersExistWithReturnInsert(
-          snapshots.map((e) => e.opponentId).toSet().whereNotNull().toList()),
+          snapshots.map((e) => e.opponentId).toSet().nonNulls.toList()),
       for (final assetId in snapshots.map((e) => e.assetId).toSet())
         await _checkAssetExistWithReturnInsert(assetId)
     ];
@@ -398,7 +399,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       await Future.wait([
         mixinDatabase.snapshotDao.insertAll(snapshots),
         ...closures.map((e) => e?.call())
-      ].whereNotNull());
+      ].nonNulls);
     });
     return snapshots;
   }
@@ -408,7 +409,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
     final closures = await Future.wait([
       _checkUsersExistWithReturnInsert(
-        [data.data.opponentId].whereNotNull().toList(),
+        [data.data.opponentId].nonNulls.toList(),
       ),
       _checkAssetExistWithReturnInsert(data.data.assetId),
     ]);
@@ -426,7 +427,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       final data = await client.snapshotApi.getSnapshotByTraceId(traceId);
       final closures = await Future.wait([
         _checkUsersExistWithReturnInsert(
-          [data.data.opponentId].whereNotNull().toList(),
+          [data.data.opponentId].nonNulls.toList(),
         ),
         _checkAssetExistWithReturnInsert(data.data.assetId),
       ]);
@@ -434,7 +435,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         await Future.wait([
           mixinDatabase.snapshotDao.insertAll([data.data]),
           ...closures.map((e) => e?.call()),
-        ].whereNotNull().cast<Future<void>>());
+        ].nonNulls.cast<Future<void>>());
       });
       return true;
     } catch (e) {

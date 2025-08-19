@@ -127,7 +127,7 @@ class _RequestPaymentResultBottomSheet extends StatelessWidget {
                           onTap: () {
                             final mixinContext = getMixinContext();
                             if (mixinContext.isEmpty) {
-                              Share.share(url);
+                              SharePlus.instance.share(ShareParams(text: url));
                             } else {
                               final dest =
                                   'mixin://send?data=${base64UrlEncode(utf8.encode(url))}&category=text';

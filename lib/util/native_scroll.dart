@@ -1,7 +1,5 @@
-// ignore_for_file: avoid_web_libraries_in_flutter
-
 import 'dart:html';
-import 'dart:ui' as ui;
+import 'dart:ui_web' as ui_web;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -58,7 +56,7 @@ class _NativeScrollBuilderState extends State<_NativeScrollBuilder>
     _viewId = 'native-scroll-view-$_globalId';
 
     // ignore: undefined_prefixed_name, avoid_dynamic_calls
-    ui.platformViewRegistry.registerViewFactory(
+    ui_web.platformViewRegistry.registerViewFactory(
       _viewId,
       // Create a scroll container - this is a <div> with scrolling overflow.
       // When it scroll, the Flutter ScrollController gets updated.

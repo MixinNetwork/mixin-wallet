@@ -57,3 +57,5 @@ linter:
     require_trailing_commas: false
     prefer_asserts_with_message: false
     prefer_constructors_over_static_methods: false
+    document_ignores: false
+    avoid_catches_without_on_clauses: false

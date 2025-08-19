@@ -112,7 +112,7 @@ class _CollectiblesGroupTile extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(8),

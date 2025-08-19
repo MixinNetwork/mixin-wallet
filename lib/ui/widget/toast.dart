@@ -47,7 +47,7 @@ OverlaySupportEntry showLoading() => showOverlay(
       (context, progress) => Opacity(
         opacity: progress,
         child: Container(
-          color: Colors.black.withOpacity(0.5),
+          color: Colors.black.withValues(alpha: 0.5),
           child: const Center(
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation(Colors.white),
@@ -134,7 +134,7 @@ class _MixinToast extends StatelessWidget {
                 color: context.colorScheme.background,
                 borderRadius: const BorderRadius.all(Radius.circular(37)),
                 elevation: 5,
-                shadowColor: Colors.grey.withOpacity(0.2),
+                shadowColor: Colors.grey.withValues(alpha: 0.2),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

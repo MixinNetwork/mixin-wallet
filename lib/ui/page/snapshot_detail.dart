@@ -321,7 +321,6 @@ class _From extends StatelessWidget {
       default:
         sender = snapshot.transactionHash ?? '';
         title = context.l10n.transactionHash;
-        break;
     }
     return TransactionInfoTile(
       title: Text(title ?? context.l10n.from),
@@ -362,7 +361,6 @@ class _To extends StatelessWidget {
         if (asset.tag != null && asset.tag!.isNotEmpty) {
           title = context.l10n.address;
         }
-        break;
     }
     return TransactionInfoTile(
       title: Text(title ?? context.l10n.to),

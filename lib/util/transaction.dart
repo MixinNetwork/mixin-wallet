@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_dynamic_calls, avoid_web_libraries_in_flutter
+// ignore_for_file: avoid_dynamic_calls, avoid_web_libraries_in_flutter, deprecated_member_use
 
 import 'dart:convert';
 import 'dart:js' as js;

@@ -1,10 +1,9 @@
-import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _bound = {
+const Map<Brightness, double> _bound = {
   Brightness.light: 0.0,
   Brightness.dark: 1.0,
 };

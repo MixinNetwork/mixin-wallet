@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 // ignore_for_file: avoid_print
 
-const kLogMode = !kReleaseMode;
+const bool kLogMode = !kReleaseMode;
 
 const _verbosePrefix = '[V]';
 const _debugPrefix = '[D]';
